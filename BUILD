@@ -10,7 +10,7 @@ read modes which also has its roots in the DOS era.
 
 The tool builds by creating an "alternate" file I/O library, and a 
 base library, and then bulding each of the three formatters on 
-top of those librarys.  
+top of those libraries.  
 
 To build, cd to src, and run  `mk all` which will build the libraries
 and then the various formatters.  
