@@ -1,0 +1,20 @@
+
+{X}fm is a family of document formatting programmes 
+which read a common source language to produce output 
+in HTML, PostScript, or ASCII formatted text.  The 
+{X}fm language provides for the definition of variables, 
+inclusion of files and preformatted material 
+(encapsulated PostScript, or plain text), table 
+generation and formatting of the text with optional 
+justification, indexing, and multiple column support.
+
+{X}fm allows an author the ability to maintain one copy 
+of document source with the ability to generate multiple 
+output formats from the single source.  In addition, 
+{X}fm also provides the ability to share document sections 
+and images between documents which can significantly 
+reduce the maintenance effort when supporting related 
+documents.
+
+
+
