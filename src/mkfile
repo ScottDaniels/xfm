@@ -1,0 +1,43 @@
+# main mkfile
+# To force a remake of everthing, not just out of date things:
+#
+#       MK_PARMS="nuke"  mk; mk
+#
+
+
+# prefer ksh; might work with bash
+MKSHELL = `which ksh 2>/dev/null || which bash`
+PSHELL = `which ksh 2>/dev/null || which bash`
+
+# these must be set before master is pulled in
+#
+ALL =
+
+
+# order is important
+dirs = afileio base hfm pfm tfm
+
+INSTALL =
+SCDSRC = 
+gflag=
+
+< master.mk
+
+NUKE = $NUKE 
+
+all:
+	$PSHELL '
+	set -e
+	for d in $dirs
+	do
+		echo ""
+		echo "----------- $d ---------------"
+		(
+			set -e
+			cd $d 
+			mk
+		)
+	done
+	
+	ls -al hfm/hfm pfm/pfm tfm/tfm
+	'

@@ -1,0 +1,49 @@
+# Alt File I/O routines 
+# The {X}fm code is built using an a file i/o layer to provide file stacking and 
+# variable expansion and parameter tokenising as buffers are read. This is it.
+# Mods:
+# 	20 Jul 2005 :  converted to mk   
+#
+
+# must be set in EVERY mkfile AND in master.mk -- erk.
+# some flavours of mk override MKSHELL, so we'll set and hope and use
+# PSHELL (preferred shell) when we need to be sure.
+MKSHELL = `which ksh 2>/dev/null || which bash`
+PSHELL = `which ksh 2>/dev/null || which bash`
+
+# these must be set before master is pulled in
+#
+gflag = 
+MKSHELL=ksh
+ALL = libraries
+INSTALL =
+SCDSRC = 
+
+
+< ../master.mk
+
+IFLAGS = -I. -I ../lib
+
+afilib = libafi${gflag}.a
+
+libraries:N: $afilib
+
+afilib = libafi${gflag}.a
+libs = -L ./ -lafi -L ../tools -lut
+headers = afisetup.h aficonst.h afidefs.h afistruc.h
+
+# source for the lib
+src = afichain aficlos1 aficlose afiopen afiopenp afiread afiseek afisetfl afisetsi afistat \
+	afiwrite afigetto afiisvar afinew afireadp afiopenp  afipusht afisetto replace
+
+$afilib(%.o):N:    %.o
+$afilib:   ${src:%=$afilib(%.o)}
+	$PSHELL '(
+	set -e
+	names="${newprereq//$afilib\(}"					# pluck off lib.*( from each in newprereq
+	ar r $afilib ${names//\)/} && rm ${names//\)/}	# archive and remove after ditching trailing ) from each name
+	ranlib $afilib || true
+	)'
+
+publish:V: $afilib
+	cp *.a ../lib

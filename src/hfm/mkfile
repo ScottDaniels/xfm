@@ -1,0 +1,50 @@
+# hfm -- one of the {X}fm family which reads a standard src file and generates html output.
+#
+
+# ksh is preferred, might work with bash but no guarentees on that.
+# some flavours of mk override MKSHELL, so we'll set and hope and use
+# PSHELL (preferred shell) when we need to be sure.
+MKSHELL = `which ksh 2>/dev/null || which bash`
+PSHELL = `which ksh 2>/dev/null || which bash`
+
+# these must be set before master is pulled in
+#
+ALL = hfm libraries
+INSTALL =
+SCDSRC = 
+
+gflag = 
+
+< ../master.mk
+
+NUKE = $NUKE hfm
+
+IFLAGS = -I. -I ../lib -I ../base
+
+hfmlib = libhfm$gflag.a
+
+libraries:N: $hfmlib
+
+libs = -L../base -lxfm${gflag:-} -L../afileio -lafi${gflag:-}
+
+# source for the lib
+src = fmaddtok fmbd fmbeglst fmbox fmbxend fmbxst fmcd fmceject fmcell \
+	fmcenter fmcmd fmcss fmditem fmelse fmendlis \
+	fmflush fmheader fmindent fminit fmjustif fmline fmlisti fmll  \
+	fmnofmt fmpara fmpflush fmright fmrunset fmsectio fmsetcol fmsetfon \
+	fmsetmar fmsetx fmsety fmspace fmtable fmtc fmtoc fmtoksiz fmtr fmestack
+
+obj = ${src:%=%.o}
+
+
+$hfmlib(%.o):N:    %.o
+$hfmlib:   ${src:%=$hfmlib(%.o)}
+	$PSHELL '(
+	set -e
+	names="${newprereq//$hfmlib\(}"					# pluck off lib.*( from each in newprereq
+	ar r $hfmlib ${names//\)/} && rm ${names//\)/}	# archive and remove after ditching trailing ) from each name
+	ranlib $hfmlib || true
+	)'
+
+hfm:	fmmain.c $obj 
+	$CC $CFLAGS $IFLAGS -o hfm fmmain.c $obj  $libs 

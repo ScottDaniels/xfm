@@ -1,0 +1,47 @@
+# build tfm --  an {x)}m component which reads {x}fm source and generates formoatted ascii text.
+#
+
+# must be set in EVERY mkfile AND in master.mk -- erk.
+# some flavours of mk override MKSHELL, so we'll set and hope and use
+# PSHELL (preferred shell) when we need to be sure.
+MKSHELL = `which ksh 2>/dev/null || which bash`
+PSHELL = `which ksh 2>/dev/null || which bash`
+
+# these must be set before master is pulled in
+#
+ALL = tfm libraries
+INSTALL =
+SCDSRC = 
+gflag = 
+
+
+< ../master.mk
+NUKE = $NUKE tfm 
+
+
+IFLAGS = -I. -I ../hfm -I ../base -I ../lib
+
+tfmlib = libtfm$gflag.a
+
+libraries:N: $tfmlib
+
+libs = -L../hfm -lhfm${gflag:-} -L../base -lxfm${gflag:-} -L../afileio -lafi${gflag:-} 
+
+# source for the tfm lib
+src = fmaddtok fmbd fmbeglst fmbxend fmbxst fmcell fmcmd \
+	fmditem fmendlis fmflush fmheader fmignore fminit \
+	fmjustif fmline fmlisti fmnofmt fmpara fmtable fmtr fmspace fmcenter fmcolnotes
+
+obj = ${src:%=%.o}
+
+$tfmlib(%.o):N:    %.o
+$tfmlib:   ${src:%=$tfmlib(%.o)}
+	$PSHELL '(
+	set -e
+	names="${newprereq//$tfmlib\(}"					# pluck off lib.*( from each in newprereq
+	ar r $tfmlib ${names//\)/} && rm ${names//\)/}	# archive and remove after ditching trailing ) from each name
+	ranlib $tfmlib || true
+	)'
+
+tfm:	fmmain.c $obj
+	$CC $CFLAGS $IFLAGS -o tfm $obj fmmain.c $libs 

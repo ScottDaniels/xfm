@@ -1,0 +1,136 @@
+%% Native postscript functions that pfm will expect to be there
+%% things like text justification, centering, and page manipulation;
+%% nothing too facncy.  This file is converted into init_ps.c
+%% by the mk file.  this allows us to easily maintain the ps stuff
+%% and 'compress' it as we compile it into pfm. 
+
+%% Author: E. Scott Daniels
+%% Converted: 09 Mar 2013
+
+
+%% There is still a wee bit of ps coded in fminit.c that must be rendered
+%% to the output conditionally at run time. This contains what we spit out
+%% in all cases. 
+
+%% draws a box
+/box { 3 index 3 index moveto 3 index 1 index lineto
+	1 index 1 index lineto 1 index 3 index lineto
+	closepath stroke pop pop pop pop } def
+
+%% right justify the string on the stack 
+/rightxy { dup stringwidth pop 3 index exch sub 2 index moveto show pop pop } def
+
+%% show each of the strings that are on the stack associated with a set of tuples:
+%%   (fontname) (string) ydisplacement fontsize [r g b]
+%% This expects np to be set to the number of parm sets pushed. Called by splat, cent, 
+%% and right. If r is >= 0 then we assume the array holds g and b too and use them 
+%% to set the colour. 
+%%
+/showstack {
+    np 0 eq 
+		{ show }					% no tuples, just show (old ?)
+    	{ 
+			0 1 np 1 sub			% run through each tuple
+        	{ pop					% pop the iteration value
+				aload pop		% unload the colour array onto the stack 
+				dup -1 eq 
+					{ pop }				% if <1 no colour change
+					{ setrgbcolor } 	% assume three elements for colour change
+					ifelse
+
+            	/fs exch def		% fontsize
+            	/ya exch def		% y adjustment (displacement)
+            	exch				% pull font to top and find it
+            	findfont fs scalefont setfont
+            	ya 0 ne { 0 ya rmoveto } if			% relitive move for y displacement if needed
+            	show
+            	ya 0 ne { 0 ya -1 mul rmoveto } if	% return y if adjusted
+        	} for
+    	} ifelse 
+} def
+
+
+%% justify the text; same typles that showstack works on with similar processing 
+%% after we figure out how to adjust the width of the overall string to fit
+                %%dup /fs exch def
+/just {
+    /bc exch def  %blank count
+    /wid exch def % width
+    /np exch def  % num tuples (font) (string) rel-y size
+    np 0 eq
+        { dup /sw exch stringwidth pop def }
+        { /sw 0 def							% hold overall string width
+            0 1 np 1 sub {					% for each tuple, figure out it's string wdith 
+                /i exch def					% snag loop index i
+				i 5 mul 1 add index /fs exch def	% fontsize for this bit
+                i 5 mul 4 add index findfont fs scalefont setfont
+                i 5 mul 3 add index stringwidth pop
+                /sw exch sw add def
+            } for
+        } ifelse
+
+    wid sw sub bc div		% compute the width of each blank so that the string fits exactly
+    /bs exch def
+    np 0 eq
+        { bs 0 32 4 index widthshow pop }
+        { 0 1 np 1 sub {						%run each tuple to actually render the line
+                pop             % pop the index
+				aload pop		% unload the colour array onto the stack 
+				dup -1 eq 
+					{ pop }				% if <1 no colour change
+					{ setrgbcolor } 	% assume three elements for colour change
+					ifelse
+                /fs exch def
+                /ya exch def    % y adjustment
+                exch findfont fs scalefont setfont
+                ya 0 ne { 0 ya rmoveto } if
+                bs 0 32 3 index widthshow pop			% show the string adjusting blanks by our previous calculation
+                ya 0 ne { 0 ya -1 mul rmoveto } if
+            } for
+        } ifelse
+} def
+
+% center -- expects same tuples (font string ydisp fontsize) and computes the overall string
+% width which is then used to determine the x,y value for the start of the centered string.
+% number of tuples pushed, and the width of the column are expected to be pushed after the tuples.
+%  expects on stack:  (Helvetica) (Reunion) 0 26 
+%                      432 1 cent
+/cent { 
+	/np exch def 
+	/wid exch def 
+	np 0 eq 
+		{ dup /sw exch stringwidth pop def }
+		{ /sw 0 def 					% computes overall string width of the strings in the tuples
+			0 1 np 1 sub { 
+				/i exch def 
+				i 5 mul 1 add index /fs exch def	% font size
+				i 5 mul 4 add index findfont fs scalefont setfont 
+				i 5 mul 3 add index stringwidth pop
+				/sw exch sw add def 
+			} for 
+		} ifelse
+	wid sw sub 2 div 0 rmoveto showstack 
+} def
+
+% right justify the text in the same manner as center
+/right { 
+	/np exch def 
+	/wid exch def 
+	/sw 0 def 
+	0 1 np 1 sub {		% for each tuple
+		/i exch def 
+		i 5 mul 1 add /fs exch def  % font size for this bit
+		i 5 mul 4 add index findfont fs scalefont setfont
+		i 5 mul 3 add index stringwidth pop 
+		/sw exch sw add def 
+	} for
+ 	currentpoint exch wid add sw sub exch moveto showstack 
+} def
+
+% like center and right, but needs no special processing; just splashes the 
+% text out as it goes and thus can call showstack after setting np
+/splat { /np exch def showstack } def
+
+% an initial translation
+xlate
+

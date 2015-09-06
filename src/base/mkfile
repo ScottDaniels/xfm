@@ -1,0 +1,66 @@
+# base source.  builds a library which forms the base for xfm.
+#
+
+# must be set in EVERY mkfile AND in master.mk
+# must be set in EVERY mkfile AND in master.mk -- erk.
+# some flavours of mk override MKSHELL, so we'll set and hope and use
+# PSHELL (preferred shell) when we need to be sure.
+MKSHELL = `which ksh 2>/dev/null || which bash`
+PSHELL = `which ksh 2>/dev/null || which bash`
+
+# these must be set before master is pulled in
+#
+ALL = libxfm$gflag.a
+INSTALL =
+SCDSRC = 
+
+
+gflag = -g
+
+gflag = 
+< ../master.mk
+NUKE = $NUKE
+
+
+IFLAGS = -I. -I ../lib
+
+xfmlib = libxfm${gflag}.a
+baselib = libxfm${gflag}.a
+
+xlibraries:N: $xfmlib $baselib
+libraries:N: $baselib
+
+libs = -L../afileio -lafi${gflag:-} 
+
+# source for the lib
+src = fmaddtok fmasis fmbd fmbeglst fmbox fmbxend fmbxst fmcapture fmccol fmcd fmceject \
+	fmcenter fmclose fmcmd fmcollect fmcomma fmcpage fmdefhea fmditem fmdo fmdummy fmdump \
+	fmdv fmelse fmendlis fmendta fmep fmevalex fmfigure fmflush fmformat fmgetpar fmgetpts \
+	fmgettok fmgetval fmheader fmhn fmif fmignore fmimbed fmindent fmindex fminit fmjump \
+	fmjustif fmline fmlisti fmll fmmsg fmnofmt fmopen fmpara fmpflush fmpgnum fmread fmrfoot \
+	fmrhead fmright fmrow fmrun fmrunout fmrunset fmsectio fmsetcol fmsetcolour fmsetfon fmsetjus \
+	fmsetmar fmsetstr fmsetx fmsety fmshowvars fmskip fmspace fmtable fmtc fmtmpy fmtoc fmtoksiz fmtopmar fmvartok \
+	date docindex symtab utformat
+
+
+$baselib(%.o):N:    %.o
+$baselib:   ${src:%=$baselib(%.o)}
+	$PSHELL '(
+	set -e
+	names="${newprereq//$baselib\(}"					# pluck off lib.*( from each in newprereq
+	ar r $baselib ${names//\)/} && rm ${names//\)/}	# archive and remove after ditching trailing ) from each name
+	ranlib $baselib || true
+	)'
+
+$xfmlib(%.o):N:    %.o
+$xfmlib:   ${src:%=$xfmlib(%.o)}
+	$PSHELL '(
+	set -e
+	names="${newprereq//$xfmlib\(}"					# pluck off lib.*( from each in newprereq
+	ar r $xfmlib ${names//\)/} && rm ${names//\)/}	# archive and remove after ditching trailing ) from each name
+	ranlib $xfmlib || true
+	)'
+
+# who knows if rfm really still works, does anybody use rfm anymore?
+rfm:	libraries fmmain.c
+	$CC $CFLAGS $IFLAGS -o rfm fmmain.c $rfmlib $libs 
