@@ -1,0 +1,61 @@
+ .** ----------------------------------------------------------------------
+ .**
+ .** Mnemonic: hfmstart.im
+ .** Abstract: This file contains various start up stuff that is necessary
+ .** when using the hfm compiler to generate a HTML document from
+ .** .psf source.
+ .** -----------------------------------------------------------------------
+
+.dv userdoc
+
+ .** ensure this is really the rfm compiler
+ .**
+ .if rfm
+  .cd 1 w=8.5i
+  .ll 6.5i
+  .in .75i
+ .dh 1 m=0 p=16 f=f74\b s=22 e=page i=0 t=on
+ .dh 2 m=0 p=14 f=f74\b s=21        i=0 t=on
+ .dh 3 m=0 p=12 f=f74\b s=20        i=0 t=off
+ .dh 4 m=.75i p=10 f=f74\b s=0         i=3 t=off
+
+ .dv lic1 l f=f21
+ .dv lic2 n f=f21
+ .dv lic3 u f=f21
+ .** ---------------------------------------------------------------------
+ .** empty cells in a table
+ .** ---------------------------------------------------------------------
+ .dv empty ` `
+
+
+ .** ---------------------------------------------------------------------
+ .** specify formatting macros &name(text)
+ .** cmd - write text as a command (courier type format)
+ .** ccmd - same as command but centered on the line
+ .** stress - Bold the text in the parens
+ .** ital - italize the text in the parens
+ .** pvar - Place a variable in parentheses
+ .** big - Set to a large font size for what is in parentheses
+ .** ---------------------------------------------------------------------
+ .dv textfont f74
+ .dv litfont  f11
+ .dv boldfont f74\b
+ .dv italfont f74\i
+ .dv ditext   f74\b
+
+ .dv lit .sf &litfont $1 .sf &textfont
+ .** hlit allows literals in html headers, cannot be supported in rfm (yet)
+ .dv hlit $1
+ .dv stress .sf ^&boldfont $1 .sf ^&textfont
+ .dv bold .sf ^&boldfont $1 .sf ^&textfont
+ .dv ital .sf ^&italfont $1 .sf ^&textfont
+
+.**  be careful as .dv textfont ^&{textfont}\x WILL NOT WORK
+.**
+ .** .dv st_b1 .dv b_of ^&textfont ^: .dv textfont ^&{b_of}\b ^:
+ .** .dv st_b2 .sf ^&textfont
+ .** .dv bold ^&st_b1 ^&st_b2 $1 .dv textfont ^&b_of ^: .sf ^&b_of
+ .** .dv stress ^&st_b1 ^&st
+
+ .dv indent .ll -.5i .in +.5i
+ .dv uindent .in -.5i .ll +.5i 

@@ -1,0 +1,99 @@
+ .** ----------------------------------------------------------------------
+ .** 
+ .** Mnemonic: pfmstart.im
+ .** Abstract: This file contains various start up stuff that is necessary
+ .** when using the hfm compiler to generate a PostScrip document from
+ .** .xfm source.
+ .** -----------------------------------------------------------------------
+
+
+ .** ensure this is really the rfm compiler
+ .**
+.dv pfmstart pfmstart was included
+ .if pfm
+  .cd 1 w=8.5i
+  .ll 6.5i
+  .in .5i
+
+
+ .dh 1 m=0 p=16 f=Helvetica-Bold s=22 e=page i=0 t=on
+ .dh 2 m=0 p=14 f=Helvetica-Bold s=21        i=0 t=on
+ .dh 3 m=0 p=12 f=Helvetica-Bold s=20        i=0 t=off
+ .dh 4 m=.75i p=10 f=f74\b       s=0         i=3 t=off
+
+ .dv lic1 l f=Dingbats
+ .dv lic2 n f=Dingbats
+ .dv lic3 u f=Dingbats
+ .** ---------------------------------------------------------------------
+ .** empty cells in a table
+ .** ---------------------------------------------------------------------
+ .dv empty ` `
+
+
+ .** ---------------------------------------------------------------------
+ .** specify formatting macros &name(text)
+ .** cmd - write text as a command (courier type format)
+ .** ccmd - same as command but centered on the line
+ .** stress - Bold the text in the parens
+ .** ital - italize the text in the parens
+ .** pvar - Place a variable in parentheses
+ .** big - Set to a large font size for what is in parentheses
+ .** ---------------------------------------------------------------------
+ .** dont penalise the user for setting it before this file included
+ .if ! textfont
+ 	.dv textfont Helvetica
+ .fi
+
+.if ! boldfont
+ 	.dv boldfont Helvetica-Bold
+.fi
+
+.if ! italfont
+ 	.dv italfont Helvetica-Oblique
+.fi
+
+.if ! ditext
+ 	.dv ditext   &boldfont
+.fi
+
+.if ! textsize
+	.dv textsize 10
+.fi
+
+.if ! cwfont
+ 	.dv cwfont  Courier
+.fi
+
+ .** .dv lit .tf ^&cwfont $1 ^:
+ .** .dv xlit  .gv font .sf ^&cwfont $1 .sf ^&_font  ` `
+ .** .dv cw .gv font .sf ^&cwfont $1 .sf ^&_font 
+ .** hlit allows literals in html headers, cannot be supported in pfm 
+
+ .dv hlit $1
+ .** these all grab the current font, change to desired font to put out $1 and then switch back to the original font
+ .dv stress .gv font .sf ^&boldfont $1 .sf ^&_font
+ .dv bold .gv font .sf ^&boldfont $1 .sf ^&_font
+ .dv ital .gv font .sf ^&italfont $1 .sf ^&_font
+
+ .dv cw .gv font .sf ^&cwfont   $1 .sf ^&_font
+ .dv fixw .gv font .sf ^&cwfont $1 .sf ^&_font 
+ .dv lit .gv font .sf ^&cwfont  $1 .sf ^&_font
+
+
+ .** straight indention
+ .dv indent .ll -.25i .in +.25i
+ .dv uindent .in -.25i .ll +.25i 
+
+ .** block indention
+ .dv bindent .ll -.5i .in +.25i
+ .dv ubindent .in -.25i .ll +.5i 
+
+ .hn off
+
+ .if textsize
+	.st &textsize
+ .ei
+ 	.st 10
+ .fi
+.fi
+

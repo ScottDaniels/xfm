@@ -1,0 +1,397 @@
+.** --------------------------------------------------------------------------------
+.** Mnemonic:	doc_start.im
+.** Abstract:	convient imbed file for .xfm documents -- sets up the environment and 
+.**	 	creates macros. It expects that the variable imed is defined before 
+.**		this file is included, or that the XFM_IMBED variable is defined in 
+.**		the environment.  In either case, it should be the directory that 
+.**		contains the imbed files: startup.im, pfmstart.im, hfmstart.im 
+.**		and tfmstart.im
+.**
+.**		if the doc source wishes to produce groff source from the xfm file, 
+.**		the source must be careful about using xfm primatives.  Just about
+.**		everything then needs to be defined as a macro. It is messy, but those that
+.**		must have g/t/nroff source can have it.
+.** 
+.** Author: 	E. Scott Daniels
+.** Date: 	18 Oct 2006 
+.** --------------------------------------------------------------------------------
+
+.if ! ng_src
+	.gv e NG_SRC ng_src
+.fi
+
+.if [ 0 ]
+.** vars the user can define to control how the creation of macros behaves
+	two_col_mode	- if 1 then this sets up assuming that the doc will be in 2 column format
+	no_running_footer - if set to 1 then running footers will not be setup
+	no_running_header - if set to 1 no running header is established
+	doc_title	- Title used in running footer
+	imbed		- name of the directory where imbed files reside
+	gen_roff	- include the conversion macros to generate [t]roff 
+	index_cols	- number of columns placed into index (3 if not defined)
+	
+.** macros defined here:
+	definition lists:
+	begterms	- start a definition list; indented, termsize of .75i, difont
+	lgterms		- start a definition list; not indented, termsize of 2i, difont
+	smterms		- start a definition list; indented, termsize .3i, difont
+	begszterms(size) - start a definition list; indented, difont, termsize specified with parms
+	numterms(size:start) - start a def list; indented, terms numbered starting with $2, size in $1
+	term		- add a definition list term; followed by token<space>: 
+	endterms	- end a definition list; unindent if automaticly indented
+
+	bullet lists
+	beglist	
+	endlist 
+
+	item		- start a new item in the list
+	text fonts and size
+	beglitb		- start a literal (unformatted) block of text
+	endlitb		- end a literal block
+	setfont(name)	- set the font to name
+	scalefont(size) - scale the current font
+	ssfont(name:size) - scale and set the font to name and size
+
+	formatting
+	set2col		- setup for nice two column mode
+	set1col		- setup for nice one column mode
+	set_fig1col	- setup for a one column figure
+	begbox		- start a box (special consideration for tfm)
+	endbox		- end a box
+	bleat		- write a comment to stdout 
+	figure		- setup figure text
+	line		- generic line
+	indent		- commands necessary to indent text by &indentsize
+	uindent		- un-indent text by &indentsize
+	space		- add a blank line
+	half_space	- add a blank line with a smaller vertical travel
+	break		- force next text to start of new line
+	justify		- turn on justification
+
+.** default variables set here (user doc can override before or after imbedding this file)
+	textsize	- point size of text
+	textfont	- font name of regular text
+	cwfont		- font name for constant width text  &cw() or &cwblkb
+	litfont		- literal font &lit() or &cw() or &cwblkb
+	boldfont	- font used with &bold() or &stress() 
+	difont		- font used for terms in a definition list
+	linesize	- length of text line
+	indentsize	- space that the &indent macro will shift things over
+	col_indent	- space the left (only) column is indented from the page edge
+	fig_indent	- space a figure is indented from the page edge
+	header_indent	- space a header is indented from the column edge
+	text_indent	- space that the left margin of each column is indented
+	text_color	- html text colour	as: #xxxxxx
+	back_color	- html backgroun colour as: #xxxxxx
+	link_colour	- html link and vlink colours as: link=#xxxxxx vlink=#xxxxxx
+.fi
+
+.** ----------------------------------------------------------
+.** must define the imbed directory; get from environment if 
+.** not defined on command line or somesuch
+.** ----------------------------------------------------------
+
+.if ! imbed
+	.gv e XFM_IMBED imbed
+.fi
+
+.if ! lib_dir
+	.dv lib_dir ../lib
+.fi
+
+
+.if gen_roff
+	.** setup when not really formatting but generating {nt}roff source
+	.im &imbed/roffstart.im
+.ei
+	.im &{imbed}/startup.im 
+
+.** sets the variable _date with the current date/time
+.gv Date
+
+.** zapfdingbat char mappings for selected symbols
+.dv zf_splat o
+.dv zf_bullet l
+.dv zf_obullet m
+.dv zf_diamond u
+.dv zf_plus 9
+.dv zf_check 4
+.dv zf_x 6
+
+.** ----- generalised setup -------- we modify a bit later for pfm
+.in .5i
+.hn off
+
+.** set our defaults if user didnt provide before calling us
+
+.** space left column is indented from left side of page
+.if ! col_indent
+	.dv col_indent .75i
+.fi
+
+.if ! linesize
+	.dv linesize 6.75i
+.fi
+
+.if ! c1_linesize
+	.dv c1_linesize &linesize
+.fi
+
+.if ! right_mar
+	.dv right_mar 1i
+.fi
+
+.** space figures are indented from left side of page
+.if ! fig_indent
+	.dv fig_indent 1.0i
+.fi
+
+.** space headers are indented from edge of column
+.if ! header_indent
+	.dv header_indent 0i
+.fi
+
+.** default width when in single col mode; when 2 col we calc col width (below)
+.if ! col1_width
+	.dv col1_width 6.5i
+.fi
+
+.** defaults for 1 col mode; adjusted later in pfm/2 col mode
+.** header style: margin, eject type, indention, space before/after add to toc
+.dh 1 e=none i=0 m=&header_indent s=21 t=on
+.dh 2 e=none i=0 m=&header_indent s=21 t=on
+.dh 3 e=none i=0 m=&header_indent s=10 t=on
+.dh 4 e=none i=0 m=&header_indent s=10
+
+.** section title (running header) matches the h1 string
+.dv h1 .dv sec_title $1 ^: .h1 $1 ^:
+.dv h2 .h2 $1 ^:
+.dv h3 .h3 $1 ^:
+.dv h4 .h4 $1 ^:
+
+.if ! indentsize
+	.dv indentsize .5i
+.fi
+.if ! text_indent
+	.dv text_indent 0i
+.fi
+.if ! termsize
+	.dv termsize 1.0i
+.fi
+.if ! textsize
+	.dv textsize 10
+.fi
+.if ! textfont
+	.dv textfont Helvetica
+.fi
+.if ! litfont
+	.dv litfont Courier
+.fi
+.if ! cwfont
+	.dv cwfont Courier
+.fi
+.if ! difont
+	.dv difont Helvetica-Bold
+.fi
+.if ! boldfont
+	.dv boldfont Helvetica-Bold
+.fi
+.sf &textfont
+
+.** ------ other convenience/generic things -----
+.dv _indented 0
+.dv space .sp 1
+.** bigger than a break, smaller than .sp 1
+.dv half_space .sp 0
+.dv break .br
+.dv begcent .bc start
+.dv endcent .bc end
+
+.** because lgterms are LARGE, indent has to be forced by user
+.dv begterms   	^&indent  .bd ^&termsize ^&difont ^: .dv _indented ^[ ^&_indented 1 + ] ^:
+.dv begszterms 	^&indent  .bd $1    ^&difont ^: .dv _indented ^[ ^&_indented 1 + ] ^: 
+.dv lgterms 	.bd 2i &difont
+.dv smterms 	.dv _indented ^[ ^&_indented 1 + ] ^: ^&indent .bd .3i 
+.dv numterms	.dv _indented ^[ ^&_indented 1 + ] ^: ^&indent .bd $1 a=$2
+.dv endterms 	.ed .if ^[ ^&_indented ] ^: ^&uindent  .dv _indented ^[ ^&_indented 1 - ] ^: .fi
+.dv term 	.cc 2 .di
+
+.dv figure .fg $1
+.dv line .ln 
+
+.dv beglitb .nf
+.dv endlitb .fo
+.dv manpage $1
+
+.dv setfont .sf $1
+.dv scalefont .st $1
+.dv rscalefont .st ^[ ^&textsize $1 ]
+.dv ssfont .sf $1 .st $2
+
+.dv litblkb .nf
+.dv litblke .fo on
+.dv cwblkb .sf ^&cwfont .nf
+.dv cwblke .fo on .sf ^&textfont
+
+
+.** default set2col is no change -- overridden in pfm
+.dv set2col 
+
+.dv smash .sm 
+
+.if hfm
+	.if ! text_color
+        	.dv text_color black
+	.fi
+	.if ! back_color
+        	.dv back_color #c0e0f0
+	.fi
+	.if ! link_color
+        	.dv link_color link=blue vlink=#0000a0
+	.fi
+
+	.** browsers automatically indent lists so we dont have to
+	.dv beglist .bl &lic1
+	.dv endlist .el
+	.dv indent .bl ^: ^<div^>
+	.dv uindent .el ^</div^>
+	.dv item    .li
+	.dv begbox .bx start
+	.dv endbox .bx end
+	.dv begtable .ta $1 b=$2 c=$3
+	.dv endtable .et
+	.dv cell .cl ^:
+	.dv row .tr ^:
+.ei
+	.if tfm
+		.dv indent  .ll -&indentsize .in +&indentsize
+		.dv uindent .in -&indentsize .ll +&indentsize
+		.dv beglist ^&indent .bl
+		.dv endlist .el ^&uindent
+		.dv begbox .sp 1 .ln
+		.dv endbox .ln .sp 1
+		.dv begtable .sp 1 ^[TABLE - formatting not preserved] .ln  
+		.dv endtable .ln 
+		.dv cell | .br
+		.dv row .br .ln 
+		.dv item    .li
+		.dv lic1 *
+		.dv ital "$1"
+	.ei
+		.if pfm
+			.if index_snare_file
+				.ix space .sp 1 .cc 5 %c .ln  .sp 0 
+				.ix term .br %s  `^`   ^`` %d
+				.ix groupb .sp 0 %s .br .ll -.25i .in +.25i 
+				.ix groupe .sp 1 .in -.25i .ll +.25i 
+				.if ! index_cols
+					.dv index_cols 3
+				.fi
+
+				.dv index_col_width [ 6.5 &index_cols / .25 &index_cols 1 - * - ]
+	.**			.dv index_here  .pa .ju off .st &textsize .cd 1 i=1i w=7 ^: .h1 INDEX ^: .pn off .lw 0 .sp 0 .tt ^: .cd 3 i=1i w=2i g=.25i ^: .in -i .ll 2i .ix insert
+	-			.dv index_here  .pa .ju off .st &textsize .cd 1 i=1i w=7 ^: .h1 INDEX ^: .pn off .lw 0 .sp 0 .tt ^: .cd &index_cols i=1i w=&{index_col_width}i  g=.25i ^: .in -i .ll &{index_col_width}i .ix insert 
+.sv index_col_width
+				.im &index_snare_file
+			.fi
+
+			.dv litblkb .sf ^&litfont .nf
+			.dv litblke .fo on .sf ^&textfont
+			.dv indent  .ll -^&indentsize .in +^&indentsize
+			.dv uindent .in -^&indentsize .ll +^&indentsize
+			.dv beglist ^&indent .bl ^&lic1
+			.dv beglist2 ^&indent .bl ^&lic2
+			.dv endlist .el ^&uindent
+			.dv endlist2 .el ^&uindent
+			.dv item    .li
+			.dv begbox .bx start
+			.dv endbox .bx end
+			.dv begtable .ta $1 $2 
+			.dv endtable .et
+			.dv cell .cl ^:
+			.dv row .tr ^:
+
+			.** list item characters 
+			.dv lic1 &zf_bullet f=ZapfDingbats 
+			.dv lic2 &zf_diamond f=ZapfDingbats
+
+			.if  no_running_header 0 =
+        			.oe all page .rh ^&sec_title ^:
+			.fi
+        		.pn off
+        		.ju on
+			.if no_running_footer 0 = 
+				.oe page .pn on 1 ^: .rf &doc_title ^:
+        			.by -.75i
+			.fi
+
+			.if  &two_col_mode 0 > 
+        			.in 0
+				.if ! gutter_width
+					.dv gutter_width .25i
+				.fi
+
+				.dv right_mar 1i
+				.** compute width of each col and add inches indicator (i)
+				.dv col_width [ 8.5 &col_indent &gutter_width &right_mar + + - 2 / ]
+				.dv col1_width [ 8.5 &col_indent &right_mar + - ]
+				.dv linesize [ &col_width &text_indent - ]
+				.dv c1_linesize [ &col1_width &text_indent - ]
+				.dv c1_linesize &{c1_linesize}i
+				.dv linesize &{linesize}i
+				.dv col_width &{col_width}i
+				.dv col1_width &{col1_width}i
+        		.dv set2col .tt ^: .cd 2 i=^&col_indent w=^&col_width g=^&gutter_width ^: .ju on  .ll ^&linesize
+				.dv indentsize .25i
+				.dh 1 p=12 e=none m=&text_indent i=0 s=21 t=on f=Helvetica-bold
+				.dh 2 p=10 e=none m=&text_indent i=0 s=11 t=on f=Helvetica-bold
+				.dh 3 p=10 e=none m=&text_indent i=0 s=10 t=on f=Helvetica-bold
+				.dh 4 p=8 e=none m=&text_indent i=0 s=10 f=Helvetica-bold
+			.ei
+				.dh 1 p=16 e=none m=&header_indent i=0 s=31 t=on f=Helvetica-bold
+				.dh 2 p=14 e=none m=&header_indent i=0 s=21 t=on f=Helvetica-bold
+				.dh 3 p=12 e=none m=&text_indent i=0 s=10 t=on f=Helvetica-bold
+				.dh 4 p=&text_size8 e=none m=&text_indent i=0 s=10 f=Helvetica-bold
+				.dv right_mar 1i
+				.dv col_width [ 8.5 &col_indent &right_mar + - ]
+				.dv linesize [ &col_width &text_indent - ]
+				.dv linesize &{linesize}i
+				.dv col_width &{col_width}i
+				.dv col1_width &col_width
+				.dv indentsize .5i
+				.** make the set2col macro benign if in 1 col mode
+				.dv set2col .cd 1 a=1i i=^&col_indent w=^&col_width  ^: .ll ^&linesize .in ^&text_indent
+			.fi
+		.fi
+	.fi
+.fi
+
+.dv set1col     .cd 1 i=^&col_indent w=^&col1_width ^: .ll ^&c1_linesize .in ^&text_indent
+.dv set_fig1col .cd 1 w=^&col1_width i=^&fig_indent ^: .ll ^&c1_linesize .in ^&text_indent
+
+.** cause a page eject if not at the top of the first col
+.dv page_if_needed .gv y .sv _coln .if ^^^&_coln 0 > ^: .pa .ei  .if ^^^&_cury ^^^&topy = ^: .sv ^^^&_cury .pa .fi .fi .fi
+
+
+.** creates a column figure at the current location, or at the top of the next column (pfm) if there 
+.** is not enough room (len_i).  it does the right thing for html and text generation
+.** Parms are:
+.**	$1 - reference name (ref.eps ref.type)
+.** 	$2 - image type (hfm) (e.g. jpg, png)
+.** 	$3 - length required in inches (len_i)
+.** 	$4 - text to put on the figure heading
+.dv col_fig .dv colf_ref $1 ^: .dv colf_type $2 ^: .dv colf_len_i $3 ^: .dv colf_text $4 ^:  .im ^&{lib_dir}/col_fig.im
+.dv top_fig .dv topf_ref $1 ^: .dv topf_type $2 ^: .dv topf_len_i $3 ^: .dv topf_text $4 ^:  .im ^&{lib_dir{/top_fig.im
+.dv pag_img .dv pagf_ref $1 ^: .dv pagf_type $2 ^: .dv pagf_len_i $3 ^: .dv pagf_text $4 ^:  .im ^&{lib_dir}/page_fig.im
+
+.st &textsize
+
+.dv bleat .dv _bleat $1 ^: .sv _bleat
+.dv comment .dv _ignore_ $1 ^:
+
+.** --- skip our comment stuff to get users junk -------
+.jm EOF
+
+
+EOF
+.fi

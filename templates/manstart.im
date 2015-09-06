@@ -1,0 +1,53 @@
+.** man page vars
+
+.dh 3 s=11 u=1
+
+.if hfm
+	.dv abstract ^&uindent .sp 1 .h3 Description ^: ^&indent
+	.dv author ^&uindent .sp 1 .h3 Author ^: ^&indent
+	.dv bugs ^&uindent .sp 1 .h3 Known Bugs ^: ^&indent
+	.dv desc ^&uindent .sp 1 .h3 Description ^: ^&indent
+	.dv examples ^&uindent .sp 1 .h3 Examples ^: ^&indent
+	.dv exit ^&uindent .sp 1 .h3 Exit ^: ^&indent
+	.dv files ^&uindent .sp 1 .h3 Files ^: ^&indent
+	.dv mnemonic ^&uindent .sp 1 .h3 Mnemonic ^: ^&indent
+	.dv mods ^&uindent .sp 1 .h3 Modifications ^: ^&indent
+	.dv opts ^&uindent .sp 1 .h3 Options ^: ^&indent
+	.dv parms ^&uindent .sp 1 .h3 Parameters ^: ^&indent
+	.dv see ^&uindent .sp 1 .h3  See Also ^: ^&indent
+	.dv synopsis ^&uindent .sp 1 .h3 Synopsis ^: ^&indent
+	.dv syntax ^&uindent .sp 1 .h3 Synopsis ^: ^&indent
+	.dv end ^&uindent .ln .qu
+	
+	.dv subcat ^&stress($1) .br
+.ei
+	.if tfm
+		.ju on
+	.fi
+
+	.dv abstract .sp 1 .h3 Description ^: 
+	.dv author .sp 1 .h3 Author ^: 
+	.dv bugs .sp 1 .h3 Known Bugs ^: 
+	.dv desc .sp 1 .h3 Description ^: 
+	.dv examples sp 1 .h3 Examples ^: 
+	.dv exit .sp 1 .h3 Exit ^: 
+	.dv files  .sp 1 .h3 Files ^: 
+	.dv mnemonic  .sp 1 .h3 Mnemonic ^: 
+	.dv mods .sp 1 .h3 Modifications ^: 
+	.dv opts .sp 1 .h3 Options ^: 
+	.dv parms .sp 1 .h3 Parameters ^: 
+	.dv see .sp 1 .h3  See Also ^: 
+	.dv synopsis .sp 1 .h3 Synopsis ^: 
+	.dv syntax .sp 1 .h3 Synopsis ^: 
+	.dv end .ln .qu
+
+	.dv subcat ^&stress($1) .br
+.fi
+
+.if hfm
+	.dv indent .bl	^:
+	.dv uindent .el
+.ei
+	.dv indent .ll -4 .in +4
+	.dv uindent .in -4 .ll +4 
+.fi

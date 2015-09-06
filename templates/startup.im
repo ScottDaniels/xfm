@@ -1,0 +1,38 @@
+.** get imbed directory name from the environment if not already defined
+.if ! imbed
+	.gv e XFM_IMBED imbed
+.fi
+.if ! imbed 
+	.dv imbed /home/scooter/doc/imbed
+.fi
+
+.dv startup startup
+.dv loaded nothing
+.** pull in the right startup file based on compiler
+.if hfm
+	.dv loaded hfmstart.im
+	.im &{imbed}/hfmstart.im
+.ei
+	.dv gothere not hfm
+
+	.if pfm
+		.dv gothere pfm
+		.dv loaded psfmstart.im
+		.im &{imbed}/pfmstart.im
+ 	.ei
+  		.if rfm
+			.dv gothere rfm
+			.dv loaded rfmstart.im
+   			.im &{imbed}/rfmstart.im
+  		.ei 
+   			.if tfm
+				.dv gothere tfm
+				.dv loaded tfmstart.im
+    				.im &{imbed}/tfmstart.im
+   			.fi
+  		.fi
+ 	.fi
+.fi
+
+.sv gothere
+
