@@ -1,0 +1,5 @@
+This is a complete language reference with a 
+quick reference and Dingbats reference.
+
+Build the document with:
+	pfm xfm.xfm xfm.ps

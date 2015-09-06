@@ -1,0 +1,263 @@
+
+.h2 Lists
+&x supports two different styles of lists: bullet lists, and term or definition lists. 
+Bullet lists are simple lists with each item in the list marked with a special character, 
+where definition lists divide the current column into two reserving the left column for 
+terms and the right column for the formatted definition text. 
+The following paragraphs describe each of these lists and the commands that are used to 
+create and manipulate them. 
+
+
+.h3 Bullet lists
+A bullet list is created using the &ital(begin list) &c(bl) command, followed by one or more
+&ital(list item) &c(li) commands, and is finalised with the &ital(end list) &c(el) command.
+The &ital(begin list) command optionally accepts the character to use as the bullet character, and
+the font and size to use for the bullets.
+The following is the syntax for the &ital(begin list) command:
+.sp
+
+.sp
+.sf &litfont
+.nf
+ .bl [bullet-char] [f=font] [s=size]
+.fo
+.sf &textfont
+.sp
+Where:
+&indent .sp 1
+.bd .75i &ditext
+.di bullet-char : Is the character that is to be generated as the bullet when a
+&ital(list item) command is encountered. If the character cannot easily be entered 
+into the source file using the keyboard, the notation &lit(\nnn) can be used where
+&lit(nnn) is the &stress(decimal) value of the character.
+If not supplied, an asterisk (*) is used.
+.sp
+.di f=font : Supplies the name of the font that should be used to render the 
+bullet character from. If not supplied, then the current font is used. 
+.sp
+.di s=size : Specifies the size (in either points or inches) that should be used
+when rendering the bullets.  
+.ed
+&uindent
+.sp
+The &ital(list item) &c(li) command is used for each list item to be placed in the list
+and the &ital(end list) &c(el) command is used to end the list.  
+When the &ital(list item) command is encountered, &x will automatically add a break to the 
+formatted text such that the text following the &ital(list item) command will begin at the 
+left margin. If the user desires the list items to be separated with a blank line, the 
+&ital(list item) command should be preceded with a &ital(space) command. 
+
+.sp
+.gv fig
+.dv blfig &_fig
+The source for a  simple bullet list is contained in figure &blfig.
+The font used is the &ital(Dingbats) font and the letter 'l' (lowercase L)
+cooresponds to a filled circle in that font. 
+items:
+.sp
+
+.** ----------------------------------------------------------------------
+.ca bl_examp.ca
+.cc 15
+.** .bx start m
+.st [ &textsize 2 - ]
+.sf &litfont
+.nf
+ .** l in Dingbats is a solid circle
+ .bl l f=Dingbats
+ .li Rock climbing pits the climber against 
+     herself.
+ .li Physical strength is not as important 
+     as balance.
+ .li Specialised gear ensures that climbers 
+     remain safe.
+ .el
+.fo
+.sf &textfont
+.st &textsize
+.** .bx end
+.fg Bullet list code example.
+.sp 2
+.ca end
+.** -----------------------------------------------------------------------
+&ifroom(15:bl_examp.ca)
+
+When generating HTML 
+output, the user should be aware that most browsers automatically indent for a list.
+The list item character, and size parameters are also ignored by the &lit(hfm) 
+formatter as browsers do not accept the character from the user when rendering a list.
+
+
+.h3 A definition list
+A definition list is a list of terms and definitions. When started, a portion of the current column
+is reserved for the terms with the remainder of the column used to format the text of the definition.
+.gv fig
+(Refer to the example in figure &_fig for an illustration of a definition list.)
+The begin definition list command &c(bd)  is used to start a definition list and accepts parameters
+that define the width of the term area, the font that terms are to be written using, and  an 
+optional automatic term generation parameter. 
+The &ital(begin definition list) command has the syntax:
+.sp
+.sf &litfont
+.st [ &textsize 2 - ]
+.sf &litfont
+.nf
+ .bd <termsize> [<font>] [a=x] [f=fmt]
+.fo
+.sf &textfont
+.st &textsize
+.sf &textfont
+.sp
+Where:
+&indent .sp 1
+.bd .65i &ditext
+.di termsize : is the size (in inches or points) that is reserved for each 
+term.  
+.sp
+.di font : is the name of the font that should be used for the terms ( &lit(pfm) only).
+.sp
+.di a=x : Causes automatic generation of terms where &ital(x) is the starting term. &ital(x) 
+may be either a character or a number. If &lit(a=a) is specified, then terms are generated
+&lit(a, b, c) and so forth. If &lit(a=3) is specified, then terms are generated &lit(3, 4, 5) 
+and so on. 
+.sp
+.di f=fmt : Allows a format string to be supplied when automatic term generation is used. 
+The format string is a &bold(C) programming language &lit(printf) format string. If 
+generating a numbered list, the format string &lit(%2d]) could be used to align the 
+values and to add a right parenthesis to each term.
+.ed
+&uindent
+.sp
+Once  a definition list has been started, the &ital(definition item) command &c(di) introduces a new term into the list.
+When this command is encountered, the previous term is completed and an implied 
+&ital(break) command &c(br) is processed. 
+The term is assumed to consist of all tokens appearing after the command up to the 
+next newline character or a lone colon (:) which indicates the end of parameters. 
+The usual syntax is:
+.sp
+.st [ &textsize 2 - ]
+.sf &litfont
+.nf
+  .di term ^: First text of definition.
+  .di term2 
+      No colon needed if definition on 
+      new line. Indention optional.
+.fo
+.sf &textfont
+.st &textsize
+.sp
+It must be noted that the colon (which implies the end of the &ital(definition item) command)
+must be  separated from the term, and first token of the definition, by white space. 
+&x will treat all tokens until the next &ital(definition item) command, or the 
+&ital(end definition list) command as a part of the definition. 
+
+.sp
+Definition lists are generally intended for single word terms (no spaces), and
+if a term with spaces is used results may not be as expected.
+When generating HTML, long terms are wrapped by the browser that displays the list, 
+but the width of the term area may suffer.  &x can only suggest to the browser the size of 
+the term and definition areas and thus the resulting output might be different than expected. 
+When generating PostScript and RTF, &x will also wrap terms, however the term width indicated
+is respected which could cause the word to 'bleed' into the regular text. 
+.sp
+&x makes an exception for single word terms which are wider than the defined term field size. 
+When a wide term is encountered, it is allowed to bleed into the text space, but &x will start
+the definition text one line below the line that the term was started on.  This allows for 
+definition lists where the majority of terms are of a similar size, without the need to set the 
+term size based on the largest term. 
+The &ital(heel-hook) term in the example below illustrates this effect.
+
+
+.sp
+.h4 Definition list example: 
+.gv fig
+.dv dl_fig &_fig
+The  source code in figure &dl_fig illustrates the three commands needed to create a definition list. The 
+resulting formatted output is also presented. 
+The code creates a list with a term area that is three-quarters of an inch wide. Terms are 
+rendered in Helevetica-Bold font.
+.sp
+
+.** -------------------- capture example that will be read in twice; once as source example and once to format to show output
+.ca start di_src_examp.ca
+ .bd .65i Helvetica-Bold
+ .di bomber : Generally used to describe a hand hold 
+     that is solid; bomb proof.
+ .sp .5
+ .di sloper : A handhold that has no noticable features.
+ .sp 0.5
+ .di bucket : A deep pocket that the climber can easily 
+     fit all of her fingers into. 
+ .sp 0.5
+ .di heel-hook : When a climber uses the heel of 
+     their foot to pull their body towards the rock.
+ .ed
+.ca end
+
+.** -----------------------------------------------------------------------------------
+.ca start di_examp.ca
+.sp
+.cc 15
+.** keep this box!
+.bx start  m
+&stress(Source^:)
+.if hfm
+	.st [ &textsize 4 - ]
+.fi
+.nf
+
+.im di_src_examp.ca
+
+.fo
+.if hfm
+	.st &textsize 
+.fi
+
+.sp
+.** if more than 15 lines remain on the page, then just stroke a line in the box
+.** otherwise stop the box and force the column to eject. if hfm is processing, then
+.** just write the line and go on.
+.gv lines
+.if hfm
+	.hr
+.ei
+	.if &_lines 15 >
+		.ln
+	.ei
+		.bx end
+		.cc 25
+		.bx start m
+	.fi
+.fi
+
+&stress(Output^:)
+.sp
+.ll -.3i
+.im di_src_examp.ca
+.ll +.3i
+.sp
+.bx end
+.fg Definition list source and output.
+.sp 2
+.ca end
+.** -----------------------------------------------------------------------------------------
+&ifroom(25:di_examp.ca)
+
+Had the &ital(begin definition list) command been given the 
+parameter &lit(a=1), then the terms would have been automatically 
+generated starting with one (1). When generating a list, the &ital(definition item) command
+acts much like the &ital(list item) command and causes the next sequential term to be 
+placed into the term area. When generating an automatically termed list, any terms 
+that are supplied on the &ital(definition item) command are ignored, and thus the source code
+tends to resemble:
+.sp
+.sf &litfont
+.nf
+ .di : Then turn left at the 2nd light.
+.fo
+.sf &textfont
+.sp
+Note that the colon is still necessary to terminate the &ital(definition item) command
+unless the definition begins after a newline character. 
+
+

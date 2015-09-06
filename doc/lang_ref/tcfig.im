@@ -1,0 +1,20 @@
+.** table of contents figure
+.cc 12
+.bx start m
+.nf
+
+      .if second_pass
+          .tc off
+          .im cover.im 
+          .im document.toc
+          .pa
+      .ei
+          .tc on
+      .fi
+      .pn 1
+
+.fo
+.bx end
+.fg Automatic inclusion of table of contents
+.sp
+

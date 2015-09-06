@@ -1,0 +1,160 @@
+.h1 Trick Basics
+Some of the more simple tricks might be too obvious to mention, but do provide some building blocks for 
+the more advanced programming stunts that the &x language supports. 
+Most of these tricks are the definition of simple macros that, like in any programming language, make 
+writing the code a bit more easy.
+
+.h2 Use Macros
+Nearly all of the &x tricks involve the creation of a macro. 
+A macro is simply an &x variable that contains commands rather than simple substitution text. 
+Macros can be as simple as a &lit(space) macro which is &lit(^.dv space ^.sp 1) or as complex as to contain 
+the definiton of variables and other macros. 
+.sp
+
+Like macros and/or functions in traditional programming languages, macros in &x make the writer's job easier, and 
+provide for easier maintenance of the document over time. 
+For instance, if a document defines the macro &lit(textfont,) then to change the font for the document requires one line 
+of change to the source, and a rebuild of the document. 
+The ease of this kind of change is really appreciated when compared to the effort needed to make the  same change to a document maintained 
+in a WYSIWYG environment (the number of paragraph selections, menu pull-downs, and highlights would be stagerring for a 
+document larger than a page or two).
+
+
+.h2 Escape Variable References
+When defining macros it is often necessary, if not wise, to escape any variable reference included in the definition.
+Doing this causes the variable's value to be taken at the time the macro is used rather than when it was defined, and 
+eliminates the need to predefine variables that are referenced by macros. 
+The carrot (^^) character is &ital(XFM's) escape character and when encountered during document processing
+it causes the next character to be interpreted without any special meaning that &x might give to it. 
+In the case of the characters &lit(^^&) the apersand is not recognised as the variable dereference symbol
+and the ampersand is placed into the document, or used &ital(as is) in the macro definition. 
+
+.sp
+When an escape character is encountered, is is removed, and so when a macro definition statement contains
+&lit(^^&varname) the resulting value will contain just &lit(^&varname.)
+As an example, consider the macro defined to start a non-formatted example that changes the font to a
+constant width font (cwfont) and then turns off formatting:
+
+&example_start
+  .dv example_start .sf ^^&cwfont .nf
+&example_end
+
+The variable &lit(cwfont) will be expanded when the &lit(example_start) macro is used in the document 
+rather than when the macro definition is created. 
+This allows the document writer to change the value of &lit(cwfont) as the document is generated without
+having to redefine the macro. 
+
+
+.h2 Output Considerations
+Macros make wonderful short-cuts, but also hide the differences between output format types.  
+The same &x source can be used to generate different flavours of output, but for certain things a specific output 
+format will require a bit more work. 
+For instance, including an example 'in-line' when generating HTML is no big deal, but when generating page oriented output
+consideration for the amount of space remaining in the current column or on the page must be taken into consideration. 
+This can easily be done with the conditional column &c(cc) or conditional page &(cp) commands, but to really make the 
+final page oriented document look good some macro tricks will be necessary.  
+.sp
+
+Other considerations based on output type might be text indention, and header spacing. 
+It will quickly become obvious that for some of the macros that are defined, there will be differences based on the 
+output being generated. 
+The predefined variables &lit(hfm, pfm, tfm,) and &lit(rfm) can be used in conditional statements to help set up 
+these output dependant macros. 
+
+.sp
+As an example, assume that for bullet lists the  character "+" is desired to set off each list item when generating formatted ASCII 
+text with &ital(hfm,) and the &ital(diamond) character from the zapfdingbats font is to be used for the page oriented formatters. 
+The following source input could be used to define the &lit(blic) (bullet listitem character) variable such that all begin list
+commands are the same: &lit(^.bl &blic.)
+
+&example_start
+  .if tfm
+     .dv blic +
+  .ei
+     .dv blic m
+  .fi
+  .dv blic 
+&example_end
+
+It is assumed that the "m" character maps to the diamond in the zapfdingbats font. 
+When generating HTML, the list item character used is defined by the browser, so the &ital(hfm) formatter silently absorbs the 
+character when supplied on the begin list command and no special case needs to be made when generating HTML. 
+
+.h2 Header Files
+It will not take long to realise that there are a fair few macro and variable definitions that most documents will benefit
+from. 
+Creating one or more header flies (like &lit(#include) files used by &bold(C) programmes) can be very beneficial. 
+Some authors prefer to build a single header file, and others prefer to build one header file for each output type, with 
+a master 'startup' header file that is included by each document.  
+The master file would have just a few statements:
+
+.cc 14
+&example_start
+  .if hfm
+     .im hfmstart.im
+  .ei
+     .if pfm
+       .im pfmstart.im
+     .ei
+        .if rfm
+           .im rfmstart.im
+        .ei
+           .im tfmstart.im
+        .fi
+     .fi
+  .fi
+
+&example_end
+
+.sp
+Some of the more common things that are defined in header files are:
+.sp
+.bl &lic1
+.li text font variable for normal font
+.li constant width font for examples, filenames or 'literal' strings 
+.li bold font variable
+.li italics font variable
+.li bold and italics macros
+.li header definitions (^.dh commands)
+.li link and image reference macros
+.el
+.sp
+
+
+.h2 Block Comments
+The comment command &c(**) can be used to cause &x to ignore all text from the comment symbol until the end of the current
+line, but &x does not support any kind of &ital(block comment) delimiters like the &stress(C) programmling language does
+with the &lit(/*) and &lit(*/) pairs. 
+Nonetheless, block comments can effectively be included in the document source by using an if statement that always 
+evaluates to zero. 
+The text between the if statement and the closing &c(fi) command will be ignored:
+
+.cc 6
+&example_start
+  .if [ 0 ]  
+  This is a multi line comment that will not be included in the 
+  document and each line of the commentted block of text does not 
+  need to begin with .**!
+  .fi
+&example_end
+
+.if [ 0 ]
+history
+why the carrot and not backslash for an escape
+.fi
+
+.h2 Debugging
+As macros get more complicated, it is sometimes necessary to 'see' what &x believes is the definition for a given variable or macro.
+The show variable &c(.sv) can be used to cause &x to write the value that a variable has to the standard error device. 
+When macros have multiple escape characters, or need forced parameter end markers (colons) it is sometimes tricky to get the 
+definition just right. 
+Using the show value command can save a lot of time when debugging.
+
+.sp
+If the show variable command does not yield enough information, turning on tracing just before and just after the 
+&lit(^.dv) command might help. 
+The trace command &c(xx) accepts a trace level number as a parameter; the larger the number the more output will be generated. 
+A trace level of 1 causes the define variable command to display the variable as it is being added to the hash table. 
+A trace level of 2 causes the tokens as they are processed to be listed, with a bit more information. 
+
+

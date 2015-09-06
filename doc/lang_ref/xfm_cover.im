@@ -1,0 +1,14 @@
+.sf Helvetica
+.sp 10
+.ep logo.eps l=2.5i noadvy
+.sp 15
+.in 0i
+.st 16
+.in +1.5i
+.** &cover_title
+Language Reference
+.sp 10
+.st 10
+.gv Date
+Revised: &_date
+.in -1.5i

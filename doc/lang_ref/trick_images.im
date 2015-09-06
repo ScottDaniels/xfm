@@ -1,0 +1,104 @@
+.h1 Images
+Images pose a tricky problem for the beginner because each output format deals with images differently and 
+only the &ital(pfm) formatter has any direct support for images. 
+As it turns out, dealing with images is not all that difficult once the problem is broken down
+by output type.
+
+.sp
+.h2 PostScript Images
+.dv ep encapsulated postscript 
+Images are included into a PostScript document using the encapsulated postscript command &lit(^.ep.)
+The &ep command allows the user to define the &ep file to be imbedded along with certain parameters 
+that define the amount of space that will be reserved for the drawing and options that allow the 
+drawing to be stretched and scaled. 
+The following illustrates how an image might be included into a PostScript document:
+.sp
+&example_start
+  .ep drawing1.eps center l=3i
+&example_end
+
+.h2 HTML Images
+Within an HTML document an image is referenced with an image tag that specifies the URL of a JPG, PNG, GIF, or 
+other type of image file. 
+When a browser encounters the tag, it is its job to track down the actual file and render it as a part of the 
+document.  
+Other than making sure that the HTML special characters are escaped, adding an image tag is pretty easy:
+
+&example_start
+  ^^^<img src=http://somemachine.corp.com/pics/toaster.gif^^^>
+&example_end
+
+.h2 ASCII Text Images
+No, you haven't missed something; ASCII text documents just do not support them, and if &x will be used just to 
+produce ASCII output from the source, then nothing special has to be done.
+
+However, document source that will be used to generate ASCII text in addition to some other output format that 
+does support images must do something. 
+A typical output when generating ASCII output is to include something that allows the reader to manually track down 
+the image if they really need to:
+
+&example_start
+  [IMAGE http://somemachine.corp.com/pics/toaster.gif]
+&example_end
+
+
+.h2 The Image Macro
+When coding a document, the author might use an if statement each place that an image is to be inserted.
+This works, but if there are many images in the document using a macro can be easier. The macro, which is a 
+bit more complicated than including the raw code at desired spot in the document, is presented below:
+
+.cc 14
+&example_start
+
+  .** $1 is the ep command info, $2 is the url
+  .dv image ~
+    .if pfm ^^^: ~
+       .ep $1 ^^^: ~
+    .ei ~
+       .if hfm ^^^: ~
+           .br ^^^<img src=$2^^^> .br ~
+       .ei ~
+           .br ^^^[IMAGE $2] .br ~
+       .fi ~
+    .fi
+
+
+&example_end
+
+In addition to needing to escape the special HTML characters &lit(<) and &lit(>,) there are several things that 
+make this macro a bit more messy than most. 
+The image macro is broken into mulitple lines using the &x newline escape character (~) making it easier to read, but 
+sometimes making it tricker to code because it is easy to forget that certain commands (^.if and ^.ep in this case) 
+take a non-constant number of parameters and must be terminated with a hard newline or an lone colon (:) which imples 
+that the end of the parameter list has been reached. 
+The colon characters must also be escaped so that they do not inadvertantly terminate the macro definition command. 
+The open square bracket also needs to be escaped because it is being used as a parameter on an ^x command and if not 
+eascaped will be viewd as an expression initiator. 
+
+.sp
+
+If the document programmer, and a writer who is coding macros really is more of a programmer than an author, 
+wanted to code the macro definition all on one line, it would look like this (it is broken up into two lines 
+because one line would not fit on the printed page):
+
+&sm_example_start
+  .dv image .if pfm ^^^: .ep $1 ^^^: .ei .if hfm ^^^: .br ^^^<img src=$2^^^> .br .ei 
+  .br ^^^[IMAGE $2] .br .fi .fi
+&sm_example_end
+
+.sp
+It is always wise to use the show variable &c(sv) command when defining complex macros. The show variable 
+command causes what &x believes the macro value (definition) is to be written to the standard error device. 
+
+.sp
+Fortunately, invoking the image macro is much easier than defining it. The only tricky thing is to remember that 
+the colon in the URL must be escaped or &x will interpret it as a parameter separator.
+The macro &ital(could) have been written to accept three parameters assuming that the second would be &lit(http) or 
+some protocol string, and the third the rest of the URL, and the macro would be responsible for adding the colon. 
+
+&example_start
+  &image(drawing1.eps center l=3i:http^://somemachine.corp.com/pics/toaster.gif)
+&example_end
+
+
+

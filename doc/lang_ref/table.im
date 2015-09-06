@@ -1,0 +1,145 @@
+
+.cc 10
+.h2 Tables
+Tables are supported when generating PostScript, RTF, and HTML documents. The 
+creation of a table is accomplished with several &x commands: &ital(table) &c(ta,)
+&ital(cell) &c(cl,) &ital(table row) &c(tr,) and &ital(end table) &c(et.)
+
+Information is placed into table cells from left to right. Formatting is done within 
+the cell such that a cell may contain multiple lines, and &x will attempt to perform any
+requested justification or other commands that exist in the source. 
+Each time a &ital(cell) command is encountered, the current cell is 'terminated' and 
+the next text tokens encountered are placed into the next cell to the right.
+Depending on the output format, it may be necessary to insert at least a break command 
+into each cell in order to generate the desired results. 
+
+The following paragrahs describe each of these commands.
+
+.h3 Starting a table
+The &ital(table) &c(ta) command is used to start a table and defines the number of 
+cells, cell sizes, border option, and other information to the formatter. 
+The following is the syntax for the &ital(table) command:
+.sp
+.sf &litfont
+.nf
+ .ta [n] [[B] b=n] [a=align] [s=points]
+     [p=points] [t=colour] [w=pctg]
+     width_1 width_2... width_n 
+.fo
+.sf &textfont
+.sp
+
+Where:
+.sp
+&indent
+.bd .75i &ditext
+.di n : Causes &x to &stress(not) automatically set the first column parameters. 
+When the &ital(n) keyword is used, the user must include a &ital(cell) command 
+before the next text is encountered.
+.sp .5
+.di B : Force left borders. Off by default to make nesting tables more pleasing with
+borders.
+.sp  .5
+.di b=n : Indicates the line width of the table border. &lit(b=0) causes no borders 
+to be drawn for the table.
+.sp .5
+.di a=align : Supplies one of the alignment constants (right, left, center) and 
+causes the table to be aligned in this manner when generating HTML output.
+.sp .5
+.di p=points : Defines the number of points that are to be used to indent text
+from each 'cell wall.'
+.sp .5
+.di s=points : Defines the spacing between cells and rows that a browser is expected 
+leave. 
+.sp .5
+.di t=colour : Specifies a text colour that is to be used for text in the table
+(HFM only).
+.sp .5
+.di w=pctg : Supplies to &x a percentage (pct)  that will be used to set the 
+width of an HTML table in terms of percent of the browser width. 
+.sp .5
+.di width_n : Are the cell width definitions (points or inches). When generating 
+PostScript or RTF documents &x controls the width of each table sell directly, 
+but only suggests the width of a cell when generating and HTML document. 
+.ed
+&uindent
+
+.sp
+
+.h3 Next Table Cell
+The cell command &c(cl) causes the next cell of a table to be selected and &x begins 
+to place foramtted text into that cell of the table. 
+The cell command accepts several parameters and has the following syntax:
+.sp
+.st &litfont
+.nf
+ .cl [c=bg] [t=fg] [s=span] [a=align] [v=valign]
+.fo
+.st &textfont
+
+.ix force `background colour`
+.sp
+Where:
+.sp
+&indent 
+.bd .75i &ditext
+.di bg : Defines the colour that the background of the cell should be painted with.
+Supported only in &lit(hfm.)
+.sp
+.di fg : Defines the colour that the text (foreground) in the cell will be painted with.
+Supported only in &lit(hfm.)
+.sp
+.di span : Inidcates the number of table columns that the cell is supposed to span.
+.sp
+.di align : Is a constant string (right, left, center) that defines the alignment of items 
+placed into the cell. Supported only by &lit(hfm.)
+.sp
+.di valign : Is a constant string (top, bottom) that defines the vertical alignment of items
+placed into the cell.
+Supported only by &lit(hfm.)
+.ed
+&uindent
+.sp
+
+.h3 Next table row
+The &ital(table row) &c(tr) command causes the current table row to be completed and the 
+next row started. 
+The command accepts parameters that allow the user to define a background colour for the 
+entire row, as well as alignment information. 
+The syntax of the &ital(table row) command is:
+.sp
+.sf &litfont
+.st [ &textsize 2 - ]
+.nf
+ .tr [n] [a=align] [c=colour] [v=valign]
+.fo
+.sf &textfont
+.st &textsize
+.sp
+
+Where:
+.sp
+&indent
+.bd .75i &ditext
+.di n : Inidcates that the first cell in the next row should &stress(not) be automatically 
+started. This allows the user to immediately follow the &ital(table row) command with a 
+&ital(cell) command to override the row defaults for the first cell. 
+.sp
+.di a=align : Specifies one of the alignment keywords (right, center, left) which are placed 
+into the HTML document and cause the text in each of the cells to align in this manner.
+.sp
+.di c=colour : Allows the user to define a background colour for all cells in the row. 
+This colour is overridden if the user specifies a colour on a cell command. 
+.sp
+.di v=valign : Allows the user to supply the vertical alignment that the HTML browser 
+should apply to the text palced in each cell. The &ital(valign) parameter should be 
+one of: center, top, or bottom.
+.ed
+&uindent
+.sp
+
+.h3 Ending a table
+The &ital(end table) &c(et) command accepts no parameters, and simply causes the table to 
+be terminated. 
+.sp
+

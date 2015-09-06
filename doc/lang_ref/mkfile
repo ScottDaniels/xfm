@@ -1,0 +1,21 @@
+<../master.mk
+
+NUKE = $NUKE *.ca *.ps *.html *.toc
+
+all:V:	xfm.ps
+
+#xfm.toc::	xfm.xfm
+#	export XDOC_PASS1=1
+#	pfm xfm.xfm /dev/null
+
+# this requires xfig tools
+%.eps : %.fig
+	fig2dev -L eps ${prereq} ${target}
+
+imbed_src = cd.im cmds.im cmdtab.im cover_art.im gv_tab.im headtab.im \
+	index_snatch.im ixcmds.im lists.im macros.im quickr.im table.im \
+	tcfig.im xfm_cover.im logo.eps
+
+xfm.ps:: xfm.xfm 
+
+xfm_trick.ps:: xfm_trick.xfm

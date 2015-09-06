@@ -1,0 +1,22 @@
+
+.** this file included at the top of the next col so as not to 
+.** waste a lot of space if at the bottom if we were to just rely on a cc
+
+.sp 
+.in 0
+.sf &textfont
+.st &textsize
+
+.bx start
+.if pfm
+	.ep page_layout.eps center l=4i close
+.ei
+	.if hfm
+		.bc start
+		&image(page_layout.jpg)
+		.bc end
+	.fi
+.fi
+.bx end
+.fg Two column page layout
+.sp 2

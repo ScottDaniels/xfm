@@ -1,0 +1,180 @@
+.** stupid xfm tricks
+
+.xx 3
+.** background for cover -- fetch before setup so we reset things
+.if pfm
+	.im cover_art.im
+	.co #000000
+.fi
+
+
+.dv index_snare_file index_snatch.im
+
+.dv doc_title Stupid {X}fm Tricks
+.dv cover_title Stupid Tricks
+
+.dv link_color link=blue vlink=gray
+.dv text_color black
+.dv back_color #0d0e0f  
+
+
+
+
+.if pfm
+	.dv index_cols 2
+	.dv two_col_mode 0
+	.dv textsize 10
+	.dv figsize 8
+	.dv textfont Times-Roman
+	.dv italfont Helvetica-Oblique
+	.dv italfont Times-Oblique
+	.dv boldfont Times-Bold
+	.dv termsize .75i
+	.dv text_indent 0i
+	.dv header_indent 0i
+	.dv col_indent 1i
+	.dv col1_width 6.25i
+	.dv right_mar 1i
+.fi
+
+.if ! imbed
+	.gv e XFM_IMBED imbed
+	.if ! imbed
+		.dv imbed ../imbed
+	.fi
+.fi
+.xx 0
+.sv imbed
+.sv imbed
+.im &{imbed}/doc_start.im
+.im ifroom.im
+
+.if hfm
+	&indent
+	.ta b=0 w=90
+.fi
+
+.dv textfont Times-Roman
+.dv c (.$1)
+.dv textsize 10
+.sf &textfont
+.st &textsize
+
+.hn off
+.dv x ^&ital(XFM)
+
+.gv e XDOC_PASS1 pass1
+.if pfm
+	.if pass1
+		.tc on
+	.ei
+		.tc off
+		.im xfm_cover.im		.** xfm cover is generic and uses cover-title var
+		.im xfm_trick.toc		.** *.toc does a lead page eject
+		.pa
+	.fi
+.fi
+
+.sf &textfont
+
+
+
+.st 10
+.** this will work in some of the formatters for headers but not in all
+&set1col
+.in +.5i
+.ll -1i
+.sp 2
+.if hfm
+	.ta b=0 w=80 6i
+	&indent
+.fi
+
+.bc start
+&stress(ABSTRACT) .br
+.bc end
+.sp 2
+
+
+.dv textfont Helvetica
+.sf &textfont
+
+&x is a family of document formatting programmes which read a common 
+source language to produce output in HTML, PostScript, Rich 
+Text Format (RTF), or ASCII formatted text. 
+Like any programming language, learning the syntax of the language is only half
+the battle of considering oneself a real master. 
+Becoming a master also involves knowing how to mold the language, and write
+the programmes, to suite one's needs. 
+The &x document formatting language is no different. 
+This guide proivdes a glimpse of some of the programming tricks that can be used
+to build a document that you can be proud to have written. 
+(Of course for verbal language and grammar skills you are on your own; regardless of how
+well you can use &x to generate nice looking text, your document will never be any 
+better than the worst grammer it contains!)
+
+
+.ll +1ii
+.in -.5i
+.sp
+.lw 0
+.ln 
+.dv textfont Times-Roman
+.if hfm
+	&uindent
+	.et
+.fi
+
+.pn on 0
+.rh &doc_title
+.by 9.85i
+
+
+.sp
+.dv section Overview
+
+.hn 1
+.st &textsize
+.sf &textfont
+
+
+.lw 0
+.dv example_start .sp 0  .sf ^&litfont .nf
+.dv example_end .fo on .st ^textsize .sf ^&textfont .sp 0  .sp 1
+.dv sm_example_start .sp 0  .sf ^[ ^&textsize 2 - ]  .sf ^&litfont .nf
+.dv sm_example_end .fo on .st ^textsize .sf ^&textfont .sp 0  .sp 1
+.dv example_end_fg .fo on .st ^textsize .sf ^&textfont .sp 0   .fg 
+
+.h1 Overview
+.tt 
+
+.im trick_basic.im
+.im trick_indent.im
+.im trick_images.im
+
+
+.im trick_front.im
+
+
+.h2 Back Matter
+The apendicies and index placed at the end of a document are considered to be the &ital(back matter.)
+
+
+.** ------------------------------------------------------------
+.if index_here
+	&index_here
+.fi
+.sp 3
+.lw 0
+.ln
+.st 8
+.gv Date
+.bd 1i
+.di Original: : 13 November 2007
+.di Revised: : &_date
+.ed
+
+.if hfm
+	.et
+	&uindent
+.fi

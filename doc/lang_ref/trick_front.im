@@ -1,0 +1,66 @@
+.h1 Front Matter
+&ital(Front Matter) is simply everything that appears before "chapter one:" the cover, the table of contents 
+and possibly a copyright page. 
+&x will generate a table of contents as it builds the formatted document, but getting it inserted between the cover
+and the first section is possible, but will require a bit of creativity.
+&x is basically a single pass formatter, and when it was first written the standard practice was to print the table of contents 
+at the end of everything and the writer could manually shuffle the pages before sending the document off to the copy center. 
+Today, PostScript and PDF documents are expected to be available &ital(on-line) and thus the table of contents needs to be 
+in its proper place and not at the end of the document. 
+
+.sp
+It is certainly possible to change the &ital(pfm) and &ital(rfm) binaries to do this, but as it takes only a few statements in the 
+source and &lit(Makefile) to accomplish this it is a task left to the document writer. 
+Simply, the document source must be processed twice by &x; the first pass generates the table of contents and the second pass 
+includes the table of contents in the proper spot as the final output file is generated. 
+The &lit(mkfile) entry to do this is pretty simple:
+
+.cc 11
+&example_start
+  # generate a postscript doc from xfm source
+  %.ps: %.xfm
+        pfm $prereq $target
+
+  # generate a table of contents xfm source file
+  %.toc: %.xfm
+        export XDOC_PASS1=1
+        pfm $prereq /dev/null
+
+  xfm_imbed = ug_cmds.im ug_intro.im ug_examp.im
+  user_guide.ps::   user_guide.toc user_guide.xfm $xfm_imbed
+&example_end
+
+The assumption is that the document source, as we will see next, processes differently based on whether the 
+&lit(XDOC_PASS1) variable is set in the environment.  
+The first pass, the pass that generates the &lit(.toc) file has its output directed to the null device and thus is ignored.  
+The second pass, no variable set, generates the document; the source code reads the &lit(.toc) file that was generated 
+by the first pass. 
+The following bit of &x source illustrates how the table of contents, and cover pages, are pulled in during the second pass 
+across the source.
+
+.cc 18
+&example_start
+ .** get environment variable into xfm variable pass1
+ .gv e XDOC_PASS1 pass1
+ .if pfm
+    .if pass1
+        .** pass 1, turn on toc generation (greates *.toc)
+       .tc on
+    .ei
+       .** for pass2, ensure toc is off, then imbed cover and toc
+       .tc off
+       .im ug_cover.im
+       .im user_guide.toc	.** *.toc does a lead page eject
+       .pn on 0
+        .pa
+    .fi
+ .fi
+&example_end_fg Sample source to generate/include a table of contents 
+.sp 2
+
+The cover imbed file contains the source that generates the document cover, and any copyright or other leading pages
+that are placed before the table of contents.  
+The page number &c(pn) command is necessary to begin numbering the rest of the document pages starting with 1 (incremented 
+before the running footer information is written on the current page). 
+If the page number is not reset, the pages generated in the second pass will not match the table of contents. 
+

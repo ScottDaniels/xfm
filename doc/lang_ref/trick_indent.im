@@ -1,0 +1,94 @@
+.h1 Indention Tricks
+
+.h2 Indention
+Causing the next bit of text, say for a bullet list, to be indented a bit further than the rest of the 
+text takes two commands: the indention command and a command to adjust the line length. Rather than 
+have to code both commands each time an indention is needed, define the &lit(indent) and &lit(uindent) 
+macros to do the work. 
+
+.cc 8
+&example_start
+ .dv indent .ll -.5i .in +.5i 
+ .dv uindent .in -.5i .ll +.5i 
+
+ &indent
+ This text will be indented
+ &uindent
+ This text will not be indented
+&example_end
+
+Using the relative notation for both the &ital(indent) and &ital(line length) commands makes this macro 
+easy, but care must be taken to issue them in the right order. 
+If the column width and the line lenght have been defined to be the same, &x will get snarky and issue 
+a warning if you try to increase the line length beyond the column width. 
+
+.sp
+The previous example sets the indention at a constant value of one-half inch. 
+The macros could be coded to accept a parameter allowing the indention value to be set specifically for 
+each need:
+
+
+.cc 8
+&example_start
+ .dv indent .ll -$1 .in +$1 
+ .dv uindent .in -$1 .ll +$1
+
+ &indent(.5i)
+ This text will be indented
+ &uindent(.5i)
+ This text will not be indented
+&example_end
+
+With this definition of the macro, the reference in the document source will include the amount of 
+space that each text line should be shifted. 
+The down side with this set of macros is that the &lit(uindent) invocation must supply the same value
+which will lead to a maintence headache for someone. 
+With that thought, a more complicated set of macros could be defined that allow the indention amount 
+to be supplied on the &lit(indent) call, and not require the amount on the &lit(uindent) call.
+
+.cc 8
+&example_start
+ .dv indent .ll -$1 .in +$1 .dv _uindent_amt $1 ^:
+ .dv uindent .in -^&_uindent_amt .ll +^&_uindent_amt
+
+ &indent(.5i)
+ This text will be indented
+ &uindent
+ This text will not be indented
+&example_end
+
+The execution of the &lit(indent) macro now causes the variable &ital(_uindent_amt) to be created which is 
+assigned the amount of space that was used when setting the indention. 
+The &lit(uindent) macro resets the indention and line length using the saved value. 
+Care must be taken when defining the &lit(uindent) macro such that the reference to &lit(_uindent_amount) 
+is escaped (with the carrot character).
+This prevents the expansion of the variable until the macro is invoked rather than when the macro is defined. 
+
+.sp
+For most documents the simple, initial, indention macros will do just fine, but the potential power that can be 
+designed into an &x macro is easily demonstrated with these two example macros. 
+
+.h2 Indention and HTML
+The previous indention macros work well for RTF and PostScript output, but with HTML there is no concept of 
+line length nor indention. 
+However, it &ital(is) desireable to have indented text even in an HTML document, and to do this some knowledge of HTML is needed.
+With the advent of style sheets, there are ways to accomplishing lots of formatting tricks in an HTML document, but some 
+basic tricks can be applied without the need to delve into the style sheet world. 
+The previous indention macros could be defined for HTML documents using the &ital(unordered list) tag which most browsers 
+automatically indent.  
+Knowing this, the code might look something like this:
+
+&example_start
+  .if hfm
+     .dv indent ^^^<ul^^^>
+     .dv uindent ^^^</ul^^^>
+  .fi
+&example_end
+
+&x will allow the writer to put raw HTML tags into the formatted document, but the special characters (greater and lessthan symbols
+in this case) must be escaped using the &x escape character (carrot).
+An else clause should be added to the above code sample which would contain the more generic indention adjustments and when 
+that code is added to the document source, generating multiple output formats from the same source becomes much easier to 
+write.
+
+

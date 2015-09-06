@@ -1,0 +1,102 @@
+.** the get variable table 
+
+.pu
+&set1col
+
+.st [ &textsize 2 - ]
+.sf &textfont
+.sp
+
+.ju off
+
+.ta B b=1 p=5p .75i .75i 4.5i
+.bc start Value  Name .bc end
+.cl : .bc start &bold(Variable  Created) .bc end
+.cl : .bc start &bold(Description) .bc end
+.tr
+.bc start Date .bc end
+.cl : .bc start _date .bc end
+.cl : Sets the variable with the date using the format: &lit(12 Jan 2002)
+.tr
+.bc start date .bc end
+.cl : .bc start _date .bc end
+.cl : Sets the variable with the date using the format: &lit(mm/dd/yy)
+.tr
+.bc start env .bc end
+.cl : .bc start user defined .bc end
+.cl : Looks up a system environment variable and sets the user 
+defined &x variable to its value. 
+Two parameters are required: the first is the environment variable name, 
+and the second is the &x variable name to assign the value to.
+This is available only on systems that support the concept of environment 
+variables. 
+.tr
+.bc start fig .bc end
+.cl : .bc start _fig .bc end
+.cl : Places the figure number that will be given to the &stress(next) figure
+when the &c(fi) command is used into the variable. 
+.tr
+.bc start font .bc end
+.cl : .bc start _font .bc end
+.cl : Places the current font name into the variable. 
+.tr
+.bc start host .bc end
+.cl : .bc start _host .bc end
+.cl : Places the name of the host into the variable. This is available 
+only on systems that support the concept of a host name.
+.tr
+.bc start page .bc end
+.cl : .bc start _page .bc end
+.cl : The variable is set to contain the current page number
+.tr
+.bc start lines .bc end
+.cl : .bc start _line .bc end
+.cl : The variable is set to contain the number of lines remainining in 
+the current column.
+.tr
+.bc start lmar .bc end
+.cl : .bc start _lmar .bc end
+.cl : The current left margin value in points, is placed into the variable.
+.tr
+.bc start rmar .bc end
+.cl : .bc start _rmar .bc end
+.cl : The current right margin value in points, is placed into the variable.
+.tr
+.bc start tsize .bc end
+.cl : .bc start _tsize .bc end
+.cl : The variable is set to the current text size (in points).
+.tr
+.bc start Time .bc end
+.cl : .bc start _time .bc end
+.cl : The current time, in the format HH:MM:SS, is placed into the variable.
+
+.tr
+.bc start y .bc end
+.cl : 
+.bc start 
+_cury 
+.br _topy
+.br _coln
+.bc end 
+.cl : 
+Get &lit(y) information:
+The current &lit(y) position (points from the top of the page) 
+is placed into the &lit(_cury) variable. The top most &lit(y) value is placed 
+into &lit(_topy) variable and the current column number (0 is the first column) is 
+placed into &lit(_coln.)
+.et
+
+.st &textsize
+&half_space
+.fg t=table  Get value command parameters and resulting variable definitions.
+.sp
+
+.if pfm
+	.lw 0
+	.ln
+.fi
+
+.sp 2
+.po
+.tt 
+&set2col

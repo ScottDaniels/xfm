@@ -1,0 +1,254 @@
+.** index command discussion
+
+.cc 10
+.h1 Generating An Index
+&x provides an &ital(index) &c(ix) command that allows the user to define the words and/or phrases
+that are to be captured and placed into an index which list the page references for each phrase. 
+Indexing is useful only for page oriented output formats and thus is supported only by &ital(pfm) and 
+&ital(rfm) formatters. 
+
+.sp
+The general format of the &ital(index) command is:
+.sp
+
+.in +.2i
+ &lit(^.ix) &ital(command [parameters])
+.in -.2i
+.sp
+
+The &ital(command) is one of several indexing sub-commands (described in greater detail in the following
+pararagraphs) and the parameters are any data that a specific command needs.
+.sp
+
+.bd .65i &ditext
+.di snare : Add one or more phrases that will be captured from the document and referenced in the 
+index.
+.sp 0
+.di synonym : Add a synonym entry into the index.
+.sp 0
+.di pause : Stop capturing references. 
+.sp 0 
+.di resume : Start capturing references.
+.sp 0
+.di force : Force a reference on the current page even if the phrase does not appear on the page. 
+.sp 0 
+.di group : Define a group of references to be listed under a common heading.
+.sp 0
+.di groupb : Establishes a format string that is used when starting a group entry.
+.sp 0
+.di groupe : Defines the format string used when ending a group entry.
+.sp 0
+.di insert : Causes the index to be placed into the document at the current location. 
+.sp
+.di section : Defines the format statement used when an alpha break occurs in the index. 
+.sp
+.di term : Defines the format statement used for each term in the index. 
+.ed
+.sp
+
+.h2 Capturing References
+&x builds the index as words are placed into the output file using any  phrases 
+that have been defined by &ital(snare) and &ital(synonym) commands. 
+The &ital(snare) command accepts one or more phrases which are listed as specified in 
+the final index. 
+If a phrase contains one or more blank characters, the phrase must be quoted using the 
+back-quote character. 
+.gv fig
+The small bit of code in figure &_fig illustrates the snare command. 
+.sp
+
+.** ----------------------------------------------------------------------------------
+.ca start snare_examp.ca
+.** .bx start m
+.st [ &textsize 2 - ]
+.sf &litfont
+.nf
+
+ .ix snare carabiner
+ .ix snare `belay device`
+ .ix snare ATC Grigri `stich plate`
+
+.fo
+.** .bx end
+.sf &textfont
+.st &textsize
+.sp 0
+.fg Index generation snare commands
+.sp 2
+.ca end
+.** ---------------------------------------------------------------------------------
+&ifroom(6:snare_examp.ca)
+
+.h2 Index Synonyms
+Sometimes the index entry needs to be different than the way the phrase appears in 
+the document text. 
+The &ital(synonym) command has the format:
+.sp
+.in +.2i
+&lit(^.ix synonym) &ital(existing link)
+.in -.2i
+.sp
+The &ital(existing) parameter is the phrase that has been defined with a &ital(snare) command
+(and thus will appear in the index), and the &ital(link) parameter is the phrase that will be 
+linked to the existing phrase.  
+The effect is that whenever &ital(link) is encountered in the document it will be 
+treated as though &ital(existing) was observed. 
+
+.sp
+A simple example of how synonyms might be used is how names might be represented in the index. 
+A person's name might appear in the document text as first name followed 
+by last name, however it is probably desired to reference people in the index in a last name first name
+order.
+To do this, for a person named Edward Daniels, the synonym &lit(Daniels, Edward) is created, and both the phrase "Edward Daniels"
+and the word "Daniels" daniels are linked to the entry. 
+.gv fig
+This is illustrated in figure &_fig.
+.sp
+
+.** ---------------------------------------------------------------------------------
+.ca start syn_examp.ca
+.** .bx start m
+.st [ &textsize 2 - ]
+.sf &litfont
+.nf
+ 
+ .ix snare `Daniels, Edward`
+ .ix synonym `Daniels, Edward` Daniels
+ .ix synonym `Daniels, Edward` `Edward Daniels`
+
+.fo
+.sf &textfont
+.st &textsize
+.** .bx end
+.fg Index synonym example.
+.sp 2
+.ca end
+.** ---------------------------------------------------------------------------------
+&ifroom(10:syn_examp.ca)
+
+
+
+
+.h2 Related Groups
+To list a group of related entries in the index, the &ital(group) command is used. 
+The group command defines the group name and any phrases that have been 
+defined using the &lit(snare) command. 
+The following command Causes the group "Belay Devices" to be placed into the index
+with entries for the different device types listed under it. 
+.sp
+.sf &litfont
+.st [ &textsize 2 - ]
+.nf
+ .ix group `Belay Devices` ATC Grigri plate
+.fo
+.sf &textfont
+.st &textsize
+.sp 
+
+The entries under the group header are listed in the order that they appear, and if 
+one or more entries does not have a reference in the document it is omitted from 
+the list.  
+If the list would be completely empty, none of the references were observed in the document, 
+then the list is omitted entirely.
+As with the other commands, multi-word phrases must be enclosed in back-quotes.
+
+.h2 Inserting The Index
+The simple &lit(^.ix insert) command causes the index to be generated and inserted at the 
+current point in the output file. 
+
+
+.h2 Formatting Index Entries
+The user has a fair amount of control over how index entries are formatted.  
+The &ital(section) command allows the user to define how breaks between index sections (broken on upper case character of term)
+are formatted. 
+The &ital(groupb) and &ital(groupe) commands allow the user to specify formatting for the beginning and the ending of a group of 
+terms. 
+Finally, the &ital(term) command provides the formatting of each listed term. 
+
+.sp
+To understand what needs to be supplied on a format command, a bit of the indexing mechanics must be 
+digested. 
+When the &ital(insert) &X creates a temporary file and writes the index 'hits' to the file. 
+The file is closed and then read back in as &x source to generate the index.  
+Thus, the formatting commands are nearly just &x source. 
+The only exception to this is that each command may take one or more &stress(C) like &lit(%) tokens that mark
+where elements of the index entry are to be inserted. 
+
+.h3 The Term Format Command
+The format statement for the &ital(term) command allows the user to supply two &stress(C) like &lit(%) tokens as a part
+of the overall format command. 
+The first is a &lit(%s) which is replaced with the term phrase, and the second is a &lit(%d) used for the first page reference. 
+A typical format statement puts the phrase on a new line, followed by a few spaces and then the first reference:
+.sp
+.sf &litfont
+.nf
+ .ix term .br %s  `^`   ^`` %d
+.fo
+.sf &textfont
+
+.h3 Formatting Group Entries
+The group entries are formatted with a begin and end format statement.  Terms within the group are written using the 
+format string that was defined on the &ital(term) command.
+The &ital(groupb) (begin) command accepts one &lit(%s) which is replaced by the group phrase; the &ital(groupe) command does not 
+take any &stress(C) like format tokens
+The typical use is to cause the list of group terms to be indented under the label:
+.sp
+.cc 5
+.sf &litfont
+.st [ &textsize 2 - ]
+.nf
+ .ix groupb .sp 0 %s .br .ll -.25i .in +.25i
+ .ix groupe .sp 1 .in -.25i .ll +.25i
+.fo
+.sf &textfont
+.st &textsize
+
+.sp
+These commands cause a small amount of whitespace (about half a blank line) before the group phrase, and then indents the 
+group list by one-quarter inch. At the end of the list, the indention is reset and a full blank line is written.
+
+.h3 Index Sections
+The index is broken into sections, each section beginning with a change in lead character of a phrase; the index is 
+automatically sorted aphabetically. 
+The &ital(section) command is used to define a format string that causes a section header to be written before the first
+entry in that part of the index.
+The &ital(section) command makes use of one &stress(C) formatting token, a &lit(%c,) which is replaced with the letter 
+of the section (A, B, C, etc.). 
+The following section command causes a horizontal line to be drawn under the section letter:
+.sp
+.cc 5
+.sf &litfont
+.nf
+ .ix space .sp 1 .cc 5 %c .ln  .sp 0
+.fo
+.sf &textfont
+.sp
+
+The format string also causes a full blank line to be written before the section and a half space blank line to be 
+written after the section lable. 
+
+
+.sp
+.h2 Forcing A Reference
+Once a &ital(snare) command has been issued for a phrase references to that phrase are automatically recorded as the output 
+document is created.  
+Occasionally, an index phrase does not appear in the text and thus references must be forced. 
+The &ital(force) command allows the user to define a reference to any phrase at anypoint in the document. 
+The syntax is:
+.sp
+.sf &litfont
+&lit(^.ix force) &ital(phrase)
+.sf &textfont
+.sp
+
+The phrase may contian blanks wihtout needing to be contained in backquotes (in fact using backquotes will bugger things).
+If the phrase contains a word ending with a puncuation mark, (e.g. "installation, adapter") then the punctuation needs to 
+be doubled (e.g. ^.xi force installation,, adapter) in order to match the snarfed string (assuming the string defined on 
+the snarf command contained the punctuation). 
+
+.h2 Pausing Reference Collection
+If there are certain sections of the document that are not to have index references, the &ital(pause) and &ital(resume) 
+commands can be used to stop and start reference collection. 
+When the &ital(pause) command is encountered, &x will cease collecting references until the &ital(resume) command is 
+found. Neither of these index sub-commands take any parameters. 
+

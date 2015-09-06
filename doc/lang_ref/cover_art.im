@@ -1,0 +1,85 @@
+
+.** this file is included as a part of the cover page; small font, light text and offset to the right
+.st 8p
+.sf Courier
+.co #00a0a0
+.in 2.5i
+
+
+
+.nf
+
+ .im &{imbed}/startup.im 
+
+ .** get current date/time into _date
+ .gv Date
+
+ .** char mappings for list items in zap dingbats font
+ .dv zf_splat o
+ .dv zf_bullet l
+ .dv zf_obullet m
+ .dv zf_diamond u
+ .dv zf_plus 9
+ .dv zf_check 4
+ .dv zf_x 6
+
+
+ .in .5i
+ .hn off
+
+ .** if user prog has not defined, set our defaults for things
+
+ .** space left column is indented from left side of page
+ .if ! col_indent
+      .dv col_indent .75i
+ .fi
+
+ .if ! linesize
+      .dv linesize 6.75i
+ .fi
+
+ .if ! right_mar
+      .dv right_mar 1i
+ .fi
+
+ .** space figures are indented from left side of page
+ .if ! fig_indent
+      .dv fig_indent 1.0i
+ .fi
+
+ .** space headers are indented from edge of column
+ .if ! header_indent
+      .dv header_indent 0i
+ .fi
+
+ .** default width when in single col mode; when 2 col we calc col width (below)
+ .if ! col1_width
+      .dv col1_width 6.5i
+ .fi
+
+ .** defaults for 1 col mode; adjusted later if 2 col mode is requested
+ .** header style: margin, eject type, indention, space before/after add to toc
+ .dh 1 e=none i=0 m=&header_indent s=21 t=on
+ .dh 2 e=none i=0 m=&header_indent s=11 t=on
+ .dh 3 e=none i=0 m=&header_indent s=10 t=on
+ .dh 4 e=none i=0 m=&header_indent s=10
+
+ .if tfm
+      .dv indent  .ll -&indentsize .in +&indentsize
+      .dv uindent .in -&indentsize .ll +&indentsize
+      .dv beglist ^&indent .bl
+      .dv endlist .el ^&uindent
+      .dv begbox .sp 1 .ln
+      .dv endbox .ln .sp 1
+.fo
+
+.if false
+      .dv begtable .sp 1 ^[TABLE - formatting not preserved] .ln  
+      .dv endtable .ln 
+      .dv cell | .br
+.fi
+
+.fo
+
+.** back to top  of page for the eps logo
+.sy 1i

@@ -1,0 +1,62 @@
+.pu
+.st [ &textsize 2 - ]
+.sf &textfont
+&set1col
+.sv c1_linesize
+.sp
+.ju off
+.in 0 
+.ll 6i
+
+.dv row .bc start $1 .cl ^: $2  .cl ^:  $3 .cl ^: $4  .cl ^: $5 .cl ^: $6 .cl ^:  $7 .cl ^:  $8  .cl ^:  $9  .cl ^:  $10 .bc end .tr
+.dv lastrow .bc start $1 .cl ^: $2  .cl ^:  $3 .cl ^: $4  .cl ^: $5 .cl ^: $6 .cl ^:  $7 .cl ^:  $8  .cl ^:  $9  .cl ^:  $10 .bc end 
+
+.sf Helvetica
+.ta B b=1 p=5p .5i .75i .5i .5i .5i .5i .5i .5i .5i .65i
+.br
+.bc start
+.cl : .br
+.cl : .br
+.cl s=2 :  SKIP
+.cl : .br
+.cl : .br
+.cl : .br
+.cl : .br
+.bc end
+.tr
+.bc start
+       LEVEL
+.cl :  FONT
+.cl :  SIZE
+.cl :  BEFORE
+.cl :  AFTER
+.cl :  INDENT
+.cl :  UPPER
+.cl :  TOC
+.cl :  MARGIN
+.cl :  .bc start EJECT .bc end
+.br 
+.bc end
+.tr
+.sf &textfont
+&row(1:Helvetica:18p:2:1:0:yes:yes:0:col)
+&row(2:Helvetica:14p:2:1:0:no:yes:0:none)
+&row(3:Helvetica:12p:2:1:0:no:no:0:none)
+&lastrow(4:Helvetica:12p:0:0:0:no:no:0:none)
+.et
+
+.st &textsize
+.sp 0
+.fg t=table Defalult properties for each header level.
+.sp
+
+.if pfm
+	.lw 0
+	.ln
+.fi
+
+.sp 2
+.po
+.tt 
+&set2col
+.ju on

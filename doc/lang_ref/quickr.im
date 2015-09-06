@@ -1,0 +1,287 @@
+.if pfm
+	.** .pa
+	&page_if_needed
+	&set1col
+	.** .cd 1 7.5i
+	.ll 6i
+	.in 0i
+.fi 
+
+.dv need 5
+.dv check  .gv lines .if ^^^&_lines ^&need < ^: .et .pa .ta B b=1 .5i 1.5i 4.5i ^: ^&header .tr ^: .fi 
+.dv row  ^&check .bc start $1 .bc end .cl ^: $2 .cl ^: $3  .tr ^: .dv need 5
+.dv xheader .bc start CMD .bc end .cl ^: PARAMETER(S) .cl ^: COMMENTS .tr 
+.dv last_row .bc start $1 .bc end .cl ^: $2 .cl ^: $3 
+.dv header .bc start CMD .bc end .cl ^: .bc start PARAMETER(S) .bc end .cl ^: .bc start COMMENTS .bc end 
+.** .th header .bc start CMD .bc end .cl ^: .bc start PARAMETER(S) .bc end .cl ^: .bc start COMMENTS .bc end 
+
+.h1 Quick Reference
+The following tables provide a quick overview of the &x commands and the parameters that 
+they accept. Several conventions used in the tables are described below:
+.sp
+&indent
+.ll -.5i
+.bd 1i &ditext
+.di {x|y} : One of the options separated by vertical bars, and enclosed inside of curly
+braces, must be supplied.
+.sp
+.di ^[...] : The parameter appearing between square braces is optional and does not need to 
+be supplied.
+.sp
+.di <text> : One or more text tokens are expected. Tokens are assumed to be a part of 
+<text> until a newline character is encountered.
+.sp
+.di <n> : A numerical value is expected with its units being specific to the command
+(i.e. lines for the &c(cc) command).
+.sp
+.di <points> : A numerical value is expected and its units are assumed to be points.
+.sp
+.di <distance> : A numerical value is expected and its units are assumed to be determined
+by an appended 'p' or 'i' indicating points or inches respectfully.
+.sp
+.ed
+.ll +.5i
+&uindent
+.sp
+
+.** -------------------------------------------------------------------------------------------
+.ju off
+.ta B b=1 .5i 1.5i 4.5i
+&header
+.tr
+&row(**:<text>:Comment; all tokens to the next newline are ignored)
+&row(ab::Abort processing; no end of document housekeeping performed.)
+&row(ai::All input until the next ^.fo command is written to the output file as is (see nf) )
+&row(br::Cause the next formatted text token to be placed at the beginning of a new line)
+
+&row(ca:{start|end} <file>:Capture all lines until the end command ad place into the file. )
+&row(cb::Column begin (eject column))
+&row(cd:<num> .br w=<distance> .br ^[g=<distance>] .br ^[i=<distance>]:Define num columns .br width of each .br gutter between columns .br Indention of left column from left margin)
+&row(ce:<text>:Center text on next line)
+&row(cc:<n>:Conditional column. Eject column if n rows do not remain in current column)
+&row(cp:<n>:Conditional page eject. Start new page if n columns are not left on current page)
+
+.dv need 15
+&check
+.bc start dh .bc end 
+.cl
+<level>
+.br [f=<fontname>]
+.br [p=<points>]
+.br [s=<skip>]
+.br [i=<chars>]
+.br [u={on|off}]
+.br [t={on|off]
+.br [m=<distance>]
+.br [e={page|col|none}]
+.cl
+.br Define header properties for header level  <level>.
+.br Font to use for the header
+.br Size of header text
+.br Skip is two line values where 21 is skip 2 before and 1 after the header
+.br Number of characters to indent the first line of text after the header
+.br Translate header to upper case
+.br Include the header in the table of contents
+.br Header margin from left edge of column
+.br Eject type.
+.tr
+
+&row(di:<tokens>: Start a new definition list entry with <tokens>)
+&row(ds::Double space mode on)
+&row(dv:<var-name> <tokens>:Defines <tokens> to the variable <var-name>)
+
+&row(ei::Begins else clause in an if-else conditional)
+&row(ed::Ends a definition list)
+
+.bc start ep .bc end 
+.cl
+.sp
+.br [l=<distance>] 
+.br [x=<distance>
+.br [center| .br close| .br stretch| .br proportional]
+.cl
+    Include an encapsulated PostScript file.
+.br Distance along the Y axis to reserve
+.br Distance to shift X portion of origin
+.br Centers drawing between margins
+.br Releases unused space reserved by l=<distance>
+.br Attempt to use all of reserved space by changing height/width ratio
+.br Stretch, but keep drawing proportional with origional height/width
+.tr
+
+&row(et::End table command)
+
+&row(fg:<text>:Figure text with automatic numbering)
+&row(fi::End if/else)
+
+.dv need 15
+&check 
+.tr 
+.bc start gv .bc end
+.cl
+.sp
+.br { Date |
+.br date |
+.br env <ename> <xname> |
+.br figure |
+.br font |
+.br host |
+.br page |
+.br lines |
+.br lmar |
+.br rmar |
+.br tsize |
+.br Time |
+.br yval }
+.cl
+    Get a value into a variable
+.br Set variable &ital(_date) to format dd <month> yyyy
+.br Set variable &ital(_date) using format mm/dd/yyyy
+.br Set variable &ital(xname) to value that environment variable &ital(ename) has
+.br Set variable &ital(_fig) to figure number of next figure
+.br Set variable &ital(_font) to the current font
+.br Set variable &ital(_host) to the host name (UNIX only)
+.br Set variable &ital(_page) to the current page number
+.br Set variable &ital(_lines) to the number of lines remaining in the current column
+.br Set variable &ital(_lmar) to the current left margin value
+.br Set variable &ital(_rmar) to the value of the right margin 
+.br Set variable &ital(_tsize) to the current text size value
+.br Set variable &ital(_time) to the current time (hh:mm)
+.br Set variable &ital(_cury) to the current Y position in the column (points)
+.tr
+
+&row(h_:<text>:Generate a header where '_' is replaced with a 1, 2, 3, or 4)
+&row(hn:on | off | n:Turn off or on header numbering. If n is supplied, sets number to n)
+
+&row(if:<expression>:Causes next lines of source to be 'executed' if <expression> is true)
+&row(im:<filename>:Causes <filename> to be read and process as if it were included at the location of the imbed command in the file currently being processed)
+&row(in:<distance>:Sets the distance text is placed from the left column edge)
+
+&row(jm:<target>:Searches for the target token skipping all text and commands until it reaches the target)
+
+&row(li::Insert a line break and place a bullet character before writing the next formatted text token)
+&row(ll:<distance>:Set the line length to <distance>)
+&row(ls:<points>:Line spacing, space between lines, to <points>)
+&row(lw:<points>:Set the size of lines drawn with the line command)
+&row(nf::Cause the all lines of source, until a format command, to be placed into the document without formatting)
+
+&row(nl::Force a newline in the output file (generally has no effect on the document appearance))
+
+&row(oe:^[all] {page | col} <cmd>:Causes <cmd> to be executed on the next page or column eject. If 'all' supplied then for every eject.)
+
+&row(pa::Causes the next formatted text token to be placed at the top of the next page)
+&row(pn:on | off | n:Start/stop numbering pages; if n supplied set next page number to n+1)
+
+&row(qu::Cause &x to stop reading input and gracefully terminate the document)
+
+&row(rf:<text>:Use <text> as the running footer string)
+&row(rh:<text>:Use <text> as the running header string)
+&row(rs:<points>:Set the runing header/footer size to <points>)
+
+&row(sc::Generate RTF section break (Ignored by pfm, hfm and tfm) )
+&row(sm::Smash -- prevent whitespace between previous and next tokens.)
+&row(sp:<n>:Generate 'n' number of blank lines. )
+&row(ss::Turn single spaceing between lines on. (see ds) )
+&row(sv:<name>:Show the value of the named variable on the standard error device)
+&row(sx:<points>:Set x position to 'n'  (pfm only) )
+&row(sy:<points>:Set y position to 'n' (pfm only) )
+
+.bc start ta .bc end
+.cl
+[b] .br
+[n] .br
+[w=pct] .br
+[c=#hhhhhh] .br
+[p=<points>]
+.cl
+Place borders on the table .br
+Do not automatically generate first tr command .br
+Width as a percentage of screen size (hfm only) .br
+Colour for background of cell/row .br
+Padding of text from cell bounderies .br
+.tr 
+&row(tr:???:Start next row in the table. )
+&row(xx:<level>:Set trace to <level> where level should be 0-3. 0 is off. Trace information is written to the standard error device.)
+
+.et
+.if nosuchvar
+
+
+#define C_OUTLINE     0x4F55   /*  ou outline characters (true charpath) */
+#define C_SECTION     0x5343   /*  sc generate rtf section break */
+#define C_SETFONT     0x5346   /*  sf set font command */
+#define C_SHOWV       0x5356   /*  sv show current variable contents */
+#define C_SKIP        0x534B   /*  sk skip lines if not at top of col */
+#define C_SETSPACE    0x534C   /*  sl set line spacing (points) */
+#define C_SMASH		0x534D /*  sm smash; no space before next token -- psfm need for (&lit(xxx))*/
+#define C_SPACE       0x5350   /*  sp space command */
+#define C_SINGLESPACE 0x5353   /*  ss turn on single space mode */
+#define C_SETTXTSIZE  0x5354   /*  st set text size (points) */
+#define C_SETX        0x5358   /*  sx set x position command */
+#define C_SETY        0x5359   /*  sy set y position command */
+#define C_TABLE       0x5441   /*  ta start table */
+#define C_TABLEBRK    0x5442   /*  tb safe rfm table break */
+#define C_TABLEROW    0x5452   /*  tr start next table row */
+#define C_TOC         0x5443   /*  tc turn on/off table of contents */
+#define C_TOPMAR      0x544D   /*  tm top margin command */
+#define C_TWOSIDE     0x5453   /*  ts two sided page layout */
+#define C_TMPTOP      0x5454   /*  tt set topy to cury temporarly */
+#define C_TOUPPER     0x5455   /*  tu n turn n characters to upper */
+
+#define C_CDEFINE     0x4344   /*  cd column define command */
+#define C_CEJECT      0x4342   /*  cb colum begin (eject) */
+#define C_CENTER      0x4345   /*  ce center */
+#define C_CCOL        0x4343   /*  cc conditional column eject */
+#define C_TABLECELL   0x434C   /*  cl start next table cell */
+#define C_COLOR       0x434F   /*  co set rgb color for text */
+#define C_COLOUR      0x434F   /*  co set rgb color for text */
+#define C_COMMENT     0x2A2A   /*  ** is a comment line; input line skipped */
+#define C_CPAGE       0x4350   /*  cp conditional page eject */
+#define C_DEFDELIM    0x4444   /*  dd define variable delimiter (default &) */
+#define C_DEFHEADER   0x4448   /*  dh define header command */
+#define C_DEFITEM     0x4449   /*  di definition list item */
+#define C_DOLOOP      0x444F   /*  do do loop */
+#define C_DOUBLESPACE 0x4453   /*  ds double space mode */
+#define C_DEFVAR      0x4456   /*  dv define variable */
+#define C_ENDDEFLST   0x4544   /*  ed end definition list */
+#define C_ELSE        0x4549   /*  ei else portion of if statement */
+#define C_ENDLIST     0x454C   /*  el end list */
+#define C_EP          0x4550   /*  ep embedded PostScript */
+#define C_ENDTABLE    0x4554   /*  et end table command */
+#define C_EVAL        0x4556   /*  ev evaluate - calc [ ] and include ans */
+#define C_FIGURE      0x4647   /*  fg figure */
+#define C_FORMAT      0x464F   /*  fo format command */
+#define C_ENDIF       0x4649   /* fi end if */
+#define C_GREY        0x4752   /*  gr set grey scale 0=white 10=black */
+#define C_GETVALUE    0x4756   /*  gv get an FM value into a variable */
+#define C_H1          0x4831   /*  h1 header level 1 */
+#define C_H2          0x4832   /*  h2 header level 2 */
+#define C_H3          0x4833   /*  h3 header level 3 */
+#define C_H4          0x4834   /*  h4 header level 4 */
+#define C_HDMARG      0x484D   /*   m header margin */
+#define C_HN          0x484E   /*  hn turn on/off header numbers */
+#define C_IF          0x4946   /*  if see if next lines should be included */
+#define C_IMBED       0x494D   /*  im imbed a file command */
+#define C_INDENT      0x494E   /*  in indent next line */
+#define C_JUMP        0x4A4D   /*  jm jump to token */
+#define C_JUSTIFY     0x4A55   /*  ju justify mode toggle command */
+#define C_LOWERCASE   0x4C43   /*  lc lower case to end of parm list */
+#define C_LISTITEM    0x4C49   /*   i list item */
+#define C_LL          0x4C4C   /*  ll line length command */
+#define C_LINE        0x4c4E   /*  ln draw line */
+#define C_LINESIZE    0x4C57   /*  lw set line width (width of a horiz line) */
+#define C_NOFORMAT    0x4E46   /*  nf no formatting */
+#define C_NEWLINE     0x4e4c   /*  nl force new line in output file */
+#define C_ONPAGEEJECT 0x4f45   /*  oe [all] <commands> to run on next page eject
+#define C_PAGE        0x5041   /*  pa page eject command */
+#define C_PAGENUM     0x504E   /*  pn page number toggle */
+#define C_PAGEMAR     0x504D   /*  pm page margin amount */
+#define C_PUNSPACE    0x5053   /*  ps punctuation space */
+#define C_QUIT        0x5155   /*  qu quit processing */
+#define C_RFOOT       0x5246   /*  rf running footer */
+#define C_RHEAD       0x5248   /*  rh running header */
+#define C_RIGHT       0x5249   /*  ri right justify */
+#define C_RSIZE       0x5253   /*  rs running h/f font size */
+#define C_TRACE		0x5858 /*  xx level */
+/*  op reserved for open output file */
+.fi

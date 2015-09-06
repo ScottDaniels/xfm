@@ -1,0 +1,96 @@
+.h2 Macros
+Macros are variables which accept parameters and place the parameters into the macro value 
+as the variable is expanded and placed into the document. 
+Macros are referenced like any other &x variable, using the ampersand (^&) character, 
+howver their variable name is immediately followed by a parameter list enclosed in 
+parenthesis (much like a function call in C). 
+Unlike a C function call, parameters in the list are separated with colons (:) rather 
+than commas, and to pass a colon character as a part of a parameter list, it must be 
+escaped. 
+.sp
+The macro is defined using the &ital(define variable) &c(dv) command, which contains 
+parameter &ital(markers) where the varioius parameters should be placed when the 
+macro is expanded. These markers are of the form &lit($n) where &ital(n) is the 
+parameter number (one based) counting from left to right.
+.sp
+
+A simple macro example is a 
+variable &ital(ital) that causes all text passed to the macro to be rendered in an italic 
+font.
+The definition for such a macro would depend on the output being generated, and could be
+defined with the first statement when generating HTML output, and with the second when 
+a Postscript document is being produced:
+.sp
+.sf &litfont
+.st [ &textsize 2 - ]
+.nf
+ .dv ital ^^^<i^^^>$1^^^</i^^^>
+ .dv ital .sf ^^^&italfont $1 .sv ^^^&textfont
+.fo
+.sf &textfont
+.st &textsize
+.sp
+Notice that the &ital(italfont) and &ital(textfont) variable names are escaped in the 
+macro definition. 
+This causes the variable reference to be saved as a part of the macro, and &stress(not)
+the current value of the variable, which allows the user to change either of the font
+definitions without having to redefine macros like &ital(ital.)
+.sp
+The reference to the &ital(ital) macro in the document source would then appear 
+as: 
+.sp
+.bc start
+^&ital(words to appear in italics!)
+.sp
+.bc end
+To illustrate a macro that accepts multiple parameters, consider creating a table
+that has three cells. 
+A &ital(row) macro then can be defined that accepts as its 
+parameters text for each cell of a table row. 
+The definition might look something like:
+.sp
+.sf &litfont
+.nf
+ .dv row $1 .cl ^: $2 .cl ^: $3 .tr
+.fo
+.sf &textfont
+.sp
+The macro stacks two &ital(cell) commands with the parameters placed in the appropriate 
+positions with regard to the cell commands. 
+It should be noted that the &ital(cell) commands accept several parameters and when stacking 
+the &ital(cell) command a colon must be used to indicate the end of the &ital(cell) parameter list. 
+Further, these colons must be escaped (^^:) in order to prevent &x from believing that the colon is indicating 
+that it has reached the end of the &ital(define variable) command. 
+Once defined, the &ital(row) macro might then be used in the following manner:
+.sp
+
+.** -------------------------------------------------------------------------
+.ca start macro_examp.ca
+.cc 10
+.sf &litfont
+.st [ &textsize 2 - ]
+.** .bx start m
+.st [ &textsize 2 - ]
+.sf &litfont
+.nf
+
+ .ta b 1.5i 2i 3i
+ &row(NAME:DEPT:EMAIL)
+ &row(C. Crosby:Corp Sw.:cac@bugger.ournet.com)
+ &row(J. Ervin:Corp Sw.:james@bugger.ournet.com)
+ &row(R. Keahey:Corp Sw.:rhk@bugger.ournet.com)
+ &row(L. Kroeker:CS Lab:ldk@bugger.ournet.com)
+ .et
+
+.fo
+.sf &textfont
+.st &textsize
+.sf &textfont
+.st &textsize
+.** .bx end
+.fg Using the row macro.
+.sp 2
+.ca end
+.** -------------------------------------------------------------------------
+&ifroom(5:macro_examp.ca)
+.sp 

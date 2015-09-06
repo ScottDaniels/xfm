@@ -1,0 +1,43 @@
+.st 14
+.dv hf Helvetica
+.dv zf Dingbats
+
+
+.ta b 4i 4i 
+.sf &hf
+12345 .br
+67890 .br
+!@#$% .br
+^&*() .br
+ABCDEFG .br
+HIJKLMN .br
+OPQRSTU .br
+VWXYZ .br
+
+.cl
+.sf &zf
+12345 .br
+67890 .br
+!@#$% .br
+^&*() .br
+ABCDEFG .br
+HIJKLMN .br
+OPQRSTU .br
+VWXYZ .br
+
+.tr
+.sf &hf
+abcdefg .br
+hijklmn .br
+opqrstu .br
+vwxyz
+.cl
+.sf &zf
+abcdefg .br
+hijklmn .br
+opqrstu .br
+vwxyz
+.et
+.bc end
+
+

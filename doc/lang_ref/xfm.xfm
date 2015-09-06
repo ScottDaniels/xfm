@@ -1,0 +1,340 @@
+.** self documenting document compiler!  xfm.xfm 
+
+.** background for cover -- fetch before setup so we reset things
+.if pfm
+	.im cover_art.im
+	.co #000000
+.fi
+
+.dv index_snare_file index_snatch.im
+
+.dv doc_title {X}fm Language Reference
+.dv cover_title .st 36 {X}fm .st 18 .br Language Reference
+
+.tm .6i
+
+.** must be done before imbed of startup.im
+.if hfm
+	.dv text_color white
+	.dv back_color #200020
+	.dv link_color link=yellow vlink=gray
+.fi
+
+.if ! imbed
+	.gv e XFM_IMBED imbed
+	.if ! imbed
+		.dv imbed ../imbed
+	.fi
+.fi
+
+
+.if pfm
+	.dv index_cols 2
+	.dv two_col_mode 1
+	.dv text_color black
+	.dv back_color #0d0e0f  
+	.dv textsize 10
+	.dv figsize 8
+	.dv textfont Times-roman
+	.dv italfont Times-Oblique
+	.dv boldfont Times-Bold
+	.dv termsize .75i
+	.dv text_indent 0i
+	.dv header_indent 0i
+	.dv col_indent 1i
+	.dv col1_width 7.5i
+	.dv right_mar 1i
+.fi
+.im doc_start.im
+.im ifroom.im
+
+.sv bold
+.sv ital
+
+.if hfm
+	&indent
+	.ta b=0 w=90
+.fi
+
+.dv c (.$1)
+.dv textsize 10
+.sf &textfont
+.st &textsize
+
+.hn off
+.dv x ^&ital(XFM)
+
+.gv e XDOC_PASS1 pass1
+.if pfm
+	.if pass1 
+		.tc on
+	.ei
+		.tc off
+		.im xfm_cover.im
+		.im xfm.toc		.** *.toc does a lead page eject
+		.pa
+	.fi
+.fi
+
+.sf &textfont
+
+
+
+.st 10
+.** this will work in some of the formatters for headers but not in all
+&set1col
+.in +.5i
+.ll -1i
+.sp 2
+.if hfm
+	.ta b=0 w=80 6i
+	&indent
+.fi
+
+.bc start
+&stress(ABSTRACT) .br
+.bc end
+
+
+.** .dv textfont Helvetica
+.sf Helvetica
+.sp 2
+
+&x is a family of document formatting programmes which read a common 
+source language to produce output in HTML, PostScript, Rich 
+Text Format (RTF), or ASCII formatted text. 
+The &x language provides for the definition of variables, inclusion of 
+files and preformatted material (encapsulated PostScript, RTF, or plain text), 
+table generation and formatting of the text with optional justification and 
+multiple column support.
+&x allows an author the ability to maintain one copy of document &ital(source)
+with the ability to generate multiple output formats from the single source. 
+In addition, &x also provides the ability to share document sections and images
+between documents which can significantly reduce the maintenance effort when supporting related documents.
+The &ital(XFM Language Reference) describes the &x language and how to use it to generate documents and HTML pages.
+
+.ll +1ii
+.in -.5i
+.sp
+.lw 0
+.ln 
+.if hfm
+	&uindent
+	.et
+.fi
+
+.pn on 0 center f=%d noline
+.oe page .rh &doc_title
+.by 9.85i
+
+
+.sf &textfont
+.sp
+.dv section Overview
+.if pfm
+	.** .oe .rh ^&section ^: .im x.im
+	 .oe page .im cmdtab.im
+	&set2col
+.** 	.ll 3.35i 
+.fi
+
+.hn 1
+.st &textsize
+.sf &textfont
+
+
+.h1 Overview
+.tt 
+&x Reads commands and document text from one or more input source files, formats
+the text as described by the commmands, and writes the output to a single 
+file. 
+The output format generated is determined by the actual formatter that 
+is used to parse the source file; &lit(hfm) produces HTML output, 
+&lit(pfm) produces PostScript output, &lit(rfm) produces Rich Text 
+Format ouput (RTF) and &lit(tfm) produces simple formatted text. 
+With a few exceptions, all of the &x commands are supported by all formatters
+and if it is not possible to support the concept in a particular 
+output format (e.g. justified text in HTML) the command, and any 
+associated arguments, are ignored when not supported.
+
+.h2 Invoking XFM
+Any of the &x formatters can be invoked with a simple command line syntax:
+.sp
+&litblkb
+xfm inputfile outputfile [command]
+&litblke
+.sp
+Where &lit(xfm) is the formatter name: &lit(hfm, rfm, tfm,) or &lit(pfm.)
+The &ital(command) is any command that &x should treat as though it 
+appeared on the first line of the input file, and is optional. 
+In general this command is used to include a special setup file or to define
+a compilation time variable.
+&ital(Inputfile) and &ital(outputfile) are the filenames where the &x source
+is to be read from, and where the formatted document is to be written to.
+Because &x is supported under several different operating systems, the 
+filenames &lit(stdin) and &lit(stdout) can be used to cause &x to read or 
+write to either of the standard input or output devices. Under some flavours
+of UNIX, special devices (e.g. /dev/fd/1), can be supplied as well. 
+.sp
+
+.h2 Command Syntax
+The general command syntax is a single dot character followed by 
+a two character command name (e.g. ^.xy).  
+The command name must be separted from the 
+next input token on the source line by at least one blank or tab character. 
+Some commands accept one or more parameters which are placed following the command name
+and before the the next newline character. 
+Command parameters vary by command, and may be positional,
+keyword, keyword value pairs, or text tokens. Positional parameters must 
+be supplied in the order that they are expected, and in some cases may be 
+omitted if the user wishes for the default values to be applied to the 
+command. 
+Keywords may generally be supplied in any order following the command.
+Keyword value pair parameters may be supplied in any order 
+following the command and have the syntax: &lit(keyword=value) where
+&ital(keyword) is a single character. 
+In rare cases, a command will accept both keyword/keyword value parameters
+and positional parameters. In these cases the first unrecognised token 
+(not an expected keyword or pair) is assumed to be the start of positional 
+parameters.  
+.gv figure
+Figure &_fig contains a  table which illustrates a few examples of 
+commands with various parameter styles.
+
+.if hfm
+	.im cmdtab.im
+.fi
+
+.h3 Command stacking
+Command stacking in &x refers to multiple commands that appear between 
+newline characters in the file. 
+In general command stacking is simple to take advantage of, but care must 
+be taken when a command with a variable number of parameters has a command 
+stacked after it.  In the case when a command (such as the header commands)
+take a variable number of parameters, &x assumes that all tokens up to the 
+next newline character are to be treated as parameters.  In order to stack 
+a command before the next newline character the command must be 
+implicitly terminated. 
+&x recognises a single colon characer (:), surrounded by whitespace, to 
+terminate commands with a variable number of parameters.  This becomes a bit 
+complicated when attempting to define macros that contain multiple commands, 
+and specific examples of these issues will be described with the define 
+variable &c(dv) command.
+
+.h3 Command continuation
+While not normally necessary, it is sometimes desired to escape the newline 
+character to have the tokens on the next record treated as command parameters.
+When the tlida character (~) exists as the last token prior to a newline, 
+the newline is ignored and tokens on the next line are read as though they were
+placed on the line with the orignal command. 
+In general, the most common use of command continuation 
+is with the define variable command &c(dv) and further examples of command 
+continuation will be illustrated in that section. 
+
+
+.h2 Indicating Distance
+Many commands accept distance parameters such as line lengths, cell 
+widths, and definition term sizes. 
+Distance can be supplied using one of three size units: points, inches
+or characters.
+When specifying a distance, a size unit character is appended to the 
+numeric distance value where &lit(2.5i) would indicate two and one half
+&ital(inches) and &lit(78p) would indicate 78 &ital(points.) If the 
+numeric value does &stress(not) have either a &lit('p') or &lit('i') appended, 
+&x assumes that the value is to be interpreted as characters.
+
+.sp
+It is advantagous to use either units of either inches or points when 
+formatting text with the PostScript, RTF or HTML formatters, and to use
+characters as the units when formatting with the plain text formatter (tfm).
+However, as the goal of &x is to maintain one source for all documents, 
+&x formatters will convert inches and/or point values supplied into approximate
+character values when formatting plain text. Therefore the use of character
+units is not recommended. 
+
+.h2 Variables
+One of the most powerful features of &x is the ability to define and 
+reference varaibles. 
+Variables are defined using the &c(dv) (define variable) 
+command and may contain commands and/or text. 
+&x supports two variable types: simple and macro. Simple variables
+are referenced simply using their defined name and are expanded 
+when encountered. 
+Macro variables are also referenced by name, but accept one or more 
+positional parameters enclosed in parenthesis following the 
+variable name (much like a function call in C). 
+.sp
+Variables are dreferenced in the source using the ampersand (^&) character
+followed immediately by the variable name.  Hence, if the variable &lit(foo)
+were defined, it would be referenced as &lit(^&foo.)  If the expansion of a 
+variable is to be concatinated with text, then the syntax &lit(^^^&^{foo^}text) 
+can be used to accomplish this. 
+
+.h3 XFM supplied variables
+Using the get value command &c(gv) the user can request that &x create 
+one of several variables. The following variable can be created by &x when requested:
+.sp
+&indent
+.bl &lic1
+.li The date in either dd month-name yyyy or mm/dd/yy format.
+.li The value of an environment variable (UNIX implementations only).
+.li The number that will be given to the next figure.
+.li The name of the current font.
+.li The name of the host that is running &x (UNIX implementations only).
+.li The current page number.
+.li The current left margin setting (in points).
+.li The current right margin setting (in points).
+.li The current text size (in points).
+.li The current time in HH:MM format.
+.li The current 'y' value (points) from the top of the page. 
+.el
+&uindent
+.sp
+.cc 3
+The syntax of the get value command and variable names that are created are described later
+in this document.
+
+.h2 Conditional Execution
+It is quite common to need to cause the formatting of a document to execute a bit differently 
+depending on either the target document being produced, or the the particular &x formatter
+that is being used to render the final output.  For instance, when producing an HTML document
+it is generally accepted practice to include an image tag in the document when wishing to 
+"include" a picture within the document, but when generating an PostScript document an 
+encapsulated PostScript file will need to be read by &x in order to include an image into 
+the final document.  These types  of fundimenatal differences between the output formats
+are one of the reasons that &x supports an if-then-else conditional statement set. 
+
+.h2 File Imbedding
+Another of the significant assets of &x is the ability to imbed, or include, source files
+similar to the use of &lit(#include) statements in the &bold(C) programming language. 
+The imbed file command &c(im) causes input source to be switched to the named file 
+as though the source had been typed in the file containing the imbed file command. This feature
+is generally used to include variable/macro definitions that are used by multiple 
+documents (in the same manner that a &bold(C) header file is included across multiple source
+files), or to include sections that are common to multiple documents. This can significantly 
+reduce the amount of document maintenance time when managing a library of related documents. 
+
+.im cmds.im
+.im lists.im
+.im table.im
+.im macros.im
+.im ixcmds.im
+.cc 100			.** force a col eject on the off chance there is a figure pending
+.im quickr.im
+.if index_here
+	&index_here
+.fi
+.sp 3
+.lw 0
+.ln
+.st 8
+.gv Date
+.bd 1i
+.di Original: : February 2003
+.di Revised: : &_date
+.ed
+
+.if hfm
+	.et
+	&uindent
+.fi

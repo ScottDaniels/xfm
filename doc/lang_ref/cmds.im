@@ -1,0 +1,1460 @@
+
+.cc 5
+.h1 Commands
+The following paragraphs describe the majority of &x commands. Following the 
+major &ital(Commands) section, are sections that describe the remainder of 
+the commands which are used for more complicated actions such as the generation 
+of lists, tables, and the creation and management of macros. 
+.sp
+
+Command syntax is given only for the commands which accept parameters. If 
+no syntax is given with the command description, then the command 
+does not accept any parameters and the token immediately following the 
+command string is taken to be text or another command. 
+It is assumed that any distance parameters (e.g. widths, lengths, or sizes) 
+can all have either a &lit(p) or an &lit(i) appended to the value 
+to indicate points or inches and thus this option is not illustrated 
+in any of the syntax examples. 
+
+.h2 Abort 
+The abort command &c(ab) causes &x to stop without writing any additional 
+'end housekeeping' information to the output file. This can be 
+used when generating PostScript or HTML that needs to be incorporated
+into another similar file without all of the necessary 'cleanup' instructions 
+and/or tags at the end of the document.
+
+.h2 Add Text 'as is'
+The as is command &c(ai) causes all lines in the source file until a 
+&ital(format command) is encountered to be placed into the output file exactly 
+as is.  While this command is similar to the  &ital(no format) command, when 
+processing as is text, &x makes no attempt to escape characters that 
+have special meaning in the output file (e.g. parenthesis when generating
+PostScript, or greater-than symbols when generating HTML). The as is 
+command is generally used when including native PostScript, RTF, or 
+HTML into the document.
+
+.h2 Block Center
+The block center command &c(bc) is used to start or end a block of text that 
+should be centered on the page. All source text between the two block center
+commands is formatted and the output lines are centered between the margins.
+The syntax for the block center command is:
+.sp
+.sf &litfont
+.nf
+   .bc {start|stop}
+.fo
+.sf &textfont
+.sp
+
+.h2 Line Break
+The break command &c(br) causes the next text token encountered in the input source 
+to be placed at the beginning of a new line.  If the current line is at the bottom of 
+a column, or page, then the necessary eject is done before continuing to render the 
+document.
+
+
+
+.h2 Enclose Text In A Box
+The box command &c(bx) is used to draw boxes around sections of text. 
+The box command accepts one of two positional parameters such that the syntax of the 
+command is:
+.sp
+.st [ &textsize 2 - ]
+.sf &litfont
+.nf
+ .bx option [m] [c=colour] [b=<points>] [w=<pctg>]
+.fo
+.sf &textfont
+.st &textsize
+.sp
+Where:
+.sp
+&indent
+.bd .75i &ditext
+.di option : Is either the word &lit(start) or &lit(end) to start or end the box. 
+.sp
+.di c=colour : Allows the user to select a background colour for the box when generating 
+HTML output. 
+.sp
+.di b=<points> : Allows the user to supply the border width of the box when generating HTML 
+output.
+.sp
+.di m : Base the box on the current text margins rather than the current column defintion 
+which is the default.
+.sp
+.di w=<pctg> : Defines the percentage of the browser window that should be used to draw 
+the box. Valid only when generating HTML output.
+.ed
+&uindent
+.sp
+
+.** --------------------------------------------
+All text appearing between the box start and box stop commands will be formatted as 
+expected and when the page is rendered a box is placed round the text. Should the 
+text force a column or page eject, the box is "closed" at the bottom and restarted 
+in the new column.
+.sp
+
+.h2 Setting The Bottom Of Page
+The bottom &lit(y) value is used by &x to determine the bottom of the page when generating
+RTF and PostScript documents. The user may adjust the bottom &lit(y) value using the 
+&ital(bottom Y) command &c(by) to specify the distance (in points or inches) from the 
+top of the page that should be treated as the last usable area for generated text. 
+The &ital(bottom Y) command has the following syntax:
+.sp
+.sf &litfont
+.nf
+   .by <distance>{i|p}
+.fo
+.sf &textfont
+.sp
+Where &ital(distance) is the number of points or inches from the top of the page.
+It should be noted that any running footer text and/or page numbers are placed below
+the value specified. 
+If &ital(distance) is negative, then it is assumed to be the distance &ital(up) from 
+the bottom of the page. 
+The &lit(hfm) generator ignores the bottom &lit(y) command.
+
+.h2 Capturing Source
+The capture command &c(ca) allows a section of &x source to be captured and buffered into a
+temporary file. 
+The primary use is to allow an example to be created in-line and included in the document
+at the current point if there is enough room on the page, and to defer the inclusion of the 
+source until the top of the next page if there is not. 
+An alternative method would be to maintain the example in a separate file; the capture 
+command allows that to be avoided if it makes more sense. 
+
+.sp
+The capture command accepts either a &lit(start) or &lit(end) directive;  the name 
+of the capture file is expected to follow the start directive.
+.gv fig
+Figure &_fig contains sample code which demonstrates the capture command.
+.sp
+
+
+.** love it -- use the capture command to doc the capture command :)
+.ca start martha.ca
+.sf &litfont
+.st [ &textsize 2 -]
+.nf
+   .** if not enough room put whole quote on 
+   .** next page
+   .ca start quote_jones.ca
+   .cc 10
+   .sf Times-Italic
+   &indent
+   .bx start m
+   .sp
+   On a clear day it might be possible to see 
+   forever, but the reality is that you are only 
+   able to see a distance which is relative to 
+   the height your eyes are above the Earth's 
+   surface.  For a person six feet tall this is 
+   proably about three miles. 
+   .sp 1
+   Martha Jones
+   .sp
+   .bx end
+   .sp 2
+   .ca end
+   .** ---include the file now if thre is room 
+   .if pfm 
+      .gv lines 
+      .if  &_lines 10 >    
+         .im quote_jones.ca  
+      .ei  
+         .oe col .im quote_jones.ca  
+      .fi  
+   .ei  
+      .im $2  
+   .fi
+.fo
+.sf &textfont
+.st &textsize
+.sp .1
+.fg Illustration of the capture command.
+&martha_line
+.sp
+.ca end
+.gv remain
+.sv _lines
+.if &_lines 33 <
+	.dv martha_line .ln .sp 1
+	.oe column .im martha.ca
+.ei
+	.dv martha_line
+	.im martha.ca
+.fi
+
+
+.h2 Establishing Multiple Columns
+When generating RTF or PostScript, output can be organised into multiple columns across
+each page. 
+The column definition command &c(cd) is used to indicate the number and size of columns, 
+indention information, and gutter size (distance between columns) information.
+.gv fig
+.dv cdfig &_fig
+Figure &_fig illustrates a page layout with two column and indicates the various 
+areas of the page.  The column width, gutter and column indention sizes are all controlled
+using the column definition command.  The other areas, header margin, text indention and 
+line length are controlled using separate commands. 
+
+.if false
+.** include the pic at the top of the next column
+.if pfm
+	&ifroom(15:cd.im)
+.ei
+	.im cd.im 
+.fi
+.fi
+
+.sp
+
+.cc 5
+The column definition command has the following syntax:
+.sp
+.sf &litfont
+.nf
+ .cd n [w=width] [g=gwidth] [i=indent]
+.fo
+.sf &textfont
+
+.sp
+.cc 10
+Where:
+.sp
+&indent 
+.bd .6i &ditext
+.di n :  Is the number of columns
+.sp
+.di indent : Is the amount of space (optionally specified in inches or points)
+that the left column is to be indented from the edge  of the page.
+.sp
+.di gwidth : Defines the width between columns.
+.sp
+.di width : Supplies the width of each column.
+.ed
+&uindent
+
+.cc 10
+.sp
+Until the first column definition command is encountered, &x defaults to a single column
+with a width of approximately 7 inches. 
+If the column definition command causes the column width to be smaller than the currently set
+line length, the line length will be set to the same value as the column width. No warning 
+message is issued if this happens as it is a convenience adjustment made for the user. The 
+same adjustment is &stress(not) made, if the column width is increased such that it becomes
+larger than the line length.  
+This command is recognised only by the PostScript and RTF formatters. 
+
+.h2 Forcing A New Column
+The column begin command &c(cb) forces the next text encountered in the source file to 
+be placed at the start of the next logical column.  If the current column is the last 
+column on the page, then a page eject will result.
+The column begin command accepts no parameters/arguments and is ignored by &lit(hfm.)
+
+.h2 Conditional Column Eject
+The conditional column eject command &c(cc) allows the user to easily test to determine 
+if a minimum number of text lines remain in the current column. If the number of text lines
+(at the current text size setting) do not remain in the current column, a column eject 
+is performed. Otherwise, the formatted output continues to be placed in the current 
+column.  
+The syntax of this command is:
+.sp
+.sf &litfont
+.nf
+   .cc n
+.fo
+.sf &textfont
+.sp
+Where &ital(n) is the number of lines that must remain in the current column in order 
+to continue place formatted output into the column. The conditional column eject command 
+is ignored by &lit(hfm) and &lit(tfm.)
+
+.h2 Centering A Text Segment
+A single text segment may be centered on the current output line using 
+the center command &c(ce.) 
+The current output buffer is flushed and any text placed after the &ital(center) 
+command and before the next newline character will be centered between the current margins.
+.sp
+
+.h2 Text Colour
+The text colour command &c(co) establishes the colour that text should be painted in.
+Colours should be supplied as either &lit(#rrggbb) or &lit(0xrrggbb) values.  The hfm 
+formatter will accept names, but for portability names are not recommended (use macros to define colour names).
+The following illustrates the syntax for this command:
+.sp
+.sf &litfont
+.nf
+   .co 0xrrggbb
+.fo
+.sf &textfont
+.sp
+Where &lit(#rrggbb) is the standard hexadecimal red, green, blue triplet (e.g. ff4c90). 
+
+.h2 Source Comments
+The comment command &c(**) causes all text tokens encountered after the command, up to 
+the next newline character, to be ignored. 
+&x can be instructed to ignore multiple source lines, effectively commenting them out, by 
+enclosing the undesired lines of source inside of a conditional expression that is guarenteed
+to evaluate to false (e.g. ^.if [ 0 ]). 
+
+.h2 Column Notes
+A column note (foot note) can be added to the bottom of the current column by reserving an 
+amount of space and supplying the text that should be placed there when the end of the column
+is reached.  
+The column note command &c(cn) is used to define this space and add the text to a cache 
+which is then written later. 
+Column notes are usually denotted in the text with a superscripted number or symbol which is 
+also given to the column note command. 
+The syntax is:
+
+.sp .5
+.sf &litfont
+.st 8p
+.nf
+   .cn start {atbot|atclose} [s=sym] 
+       <font-name> <font-size> <space>
+   .cn end
+   .cn show
+.fo
+.sf &textfont
+.st &textsize
+.sp
+Where:
+.sp
+&indent 
+.bd .75i &ditext
+.di atbot : indicates that the note is to be placed at the bottom of the current column.
+.di atclose : indicates that the note is to be placed at the end of the document.
+.di sym : is the symbol to use; if omitted an internal counter is used and the note
+  is assigned to the text.
+.di font : is the name of the font that the note text will be written in.
+.di size : is the font size (e.g. 8p) that the note is to be written in.
+.di space : is the amount of space that needs to be reserved at the end for the note.
+.sp
+.ed
+&uindent
+
+.sp
+The note text is placed between the start and end commands.
+When using at close column notes, a &ital(show) command will need to be issued which 
+causes the end notes to be added to the output.
+
+
+.h2 Conditional Page Eject
+Similar to the &ital(conditional column eject) &c(cc) command, the 
+&ital(conditional page eject)
+&c(cp) command causes a page eject if the indicated number of lines do not remain on 
+the current page. While this command is still supported, it is not recommended as 
+it does not take into account the number of columns which are being placed onto the page
+and thus may not yield the desired results.
+The &ital(conditional column eject) command can be used in place of this command and 
+will generate the expected results regardless of the number of columns that are being 
+formatted. 
+
+
+.h2 Double Space Mode
+The double space command &c(ds) causes the formatted output to be 
+rendered with twice the space between lines than when in 
+normal mode. 
+This command requires no parameters. 
+The &ital(single space) &c(ss) command returns the document formatting 
+to single space mode. It too requires no parameters. 
+
+.h2 Define Variable
+&x supports the definition of variables with the &ital(define variable) &c(dv)
+command. Variables can be assigned commands, text, or a combination 
+of commands and text. In their simplest form, a variable allows the user
+to make their document easier to maintain in the same fashion as a programmer
+would use a variable or constant in their code. For example, the 
+source code for this document has the variable &lit(x) defined to expand
+to &lit(XFM) rendered in an italic font. Other variables, such as an 
+&lit(indent) variable can be defined to make indenting text easier.
+Macros are the most complex variables that are supported by &x and allow
+one or more parameters to be inserted into the variable definition as the 
+variable is expanded. Macros will be explained in a separate section of 
+this document.
+.sp
+The &ital(define variable) command has the simple syntax of:
+.sp
+.sf &litfont
+.nf
+    .dv <var-name> <tokens>
+.fo
+.sf &textfont
+.sp
+Where:
+.sp
+&indent 
+.bd .75i &ditext
+.di var-name : Is the name that the variable is assigned.
+.sp
+.di tokens : Are the "value" that is assigned to the variable. 
+.ed
+&uindent
+.sp
+Once a variable is created, it may be referenced using the ampersand
+(^&) character. Thus to expand the variable &lit(x) the source for 
+the document would be ^&x for each reference. 
+.sp
+
+The &ital(show variable) &c(sv) command can be used to show any defined 
+variable. The &ital(show variable) command accepts the name of the variable 
+to display or the word &lit(all) as a parameter. The value of the variable, 
+or all variables if &lit(all) is specified, is written to the standard error 
+device.  This command is useful when debugging complicated macros.
+
+.sp
+.cc 6
+The following is a list of several &ital(define variable) commands that are useful:
+&indent 
+.sp 1
+.li &lit(^.dv indent ^.ll -.5i ^.in +.5i)
+.br .li &lit(^.dv textsize 10p)
+.br .li &lit(^.dv textfont Helvetica)
+.br .li &lit(^.dv boldfont Helvetica-Bold)
+&uindent
+.sp
+&x creates a variable which indicates the formatter that is currently processing the document 
+source. It will often be necessary to initialise the document differently based on the type of 
+output being generated, and thus any of the following variables may be tested for: &lit(pfm, tfm, hfm) 
+or &lit(rfm.)
+
+.h2 Conditional Processing
+&x supports conditional processing with an &ital(if-else) construct of 
+commands.  When the if command &c(if) is encountered the remaining tokens 
+on the line are evaluated and if the result is true then the source lines 
+until a matching &ital(end if) command &c(fi) or &ital(else)
+command &c(ei) are parsed and formatted. If the tokens are evaluated to 
+a false value, then the source lines are skipped, and if an else command 
+is encountered those lines are processed. If commands may be nested.
+
+.sp
+Tokens are evaluated as either an expression or as variable names. 
+A variable name equates to true if it is defined (NOT based on the 
+value of the variable).  Thus if conditional processing is to be 
+done only if the formatter being used is the PostScript formatter 
+then the following if command could be used:
+.sp
+.cc 6
+&indent
+.st [ &textsize 2 - ]
+.sf &litfont
+.nf
+	.if pfm
+		.dv indent .ll -.5i .in +.5i : 
+	.fi
+.fo
+.sf &textfont
+.st &textsize
+&uindent
+.sp
+
+.sp
+.gv fig
+.dv ifel_fig &_fig
+Expressions may be 'negated' by placing the bang character (!) in front of the 
+expression and logical &lit(AND) (^&) and &lit(OR) (|)  operators are supported using a 
+reverse polish notation. 
+Figure &ifel_fig illustrates the use of the logical &lit(OR) operator (to cause the execution 
+of code it is being parsed by either the &lit(pfm) or &lit(rfm) formatter), and it also 
+illustrates the use of the &ital(else) command with a nested &ital(if) command. 
+.sp
+
+.** ------------------- capture ---------------------------
+.ca start ifelse_examp.ca
+.cc 10
+.st &litfont
+&indent
+.** .bx start m
+.sp
+.st [ &textsize 2 - ]
+.sf &litfont
+.nf
+ .if pfm rfm |
+    .dv indent .ll -.5i .in +.5i : 
+    .dv uindent .in -.5i .ll +.5i 
+ .ei
+    .if hfm
+        .dv indent .bl
+       .dv uindent .el
+    .fi
+ .fi
+
+.fo
+.sf &textfont
+.st &textsize
+.** .bx end
+&uindent
+.st &textfont
+.bx end
+.fg Using the if-else commands.
+.sp 2
+.ca end
+.** --------------------------------------------------------
+&ifroom(16:ifelse_examp.ca)
+
+
+
+Variable values may be referenced as parameters on the if command 
+line, and their values will be interpreted as numbers. Numbers may be
+compared using greater than (>), less than (<) and equal (=) signs.
+Comparison syntax is &stress(postfix) notation, and thus to execute
+code if the variable &lit(z) is greater than the variable &lit(y)
+the following if statement could be coded:
+.sp
+.sf &litfont
+.st [ &textsize 2 - ]
+.sf &litfont
+.nf
+     .if &z &y >
+.fo
+.sf &textfont
+.st &textsize
+.sf &textfont
+.sp
+The command &lit(^.if 0) always evaluates to &ital(false) and is a 
+simple way of commenting out a section of the document. 
+
+
+.h2 Encapsulated PostScript Files
+When using the &lit(pfm) formatter to generate PostScript output, 
+&x is capable of imbedding files that have been saved in encapsulated
+PostScript format into the document.  This provides for a simple way 
+of including drawings or other artwork that is created and saved 
+as an &lit(.eps) file. The &ital(encapsulated postscript) command 
+&c(ep) is used to indicate the name of the file to include, and to 
+define several of the constraints that &x will use to place the 
+document into the formatted text. 
+The following is the command syntax for the &ital(encapsulated postscript)
+command (broken onto multiple lines for readablity):
+.sp
+.st [ &textsize 2 - ]
+.sf &litfont
+.nf
+ .ep fname [l=n] [x=n] [noadvy] 
+       [center|close|stretch|proport] 
+.fo
+.sf &textfont
+.st &textsize
+.sp
+Where:
+.sp
+&indent 
+.bd .6i &ditext
+.di fname : Is the filename of the encapsulated postscript file.
+.sp
+.di l : Is the length from the current y position to reserve for the drawing. 
+The value (n) may be postfixed with either an &lit(i) or &lit(p) to indicate 
+the units of measurements. If neither postfix character is used a unit of 
+&stress(lines) (at the current text size) is assumed. 
+.sp 0
+.di x : Supplies the number of inches/points to shift the origin of the 
+drawing to the right. This is sometimes necessary depending on how the 
+origin as been established by the programme that created the encapsulated 
+postscript file. 
+.sp 0
+.di center : Specifies that the drawing is to be centered between the current 
+margin values. 
+.sp 0
+.di close : Causes the &lit(y) value to be shifted toward the top of the page
+if the length of the drawing did not require the amount of space reserved 
+with the &lit(l) parameter. 
+.sp 0
+.di stretch : Causes the drawing to be streched in order to fill all of the 
+reserved space. &stress(CAUTION^:) &x may not maintain an &lit(x,y) aspect ratio when stretching 
+a drawing. 
+.sp 0
+.di proport : &x will attempt to keep the &lit(x,y) aspect ratio in proportion 
+to the original drawing. 
+.sp 0
+.di noadvy : Causes the current &lit(y) value &stress(not) to be advanced after the drawing 
+has been included.  This allows the document text to be placed on top of the drawing and 
+can be used to place a printed 'water mark' on the page. 
+.ed
+&uindent
+
+.sp
+The drawing in Figure &cdfig was created using an external drawing tool, saved as 
+an encapsulated PostScript file, and included with the following command:
+.sp
+
+.st [ &textsize 2 - ]
+.sf &litfont
+.nf
+ .ep column.eps center l=4i 
+.fo
+.st &textsize
+.sf &textfont
+.sp
+The encapsulated PostScript command is ignored when generating any output other than PostScript, however
+drawings can be incorporated into documents when generating both RTF and HTML documents. 
+The technique used when generating both PostScript and HTML documents from the same source, is to save the 
+drawing as a "jpeg," or RTF file and to reference the file in a manner appropriate to the output 
+being generated. 
+For HTML, this would be the inclusion of an image tag into the output, and when 
+generating RTF, the drawing needs to be placed 'in-line' with the RTF commands that &x is generating.
+Assuming that the macro &lit(image) has been defined, the following &x code can be used to 
+include a drawing into either type of document (PostScript or HTML) is being generated. 
+.gv fig
+.dv cond_fig &_fig
+Figure &cond_fig contains the full bit of sorurce that is used to "pull in" the right drawing based on 
+the output being generated
+Notice that the box code, common to either type of output, is started and ended outside of the 
+if statement.
+
+.** ----------------------- capture ------------------------------
+.ca start cond_example.ca
+.sp
+.cc 25
+.** .bx start m
+.st [ &textsize 2 - ]
+.sf &litfont
+.nf
+
+	.bx start m
+	.if pfm
+             .ep figs/drawing1.eps center l=3i
+	.el
+             .if hfm
+                  &image(figs/drawing1.jpg)
+             .ei
+                .if rtf
+                  .ai 
+                      .im figs/drawing1.rtf
+                  .fo
+                .ei
+                  .sp
+                  [IMAGE: figs/drawing1.jpg]
+                  .sp
+                .fi
+            .fi
+	.fi
+	.bx end
+
+.fo
+.** .bx end 
+.sf &textfont
+.st &textsize
+.fg Sample use of conditional statements.
+.fi
+.sp 2
+.ca end
+.** ----------------------------------------------------------------
+&ifroom(25:cond_example.ca)
+
+
+.sp
+.h2 Evaluate Expression 
+&x provides the ability to compute simple values and to include the result as a parameter to any 
+command. At times, it is quite convenient to have a computed value placed into the document itself
+rather than made available as a command. The &ital(evaluate) &c(ev) command allows for the evaluation 
+of its parameter and then places the result into the document.  
+
+.sp
+Expressions in &x are enclosed in square braces ([ and ]) and are interpreted using a stack oriented, 
+reverse polish notation. Thus all values are stacked until an operator is encountered which operates
+on the last &ital(n) values. The number of stacked values operated on  depends on the operation.
+The result is always left as the top value on the stack, and when the end of the expression is reached
+(the closing square bracket) the top value is used as the parameter value and all other values are 
+discarded. 
+.sp
+For example, to add two and three together and to place the result into the document 
+the expression would be:
+.sp 
+.sf &litfont
+.nf
+   .ev [ 2 3 + ]
+.fo
+.sf &textfont
+.sp
+All calculations are done as double precision 
+floating point numbers and in addition to the four basic operations (addition, subtraction, 
+multiplication, and division) several other operations are provided for; their operators are listed below:
+.sp
+&indent
+.bd .5i &ditext
+.di	% : Modulo division. 
+.sp
+.di 	F[ract] : Take the top value on the stack and replace it with the fraction portion of the value.
+.sp
+.di 	I[nt] : Take the top value on the stack and replace it with the integer portion of the value.
+.sp
+.di 	S[um] : Sum all elements in the stack.
+.ed
+&uindent
+.sp
+Expressions may be placed as a parameter to any command that accepts numeric input and to 
+use an open square bracket as a parameter, it must be escaped. Thus to increase the font size by 
+two points the following commands could be used:
+.sp
+.st [ &textsize 2 - ]
+.sf &litfont
+.nf
+     .gv tsize
+     .st [ &_tsize 2 + ]
+.fo
+.sf &textfont
+.st &textsize
+
+.sp
+.h2 The Figure Command
+The &ital(figure) &c(fg) command is used to title a figure that has been 
+placed into the output document. All tokens between the &ital(figure) command and 
+the next newline are taken as figure text and added to the document. 
+&x automatically places the figure number in front of the figure text, and 
+reduces the text size slightly.  The current font is used to render the figure 
+text. 
+The style of the figure number depends on whether or not paragraph numbering has been turned on.
+When numbering is off, then figures are labled with a simple ordinal number. If paragraph numbering 
+is turned on, then the figure number consists of the paragraph number of the most receint level one 
+header, followed an incramental figure number (e.g. 12-2) which is reset each time a 
+header level one command is encountered.
+.sp
+The figure command can also be used to label tables.  If the &lit(t=table) type option is 
+used, then the word &ital(Table) and the table number is added. 
+Examples of both:
+
+.sp
+.st [ &textsize 2 - ]
+.sf &litfont
+.nf
+ .fg An illustration of the wysiwyg-is-bad.
+ .fg t=table Counts of users and time.
+.fo
+.sf &textfont
+.st &textsize
+
+
+
+.sp
+.h2 Begin Formatting
+&x defaults to working in formatting mode which causes all non-command
+or parameter tokens to be placed into the document using the formatting
+(e.g. justification and  centering) specifications that have been supplied. 
+The formatting &c(fo) command is used to turn formatting on or off. By 
+default, if no parameter is given, then it assumes that formatting is to be 
+turned on. 
+The command accepts either the word on or off as the only parameter.
+.sp
+Formatting can also be turned of with either the as is &c(ai) or no format &c(nf) 
+commands.  
+The no format command has the exact same effect as supplying the &lit(off) 
+paramter to the format command. 
+
+
+.h2 Getting System Values
+.gv table
+.dv gv_fig_num &_table
+The &ital(get value) &c(gv) command allows some &ital(system) values to 
+be defined as variables, and thus accessible by the &x source. The 
+syntax for this command is:
+.sp .5
+.if pfm
+	.oe page .im gv_tab.im
+	.sp
+.fi
+
+.sf &litfont
+.nf
+   .gv value-name parameter
+.fo
+.sf &textfont
+.sp
+Where:
+.sp
+&indent
+.bd .8i &ditext
+.di value-name : Is one of the various system value identifiers that should 
+be placed into  a parameter. See figure &gv_fig_num for a list of &ital(value-names)
+and the variables that are created.
+Value-names are case sensitive, and generally only the first character of the name 
+needs to be supplied on the &ital(get value) command. 
+.sp
+.di parameter : Is any parameter that is required to process the command.
+.ed
+&uindent
+
+.sp
+
+.** include where we really want it if not pfm
+.if ! pfm
+	.im gv_tab.im
+.fi
+
+.sp
+All of the variables that are created as a result of the &ital(get variable)
+command (with the exception of the get environment form) are named with a 
+leading underbar character (_) in an attempt to prevent a user variable 
+from being destroyed.  Thus, it is recommended that user variable names are
+not started with a lead underbar character. 
+
+.sp
+
+.h2 Paragraph Headers
+Four levels of paragraph headers are supported. Automatic header numbering 
+may be turned on and off using the &ital(header numbering) &c(hn) command. The 
+header commands all have the format:
+.sp
+.sf &litfont
+.nf
+    .h<n> header text
+.fo
+.sf &textfont
+.sp
+Where the <n> is replaced with the header level number 1 through 4 (e.g. h1).
+Headers are placed into the formatted document using the header level properties, 
+set by the &ital(define header) &c(dh) command. Headers may be indented 
+differently from the left edge of the current column, have a different font size
+and font style than the body of the document, and be spaced differently. The 
+controls that are available via the &ital(define header) command can be set 
+individually for each header.  
+.sp
+If automatic header numbering is turned on, the current paragraph for the 
+level is placed into the document before the header text. Figure numbers are 
+also affected when header numbering is enabled. When header numbering is 
+on. figure numbers take the form &lit(h-n) where &ital(h) is the current 
+header level 1 header number, and &ital(n) is the figure number within the
+current header level.  The figure number is reset to 1 with each successive
+header level 1 command.  
+
+.h3 Define header properties
+The define header properties command &c(dh) allows the user to establish different 
+properties for each of the four supported paragraph header levels.  
+The user can specify the font, font size, capitalisation, whether the header level
+is included in the table of contents, and spacing for a header. 
+The syntax of the define header properties command is shown below (broken on 
+multiple lines for formatting only):
+.sp
+.st [ &textsize 2 - ]
+.sf &litfont
+.nf
+	.dh level [f=font] [p=size] [s=skip] [i=indentr] 
+        [t={on|off}] [m=margin] [e=eject] 
+        [u={on|off}] 
+
+.fo
+.sf &textfont
+.st &textsize
+.sp .5
+Where:
+.sp
+&indent 
+.bd .6i &ditext
+.di level : Is the header level 1-4.
+.sp
+.di font : Is the name of the font to be used for the header level.
+.sp
+.di size : Is the size of the header (generally supplied in points).
+.sp
+.di skip : Is the amount of space that is to be skipped before and 
+after the header. The skip value is interpreted such that the ones 
+digit is the number of lines to skip after the header, and the tens
+digit is the number of lines skipped before the header is written. 
+While the skip commands are placed into the output HTML document, most 
+browsers do not honor more than one of them in succession.
+.sp
+.di indent : Is the number of characters that the first line of text 
+is to be indented following headers of this level. 
+.sp
+.di u=on/off : Causes translation of the header to uppercase characters
+if &lit(u=on) is supplied.
+.sp
+.di t=on/off : Causes the header text to be placed into the table of contents 
+when set on.
+.sp
+.di margin : Is the amount of space from the start of the column that the 
+header text is indented. 
+.sp
+.di eject : Defines the type of eject that is preformed before the header 
+is placed into the document. This may be one of &lit(page, col,) or &lit(none.)
+.ed
+&uindent
+
+.sp
+.gv table
+Any header options that are not explicitly defined on the &ital(define header) command
+remain unchanged, allowing only those attributes which do not need to be altered to 
+be omitted. 
+Figure &_table lists the attribute defaults for each header level.
+
+
+.sp
+.if pfm
+	.oe page .im headtab.im
+	.sp
+.ei
+	.im headtab.im
+.fi
+
+
+.h2 Imbedding Source Files
+Similar to the &lit(#include) statement in the C programming language, &x
+allows other source files to be imbedded as the source is parsed. The 
+&ital(imbed) command &c(im) accepts the name of the file to include and 
+will open and read the named file before processing any other tokens from
+the current source file.
+Obvious uses for this are to reuse document source that is common to 
+multiple documents (glossaries, formatting macros, etc.) such that changes need
+be made in the source and a global recompile preformed to update all 
+of the documents. 
+.sp
+
+Another use of the &ital(imbed) command is to cause a file to be included 
+at the next page break rather than at the current location.  This allows 
+tables, or illustrations to be placed at the top of a page rather than 
+at the current position.  The following source code illustrates how the 
+source for the &ital(get variable) command table is included and placed 
+at the top of the next page when generating PostScript output, but included
+at that point when generating HTML output:
+
+.** ------------------------ capture -------------------------------
+.ca start imbed_examp.ca
+.sp
+.cc 5
+.st [ &textsize 2 - ]
+.sf &litfont
+.** .bx start m
+.nf
+
+     .if pfm
+         .oe page .im gv_tab.im
+     .ei
+         .im gv_tab.im
+     .fi
+
+.fo
+.sf &textfont
+.st &textsize
+.** .bx end
+.fg Using the imbed command.
+.sp 2
+.ca end
+.** ----------------------------------------------------------------
+&ifroom(8:imbed_examp.ca)
+
+.h3 Imbed File Search Path
+If the environment variable &lit(XFM_PATH) is defined &x will search for files listed 
+on the imbed command in the directories listed on the path.  If the path variable is 
+not defined, the file name is assumed to be in the current directory, or the necessary 
+part of the path of the file must be supplied. 
+
+.h2 Jump To Token
+The &ital(jump) &c(jm) command causes &x to stop processing the source until 
+the token specified as the command parameter is found.  This provides an 
+easy method of excluding large amounts of the document from the final output, 
+and allows for &x to be used to extract document source from within files
+that are not pure &x source files (e.g. &x source placed at the bottom of 
+C programme files which create the manual page for the function or programme.
+When &x processes the C programme file, it would be instructed to skip 
+all of the C code until it found a token that was at the start of the 
+&x source code.)
+
+
+.h2 Justifying Text
+When text justification is turned on with the &ital(justify) &c(ju) command, 
+&x will attempt to format text such that the last character of each line 
+is flush with the right margin.  Justification is actively attempted by &x
+when generating PostScript and plain text, meaning that &x is actually calculating 
+the spacing and making the adjustments to align the text.  When generating 
+RTF documents, &x indicates in the RTF output that text should be justified. 
+When generating HTML output, &x allows the file to be created such that the 
+browser that displays the HTML is responsible for text formatting, and 
+as a justification tag is not defined in HTML, justification is not possible
+when generating HTML documents. 
+.sp
+
+The &ital(justify) command accepts either an &lit(on) or &lit(off) parameter 
+to cause &x to start or stop producing justified text. 
+.sp
+.sf &litfont
+.nf
+   .ju {on | off}
+.fo
+.sf &textfont
+.sp
+
+.h2 Setting The Line Length
+For all output types except HTML, the length of each text line across a column
+is adjusted using the &ital(line length) &c(ll) command.  This command accepts
+a size parameter (specified in points, inches or characters) and will set the 
+line length provided that it is not larger than the current column size. 
+The length parameter may also be specified as a relative parameter to increase 
+or decrease the current line length by the size entered.  A relative parameter 
+begins with either a plus sign (+) or minus sign (-). 
+
+.sp
+The &ital(indention) &c(in) command is used in conjunction with the &ital(line length) 
+command to set the amount of space that is placed between the left column edge
+and the left margin of the text in the column.  The following code segment 
+illustrates how a document with two columns (each three and one half inches 
+wide) can be established.
+
+.** -------------------------- capture ------------------------------
+.ca start colwid_examp.ca
+.sp
+.cc 8
+.** .bx start m
+.st [ &textsize 2 - ]
+.sf &litfont
+.nf
+
+  .** 1/4 inch space between cols (gutter)
+  .cd 2 w=3.5i g=.25i i=.25i	
+ 
+  .** no text indention, linelen same as col width
+  .in 0i                     
+  .ll 3.5i
+ 
+.fo
+.** .bx end
+.sf &textfont
+.st &textsize
+.fg Column width and text indention example.
+.sp 
+.ca end
+.** ------------------------------------------------------------------
+&ifroom(12:colwid_examp.ca)
+
+.sp
+Two common macros that are defined in &x source are the &lit(indent)
+and the &lit(uindent) macros.  The indent macro adjusts the line 
+length down a small amount, while increasing the indention 
+.gv fig
+.dv macro_fig &_fig
+value by the same amount. For example,  code in figure &macro_fig might be 
+used to define these macros.
+.sp
+
+.** -------------------------- capture -----------------------------
+.ca macros_examp.ca
+.sp
+.cc 12
+.** .bx start  m
+     
+.st [ &textsize 2 - ]
+.sf &litfont
+.nf
+
+   .if hfm
+      .dv indent .bl ^:
+      .dv uindent .el 
+   .ei
+      .dv indent .ll -.5i .in +.5i
+      .dv uindent .in -.5i .ll +.5i
+   .fi
+
+.fo
+.sf &textfont
+.st &textsize
+.** .bx end
+.fg Macros for setting the line length and text indention.
+.sp 2
+.ca end
+.** -----------------------------------------------------------------
+&ifroom(15:macros_examp.ca)
+
+
+Note that the order that the indention and line length are changed is important 
+as if the indention value would cause the line to extend past the defined
+column width, and error will occur and no adjustment will be made. 
+Even though there is no concept of line length in an HTML document, indention 
+can be simulated by starting an ordinary list as most browsers will automatically 
+indent the text while 'inside'  of a list. 
+
+
+.h2 Horizontal Lines
+The &ital(line) &c(ln) command can be used to draw a horizontal line from the left 
+margin to the right margin.  When generating a PostScript document, the width of 
+the line can be set using the &ital(line width) &c(lw) command.  The &ital(line)
+command accepts no parameters, while the &ital(line width) command accepts the 
+width of the line in points.  All lines are drawn using the line size set with 
+the &ital(line width) command until the next &ital(line width) command is encountered.
+
+.h2 Turning Off Formatting
+By default &x will read all tokens from each input line, and attempt to format 
+them, using justification if enabled, before they are placed into the output 
+document. 
+If there is a need to place information into the output document without an 
+attempt to format the text, then the &ital(no format) &c(nf) command can be used
+to turn formatting off. 
+When formatting is disabled, records from the source file are read and written 
+to the output file with only limited modification.  Records are defined to be 
+all tokens between newline characters. The limited modification that is applied to 
+each record is to properly escape special characters as is necessary when generating 
+HTML and PostScript documents. 
+.sp
+While formatting is turned off, &x will recognise commands and variable references only when placed immediately 
+following a newline (i.e. in the first column of an input record).  
+Commands are recognised primarily to allow files to be imbedded 
+while in no format mode, and to allow the &ital(format) &c(fo) command to be 
+detected.  
+It is best to always start each non-formatted line with a blank.
+
+.h2 Inserting A Newline Character
+When &x is generating RTF, HTML, and PostScript, the output written to the document 
+may be difficult to view with a standard editor. The &ital(newline) &c(nl) command 
+forces &x to write a newline character to the output file.  This is primarily 
+used when debugging an &x programme, and is &stress(not) intended to serve as a
+line break command. The &ital(newline) command does not accept any parameters.
+
+.h2 Delayed Command Execution
+The execution of an &x command can be delayed until a column or page eject becomes
+necessary. These commands allow an &x command to be defined and then will 
+execute the command after the next column or page eject. The &ital(on eject) &c(oe) 
+command is used to set both types of delayed command execution and has the 
+following syntax:
+.sp
+.sf &litfont
+.nf
+ .oe [page | all | col] command
+.fo
+.sf &textfont
+.sp 
+
+Where:
+.sp
+&indent
+.bd .75i &ditext
+.di all : If present causes the command to be executed for every eject. If not 
+	present, then the command is executed on the next eject type and then 
+	forgotten.
+.sp
+.di page : The command is added to the list to be executed at the top of the next page.
+.sp
+.di col : Causes the eject type to be set to column rather than page.
+.sp
+.di command : Are the tokens that are to be executed after the next eject.
+.ed
+&uindent
+.sp
+.gv fig
+Figure &_fig illustrates an &ital(on eject) command that causes the inclusion 
+of a file that will create a table at the top of the next page.
+If the document being generated is an HTML document, then the file is imbedded  when 
+this code is executed, otherwise it is placed at the top of the next page (this is 
+necessary as HTML documents have no concept of page or columns).
+
+.** -----------------------------------------------------------------------
+.ca oe_examp.ca
+.sp
+.cc 8
+.** .bx start m
+.st [ &textsize 2 - ]
+.sf &litfont
+.nf
+
+        .if hfm
+             .im table2.im 
+        .ei
+             .oe col .im table2.im
+        .fi
+
+.fo
+.sf &textfont
+.st &textsize
+.** .bx end
+.fg Imbedding a table at the next page eject.
+.sp 2
+.ca end
+.** -----------------------------------------------------------------------
+&ifroom(10:oe_examp.ca)
+
+.h2 Ejecting The Current Page
+When generating RTF or PostScript documents the &ital(page eject) &c(pa) command can 
+be used to cause the next formatted text to be placed at the top of the next page. 
+If an on eject command command has been executed to register a command, the registered 
+command wil be executed prior to any text being added to the new page. 
+
+.h2 Page Numbering
+&x will automatically number pages when page numbering has been enabled with the 
+&ital(page number) &c(pn) command.  The &ital(page number) command accepts a single 
+parameter which can be either the words &lit(off) or &lit(on,) or the page number to 
+start numbering with.
+
+.h2 Quitting The Compilation
+The &ital(quit) &c(qu) command is used to cause &x to stop processing all input files
+and to exit after generating any end of document "housekeeping" that needs to be placed
+into the formatted document. 
+Any input after the &ital(quit) command is ignored. This command accepts no parameters.
+
+.h2 Running Headers and Footers
+Running headers and footers are placed at the top and bottom of each page when generating 
+PostScript or RTF output.  The &ital(running header) &c(rh) and &ital(running footer) 
+&c(rf) commands accept all tokens to the end of the current record as the header or footer
+string to be used. 
+When a running header or footer has been defined it is separated from the rest of the document 
+text with a solid horizontal line.  
+When two sided mode has been selected, the running matter is placed such that the strings 
+"edge" on the right side of the page for odd pages, and on the left side of the page for 
+even pages. 
+.sp
+The font size of the headers, footers, and page number strings can be set with the 
+&ital(running size) &c(rs) command. This command accepts a value (in points) to be used, 
+and until a &ital(running size) command is encountered, the default value of 10 points is assumed. 
+
+.h2 The Section Command
+When generating RTF documents it is necessary to mark document sections in order to change the 
+running header and footer text. The &ital(section) &c(sc) command is used to do this and takes 
+no parameters.  Assuming that a header level one causes a page eject, the &ital(section) command
+should be placed just prior to the &ital(running header) and/or &ital(running footer) commands
+and the header level one command.  This ordering is necessary to force the RTF interpreter to 
+begin including the new running matter strings with the next page eject. The following 
+illustrates this concept:
+.sp
+.cc 8
+.** .bx start m
+.st [ &textsize 2 - ]
+.sf &litfont
+.nf
+
+      .sc
+      .rh Overview
+      .h1 Introduction and Overview
+
+.fo
+.** .** .** .** .** .** .** .** .bx end
+.sf &textfont
+.st &textsize
+.fg Illustrating the section command.
+.sp
+
+.h2 Setting The Font And Font Size
+The &ital(set font) &c(sf) command is used to set the font type for all document types 
+except plain text. The command accepts the name of the font that is to be established 
+as the current font for all formatted text until the next &ital(set font) command 
+is encountered. 
+As font names differ between the different output types, it is strongly recommended 
+that font name variables, (e.g. textfont, italfont, boldfont) be created and defined 
+based on the formatter type at the beginning of the document source. 
+
+.sp 
+.gv fig
+.dv font_fig &_fig
+The &ital(set textsize) &c(st) command is used to set the size of the current font.
+The command accepts one parameter which is the font size (in points) to be used. 
+In figure &font_fig the &ital(set font) and &ital(set textsize) commands
+are illustrated along with examples of defining two kinds of &ital(bold) macros.
+.sp
+
+.** -----------------------------------------------------------------------------
+.ca start font_examp.ca
+.cc 22
+.** .bx start m
+.st [ &textsize 2 - ]
+.sf &litfont
+.nf
+
+ .if hfm
+   .dv textfont arial
+   .dv startbold ^<b^>
+   .dv endbold ^</b^>
+   .dv bold ^<b^>$1^</b^>
+   .dv textsize 12
+ .ei
+  .if pfm
+    .dv textfont Helvetica
+    .dv startbold .sf Helvetica-Bold
+    .dv endbold   .sf ^&textfont
+    .dv bold .sf Helvetica-Bold $1 .sf ^&textfont
+    .dv textsize 10
+     .fi
+ .fi
+    
+ .sf &textfont
+ .st &textsize
+
+.fo
+.** .bx end
+.sf &textfont
+.st &textsize
+.fg The textsize and font commands.
+.sp 2
+.ca end
+.** ------------------------------------------------------------------------------
+&ifroom(22:font_examp.ca)
+
+.sp
+
+.h3 Temporary font changes
+For short font changes (e.g. to set a few words in bold face), the temporary font
+command, &c(tf) can be used. 
+This command accepts a font name, size, and then renders all tokens upto the end of the 
+line (or lone colon) in that font.  
+When the end is reached, the previous font is resumed. 
+A special font name, &cw(superscript) is recognised and the font size can be of the 
+form &cw(/n) or &cw(m/n) to divide the current font size by n, or to multiply the
+current font size by m/n allowing the superscript to be proportional to the current 
+font size.  
+This allows for macros such as ^&ital() or ^&bold() as illustrated below:
+.sp .5
+
+.sf &cwfont
+.st 8
+.nf
+  .dv ital .sm .tf &italfont &textsize $1 ^:
+  .dv super .sm .tf superscript /2 $1 ^:
+  .dv zsuper .sm .tf Dingbats 2/3 $1 ^:
+.fo
+.sf &textfont
+.st &textsize
+.sp
+Note that the &c(sm) command causes the whitespace to be removed between the last
+token placed into the document and the fonted character.
+
+
+.h2 Setting The Space Between Lines
+When generating PostScript or RTF documents, the amount of space 
+between text lines can be controlled using the &ital(set linespace) &c(sl)
+command. This command accepts the number of points that the user wishes
+to have between each line of formatted text. Until the user resets the 
+linespace value, the default of three (3) points is used. 
+
+.h2 Inserting Blank Lines
+The &ital(space) &c(sp) command is used to insert blank lines into the document. 
+When the &ital(space) command is encounterd, the formatting of the current line is 
+terminated and its contents are flushed to the output file. 
+The current &lit(y) position is adjusted such that the next text line will be 
+separated from the previous by the requested number of blank lines. 
+.sp
+
+The command accepts an optional parameter which is the number of blank lines to insert.  
+If the parameter is missing, then one (1) is assumed.  (While the parameter is optional, 
+it is recommended that the &ital(space) command always be given a parameter.) When generating
+HTML output, &xfm will insert the requested number of "paragraph" tags into the document 
+which would logically cause multiple blank lines to be placed into the document, however
+most HTML browsers ignore sequential paragraph tags.
+
+.h3 Partial Space
+.ix force `partial space`
+The &ital(space) command can be  given a fractional value, e.g. .5 or 1.5, to insert
+a blank line using the value as a multiplier allowing a finer grained control over veritical 
+space when it is needed. 
+Typically a half space between bullet and definition list items.
+
+
+.h3 Space Distance
+The distance that is computed when the &ital(space) command is encountered is based on the 
+current font size.  
+Changing the font size immediately before using the &ital(space) command will affect the 
+space inserted for each blank line. 
+
+.h2 Setting The Y Position
+The &lit(y) position (the number of points the current line is placed from the top of the page) 
+can be controlled when generating PostScript and RTF output. The &ital(set y) &c(sy) command
+accepts as a parameter the number of points that the current &lit(y) value should be set to.
+A relative distance can also be indicated by using either a plus (+) or minus (-) sign
+to indicate movement relative to the current &lit(y) position on the page. 
+A positive value indicates towards the bottom of the page, and a negative value indicates towards the top.
+
+.h2 Generating A Table Of Contents
+A table of contents will automatically be generated by &x if the &ital(table of contents) &c(tc) 
+command is used with a parameter of &lit(on.) &x creates the table of contents by writing the 
+header text strings, for header levels that define the table of contents option in a 
+&ital(definition header) command, along with the header number (if header numbering is enabled)
+and the page number that the header was placed on. The file that is created is &x source code 
+that can then be read and processed by &x to create the table of contents.  The name of the file 
+created is the same as the input file with the extension replaced with &lit(.toc.)
+
+.sp
+
+.gv fig
+.dv tcfig &_fig
+.** ----------------------------------------------------------------------------
+.ca toc_examp.ca
+.cc 12
+.** .bx start m
+.st [ &textsize 2 - ]
+.sf &litfont
+.nf
+
+      .if second_pass
+          .tc off
+          .im cover.im 
+          .im document.toc
+          .pa
+      .ei
+          .tc on
+      .fi
+      .pn 1
+
+.fo
+.** .bx end
+.sf &textfont
+.st &textsize
+.fg Automatic inclusion of table of contents
+.sp 2
+.ca end
+.** ----------------------------------------------------------------------------
+&ifroom(15:toc_examp.ca)
+
+
+To include the table of contents as a part of the formatted document &x must be invoked twice across 
+the document source, and enough information provided to the source to know what to do. 
+Figure &tcfig contains  a snipit of &x code that will include the table of contents source during the 
+second pass, and properly set the page numbers.
+This assumes that the &lit(second_pass) variable has been set. 
+
+The following lines of shell code illustrate one method of how this can be done.
+.sp
+
+.** ---------------------------------------------------------------------------
+.ca start twopass_examp.ca
+.cc 8
+.st [ &textsize 2 - ]
+.sf &litfont
+.** .bx start m
+.nf
+
+ # first pass just generate uguide.toc
+ # second pass generates postscript output 
+ # with toc added
+
+ pfm uguide.xfm /dev/null
+ pfm uguide.xfm uguide.ps .dv second_pass 1 :
+
+.fo
+.** .bx end
+.sf &textfont
+.st &textsize
+.fg Shell commands to generate a document with table of contents.
+.sp 2
+.ca end
+.** ---------------------------------------------------------------------------
+&ifroom(15:twopass_examp.ca)
+
+.h2 Setting The Top Margin
+The amount of white space between the top of the page and the first line of text can be controlled
+using the &ital(top margin) &c(tm) command. The command accepts a distance value as its only 
+parameter and will set the top margin to this value upon the next column eject.  A temporary 
+top margin can be established using the &ital(temporary top) &c(tt) command.  This command also 
+accepts an optional  distance parameter, and will set the top margin to the the distance provided, 
+or to the current &lit(y) position  if the parameter is omitted.  This temporary margin is applied to 
+all columns on the current page and is forgotten after the next page eject.  The &ital(temporary top)
+command is generally used after placing a table, which spans the entire page width, at the 
+top of the page and wanting the subsequent columns to format nicely underneith it. 
+.sp
+
+.h2 Two Sided Page Mode
+The &ital(two sided) &c(ts) command causes &x to place running headers, footers, and page numbers
+at the right edge of odd numbered pages, and at the left edge of even numbered pages. The 
+assumption is that when the document is printed, the running matter is easily seen as the 
+reader flips the pages whether flipping from the beginning of the document or from the back. 
+When formatting a document to be viewed on line, two sided page mode should not be used as it 
+will not have a pleasing effect. When generating HTML documents this command is ignored. 
+The command accepts no parameters. 
+
+
+.h2 Debugging
+There are times that the output generated by &x is not what was expected. 
+Usually this is because the document source has a 'programming error' which has caused the 
+problem. 
+In most cases, careful examination of the document source will uncover the problem which 
+can be corrected and the expected results obtained.
+Sometimes a bit more debugging information is desired to assist with this process. 
+The &ital(trace) &c(xx) command allows the user to turn on executing tracing for some or all 
+of the document processing. 
+The &ital(trace) command accepts a numeric parameter which sets the amount of information that 
+is written to the standard error device. 
+A value of zero (0) turns tracing off. 
