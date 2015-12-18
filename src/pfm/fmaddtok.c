@@ -69,10 +69,11 @@ Contributions to this source repository are assumed published with the same lice
 *             12 Nov 1992 - To call justify inplace of flush if flag is set
 *              9 Mar 1993 - To  look for a ^ which is used to escape the
 *                            next character.
-*              6 Apr 1994 - To use point based line length
-*	       9 Feb 2002 - Added ability to chop words with a hiphenator
-*	      26 May 2002 - To use the hyphenation library function to see if
-*			the word was in the hyph dictionary.
+*			06 Apr 1994 - To use point based line length
+*			09 Feb 2002 - Added ability to chop words with a hiphenator
+*			26 May 2002 - To use the hyphenation library function to see if
+*				the word was in the hyph dictionary.
+*			11 Oct 2015 - Fixed escaping bug.
 *************************************************************************
 */
 static char *hyph_get( char *buf )		/* routine is lost, for now we always return null */
@@ -154,6 +155,7 @@ void FMaddtok( char *buf, int len )
 	int i;               /* loop index */
 	int toksize;         /* size of token in points */
 	char wbuf[2048];
+	int is_escaped = 0;	// prevent escape of backslant
 
 	len = strlen( buf );
  	words++;             /* increase the number of words in the document */
@@ -233,10 +235,14 @@ void FMaddtok( char *buf, int len )
 
 	for( i = 0; i < len && buf[i]; i++, optr++ )     /* copy token to output buffer */
 	{
-		if( buf[i] == '(' || buf[i] == ')' || buf[i] == '\\' ) /* need to escape */
-		{
-			obuf[optr] = '\\';       /* put in the PostScript escape character */
-			optr++;                  /* and bump up the pointer */
+		if( buf[i] == '^' ) {
+			i++; 							// take next as is
+		} else {
+			if( buf[i] == '(' || buf[i] == ')' || buf[i] == '\\' ) /* need to escape */
+			{
+				obuf[optr] = '\\';       /* put in the PostScript escape character */
+				optr++;                  /* and bump up the pointer */
+			}
 		}
 
 		obuf[optr] = buf[i];         /* copy the next char to the output buffer */
