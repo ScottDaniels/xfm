@@ -123,12 +123,16 @@ int FMinit( int argc, char **argv )
 				argc--;
 				break;
 
+			case 'v':
+				flags2 |= F2_NOISY;
+				break;
+
 			case '?':
 				FMmsg( ERROR, "Usage: tfm [input-file [output-file [inital command tokens]]]" );
 				exit( 1 );
 
 			default:	
-				fprintf( stderr, "unrecognised option: %s", argv[0] );
+				fprintf( stderr, "unrecognised option: %s\n", argv[0] );
 				exit( 1 );
 		}	
 
