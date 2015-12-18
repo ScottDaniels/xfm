@@ -82,6 +82,8 @@ Contributions to this source repository are assumed published with the same lice
 *					we cannot get header, lead/trail space and 2 lines
 *					in the current column. Fixed bug caused by flushing 
 *					too early.
+*			18 Dec 2015 - Prevent an extra page/col eject if flush does
+*					one too.
 **************************************************************************
 */
 /*
@@ -130,10 +132,9 @@ void FMheader( struct header_blk *hptr )
 	
 	if( (hptr->flags & HEJECTP) && (cur_col != firstcol || cury > topy) )	// must check for new page first as it trumps
 	{
-		short_out = push_cmd( hptr->level );
-		FMflush( );								// flush out buffer
-		if( cury != topy )						// flush didn't see us at the end of page, so it didn't eject, we must
-		{
+		short_out = push_cmd( hptr->level );		// push the header command back on the stack to execute after ejecting
+		if( cury != topy ) 					// flush didn't see us at the end of page, so it didn't eject, we must
+		{											// this check is legit as fi HEJECTP is set we eject even if flush ejected too
 			if( short_out  )						// if column notes waiting, we must dump those first
 			{
 				FMcolnotes_show( 0 );			
@@ -148,9 +149,8 @@ void FMheader( struct header_blk *hptr )
 		if( need_eject || (hptr->flags & HEJECTC) && cury != topy ) 			// either at end or column eject
 		{
 			short_out = push_cmd( hptr->level );								// push the .hn command back if there is end column stuff
-			FMflush( );															// now safe to flush out buffer
 			
-			if( cury != topy )						// flush didn't see us at the end of page, so it didn't eject, we must
+			if( ! FMflush() )							// safe to flush, and if flush didn't eject, we must
 			{
 				if( short_out  )						// if column notes waiting, we must dump those first
 				{
@@ -165,7 +165,7 @@ void FMheader( struct header_blk *hptr )
 			FMflush( );									// nothing special, just flush
 	}
 
-	if( short_out )
+	if( short_out )			// if we pushed the header command so as to allow end of col/page things, get out early
 		return;
 
 

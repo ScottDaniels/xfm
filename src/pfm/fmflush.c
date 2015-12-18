@@ -60,7 +60,7 @@ Contributions to this source repository are assumed published with the same lice
 *  Abstract: This routine is responsible for sending out the current buffer
 *            with the proper formatting and no justificaiton.
 *  Parms:    None.
-*  Returns:  true -- hfm needs a return value, so we must emulate.
+*  Returns:  true if we eject the page; false (0) otherwise.
 *  Date:     12 November 1992
 *  Author:   E. Scott Daniels
 *
@@ -73,6 +73,7 @@ Contributions to this source repository are assumed published with the same lice
 *		21 Mar 2013 - eliminated some uneeded blanks in ps output.
 *		07 Jul 2013 - Allow for setting colours on substrings in the line. 
 *		11 Feb 2014 - Added at end flag for foot notes on last page
+*		18 Dec 2015 - now returns true if it ejected the page.
 *****************************************************************************
 */
 int FMflush( )
@@ -91,9 +92,10 @@ int FMflush( )
 	int		last_cury;			/* cury before inc -- incase we need to ceject */
  	char 	jbuf[1024];    		/* initial work buffer */
  	char 	jjbuf[1024];		/* work buffer */
+	int		ejected = 0;		// set to true for return if we ejected the page
 
 	if( optr == 0 )
-		return 1;
+		return ejected;
 
  	FMfmt_end( );					/* mark the last format block as ending here */
 
@@ -107,7 +109,8 @@ int FMflush( )
   	if( cury > boty )               	/* are we out of bounds? */
 	{
 		cury = last_cury;
- 		PFMceject( );       /* move to next column */
+		ejected = 1;
+ 		PFMceject( );       					/* move to next column */
 		if( cury != topy )
 			cury += largest + textspace;		/* in case something was insterted at the top of col */
  	}
@@ -159,7 +162,7 @@ int FMflush( )
 	if( things <= 0 )
 	{
 		FMfmt_add( );		/* add the current font back to the list */
-		return 1;
+		return ejected;
 	}
 
    	if( flags2 & F2_CENTER )      /* set up for center command */
@@ -182,5 +185,5 @@ int FMflush( )
 		FMcolnotes_show( 0 );			/* cause the column notes to be put in before eject */
 	}
 
-	return 1;
+	return ejected;
 }
