@@ -75,13 +75,11 @@ Contributions to this source repository are assumed published with the same lice
 *              15 Dec 1992 - To output a newline to stdout at end of run
 *              21 Dec 1992 - To process the .toc file generated
 *              13 Apr 1992 - To no longer break when blank as first char
-*		18 Nov 2001 - To rewrite to allow for immediate ex of .im 
+*				18 Nov 2001 - To rewrite to allow for immediate ex of .im 
+*				18 Dec 2015 - Call pflush at end only if cury not at top.
 **************************************************************************
 */
-main( argc, argv )
- int argc;
- char *argv[];
-{
+main( int argc, char **argv ) {
  int len;          /* length of token */
  char *buf;        /* buffer pointer to token */
 
@@ -105,11 +103,15 @@ main( argc, argv )
 #endif
 	}                      /* end if toc file open */
 
-	FMflush( );             /* flush the current line to page buffer */
-	FMpflush( );            /* flush the page out of the printer with headers
+	FMflush( );            		 /* flush the current line to page buffer */
+	if( cury != topy ) {
+		TRACE( 3, "main flushing: %d %d\n", cury, topy );
+		FMpflush( );			// flush the page out of the printer with headers
+	}
+
 	AFIclose( ofile );      /* close the output file */
 	sprintf( obuf, "%ld\n", words );
 
 	FMmsg( I_WORDCNT, obuf );     /* write number of words message */
 	return 0;                     /* assume end of file reached */
-}                              /* FMmain */
+}

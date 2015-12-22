@@ -248,7 +248,15 @@ extern int FMcolnotes_show( int end )
 		if( boty - cn_space > cury )
 			cury = boty - cn_space;
 	TRACE( 2, "colnotes: cury set to=%d\n", cury );
-	fprintf( target, ".br\n.po\n.cb\n.ju on\n.cn unlink %s\n%s\n", fname, end_cmd );	/* pop stack, hard col eject and unlink the file */
+
+
+	fprintf( target, ".br\n.po\n" );					// add the ending commands to the file (force flush and pop)
+	if( ! end )
+		fprintf( target, ".cb\n" )	;					// new col only if not at end; causes extra page eject if at end
+	if( flags & JUSTIFY )
+		fprintf( target, ".ju on\n" );					// justify back on if needed
+	fprintf( target, ".cn unlink %s\n%s\n", fname, end_cmd );
+
 	fclose( target );
 	snprintf( buf, sizeof( buf ), "\n.im %s", fname );				/* must have a guarding newline as lead (prevent accidents with .sp without optional parm etc.) */
  	status = AFIpushtoken( fptr->file, buf );  						/* push to imbed the file */
