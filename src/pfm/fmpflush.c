@@ -78,6 +78,7 @@ Contributions to this source repository are assumed published with the same lice
 *				26 Jun 2013 - Calls colnotes_show() to show the notes before
 *						doing the eject. 
 *				07 Jul 2013 - Colour support changes. 
+*				18 Dec 2015 - Cleaned up commented out code.
 *****************************************************************************
 */
 void FMpflush( )
@@ -132,36 +133,5 @@ void FMpflush( )
 
 	cury = topy + (textsize/2);                  /* reset current y to top y position */
 
-	TRACE( 2, "pflush: new-lmar=%d new-hlmar=%d\n", lmar, hlmar );
 	FMateject( 1 );		/* do page eject stuff first */
-
-
-#ifdef KEEP_OLD_WAY
-	if( onnxteject )		/* run the next eject command and then discard it */
-	{
-		TRACE(2, "peject: next eject = (%s)\n", onnxteject );
-	
- 		AFIpushtoken( fptr->file, onnxteject );  /* and push onto the input stack */
-		free( onnxteject );
-		onnxteject = NULL;
-		FMpush_state( );
-   		flags = flags & (255-NOFORMAT);      /* turn off noformat flag */
-   		flags2 &= ~F2_ASIS;                  /* turn off asis flag */
-		if( FMgettok( &tok ) )
-			FMcmd( tok );
-		FMpop_state( );
-	}
-	 
-	if( oneveryeject )
-	{
-		TRACE(2, "peject: every eject = (%s)\n", onnxteject );
- 		AFIpushtoken( fptr->file, oneveryeject );  
-		FMpush_state( );
-   		flags = flags & (255-NOFORMAT);      /* turn off noformat flag */
-   		flags2 &= ~F2_ASIS;                  /* turn off asis flag */
-		if( FMgettok( &tok ) )
-			FMcmd( tok );
-		FMpop_state( );
-	}
-#endif
-}                              /* FMpflush */
+}
