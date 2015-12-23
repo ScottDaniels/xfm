@@ -88,6 +88,7 @@ Contributions to this source repository are assumed published with the same lice
 *		19 Nov 2007 - Brought in line with using FMrun(). 
 *		17 Nov 2008 - Added flush to asis processing
 *		21 Jul 2010 - Updated for html 4.0/5.0  (things like <br /> 
+*		23 Dec 2015 - Ignore top gutter command (pfm only)
 **************************************************************************
 */
 int FMcmd( buf )
@@ -163,18 +164,6 @@ char *buf;
 			FMset_colour( );
 			flags2 |= F2_SETFONT;
 			break;
-
-#ifdef OLD
-			if( FMgetparm( &ptr ) != 0 )
-			{
-				FMflush( );         /* put out what was collected in prev colour */
-				if( textcolour )
-					free( textcolour );
-				textcolour = strdup( ptr );
-				flags2 |= F2_SETFONT;                /* need to set a new font/colour/size */
-			}
-			break;
-#endif
 
 		case C_CCOL:             /* conditional column eject */
 			FMccol( 0 );            /* 0 parameter says to get from input */
@@ -551,7 +540,6 @@ char *buf;
 			FMflush();
 			if( (len = FMgetparm( &ptr )) != 0 )     /* if number entered */
 			{
-				//textsize = FMgetpts( ptr, len );
 				textsize = atoi( ptr );				/* we have to assume points */	
 				flags2 |= F2_SETFONT;           	/* need to change font on next write */
 			}
@@ -570,8 +558,10 @@ char *buf;
 			break;
 
 		case C_TMPTOP:            /* set topy to cury for rest of page */
-			/*  FMtmpy( cmd ); */        /* save/restore topy */
 			break;
+
+		case C_TOPGUT:				// pfm top gutter for running header; ignore
+			FMskip( );
 
 		case C_TOC:               /* table of contents command */
 			FMtc( );                 /* process the command */

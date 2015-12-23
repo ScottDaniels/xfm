@@ -81,6 +81,7 @@ Contributions to this source repository are assumed published with the same lice
 *             6 Dec 1996 - Conversion to hfm
 *		21 Oct 2007 - Added support (ignnores) indexing.
 *		20 Nov 2008 - Added stoprun support and cleaned up formatting.
+*		23 Dec 2015 - Ignored pfm top gutter command; formatting fixes.
 **************************************************************************
 */
 int FMcmd( buf )
@@ -364,10 +365,10 @@ char *buf;
 		case C_OUTLINE:          /* use true charpath and fill instead of stroke */
 			if( FMgetparm( &buf ) > 0 )  /* get the parameter on | off */
 			{
-			if( toupper( buf[1] ) == 'N' )
-			flags2 |= F2_TRUECHAR;        /* turn on the flag */
-			else
-			flags2 &= ~F2_TRUECHAR;       /* turn off the flag */
+				if( toupper( buf[1] ) == 'N' )
+					flags2 |= F2_TRUECHAR;        /* turn on the flag */
+				else
+					flags2 &= ~F2_TRUECHAR;       /* turn off the flag */
 			}
 			break;
 
@@ -495,11 +496,11 @@ char *buf;
 			FMflush( );
 			if( FMgetparm( &ptr ) != 0 )     /* if number entered */
 			{
-			if( (i = atoi( ptr )) >= 4 )    /* if number is ok */
-			{
-			flags2 |= F2_SETFONT;        /* need to change font on next write */
-			textsize = i/4;              /* save the size for future reference */
-			}
+				if( (i = atoi( ptr )) >= 4 )    /* if number is ok */
+				{
+					flags2 |= F2_SETFONT;        /* need to change font on next write */
+					textsize = i/4;              /* save the size for future reference */
+				}
 			}
 			break;
 
@@ -523,6 +524,9 @@ char *buf;
 		case C_TOC:               /* table of contents command */
 			FMtc( );                 /* process the command */
 			break;
+
+		case C_TOPGUT:			// ignore pfm only top gutter command
+			FMskip();
 
 		case C_TOPMAR:            /* set the top margin */
 			FMtopmar( );
