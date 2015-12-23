@@ -68,6 +68,7 @@ Contributions to this source repository are assumed published with the same lice
 *            21 Feb 1994 - To use rightxy instead of right
 *			10 Oct 2007 (sd)  - Added support to anchor head/feet to left col's anchor and not lmar
 *			23 Aug 2011 - Added page number centering and user formatted string.
+*			23 Dec 2015 - Better management of running header via top gutter.
 ****************************************************************************
 */
 void FMrunout( int page, int shift )
@@ -77,7 +78,7 @@ void FMrunout( int page, int shift )
 	int x;                   /* either far left or right depending on shift */
 	int len;                 /* length of string for output to write buffer */
 	char *moveto = "moveto"; /* moveto command necessary for show command, but not shifting right */
-	char buf[2048];            /* output buffer */
+	char buf[2048];          /* output buffer */
 	char	ubuf[1024];		/* if user format string for number, build it here */
 
 
@@ -114,18 +115,18 @@ void FMrunout( int page, int shift )
 		textsize = osize;
 		curfont = ofont;
 
+		y = topy - top_gutter - textsize;
 
-		if( topy - 6 - textsize > 0 )
-			sprintf( buf, "%d %d %s (%s) %s\n", hx, -(topy - 6 - textsize), moveto, rhead, cmd );
-		else
-			sprintf( buf, "%d %d %s (%s) %s\n", hx, topy - 6 - textsize, moveto, rhead, cmd );
+		if( y > 0 ) {								// only if it will fit
+			sprintf( buf, "%d %d %s (%s) %s\n", hx, -y, moveto, rhead, cmd );
+			AFIwrite( ofile, buf );       				/* seperate header from text w/ line */
+		}
+
 		AFIwrite( ofile, buf );             /* send out the header */
 		if( flags3 & F3_RUNOUT_LINES )
 		{
-			if( topy - textsize - 4 > 0 )
-				sprintf( buf, "%d %d moveto %d %d lineto\n", firstcol->lmar, -(topy - textsize -4), pagew - firstcol->lmar, -(topy - textsize - 4) );
-			else
-				sprintf( buf, "%d %d moveto %d %d lineto\n", firstcol->lmar, topy - textsize -4, pagew - firstcol->lmar, topy - textsize - 4 );
+			if( y > 0 )
+				sprintf( buf, "%d %d moveto %d %d lineto\n", firstcol->lmar, -(y-2), pagew - firstcol->lmar, -(topy - textsize - 4) );
 			AFIwrite( ofile, buf );       				/* seperate header from text w/ line */
 		}
 	}

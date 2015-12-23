@@ -216,7 +216,7 @@ int FMcmd( char *buf )
 
 
 		case C_ENDTABLE: 	FMendtable( ); break;
-	
+
    		case C_EVAL:                  /* evaluate expression and push result */
     				if( FMgetparm( &buf ) > 0 )  /* get parameter entered */
      					AFIpushtoken( fptr->file, buf );
@@ -432,6 +432,22 @@ int FMcmd( char *buf )
 		case C_TMPTOP:            FMtmpy( cmd ); break;
 
 		case C_TOC:	 FMtc( ); break;
+
+		case C_TOPGUT:								// set the top gutter
+				if( (len = FMgetparm( &ptr )) ) 
+				{
+					i = FMgetpts( ptr, len );
+					if( i > 0 && i < topy )
+					{
+						TRACE( 2, "top gutter set to: %d\n", i );
+						top_gutter = i; 
+					} else {
+						TRACE( 2, "top gutter not set, not in range: %d  topy=%d\n", i, topy )
+					}
+				} else {
+					TRACE( 2, "top gutter NOT set, missing parm" );
+				}
+				break;
 
 		case C_TOPMAR:            FMtopmar( ); break;
 
