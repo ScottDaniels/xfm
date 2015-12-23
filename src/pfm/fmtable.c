@@ -67,6 +67,7 @@ Contributions to this source repository are assumed published with the same lice
 *						from being painted correctly.
 *		09 Mar 2015 - Added l= and B options to allow line weight to be set to 0
 *						and to force edges for tables in tables.
+*		22 Dec 2015 - Corrected bug with top border if page eject.
 * 
 *  The n option allows user to turn off (no execute) the automatic
 *  creation of the first cell. This allows them to call .tr and .cl 
@@ -528,9 +529,8 @@ void FMtr( int last )
 
 		if( t->border )
 		{
-
 			TRACE( 2, "table/tr-newpage: cury=%d\n", cury );
-			sprintf( obuf, "%d %d moveto %d %d rlineto stroke\n", t->lmar+t->padding, -cury, t->border_width-t->padding, 0 );
+			sprintf( obuf, "%d %d moveto %d %d rlineto stroke\n", t->lmar+t->padding, -(cury-t->padding), t->border_width-t->padding, 0 );
 			AFIwrite( ofile, obuf );
 		}
 
