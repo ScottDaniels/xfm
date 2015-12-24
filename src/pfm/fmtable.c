@@ -80,13 +80,15 @@ Contributions to this source repository are assumed published with the same lice
 *		(Some html options are ignored for compatability.)
 *  	.et
 * 	.cl [c=bgcolour] [t=fgcolour] [s=span-cols] [a=align-type] (ignored: r= v=  t=)
-*	.tr [n] [c=bgcolour] [a=alignval] [v=valignvalue]
+*	.tr [n] [c=bgcolour] [a=alignval] [r=space] [v=valignvalue]
 *	.th string
 *  omitting w= allows browser to scale table. xx is a percentage.
 *
 * --------------------------------------------------------------------------
 */
 static void tab_vlines( struct table_mgt_blk *t, int setfree );
+
+void FMpause_table( void );
 
 void FMtable( )
 {
@@ -103,11 +105,6 @@ void FMtable( )
 	char wstr[50];           /* spot to build width stirng in */
 	int w = 100;
 
-/*
-	if( ! rtopy )
-		rtopy = topy;
-*/
-
 	space[0] = 0;
 	align[0] = 0;
 	wstr[0] = 0;
@@ -115,6 +112,11 @@ void FMtable( )
 
 	FMflush( );                         /* terminate the line in progress */
 
+	if( ts_index >= MAX_TABLES ) {
+		fprintf( stderr, "abort: too many tables max = %d\n", MAX_TABLES );
+		exit( 1 );
+	}
+	
 	t = table_stack[ts_index++] = (struct table_mgt_blk *) malloc( sizeof( struct table_mgt_blk) );
 
 	memset( t, 0, sizeof( struct table_mgt_blk ) );
@@ -239,12 +241,11 @@ void FMtable( )
 	if( t->edge_borders == 0 && ts_index > 1 )		/* if this is a table in a table w/o edge borders */
 	{
 		t->topy -= t->padding;
-		/*t->border_width += t->padding;*/
 		topy = cury;			/* columns bounce back to here now */
 	}
 	else
 	{
-		topy = cury +t->padding;			/* columns bounce back to here now */
+		topy = cury + t->padding;			/* columns bounce back to here now */
 		if( border )						/* dont do outside for table in a table */
 		{
 			sprintf( obuf, "%d setlinewidth ", t->weight );
@@ -285,7 +286,7 @@ void FMth( )
 	int	totlen = 0;
 	char	data[4096];
 
-	if( (t = table_stack[ts_index-1]) == NULL )
+	if( ts_index <= 0 || (t = table_stack[ts_index-1]) == NULL )
 	{
 		while( (len = FMgetparm( &buf )) != 0 );		/* just dump the record */
 		return;
@@ -344,15 +345,14 @@ void FMcell( int parms )
 	colour[0] = 0;
 	sprintf( valign, "valign=top" );
 
-	if( ! table_stack[0] )		/* ignore if not in table */
-	{
-		/*fprintf( stderr, "(%s:%d) cell command table not started\n", fptr->name, fptr->count ); */
+	if( ts_index <= 0 || (t = table_stack[ts_index-1]) == NULL ) {
+		char *b;
+		while( (len = FMgetparm( &b )) != 0 );		/* just dump the record */
 		return;
 	}
 
 	FMflush( );                       /* flush what was in the buffer first */
  
-	t = table_stack[ts_index-1];
 
 	/* at this point we recognise but ignore some hfm things */
 	while( parms && (len = FMgetparm( &ptr )) != 0 )
@@ -443,26 +443,26 @@ void FMcell( int parms )
 void FMtr( int last )
  {
 	struct table_mgt_blk *t = NULL;
-   char *ptr = NULL;             /* pointer at parms */
-   int len = 0;
-   int do_cell = 1;       /* turned off by n option */
-   char colour[50];
-   char align[50];
-   char valign[50];
-   char obuf[2048];
+	char *ptr = NULL;             /* pointer at parms */
+	int len = 0;
+	int do_cell = 1;       /* turned off by n option */
+	char colour[50];
+	char align[50];
+	char valign[50];
+	char obuf[2048];
 	int row_top = 0;		/* used to calc the depth of each row */
+	int	old_cn_space = 0;
 
-   colour[0] = 0;
-   align[0] = 0;
-   valign[0] = 0;
+	colour[0] = 0;
+	align[0] = 0;
+	valign[0] = 0;
 
-	if( ! ts_index )
-	{
-		/*fprintf( stderr, "(%s:%d) table row command: table not started\n", fptr->name, fptr->count ); */
-		return;			/* no table if idx is 0 */
+	if( ts_index <= 0 || (t = table_stack[ts_index-1]) == NULL ) {
+		char *b;
+		while( (len = FMgetparm( &b )) != 0 );			// no table, ditch parms and scoot
+		return;
 	}
 
-	t = table_stack[ts_index-1];
 	if( cur_col == firstcol )			/* we've not seen a .cl command (one col table) */
 		t->maxy = cury;					/* force it to be set */
 	row_top = cury;
@@ -508,39 +508,34 @@ void FMtr( int last )
 
 	cury = t->maxy + t->padding;
 
-	if( t->border )
+	if( t->border )		// add top and vert for this row; bottom added at end if this is the last one
 	{
 		sprintf( obuf, "%d setlinewidth ", t->weight );
 		AFIwrite( ofile, obuf );
 		tab_vlines( t, 0 );					/* add vlines just for this row */
 
-		//if( ! last )
-		{
-			TRACE( 2, "table/tr-border: cury=%d\n", cury );
-			sprintf( obuf, "%d %d moveto %d %d rlineto stroke\n", t->lmar+t->padding, -cury, t->border_width-t->padding, 0 );
-			AFIwrite( ofile, obuf );
-		}
+		TRACE( 2, "table/tr-border: cury=%d\n", cury );
+		sprintf( obuf, "%d %d moveto %d %d rlineto stroke\n", t->lmar+t->padding, -cury, t->border_width-t->padding, 0 ); // top border
+		AFIwrite( ofile, obuf );			// bottom line for the row
 	}
 
-	if( !last && cury + t->ave_row_depth >= boty - 35 )
+	TRACE( 1, "table/tr: col note considered: cn_space=%d ard=%d cury=%d boty=%d\n", cn_space, t->ave_row_depth, cury, boty );
+	
+	// ??? Do we need to prevent eject if this is the last one?
+	if( cn_space + cury + t->ave_row_depth + textsize + textspace >= (boty-8) )	// extra 8pts to have room for bottom line
 	{
+		FMpause_table();				// pause so we can eject to the next real column which might be a page eject
+ 		AFIpushtoken( fptr->file, ".rt" ); 	// must restart table;  push first so that col notes go before if needed
+		old_cn_space = cn_space;			// eject will reset if set
+		PFMceject(  );						// move to the top of the new col/eject page
+		if( old_cn_space > 0 ) {			// if col note, must set it up and return so it is processes before new col is started
+			t->maxy = topy;
+			return;						// allow the col notes commands to play out first
+		}
+
 		topy = t->old_topy;
-		FMpflush( );
-
-		if( t->border )
-		{
-			TRACE( 2, "table/tr-newpage: cury=%d\n", cury );
-			sprintf( obuf, "%d %d moveto %d %d rlineto stroke\n", t->lmar+t->padding, -(cury-t->padding), t->border_width-t->padding, 0 );
-			AFIwrite( ofile, obuf );
-		}
-
 		cury = topy;
-		t->maxy = cury;
-		if( t->header )
-		{
-			AFIpushtoken( fptr->file, ".tr :" );			/* must drop a table row after the header command(s) */
-			AFIpushtoken( fptr->file, t->header );			/* fmtr calls get parm; prevent eating things */
-		}
+		t->maxy = t->topy;								// reset the mexy for the next col/page
 	}
 
 	t->topy = cury;
@@ -550,6 +545,9 @@ void FMtr( int last )
 	topy = cury;			/* columns need to bounce back to here */
  }
 
+/*
+	Add vertical lines for a single row in the table.
+*/
 static void tab_vlines( struct table_mgt_blk *t, int setfree )
 {
 	struct col_blk *c;
@@ -587,6 +585,80 @@ static void tab_vlines( struct table_mgt_blk *t, int setfree )
 	}
 }
 
+/*
+	Pause the table, restoring columns etc to what they were. Allows column notes to be placed at the
+	end of the page when a table spans a page boundary. We assume table row has been the source of 
+	this and has cleaned up the last row, so no need to call.
+*/
+void FMpause_table( void ) {
+
+	struct	table_mgt_blk *t;
+	struct	col_blk *next;
+	int	i;
+	char	obuf[1024];
+
+	if( ts_index <= 0 || ! (t = table_stack[ts_index-1]) )
+		return;
+
+	TRACE( 1, "pause_table: cury=%d rows=%d  total_depth=%d  ave_depth=%d\n", cury, t->nrows, t->tot_row_depth, t->ave_row_depth );
+
+	t->paused_list = firstcol;				// hold the current list
+	t->paused_col = firstcol;
+
+	lmar = t->lmar;							// restore settings for the column note, or whatever needs regular setup
+	hlmar = t->hlmar;
+	linelen = t->old_linelen;
+	topy = t->old_topy;
+	cur_col = t->cur_col;
+	firstcol = t->col_list;
+}
+
+/*
+	Restart a paused table
+*/
+void FMrestart_table( ) {
+	struct	table_mgt_blk *t;
+
+	if( ts_index <= 0 || ! (t = table_stack[ts_index-1]) ) {
+		return;
+	}
+	if( t->paused_list == NULL ) {
+		fprintf( stderr, "abort: internal mishap restarting table; no paused list\n" );
+		exit( 1 );
+	}
+
+	firstcol = t->paused_list;
+	cur_col = firstcol;
+	lmar = cur_col->lmar - textspace - t->padding;
+	firstcol->anchor =  t->paused_list->anchor;			// cary the anchor over for running head/feet
+	t->maxy = cury;
+
+	if( t->header )										// new header on resume
+	{
+		AFIpushtoken( fptr->file, ".tr :" );			/* must drop a table row after the header command(s) */
+		AFIpushtoken( fptr->file, t->header );			/* fmtr calls get parm; prevent eating things */
+	}
+
+	// cell start emulation
+	cury = topy;
+	t->topy = topy;
+	lmar = cur_col->lmar + t->padding;   	/* set lmar based on difference calculated */
+	hlmar = cur_col->lmar + t->padding; 	/* earlier and next columns left edge */
+
+	if( lilist != NULL )					/* if list then reset xpos for next col */
+		lilist->xpos = cur_col->lmar + t->padding;
+
+	linelen = cur_col->width;
+	t->paused_list = NULL;
+
+	if( t->border )					// add top border to start the table in next col/page
+	{
+		//sprintf( obuf, "%d %d moveto %d %d rlineto stroke\n", t->lmar+t->padding, -(cury - t->padding), t->border_width-t->padding, 0 );
+		sprintf( obuf, "%d %d moveto %d %d rlineto stroke\n", t->lmar+t->padding, -(cury ), t->border_width-t->padding, 0 );
+		AFIwrite( ofile, obuf );
+	}
+}
+
 void FMendtable( void )
 {
 
@@ -596,8 +668,7 @@ void FMendtable( void )
 	int 	x;
 	char	obuf[1024];
 
-
-	if( ! (t = table_stack[ts_index-1]) )
+	if( ts_index <= 0 || ! (t = table_stack[ts_index-1]) )
 		return;
 
 	TRACE( 1, "end_table: cury=%d rows=%d  total_depth=%d  ave_depth=%d\n", cury, t->nrows, t->tot_row_depth, t->ave_row_depth );
@@ -616,10 +687,6 @@ void FMendtable( void )
 	hlmar = t->hlmar;
 	linelen = t->old_linelen;
 	firstcol = t->col_list;
-/*
-	PFMceject( );			*//* set up for normal columns */
-
-	//cury += t->padding;
 
 #ifdef KEEP
 /* setting the temp top is up to the user as the table might be in a left column and the next 
@@ -643,3 +710,4 @@ to be the case
 	if( ts_index )
 		topy = table_stack[ts_index-1]->topy;
 }
+

@@ -75,7 +75,7 @@ Contributions to this source repository are assumed published with the same lice
 *            25 Mar 1993 - To properly handle list item xmar when in multi col
 *             7 Apr 1994 - To check reset of real top y
 *			26 Oct 2006 - Now uses FMatejet() to do stacked eject commands
-*			and to allow a set of commands on the .oe command.
+*				and to allow a set of commands on the .oe command.
 *			26 Jun 2013 - calls colnotes_show() if needed before doing the eject
 ***********************************************************************************
 */
@@ -86,10 +86,11 @@ void PFMceject( )
 	int diffx;    /* diff between x value in list blk and curcol lmar */
 	char *tok;
 
-	if( flags2 & F2_BOX )    /* if a box is inprogress */
+	TRACE( 2, ">>> fmceject: starting\n" );
+	if( flags2 & F2_BOX )		/* if a box is inprogress */
 		FMbxend( );             /* then end the box right here */
 
-	FMendlist( FALSE );      /* putout listitem mark characters if in list */
+	FMendlist( FALSE );			/* putout listitem mark characters if in list */
 
 	if( cn_space  )				/* if and end note was defined, need to add it too */
 	{
@@ -109,11 +110,7 @@ void PFMceject( )
 		cur_col = cur_col->next;       /* then select it */
 	else
 	{
-		if( table_stack[0] )
-			return;
-
-		if( table_stack[0] == NULL )	/* we dont do page flush if in a table */
-   			FMpflush( );           /* cause a page eject with headers etc */
+   		FMpflush( );           /* cause a page eject with headers etc */
 	
 		cur_col = firstcol;  /* select the first column */
   	}
@@ -124,12 +121,14 @@ void PFMceject( )
 	lilist->xpos = cur_col->lmar + diffx;
 	
 	if( rtopy > 0  &&  rtopcount > 0 )     /* reset real topy if needed */
+	{
 		if( (--rtopcount) == 0 )    /* need to reset */
 		{
 			TRACE( 2, "ceject: reset topy=%d to rtopy=%d\n", topy, rtopy );
 			topy = rtopy;
 			rtopy = 0;
 		}
+	}
 
 	if( flags2 & F2_BOX )    /* if a box is inprogress */
 		FMbxstart( FALSE, 0, 0, 0, 0 );     /* reset top of box to current y position */

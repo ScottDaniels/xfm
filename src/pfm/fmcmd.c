@@ -345,6 +345,11 @@ int FMcmd( char *buf )
 
 		case C_RHEAD:		FMsetstr( &rhead, HEADFOOT_SIZE ); break;
 
+		case C_RESTARTTAB:	
+				TRACE( 1, ">>>++++ calling restart\n" )
+				FMrestart_table(); 
+				break;
+
 		case C_SECTION:		FMsection( ); break;
 
 		case C_SETX:		FMsetx( ); break;
