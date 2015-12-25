@@ -53,7 +53,7 @@ Contributions to this source repository are assumed published with the same lice
 #include "fmproto.h"
 
 /*
-*****************************************************************************
+**************************************************************************************
 *
 *  Mnemonic: FMgetpts
 *  Abstract: This routine will convert a value entered by the user into
@@ -66,7 +66,9 @@ Contributions to this source repository are assumed published with the same lice
 *  Date:     6 April 1994
 *  Author:   E. Scott Daniels
 *
-*****************************************************************************
+*  Mods:	24 Dec 2015 - Added support to convert lines (L or l suffix) to points.
+*
+**************************************************************************************
 */
 int FMgetpts( tok, len )
  char *tok;
@@ -80,7 +82,7 @@ int FMgetpts( tok, len )
    case 'i':                    /* units are inches */
    case 'I':
     fval = atof( tok );         /* convert to float */
-    fval = fval * 72;           /* convert to floating points */
+    fval = fval * 72.0;           /* convert to floating points */
     pts = fval;                 /* convert to integer points */
     break;
 
@@ -89,11 +91,17 @@ int FMgetpts( tok, len )
     pts = atoi( tok );          /* direct conversion to points */
     break;
 
+	case 'l':
+	case 'L':					// lines converted based on current text size and text space 
+		pts = atoi( tok )
+		pts *= textspace + textsize;
+		break;
+
    default:                     /* nothing specified - assume characters */
     pts = atoi( tok );          /* convet to integer */
     pts *= PTWIDTH;             /* convert to points */
     break;
-  }  /* end switch */
+  }
 
  return( pts );           /* and send back calculated value */
 }                     /* FMgetpts */
