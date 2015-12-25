@@ -68,6 +68,7 @@ Contributions to this source repository are assumed published with the same lice
 *		09 Mar 2015 - Added l= and B options to allow line weight to be set to 0
 *						and to force edges for tables in tables.
 *		22 Dec 2015 - Corrected bug with top border if page eject.
+*		24 Dec 2015 - Added r= option for table row command.
 * 
 *  The n option allows user to turn off (no execute) the automatic
 *  creation of the first cell. This allows them to call .tr and .cl 
@@ -434,8 +435,10 @@ void FMcell( int parms )
  Mnemonic: fmtr
  Abstract: start a new row in the current table
  Date: 		26 Oct 2001 - converted from hfml stuff
- syntax:   .tr [n] [c=bgcolour] [a=alignval] [v=valignvalue]
+ syntax:   .tr [n] [c=bgcolour] [a=alignval] [r=reserve] [v=valignvalue]
  			The n option prevents cell from being called.
+			r= will force a column break if the desired amount of space 
+			isn't remaining.
 
  Mods:		10 Apr 2007 -- fixed write of border to be in conditional.
 ---------------------------------------------------------------------------
@@ -452,6 +455,7 @@ void FMtr( int last )
 	char obuf[2048];
 	int row_top = 0;		/* used to calc the depth of each row */
 	int	old_cn_space = 0;
+	int required = 0;		// points required for the next row; col eject if not enough
 
 	colour[0] = 0;
 	align[0] = 0;
@@ -496,6 +500,10 @@ void FMtr( int last )
          do_cell = 0;
          break;
 
+		case 'r':
+			required = FMgetpts( ptr + 2, len-2 );
+			break;
+
        case 'v':
          sprintf( valign, "valign=%s", ptr + 2 );
          break;
@@ -519,23 +527,23 @@ void FMtr( int last )
 		AFIwrite( ofile, obuf );			// bottom line for the row
 	}
 
-	TRACE( 1, "table/tr: col note considered: cn_space=%d ard=%d cury=%d boty=%d\n", cn_space, t->ave_row_depth, cury, boty );
+	TRACE( 1, "table/tr: required=%d cn_space=%d ard=%d cury=%d boty=%d remain=%d\n", required, cn_space, t->ave_row_depth, cury, boty, boty-cury );
 	
 	// ??? Do we need to prevent eject if this is the last one?
-	if( cn_space + cury + t->ave_row_depth + textsize + textspace >= (boty-8) )	// extra 8pts to have room for bottom line
+	if( (required + cury) > (boty-8)  ||  cn_space + cury + t->ave_row_depth + textsize + textspace >= (boty-8) )	// extra 8pts to have room for bottom line
 	{
-		FMpause_table();				// pause so we can eject to the next real column which might be a page eject
+		FMpause_table();					// pause so we can eject to the next real column which might be a page eject
  		AFIpushtoken( fptr->file, ".rt" ); 	// must restart table;  push first so that col notes go before if needed
 		old_cn_space = cn_space;			// eject will reset if set
 		PFMceject(  );						// move to the top of the new col/eject page
 		if( old_cn_space > 0 ) {			// if col note, must set it up and return so it is processes before new col is started
 			t->maxy = topy;
-			return;						// allow the col notes commands to play out first
+			return;							// allow the col notes commands to play out first
 		}
 
 		topy = t->old_topy;
 		cury = topy;
-		t->maxy = t->topy;								// reset the mexy for the next col/page
+		t->maxy = t->topy;					// reset the mexy for the next col/page
 	}
 
 	t->topy = cury;

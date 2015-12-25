@@ -53,10 +53,13 @@ Contributions to this source repository are assumed published with the same lice
 
 /*
 ---------------------------------------------------------------------------
-Mnemonic: fmtr
-Abstract: start a new row in the current table
-The n option prevents cell from being called.
-syntax:   .tr [n] [c=bgcolour] [a=alignval] [v=valignvalue]
+Mnemonic: 	fmtr
+Abstract: 	start a new row in the current table
+			The n option prevents cell from being called.
+			syntax:   .tr [n] [c=bgcolour] [a=alignval] [v=valignvalue]
+			The pfm r= option is ignored.
+
+Mods:		24 Dec 2015 - Added support to ignore r= optoin.
 ---------------------------------------------------------------------------
 */
 void FMtr( )
@@ -91,6 +94,9 @@ void FMtr( )
 
 			case 'n':
 				do_cell = 0;
+				break;
+
+			case 'r':
 				break;
 
 			case 'v':
