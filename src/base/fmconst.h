@@ -76,6 +76,7 @@ Contributions to this source repository are assumed published with the same lice
 #define MAX_FONT      50       /* max length of the font string */
 #define MAX_LL        200      /* max characters per line */
 #define MAX_CELLS     100      /* max cells in a table row */
+#define MAX_TABLES		100		// number of tables we support
 
 #define DEF_TOPY      45       /* default top y value for text */
 #define DEF_BOTY      550      /* default bottom y value for text */

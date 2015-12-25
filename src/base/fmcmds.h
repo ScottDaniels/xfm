@@ -74,6 +74,7 @@ Contributions to this source repository are assumed published with the same lice
 #define C_DOCTITLE	 0x4454   	/* .dt document title for html header -- comments */
 #define C_DEFVAR      0x4456   /* .dv define variable */
 
+#define C_ESC_CHR	  0x4543	// .ec add escaped character of the form \ooo
 #define C_ENDDEFLST   0x4544   /* .ed end definition list */
 #define C_ELSE        0x4549   /* .ei else portion of if statement */
 #define C_ENDLIST     0x454C   /* .el end list */
@@ -124,6 +125,7 @@ Contributions to this source repository are assumed published with the same lice
 #define C_RHEAD       0x5248   /* .rh running header */
 #define C_RIGHT       0x5249   /* .ri right justify */
 #define C_RSIZE       0x5253   /* .rs running h/f font size */
+#define C_RESTARTTAB  0x5254   // .rt -- restart table (internal only)
 
 #define C_SECTION     0x5343   /* .sc generate rtf section break */
 #define C_SETFONT     0x5346   /* .sf set font command */
@@ -143,6 +145,7 @@ Contributions to this source repository are assumed published with the same lice
 #define C_TABLEROW    0x5452   /* .tr start next table row */
 #define C_TOC         0x5443   /* .tc turn on/off table of contents */
 #define C_TMPFONT		0x5446	/* .tf temp font for tokens to end of parm list; also super/subscript */
+#define C_TOPGUT		0x5447	// .tg n{i|p} top gutter value
 #define C_TOPMAR      0x544D   /* .tm top margin command */
 #define C_TWOSIDE     0x5453   /* .ts two sided page layout */
 #define C_TMPTOP      0x5454   /* .tt set topy to cury temporarly */

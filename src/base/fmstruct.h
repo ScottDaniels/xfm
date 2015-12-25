@@ -72,9 +72,11 @@ Contributions to this source repository are assumed published with the same lice
 
 struct table_mgt_blk {
 				/* pfm stuff */
-	struct col_blk	*col_list;	/* regular columns (on hold) */	
-	struct col_blk	*cur_col;	/* current col (on hold) */
-	int	old_topy;		/* topy when we started */
+	struct col_blk	*col_list;		/* regular columns (on hold) */	
+	struct col_blk	*cur_col;		/* current col (on hold) */
+	struct col_blk	*paused_list;	// list of cols which have been paused
+	struct col_blk	*paused_col;	// the current col at time of pause
+	int	old_topy;					/* topy when we started */
 	int	old_linelen;
 	int 	lmar;			/* original values of these things */
 	int 	hlmar;
@@ -218,6 +220,7 @@ EXTERN int pagew INIT_VALUE(MAX_Y); 		/* page width/height -- can be adjusted by
 EXTERN int pageh INIT_VALUE(MAX_X); 		/* page width/height -- can be adjusted by -g hxw on cmd line */
 
 EXTERN int cury INIT_VALUE( DEF_TOPY );           /* current y position on the "page" (points) */
+EXTERN int top_gutter INIT_VALUE( DEF_TOPY/2 );   // top gutter (space between first text line and running matter)
 EXTERN int textsize INIT_VALUE( DEF_TEXTSIZE );   /* point size of current text (points) */
 EXTERN int textspace INIT_VALUE( DEF_SPACE );     /* space between lines of text (points) */
 
@@ -255,7 +258,7 @@ EXTERN char *path INIT_VALUE( NULL );             /* path to search for im files
 EXTERN char *obuf INIT_VALUE( NULL );             /* output buffer */
 EXTERN int optr INIT_VALUE( 0 );                  /* pointer into output buffer */
 
-EXTERN struct table_mgt_blk  *table_stack[100]; /* stack of nested tables */
+EXTERN struct table_mgt_blk  *table_stack[MAX_TABLES]; /* stack of nested tables */
 EXTERN int *tableinfo INIT_VALUE( 0 );           	/* current column specification */
 EXTERN int ts_index INIT_VALUE( 0 );              /* table stack index (@next) */
 EXTERN int curcell INIT_VALUE( 0 );               /* current cell in table */
