@@ -83,6 +83,7 @@ Contributions to this source repository are assumed published with the same lice
 *			30 Aug 2012 - To better handle the left side of the box.
 *			20 Mar 2013 - Fixed problem with margins.
 *			23 Jun 2013 - Reverse the left setting as it was backwards
+*			25 Dec 2015 - Corrected bug with column oriented boxes.
 **************************************************************************
 */
 void FMbxstart( int option, char *colour, int border, int width, char *align )
@@ -105,8 +106,8 @@ void FMbxstart( int option, char *colour, int border, int width, char *align )
 	i = 0;
 	
 	//box.lmar = -3; 			   /* default relative positions to column margins */
-	//box.lmar = lmar - 3; 			   /* default relative positions to column margins */
-	box.lmar = (lmar - cur_col->lmar) -3;  /* default to column rather than margin/linelen */
+	//box.lmar = lmar - 3;				/* default relative positions to column margins */
+	box.lmar = cur_col->lmar -3;  		/* default to column rather than margin/linelen */
 	box.rmar = box.lmar + cur_col->width  + 6;
 	box.hconst = FALSE;                   /* default to no hlines */
 
