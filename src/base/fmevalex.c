@@ -122,6 +122,8 @@ while( FMgetparm( &buf ) )
       		stack[sp++] = atof( buf ); 		/* assume +n and push on stack */ 
 		else
 		{
+			if( sp < 2 )
+				break;
 			if( trace )
 				fprintf( stderr, "eval: [%.3f %.3f +] = ", stack[sp-2], stack[sp-1] );
       		stack[sp-2] += stack[sp-1];   /* add top two and push */
@@ -132,51 +134,66 @@ while( FMgetparm( &buf ) )
 		break;
 
      case '-':
-		if( isdigit( *(buf+1) ) )
-      		stack[sp++] = atof( buf );  		/* assume -n and push on stack */
-		else
-		{
+			if( isdigit( *(buf+1) ) )
+				stack[sp++] = atof( buf );  		/* assume -n and push on stack */
+			else
+			{
+				if( sp < 2 )
+					break;
+				if( trace )
+					fprintf( stderr, "eval: [%.3f %.3f -] = ", stack[sp-2], stack[sp-1] );
+				stack[sp-2] = stack[sp-2] - stack[sp-1];   /* sub top two and push */
+
+				if( trace )
+					fprintf( stderr, "%.3f\n", stack[sp-2] );
+				sp--;                         /* one less thing on stack */
+			}
+			break;
+
+     case '*':
+			if( sp < 2 )
+				break;
+
 			if( trace )
-				fprintf( stderr, "eval: [%.3f %.3f -] = ", stack[sp-2], stack[sp-1] );
-      		stack[sp-2] = stack[sp-2] - stack[sp-1];   /* sub top two and push */
+				fprintf( stderr, "eval: [%.3f %.3f *] = ", stack[sp-2], stack[sp-1] );
+
+      		stack[sp-2] *= stack[sp-1];   /* mul top two and push */
 
 			if( trace )
 				fprintf( stderr, "%.3f\n", stack[sp-2] );
       		sp--;                         /* one less thing on stack */
-		}
-		break;
-
-     case '*':
-      	stack[sp-2] *= stack[sp-1];   /* mul top two and push */
-      	sp--;                         /* one less thing on stack */
-      	break;
+      		break;
 
      case '/':
-      	if( stack[sp-1] != 0 )
-			stack[sp-2] = stack[sp-2]  / stack[sp-1];   /* div top two and push */
-		else
-		{
-			fprintf( stderr, "division by zero detected -- bad values generated on stack\n" );
-			stack[sp-2] = 0;
-		}
-      	sp--;                         /* one less thing on stack */
-      	break;
+			if( sp < 2 )
+				break;
+      		if( stack[sp-1] != 0 )
+				stack[sp-2] = stack[sp-2]  / stack[sp-1];   /* div top two and push */
+			else
+			{
+				fprintf( stderr, "division by zero detected -- bad values generated on stack\n" );
+				stack[sp-2] = 0;
+			}
+      		sp--;                         /* one less thing on stack */
+      		break;
 
      case '%':                           /* mod operator */
-      	if( stack[sp-1] != 0 )
-				stack[sp-2] = (int) stack[sp-2] % (int) stack[sp-1];
-		else
-		{
-			stack[sp-2] = 0;
-			fprintf( stderr, "modular division by zero detected -- bad values generated on stack\n" );
-		}
-      sp--;
-      break;
+			if( sp < 1 )
+				break;
+			if( stack[sp-1] != 0 )
+					stack[sp-2] = (int) stack[sp-2] % (int) stack[sp-1];
+			else
+			{
+				stack[sp-2] = 0;
+				fprintf( stderr, "modular division by zero detected -- bad values generated on stack\n" );
+			}
+		  sp--;
+		  break;
 
      case '?':
-      usr_fmt++;
-      strcpy( fmt,  buf+1 );
-      break;
+      		usr_fmt++;
+      		strcpy( fmt,  buf+1 );
+      		break;
 
      case ']':
 		if( rbuf != NULL )                      /* if caller passed a buffer */
@@ -198,12 +215,16 @@ while( FMgetparm( &buf ) )
 
      default:               /* assume its a parameter to push on stack */
 		stack[sp++] = atof( buf );  /* convert to integer and push on stack */
+		TRACE( 1, "expr: push: %.3f\n", stack[sp-1] );
 		break;
     }     /* end switch */
 
   }       /* end while */
 
                         /* if we fall out of the while then return top value */
- if( rbuf != NULL )  /* if caller passed a buffer */
-  sprintf( rbuf, "%d", (int) stack[sp-1] );  /* convert to character */
-}           /* FMevalex */
+ 	if( rbuf != NULL ) {  		// if caller passed a buffer
+		TRACE( 1, "expr: exit result: %.3f\n", stack[sp-1] );
+		sprintf( rbuf, "%d", (int) stack[sp-1] );  /* convert to character */
+	}
+
+}
