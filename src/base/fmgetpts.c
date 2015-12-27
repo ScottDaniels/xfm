@@ -93,7 +93,7 @@ int FMgetpts( tok, len )
 
 	case 'l':
 	case 'L':					// lines converted based on current text size and text space 
-		pts = atoi( tok )
+		pts = atoi( tok );
 		pts *= textspace + textsize;
 		break;
 
