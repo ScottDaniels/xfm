@@ -104,14 +104,17 @@ void FMrunout( int page, int shift )
 
 	if( rhead != NULL )   /* if there is a running header defined */
 	{
+		struct col_blk *cb;
 		int hx = x;								// x to use for header
 		int osize = textsize;
 		char *ofont;
 
+		for( cb = firstcol; cb != NULL && cb->next != NULL; cb=cb->next ); 		// point at the last col
 		ofont = curfont;
 		curfont = runfont;
 		textsize=10;
-		hx = pagew - firstcol->lmar - FMtoksize( rhead, strlen( rhead ) );
+		//hx = pagew - firstcol->lmar - FMtoksize( rhead, strlen( rhead ) );
+		hx = (cb->lmar + cb->width) - FMtoksize( rhead, strlen( rhead ) );		// try to have footer even with right text
 		textsize = osize;
 		curfont = ofont;
 
