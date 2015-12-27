@@ -266,7 +266,7 @@ void FMgetval( )
 		else
 		{
 			strcpy( vname, "_rmar" );
-			snprintf( value, sizeof( value ), "%d ", lmar + linesize );
+			snprintf( value, sizeof( value ), "%d", lmar + linesize );
 		}
        break;
 	
@@ -293,7 +293,7 @@ void FMgetval( )
 		else
 		{
 			strcpy( vname, "_tsize" );
-       		snprintf( value, sizeof( value ), "%d ", textsize );
+			snprintf( value, sizeof( value ), "%d", textsize );
 		}
        break;
 
