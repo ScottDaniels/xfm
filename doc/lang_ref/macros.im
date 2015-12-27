@@ -2,15 +2,15 @@
 Macros are variables which accept parameters and place the parameters into the macro value 
 as the variable is expanded and placed into the document. 
 Macros are referenced like any other &x variable, using the ampersand (^&) character, 
-howver their variable name is immediately followed by a parameter list enclosed in 
+however their variable name is immediately followed by a parameter list enclosed in 
 parenthesis (much like a function call in C). 
 Unlike a C function call, parameters in the list are separated with colons (:) rather 
 than commas, and to pass a colon character as a part of a parameter list, it must be 
 escaped. 
 .sp
 The macro is defined using the &ital(define variable) &c(dv) command, which contains 
-parameter &ital(markers) where the varioius parameters should be placed when the 
-macro is expanded. These markers are of the form &lit($n) where &ital(n) is the 
+parameter &ital(markers) where the various parameters should be placed when the 
+macro is expanded. These markers are of the form &cw($n) where &ital(n) is the 
 parameter number (one based) counting from left to right.
 .sp
 
@@ -21,7 +21,7 @@ The definition for such a macro would depend on the output being generated, and 
 defined with the first statement when generating HTML output, and with the second when 
 a Postscript document is being produced:
 .sp
-.sf &litfont
+.sf &cwfont
 .st [ &textsize 2 - ]
 .nf
  .dv ital ^^^<i^^^>$1^^^</i^^^>
@@ -49,7 +49,7 @@ A &ital(row) macro then can be defined that accepts as its
 parameters text for each cell of a table row. 
 The definition might look something like:
 .sp
-.sf &litfont
+.sf &cwfont
 .nf
  .dv row $1 .cl ^: $2 .cl ^: $3 .tr
 .fo
@@ -67,11 +67,11 @@ Once defined, the &ital(row) macro might then be used in the following manner:
 .** -------------------------------------------------------------------------
 .ca start macro_examp.ca
 .cc 10
-.sf &litfont
+.sf &cwfont
 .st [ &textsize 2 - ]
 .** .bx start m
 .st [ &textsize 2 - ]
-.sf &litfont
+.sf &cwfont
 .nf
 
  .ta b 1.5i 2i 3i

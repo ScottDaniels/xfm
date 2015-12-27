@@ -12,36 +12,36 @@ The general format of the &ital(index) command is:
 .sp
 
 .in +.2i
- &lit(^.ix) &ital(command [parameters])
+ &cw(^.ix) &ital(command [parameters])
 .in -.2i
 .sp
 
 The &ital(command) is one of several indexing sub-commands (described in greater detail in the following
-pararagraphs) and the parameters are any data that a specific command needs.
+paragraphs) and the parameters are any data that a specific command needs.
 .sp
 
 .bd .65i &ditext
 .di snare : Add one or more phrases that will be captured from the document and referenced in the 
 index.
-.sp 0
+.sp .3
 .di synonym : Add a synonym entry into the index.
-.sp 0
+.sp .3
 .di pause : Stop capturing references. 
-.sp 0 
+.sp 0.3
 .di resume : Start capturing references.
-.sp 0
+.sp .3
 .di force : Force a reference on the current page even if the phrase does not appear on the page. 
-.sp 0 
+.sp 0.3
 .di group : Define a group of references to be listed under a common heading.
-.sp 0
+.sp .3
 .di groupb : Establishes a format string that is used when starting a group entry.
-.sp 0
+.sp .3
 .di groupe : Defines the format string used when ending a group entry.
-.sp 0
+.sp .3
 .di insert : Causes the index to be placed into the document at the current location. 
-.sp
+.sp .3
 .di section : Defines the format statement used when an alpha break occurs in the index. 
-.sp
+.sp .3
 .di term : Defines the format statement used for each term in the index. 
 .ed
 .sp
@@ -61,12 +61,12 @@ The small bit of code in figure &_fig illustrates the snare command.
 .ca start snare_examp.ca
 .** .bx start m
 .st [ &textsize 2 - ]
-.sf &litfont
+.sf &cwfont
 .nf
 
  .ix snare carabiner
  .ix snare `belay device`
- .ix snare ATC Grigri `stich plate`
+ .ix snare ATC Grigri `stitch plate`
 
 .fo
 .** .bx end
@@ -85,7 +85,7 @@ the document text.
 The &ital(synonym) command has the format:
 .sp
 .in +.2i
-&lit(^.ix synonym) &ital(existing link)
+&cw(^.ix synonym) &ital(existing link)
 .in -.2i
 .sp
 The &ital(existing) parameter is the phrase that has been defined with a &ital(snare) command
@@ -99,7 +99,7 @@ A simple example of how synonyms might be used is how names might be represented
 A person's name might appear in the document text as first name followed 
 by last name, however it is probably desired to reference people in the index in a last name first name
 order.
-To do this, for a person named Edward Daniels, the synonym &lit(Daniels, Edward) is created, and both the phrase "Edward Daniels"
+To do this, for a person named Edward Daniels, the synonym &cw(Daniels, Edward) is created, and both the phrase "Edward Daniels"
 and the word "Daniels" daniels are linked to the entry. 
 .gv fig
 This is illustrated in figure &_fig.
@@ -109,7 +109,7 @@ This is illustrated in figure &_fig.
 .ca start syn_examp.ca
 .** .bx start m
 .st [ &textsize 2 - ]
-.sf &litfont
+.sf &cwfont
 .nf
  
  .ix snare `Daniels, Edward`
@@ -132,11 +132,11 @@ This is illustrated in figure &_fig.
 .h2 Related Groups
 To list a group of related entries in the index, the &ital(group) command is used. 
 The group command defines the group name and any phrases that have been 
-defined using the &lit(snare) command. 
+defined using the &cw(snare) command. 
 The following command Causes the group "Belay Devices" to be placed into the index
 with entries for the different device types listed under it. 
 .sp
-.sf &litfont
+.sf &cwfont
 .st [ &textsize 2 - ]
 .nf
  .ix group `Belay Devices` ATC Grigri plate
@@ -153,7 +153,7 @@ then the list is omitted entirely.
 As with the other commands, multi-word phrases must be enclosed in back-quotes.
 
 .h2 Inserting The Index
-The simple &lit(^.ix insert) command causes the index to be generated and inserted at the 
+The simple &cw(^.ix insert) command causes the index to be generated and inserted at the 
 current point in the output file. 
 
 
@@ -171,30 +171,32 @@ digested.
 When the &ital(insert) &X creates a temporary file and writes the index 'hits' to the file. 
 The file is closed and then read back in as &x source to generate the index.  
 Thus, the formatting commands are nearly just &x source. 
-The only exception to this is that each command may take one or more &stress(C) like &lit(%) tokens that mark
+The only exception to this is that each command may take one or more &stress(C) like &cw(%) tokens that mark
 where elements of the index entry are to be inserted. 
 
 .h3 The Term Format Command
-The format statement for the &ital(term) command allows the user to supply two &stress(C) like &lit(%) tokens as a part
+The format statement for the &ital(term) command allows the user to supply two &stress(C) like &cw(%) tokens as a part
 of the overall format command. 
-The first is a &lit(%s) which is replaced with the term phrase, and the second is a &lit(%d) used for the first page reference. 
+The first is a &cw(%s) which is replaced with the term phrase, and the second is a &cw(%d) used for the first page reference. 
 A typical format statement puts the phrase on a new line, followed by a few spaces and then the first reference:
 .sp
-.sf &litfont
+.sf &cwfont
+.st [ &textsize 2 - ]
 .nf
  .ix term .br %s  `^`   ^`` %d
 .fo
 .sf &textfont
+.st &textsize
 
 .h3 Formatting Group Entries
 The group entries are formatted with a begin and end format statement.  Terms within the group are written using the 
 format string that was defined on the &ital(term) command.
-The &ital(groupb) (begin) command accepts one &lit(%s) which is replaced by the group phrase; the &ital(groupe) command does not 
+The &ital(groupb) (begin) command accepts one &cw(%s) which is replaced by the group phrase; the &ital(groupe) command does not 
 take any &stress(C) like format tokens
 The typical use is to cause the list of group terms to be indented under the label:
 .sp
 .cc 5
-.sf &litfont
+.sf &cwfont
 .st [ &textsize 2 - ]
 .nf
  .ix groupb .sp 0 %s .br .ll -.25i .in +.25i
@@ -209,23 +211,25 @@ group list by one-quarter inch. At the end of the list, the indention is reset a
 
 .h3 Index Sections
 The index is broken into sections, each section beginning with a change in lead character of a phrase; the index is 
-automatically sorted aphabetically. 
+automatically sorted alphabetically. 
 The &ital(section) command is used to define a format string that causes a section header to be written before the first
 entry in that part of the index.
-The &ital(section) command makes use of one &stress(C) formatting token, a &lit(%c,) which is replaced with the letter 
+The &ital(section) command makes use of one &stress(C) formatting token, a &cw(%c,) which is replaced with the letter 
 of the section (A, B, C, etc.). 
 The following section command causes a horizontal line to be drawn under the section letter:
 .sp
 .cc 5
-.sf &litfont
+.sf &cwfont
+.st [ &textsize 2 - ]
 .nf
  .ix space .sp 1 .cc 5 %c .ln  .sp 0
 .fo
 .sf &textfont
+.st &textsize
 .sp
 
 The format string also causes a full blank line to be written before the section and a half space blank line to be 
-written after the section lable. 
+written after the section label. 
 
 
 .sp
@@ -233,16 +237,16 @@ written after the section lable.
 Once a &ital(snare) command has been issued for a phrase references to that phrase are automatically recorded as the output 
 document is created.  
 Occasionally, an index phrase does not appear in the text and thus references must be forced. 
-The &ital(force) command allows the user to define a reference to any phrase at anypoint in the document. 
+The &ital(force) command allows the user to define a reference to any phrase at any point in the document. 
 The syntax is:
 .sp
-.sf &litfont
-&lit(^.ix force) &ital(phrase)
+.sf &cwfont
+&cw(^.ix force) &ital(phrase)
 .sf &textfont
 .sp
 
-The phrase may contian blanks wihtout needing to be contained in backquotes (in fact using backquotes will bugger things).
-If the phrase contains a word ending with a puncuation mark, (e.g. "installation, adapter") then the punctuation needs to 
+The phrase may contain blanks without needing to be contained in backquotes (in fact using backquotes will bugger things).
+If the phrase contains a word ending with a punctuation mark, (e.g. "installation, adapter") then the punctuation needs to 
 be doubled (e.g. ^.xi force installation,, adapter) in order to match the snarfed string (assuming the string defined on 
 the snarf command contained the punctuation). 
 

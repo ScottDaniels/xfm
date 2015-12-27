@@ -8,19 +8,24 @@
 .sp
 
 .ju off
+.if &two_col_mode 1 =
+	.dv lcw 4.5i
+.ei
+	.dv lcw 3.8i
+.fi
 
-.ta B b=1 p=5p .75i .75i 4.5i
+.ta B b=1 p=5p .75i .75i &lcw
 .bc start Value  Name .bc end
 .cl : .bc start &bold(Variable  Created) .bc end
 .cl : .bc start &bold(Description) .bc end
 .tr
 .bc start Date .bc end
 .cl : .bc start _date .bc end
-.cl : Sets the variable with the date using the format: &lit(12 Jan 2002)
+.cl : Sets the variable with the date using the format: &cw(12 Jan 2002)
 .tr
 .bc start date .bc end
 .cl : .bc start _date .bc end
-.cl : Sets the variable with the date using the format: &lit(mm/dd/yy)
+.cl : Sets the variable with the date using the format: &cw(mm/dd/yy)
 .tr
 .bc start env .bc end
 .cl : .bc start user defined .bc end
@@ -51,7 +56,7 @@ only on systems that support the concept of a host name.
 .tr
 .bc start lines .bc end
 .cl : .bc start _line .bc end
-.cl : The variable is set to contain the number of lines remainining in 
+.cl : The variable is set to contain the number of lines remaining in 
 the current column.
 .tr
 .bc start lmar .bc end
@@ -79,24 +84,17 @@ _cury
 .br _coln
 .bc end 
 .cl : 
-Get &lit(y) information:
-The current &lit(y) position (points from the top of the page) 
-is placed into the &lit(_cury) variable. The top most &lit(y) value is placed 
-into &lit(_topy) variable and the current column number (0 is the first column) is 
-placed into &lit(_coln.)
+Get &cw(y) information:
+The current &cw(y) position (points from the top of the page) 
+is placed into the &cw(_cury) variable. 
+The top most &cw(y) value is placed into &cw(_topy) variable and the 
+current column number (0 is the first column) is placed into &cw(_coln.)
 .et
 
 .st &textsize
-&half_space
 .fg t=table  Get value command parameters and resulting variable definitions.
 .sp
 
-.if pfm
-	.lw 0
-	.ln
-.fi
-
-.sp 2
 .po
 .tt 
 &set2col

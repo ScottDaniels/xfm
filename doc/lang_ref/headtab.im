@@ -12,7 +12,7 @@
 .dv lastrow .bc start $1 .cl ^: $2  .cl ^:  $3 .cl ^: $4  .cl ^: $5 .cl ^: $6 .cl ^:  $7 .cl ^:  $8  .cl ^:  $9  .cl ^:  $10 .bc end 
 
 .sf Helvetica
-.ta B b=1 p=5p .5i .75i .5i .5i .5i .5i .5i .5i .5i .65i
+.ta B b=1 p=5p .5i .75i .5i .5i .5i .5i .5i .5i .5i .6i
 .br
 .bc start
 .cl : .br
@@ -47,7 +47,7 @@
 
 .st &textsize
 .sp 0
-.fg t=table Defalult properties for each header level.
+.fg t=table Default properties for each header level.
 .sp
 
 .if pfm

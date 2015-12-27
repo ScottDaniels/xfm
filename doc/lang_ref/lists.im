@@ -8,6 +8,7 @@ The following paragraphs describe each of these lists and the commands that are 
 create and manipulate them. 
 
 
+.xi force `bullet list`
 .h3 Bullet lists
 A bullet list is created using the &ital(begin list) &c(bl) command, followed by one or more
 &ital(list item) &c(li) commands, and is finalised with the &ital(end list) &c(el) command.
@@ -17,19 +18,21 @@ The following is the syntax for the &ital(begin list) command:
 .sp
 
 .sp
-.sf &litfont
+.sf &cwfont
+.st [ &textsize 2 - ]
 .nf
  .bl [bullet-char] [f=font] [s=size]
 .fo
 .sf &textfont
+.st &textsize
 .sp
 Where:
 &indent .sp 1
 .bd .75i &ditext
 .di bullet-char : Is the character that is to be generated as the bullet when a
 &ital(list item) command is encountered. If the character cannot easily be entered 
-into the source file using the keyboard, the notation &lit(\nnn) can be used where
-&lit(nnn) is the &stress(decimal) value of the character.
+into the source file using the keyboard, the notation &cw(\nnn) can be used where
+&cw(nnn) is the &bold(decimal) value of the character.
 If not supplied, an asterisk (*) is used.
 .sp
 .di f=font : Supplies the name of the font that should be used to render the 
@@ -52,7 +55,7 @@ left margin. If the user desires the list items to be separated with a blank lin
 .dv blfig &_fig
 The source for a  simple bullet list is contained in figure &blfig.
 The font used is the &ital(Dingbats) font and the letter 'l' (lowercase L)
-cooresponds to a filled circle in that font. 
+corresponds to a filled circle in that font. 
 items:
 .sp
 
@@ -61,7 +64,7 @@ items:
 .cc 15
 .** .bx start m
 .st [ &textsize 2 - ]
-.sf &litfont
+.sf &cwfont
 .nf
  .** l in Dingbats is a solid circle
  .bl l f=Dingbats
@@ -84,7 +87,7 @@ items:
 
 When generating HTML 
 output, the user should be aware that most browsers automatically indent for a list.
-The list item character, and size parameters are also ignored by the &lit(hfm) 
+The list item character, and size parameters are also ignored by the &cw(hfm) 
 formatter as browsers do not accept the character from the user when rendering a list.
 
 
@@ -98,9 +101,9 @@ that define the width of the term area, the font that terms are to be written us
 optional automatic term generation parameter. 
 The &ital(begin definition list) command has the syntax:
 .sp
-.sf &litfont
+.sf &cwfont
 .st [ &textsize 2 - ]
-.sf &litfont
+.sf &cwfont
 .nf
  .bd <termsize> [<font>] [a=x] [f=fmt]
 .fo
@@ -114,16 +117,16 @@ Where:
 .di termsize : is the size (in inches or points) that is reserved for each 
 term.  
 .sp
-.di font : is the name of the font that should be used for the terms ( &lit(pfm) only).
+.di font : is the name of the font that should be used for the terms ( &cw(pfm) only).
 .sp
 .di a=x : Causes automatic generation of terms where &ital(x) is the starting term. &ital(x) 
-may be either a character or a number. If &lit(a=a) is specified, then terms are generated
-&lit(a, b, c) and so forth. If &lit(a=3) is specified, then terms are generated &lit(3, 4, 5) 
+may be either a character or a number. If &cw(a=a) is specified, then terms are generated
+&cw(a, b, c) and so forth. If &cw(a=3) is specified, then terms are generated &cw(3, 4, 5) 
 and so on. 
 .sp
 .di f=fmt : Allows a format string to be supplied when automatic term generation is used. 
-The format string is a &bold(C) programming language &lit(printf) format string. If 
-generating a numbered list, the format string &lit(%2d]) could be used to align the 
+The format string is a &bold(C) programming language &cw(printf) format string. If 
+generating a numbered list, the format string &cw(%2d]) could be used to align the 
 values and to add a right parenthesis to each term.
 .ed
 &uindent
@@ -136,7 +139,7 @@ next newline character or a lone colon (:) which indicates the end of parameters
 The usual syntax is:
 .sp
 .st [ &textsize 2 - ]
-.sf &litfont
+.sf &cwfont
 .nf
   .di term ^: First text of definition.
   .di term2 
@@ -169,9 +172,9 @@ The &ital(heel-hook) term in the example below illustrates this effect.
 
 
 .sp
-.h4 Definition list example: 
 .gv fig
 .dv dl_fig &_fig
+.h4 Definition list example: 
 The  source code in figure &dl_fig illustrates the three commands needed to create a definition list. The 
 resulting formatted output is also presented. 
 The code creates a list with a term area that is three-quarters of an inch wide. Terms are 
@@ -180,18 +183,25 @@ rendered in Helevetica-Bold font.
 
 .** -------------------- capture example that will be read in twice; once as source example and once to format to show output
 .ca start di_src_examp.ca
+.ju off
  .bd .65i Helvetica-Bold
- .di bomber : Generally used to describe a hand hold 
+ .di bomber : Generally used to 
+     describe a hand hold 
      that is solid; bomb proof.
  .sp .5
- .di sloper : A handhold that has no noticable features.
+ .di sloper : A handhold that 
+     has no noticeable features.
  .sp 0.5
- .di bucket : A deep pocket that the climber can easily 
+ .di bucket : A deep pocket that 
+     the climber can easily 
      fit all of her fingers into. 
  .sp 0.5
- .di heel-hook : When a climber uses the heel of 
-     their foot to pull their body towards the rock.
+ .di heel-hook : When a climber 
+     uses the heel of their foot 
+     to pull their body towards the 
+     rock.
  .ed
+.ju on
 .ca end
 
 .** -----------------------------------------------------------------------------------
@@ -200,15 +210,18 @@ rendered in Helevetica-Bold font.
 .cc 15
 .** keep this box!
 .bx start  m
-&stress(Source^:)
+&bold(Source^:)
 .if hfm
 	.st [ &textsize 4 - ]
 .fi
+.sf Courier
 .nf
 
 .im di_src_examp.ca
 
 .fo
+.sf &textfont
+
 .if hfm
 	.st &textsize 
 .fi
@@ -230,7 +243,7 @@ rendered in Helevetica-Bold font.
 	.fi
 .fi
 
-&stress(Output^:)
+&bold(Output^:)
 .sp
 .ll -.3i
 .im di_src_examp.ca
@@ -243,21 +256,80 @@ rendered in Helevetica-Bold font.
 .** -----------------------------------------------------------------------------------------
 &ifroom(25:di_examp.ca)
 
-Had the &ital(begin definition list) command been given the 
-parameter &lit(a=1), then the terms would have been automatically 
-generated starting with one (1). When generating a list, the &ital(definition item) command
-acts much like the &ital(list item) command and causes the next sequential term to be 
-placed into the term area. When generating an automatically termed list, any terms 
-that are supplied on the &ital(definition item) command are ignored, and thus the source code
-tends to resemble:
+.h3 Numbered lists
+The definition list can be put into an automatic number mode when the &cw(a=x) parameter is used to 
+indicate a starting value.  
+Optionally a printf format ( .sm&c(f=) .sm ) string can be supplied to control the format of the numbering
+given to the list.  
+When in automatic numbering mode, there is no term given and the &c(di) command must either be on a line
+by itself, or a command termination colon given.  
+.gv figure
+Figure &_fig contains a brief illustration of the source and output for an automatically numbered list using
+letters (e.g. a, b, c...). 
+
+.** -------------------- capture example that will be read in twice; once as source example and once to format to show output
+.ca start di_src_examp2.ca
+.ju off
+ .bd .25i Helvetica-Bold a=a f=%c)
+ .di : Turn left onto Court St.
+ .di : At the second light turn right.
+ .di : Turn into the first driveway 
+   and park.
+ .di : Walk to the second entrance
+   on the left
+ .ed
+.ju on
+.ca end
+
+.** -----------------------------------------------------------------------------------
+.ca start di_examp2.ca
 .sp
-.sf &litfont
+.cc 15
+.** keep this box!
+.bx start  m
+&bold(Source^:)
+.if hfm
+	.st [ &textsize 4 - ]
+.fi
+.sf Courier
+.st [ &textsize 2 - ]
 .nf
- .di : Then turn left at the 2nd light.
+
+.im di_src_examp2.ca
+
 .fo
 .sf &textfont
+.st &textsize
+
+.if hfm
+	.st &textsize 
+.fi
+
 .sp
-Note that the colon is still necessary to terminate the &ital(definition item) command
-unless the definition begins after a newline character. 
+.gv lines
+.if hfm
+	.hr
+.ei
+	.if &_lines 15 >
+		.ln
+	.ei
+		.bx end
+		.cc 25
+		.bx start m
+	.fi
+.fi
+
+&bold(Output^:)
+.sp
+.ll -.3i
+.im di_src_examp2.ca
+.ll +.3i
+.sp
+.bx end
+.fg Automatically numbered definition list.
+.sp 2
+.ca end
+.** -----------------------------------------------------------------------------------------
+&ifroom(25:di_examp2.ca)
 
 

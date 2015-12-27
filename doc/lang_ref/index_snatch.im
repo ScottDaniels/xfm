@@ -10,6 +10,7 @@
 .ix snare path
 .ix snare snare
 .ix snare synonym
+.ix snare variable
 
 .ix synonym path PATH
 .ix synonym path XFM_PATH
@@ -36,7 +37,7 @@
 .ix synonym `definition list item` di
 .ix synonym `double space` ds
 .ix synonym `define variable` dv
-.ix synonym `if-else` ei
+.ix synonym `if-else` ^.ei
 .ix synonym `end definition list` ed
 .ix synonym `end list` el
 .ix synonym `encapsulated PostScript` ep
@@ -51,7 +52,7 @@
 .ix synonym header h4
 .ix synonym header `paragraph header`
 .ix synonym `header numbering` hn
-.ix synonym `if-else` if
+.** .ix synonym `if-else` if
 .ix synonym `imbed file` im
 .ix synonym indent in
 .ix synonym index ix
@@ -82,6 +83,7 @@
 .ix synonym `set x` sx
 .ix synonym `set y` sy
 .ix synonym `start table` ta
+.ix synonym `table header` th
 .ix synonym `table row` tr
 .ix synonym `talbe of contents` tc
 .ix synonym `top margin, setting` tm
@@ -89,5 +91,5 @@
 .ix synonym `two sided printing` ts
 .ix synonym trace xx
 
-.ix group Lists `buletted list` `definition list` `definition list` `end definition list` `end list` `list item`
-.ix group Tables `end table` `start table` `table cell` `table row`
+.ix group Lists `bullet list` `definition list` `end definition list` `end list` `list item`
+.ix group Tables `end table` `start table` `table cell` `table row` `table header`

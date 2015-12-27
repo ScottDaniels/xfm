@@ -9,7 +9,12 @@
 .sp
 .ju off
 
-.ta B b=1 p=5p 2i 4i
+.if &two_col_mode 1 =
+	.dv lcw 4.5i
+.ei
+	.dv lcw 3.4i
+.fi
+.ta B b=1 p=5p 2i &lcw
 .bc start
 &bold(COMMAND)
 .bc end
@@ -38,19 +43,20 @@ and the next newline character as parameters.
 ^.ta b w=5i 2i 2i 3i
 .cl
 Commands such as the table command accept keyword (b), keyword value
-pair (w=n) and positional parameters which are &lit(2i, 2i) and &lit(3i)
+pair (w=n) and positional parameters which are &cw(2i, 2i) and &cw(3i)
 .et
 
-.sp
 .st &textsize
 .fg t=table Illustration of various XFM commands and parameter formats.
-.sp
+.sp 2
 
+.if false
 .if pfm
 	.lw 0
 	.ln 
 	.sp
 .fi
+.fi 
 
 .po
 .tt 

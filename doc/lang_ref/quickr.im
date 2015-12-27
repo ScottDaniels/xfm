@@ -7,13 +7,7 @@
 	.in 0i
 .fi 
 
-.dv need 5
-.dv check  .gv lines .if ^^^&_lines ^&need < ^: .et .pa .ta B b=1 .5i 1.5i 4.5i ^: ^&header .tr ^: .fi 
-.dv row  ^&check .bc start $1 .bc end .cl ^: $2 .cl ^: $3  .tr ^: .dv need 5
-.dv xheader .bc start CMD .bc end .cl ^: PARAMETER(S) .cl ^: COMMENTS .tr 
-.dv last_row .bc start $1 .bc end .cl ^: $2 .cl ^: $3 
-.dv header .bc start CMD .bc end .cl ^: .bc start PARAMETER(S) .bc end .cl ^: .bc start COMMENTS .bc end 
-.** .th header .bc start CMD .bc end .cl ^: .bc start PARAMETER(S) .bc end .cl ^: .bc start COMMENTS .bc end 
+.dv row    .tr r=5 ^: .bc start $1 .bc end .cl ^: $2 .cl ^: $3  
 
 .h1 Quick Reference
 The following tables provide a quick overview of the &x commands and the parameters that 
@@ -24,45 +18,62 @@ they accept. Several conventions used in the tables are described below:
 .bd 1i &ditext
 .di {x|y} : One of the options separated by vertical bars, and enclosed inside of curly
 braces, must be supplied.
-.sp
+.sp .5
 .di ^[...] : The parameter appearing between square braces is optional and does not need to 
 be supplied.
-.sp
+.sp .5
 .di <text> : One or more text tokens are expected. Tokens are assumed to be a part of 
 <text> until a newline character is encountered.
-.sp
+.sp .5
 .di <n> : A numerical value is expected with its units being specific to the command
 (i.e. lines for the &c(cc) command).
-.sp
-.di <points> : A numerical value is expected and its units are assumed to be points.
-.sp
+.sp .5
+.di <points> : A numerical value is expected and is treated as points. 
+.sp .5
 .di <distance> : A numerical value is expected and its units are assumed to be determined
-by an appended 'p' or 'i' indicating points or inches respectfully.
-.sp
+by an appended 'p' or 'i' indicating points or inches respectfully. 
+For vertical distances, a suffix of 'l' (lower case L) can be used to indicate number of lines.
+.sp .5
 .ed
 .ll +.5i
 &uindent
 .sp
 
+.if false
+.cn start atbot Times-roman 8p 1i
+This is a test of the cn after a table
+.cn end
+.fi 
+
 .** -------------------------------------------------------------------------------------------
 .ju off
-.ta B b=1 .5i 1.5i 4.5i
-&header
-.tr
+.st [ &textsize 2 -]
+.** margin vars come back as points
+.gv lmar
+.gv rmar
+.dv ll [ 8.5 72 *  &_lmar &_rmar  + - ]
+.dv comment_len [ &ll 2 72 * - ]
+.sv comment_len
+
+.** .ta B b=1 .5i 1.5i 4.5i 
+.sv comment_len
+.ta B b=1 .5i 1.5i &{comment_len}p
+.xx 0
+
+.th .bc start CMD .bc end .cl ^: .bc start PARAMETER(S) .bc end .cl ^: .bc start COMMENTS .bc end 
 &row(**:<text>:Comment; all tokens to the next newline are ignored)
 &row(ab::Abort processing; no end of document housekeeping performed.)
-&row(ai::All input until the next ^.fo command is written to the output file as is (see nf) )
+&row(ai::All input until the next ^.fo command is written to the output file as is (see &cmd(nf) .sm ) )
 &row(br::Cause the next formatted text token to be placed at the beginning of a new line)
 
-&row(ca:{start|end} <file>:Capture all lines until the end command ad place into the file. )
+&row(ca:{start|end} <file>:Capture all lines until the end command and place into the file. )
 &row(cb::Column begin (eject column))
 &row(cd:<num> .br w=<distance> .br ^[g=<distance>] .br ^[i=<distance>]:Define num columns .br width of each .br gutter between columns .br Indention of left column from left margin)
 &row(ce:<text>:Center text on next line)
 &row(cc:<n>:Conditional column. Eject column if n rows do not remain in current column)
 &row(cp:<n>:Conditional page eject. Start new page if n columns are not left on current page)
 
-.dv need 15
-&check
+.tr r=17L
 .bc start dh .bc end 
 .cl
 <level>
@@ -84,7 +95,6 @@ by an appended 'p' or 'i' indicating points or inches respectfully.
 .br Include the header in the table of contents
 .br Header margin from left edge of column
 .br Eject type.
-.tr
 
 &row(di:<tokens>: Start a new definition list entry with <tokens>)
 &row(ds::Double space mode on)
@@ -93,6 +103,7 @@ by an appended 'p' or 'i' indicating points or inches respectfully.
 &row(ei::Begins else clause in an if-else conditional)
 &row(ed::Ends a definition list)
 
+.tr
 .bc start ep .bc end 
 .cl
 .sp
@@ -106,17 +117,14 @@ by an appended 'p' or 'i' indicating points or inches respectfully.
 .br Centers drawing between margins
 .br Releases unused space reserved by l=<distance>
 .br Attempt to use all of reserved space by changing height/width ratio
-.br Stretch, but keep drawing proportional with origional height/width
-.tr
+.br Stretch, but keep drawing proportional with original height/width
 
 &row(et::End table command)
 
 &row(fg:<text>:Figure text with automatic numbering)
 &row(fi::End if/else)
 
-.dv need 15
-&check 
-.tr 
+.tr r=17L
 .bc start gv .bc end
 .cl
 .sp
@@ -135,20 +143,19 @@ by an appended 'p' or 'i' indicating points or inches respectfully.
 .br yval }
 .cl
     Get a value into a variable
-.br Set variable &ital(_date) to format dd <month> yyyy
-.br Set variable &ital(_date) using format mm/dd/yyyy
-.br Set variable &ital(xname) to value that environment variable &ital(ename) has
-.br Set variable &ital(_fig) to figure number of next figure
-.br Set variable &ital(_font) to the current font
-.br Set variable &ital(_host) to the host name (UNIX only)
-.br Set variable &ital(_page) to the current page number
-.br Set variable &ital(_lines) to the number of lines remaining in the current column
-.br Set variable &ital(_lmar) to the current left margin value
-.br Set variable &ital(_rmar) to the value of the right margin 
-.br Set variable &ital(_tsize) to the current text size value
-.br Set variable &ital(_time) to the current time (hh:mm)
-.br Set variable &ital(_cury) to the current Y position in the column (points)
-.tr
+.br Set &ital(_date) to format dd <month> yyyy
+.br Set &ital(_date) using format mm/dd/yyyy
+.br Set &ital(xname) to value that environment variable &ital(ename) has
+.br Set &ital(_fig) to figure number of next figure
+.br Set &ital(_font) to the current font
+.br Set &ital(_host) to the host name (UNIX only)
+.br Set &ital(_page) to the current page number
+.br Set &ital(_lines) to the number of lines remaining in the current column
+.br Set &ital(_lmar) to the current left margin value
+.br Set &ital(_rmar) to the value of the right margin 
+.br Set &ital(_tsize) to the current text size value
+.br Set &ital(_time) to the current time (hh:mm)
+.br Set &ital(_cury) to the current Y position in the column (points)
 
 &row(h_:<text>:Generate a header where '_' is replaced with a 1, 2, 3, or 4)
 &row(hn:on | off | n:Turn off or on header numbering. If n is supplied, sets number to n)
@@ -178,14 +185,14 @@ by an appended 'p' or 'i' indicating points or inches respectfully.
 &row(rh:<text>:Use <text> as the running header string)
 &row(rs:<points>:Set the runing header/footer size to <points>)
 
-&row(sc::Generate RTF section break (Ignored by pfm, hfm and tfm) )
 &row(sm::Smash -- prevent whitespace between previous and next tokens.)
 &row(sp:<n>:Generate 'n' number of blank lines. )
-&row(ss::Turn single spaceing between lines on. (see ds) )
+&row(ss::Turn single spaceing between lines on. (see &cmd(ds) .sm ) )
 &row(sv:<name>:Show the value of the named variable on the standard error device)
 &row(sx:<points>:Set x position to 'n'  (pfm only) )
 &row(sy:<points>:Set y position to 'n' (pfm only) )
 
+.tr r=8L
 .bc start ta .bc end
 .cl
 [b] .br
@@ -198,22 +205,43 @@ Place borders on the table .br
 Do not automatically generate first tr command .br
 Width as a percentage of screen size (hfm only) .br
 Colour for background of cell/row .br
-Padding of text from cell bounderies .br
-.tr 
-&row(tr:???:Start next row in the table. )
+Padding of text from cell boundaries .br
+
+&row(tg:n{p|i}:Set the top gutter (space up from the top margin that running header is placed.) )
+&row(th:<text>:Define table header text/commands )
+&row(tm:n{p|i}:Set the top margin)
+
+.tr r=10L
+.bc start tr .bc end
+.cl
+.sp 1
+[n] .br 
+[c=bgcolour] .br 
+[a=alignval] .br 
+[r=n{i|p|L}] .br 
+[v=valignvalue]
+.cl
+Start next row in the table.
+.br Don't automatically start column
+.br Set background colour (HTML only)
+.br Set alignment type (HTML only)
+.br Require vertical space (inches, points, lines)
+.br Vertical alignment option (HTML only)
+
+
 &row(xx:<level>:Set trace to <level> where level should be 0-3. 0 is off. Trace information is written to the standard error device.)
 
 .et
-.if nosuchvar
+.st &textsize
 
-
+.if false
 #define C_OUTLINE     0x4F55   /*  ou outline characters (true charpath) */
 #define C_SECTION     0x5343   /*  sc generate rtf section break */
 #define C_SETFONT     0x5346   /*  sf set font command */
 #define C_SHOWV       0x5356   /*  sv show current variable contents */
 #define C_SKIP        0x534B   /*  sk skip lines if not at top of col */
 #define C_SETSPACE    0x534C   /*  sl set line spacing (points) */
-#define C_SMASH		0x534D /*  sm smash; no space before next token -- psfm need for (&lit(xxx))*/
+#define C_SMASH		0x534D /*  sm smash; no space before next token -- psfm need for (&cw(xxx))*/
 #define C_SPACE       0x5350   /*  sp space command */
 #define C_SINGLESPACE 0x5353   /*  ss turn on single space mode */
 #define C_SETTXTSIZE  0x5354   /*  st set text size (points) */
@@ -225,11 +253,11 @@ Padding of text from cell bounderies .br
 #define C_TOC         0x5443   /*  tc turn on/off table of contents */
 #define C_TOPMAR      0x544D   /*  tm top margin command */
 #define C_TWOSIDE     0x5453   /*  ts two sided page layout */
-#define C_TMPTOP      0x5454   /*  tt set topy to cury temporarly */
+#define C_TMPTOP      0x5454   /*  tt set topy to cury temporarily */
 #define C_TOUPPER     0x5455   /*  tu n turn n characters to upper */
 
 #define C_CDEFINE     0x4344   /*  cd column define command */
-#define C_CEJECT      0x4342   /*  cb colum begin (eject) */
+#define C_CEJECT      0x4342   /*  cb column begin (eject) */
 #define C_CENTER      0x4345   /*  ce center */
 #define C_CCOL        0x4343   /*  cc conditional column eject */
 #define C_TABLECELL   0x434C   /*  cl start next table cell */
@@ -285,3 +313,4 @@ Padding of text from cell bounderies .br
 #define C_TRACE		0x5858 /*  xx level */
 /*  op reserved for open output file */
 .fi
+

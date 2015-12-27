@@ -95,7 +95,7 @@
 .** the parent directory as a best guess.
 .if ! lib_dir
 	.gv e XFM_LIB lib_dir
-	if ! lib_dir
+	.if ! lib_dir
 		.dv lib_dir ../lib
 	.fi
 .fi
