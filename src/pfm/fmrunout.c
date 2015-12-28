@@ -69,14 +69,18 @@ Contributions to this source repository are assumed published with the same lice
 *			10 Oct 2007 (sd)  - Added support to anchor head/feet to left col's anchor and not lmar
 *			23 Aug 2011 - Added page number centering and user formatted string.
 *			23 Dec 2015 - Better management of running header via top gutter.
+*			27 Dec 2015 - Fixed bug with header line (twice).
 ****************************************************************************
 */
 void FMrunout( int page, int shift )
 {
+	struct col_blk *cb;		// pointer at the right most column block
 	char *cmd = "show";      /* default to show command with header text info */
 	int y;                   /* spot for writing the footer/page number info */
 	int x;                   /* either far left or right depending on shift */
+	int pnx;				// x for page numbers
 	int len;                 /* length of string for output to write buffer */
+	int hfsize = 10;		// font size
 	char *moveto = "moveto"; /* moveto command necessary for show command, but not shifting right */
 	char buf[2048];          /* output buffer */
 	char	ubuf[1024];		/* if user format string for number, build it here */
@@ -85,52 +89,50 @@ void FMrunout( int page, int shift )
 	if( rhead == NULL && rfoot == NULL && (flags & PAGE_NUM) == 0 )
 		return;               /* nothing to do - get out */
 
+	x = firstcol->anchor;						// seed with anchor point, move if there are multiple columns
+	for( cb = firstcol; cb != NULL && cb->next != NULL; cb=cb->next ); 		// leaves cb at last column block
+
+	if( cb == NULL )
+		return;
+
+	if( cb != firstcol )
+		x = cb->lmar;						// move along as anchor is valid only for first column
+
 	FMsetfont( runfont, runsize );   /* set up the font in the output */
 	FMfmt_add( );
 
-	if( flags3 & F3_PGNUM_CENTER )
-		x = (pagew/2)-4;
-	else
+	if( shift == TRUE )    					// if we need to shift, use rightxy instead of show and set x to right edge
 	{
-		if( shift == TRUE )    /* if we need to shift, use right instead of show */
-		{
-			cmd = "rightxy";
-			moveto = " ";     /* moveto not necessary when using right */
-			x = pagew - firstcol->lmar;        /* x must be far right for the right command */
-		}
-		else
-			x = firstcol->anchor;    /* x is the firstcolumn's left margin */
+		cmd = "rightxy";
+		moveto = " ";     					/* moveto not necessary when using right */
+		x += cb->width;						// align the string on the right at col width of last col
 	}
+	else
+		x = firstcol->anchor;    			// not shifting, x is the left column's left margin
 
+	if( flags3 & F3_PGNUM_CENTER ) {
+		pnx = (pagew/2)-4;					// center the page number else just use x   TODO: center on the length of string
+	} else {
+		pnx = x;
+	}
+	
+	TRACE(1, "runout: header cmd=%s pnx=%d x=%d y=%d anchor=%d width=%d rmar=%d\n", cmd, pnx, x, y, cb->anchor, cb->width, cb->width + cb->anchor );
 	if( rhead != NULL )   /* if there is a running header defined */
 	{
-		struct col_blk *cb;
-		int hx = x;								// x to use for header
-		int osize = textsize;
-		char *ofont;
-
-		for( cb = firstcol; cb != NULL && cb->next != NULL; cb=cb->next ); 		// point at the last col
-		ofont = curfont;
-		curfont = runfont;
-		textsize=10;
-		//hx = pagew - firstcol->lmar - FMtoksize( rhead, strlen( rhead ) );
-		hx = (cb->lmar + cb->width) - FMtoksize( rhead, strlen( rhead ) );		// try to have footer even with right text
-		textsize = osize;
-		curfont = ofont;
-
-		y = topy - top_gutter - textsize;
+		y = topy - top_gutter - hfsize;
 
 		if( y > 0 ) {								// only if it will fit
-			sprintf( buf, "%d %d %s (%s) %s\n", hx, -y, moveto, rhead, cmd );
-			AFIwrite( ofile, buf );       				/* seperate header from text w/ line */
+			sprintf( buf, "%d %d %s (%s) %s\n", x, -y, moveto, rhead, cmd );
+			AFIwrite( ofile, buf );
 		}
 
 		AFIwrite( ofile, buf );             /* send out the header */
 		if( flags3 & F3_RUNOUT_LINES )
 		{
-			if( y > 0 )
-				sprintf( buf, "%d %d moveto %d %d lineto\n", firstcol->lmar, -(y-2), pagew - firstcol->lmar, -(topy - textsize - 4) );
-			AFIwrite( ofile, buf );       				/* seperate header from text w/ line */
+			if( y > 0 ) {
+				sprintf( buf, "%d %d moveto %d %d lineto\n", firstcol->lmar, -(y+4), cb->anchor + cb->width, -(y+4) );
+				AFIwrite( ofile, buf );       				/* seperate header from text w/ line */
+			}
 		}
 	}
 
@@ -138,8 +140,7 @@ void FMrunout( int page, int shift )
 
 	if( flags3 & F3_RUNOUT_LINES && ( rfoot != NULL  ||  flags & PAGE_NUM) )  /* draw line to seperate */
 	{
-		TRACE(1, "runout: anchor=%d y=%d w=%d/%d \n", firstcol->anchor, y, pagew-firstcol->lmar, MAX_X );
-		sprintf( buf, " %d %d moveto %d %d lineto stroke\n", firstcol->anchor, -(y-10), pagew - firstcol->lmar, -(y-10) );
+		sprintf( buf, " %d %d moveto %d %d lineto stroke\n", firstcol->anchor, -(y-10), cb->anchor + cb->width, -(y-10) );
 		AFIwrite( ofile, buf );
 	}
 
@@ -148,14 +149,12 @@ void FMrunout( int page, int shift )
 		sprintf( buf, "%d %d %s (%s) %s\n", x, -y, moveto, rfoot, cmd );
 		AFIwrite( ofile, buf );               /* send out the footer */
 		y += 12;
-		/*y += textsize + textspace;  */          /* bump up for page number */
 	}
 
 	if( flags & PAGE_NUM )    /* if we are currently numbering pages */
 	{
 		snprintf( ubuf, sizeof( ubuf ), pgnum_fmt ? pgnum_fmt : "Page %d", page );		/* format user string, or default if not set */
-		//snprintf( buf, sizeof( buf ), "%d %d %s (%s) %s\n", x, -y, moveto, ubuf, cmd );
-		snprintf( buf, sizeof( buf ), "%d %d %s (%s) %s\n", x, -y, moveto, ubuf, cmd );
+		snprintf( buf, sizeof( buf ), "%d %d %s (%s) %s\n", pnx, -y, moveto, ubuf, cmd );
 
 		AFIwrite( ofile, buf );             /* send out the page number */
 	} 
