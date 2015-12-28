@@ -1,3 +1,4 @@
+.if false
 .** --------------------------------------------------------------------------------
 .** Mnemonic:	doc_start.im
 .** Abstract:	convient imbed file for .xfm documents -- sets up the environment and 
@@ -99,7 +100,6 @@
 		.dv lib_dir ../lib
 	.fi
 .fi
-
 
 .if gen_roff
 	.** setup when not really formatting but generating {nt}roff source
@@ -286,7 +286,6 @@
 					.dv index_col_width [ 6.5 &index_cols / .25 &index_cols 1 - * - ]
 		.**			.dv index_here  .pa .ju off .st &textsize .cd 1 i=1i w=7 ^: .h1 INDEX ^: .pn off .lw 0 .sp 0 .tt ^: .cd 3 i=1i w=2i g=.25i ^: .in -i .ll 2i .ix insert
 		-			.dv index_here  .pa .ju off .st &textsize .cd 1 i=1i w=7 ^: .h1 INDEX ^: .pn off .lw 0 .sp 0 .tt ^: .cd &index_cols i=1i w=&{index_col_width}i  g=.25i ^: .in -i .ll &{index_col_width}i .ix insert 
-	.sv index_col_width
 					.im &index_snare_file
 				.fi
 
@@ -359,9 +358,6 @@
 					.fi
 					.dv col_width [ 8.5 &col_indent &right_mar + - ]
 					.dv linesize [ &col_width &text_indent - ]
-.sv linesize
-.sv col_width
-.sv right_mar
 
 					.** all assumed to be inches, so we must suffix before using
 					.dv c1_linesize &{linesize}i
@@ -383,7 +379,7 @@
 	.dv set_fig1col .cd 1 w=^&col1_width i=^&fig_indent ^: .ll ^&c1_linesize .in ^&text_indent
 
 	.** cause a page eject if not at the top of the first col
-	.dv page_if_needed .gv y .sv _coln .if ^^^&_coln 0 > ^: .pa .ei  .if ^^^&_cury ^^^&topy = ^: .sv ^^^&_cury .pa .fi .fi .fi
+	.dv page_if_needed .gv y .if ^^^&_coln 0 > ^: .pa .ei  .if ^^^&_cury ^^^&topy = ^: .pa .fi .fi .fi
 
 
 	.** creates a column figure at the current location, or at the top of the next column (pfm) if there 
@@ -402,4 +398,5 @@
 
 	.dv bleat .dv _bleat $1 ^: .sv _bleat
 	.dv comment .dv _ignore_ $1 ^:
+.fi
 .fi
