@@ -99,6 +99,8 @@ Contributions to this source repository are assumed published with the same lice
 *				pushing onto the input stream which prevented use in a macro. 
 *			24 Jun 2013 - Added _attop to remain.
 *			04 Mar 2014 - Added Fi[gure] and Ta[ble] types to set vars and incr the value
+*			28 Dec 2015 - Correct variable name (_lremain not right).
+*						  Correct computation of right mar for .gv rmar.
 **************************************************************************************************
 */
 /*
@@ -248,7 +250,7 @@ void FMgetval( )
 			snprintf( value, sizeof( value ), "%s", cury == topy ? "true" : "false" );
 			FMset_var( vname, value );
 
-			strcpy( vname, "_premain" );
+			strcpy( vname, "_lremain" );
 			snprintf( value, sizeof( value ), "%d", (boty - cury)/(textsize + textspace) );
 			FMset_var( vname, value );
 
@@ -262,11 +264,12 @@ void FMgetval( )
 
 			strcpy( vname, "_premain" );
 			snprintf( value, sizeof( value ), "%d", (boty - cury));		/* points */
+			FMset_var( vname, value );
 		}
 		else
 		{
 			strcpy( vname, "_rmar" );
-			snprintf( value, sizeof( value ), "%d", lmar + linesize );
+			snprintf( value, sizeof( value ), "%d", lmar + linelen );
 		}
        break;
 	
