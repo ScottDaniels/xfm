@@ -48,17 +48,13 @@ This is a test of the cn after a table
 .** -------------------------------------------------------------------------------------------
 .ju off
 .st [ &textsize 2 -]
-.** margin vars come back as points
+.** compute length of last table colum (margin vars come back as points)
 .gv lmar
 .gv rmar
-.dv ll [ 8.5 72 *  &_lmar &_rmar  + - ]
+.dv ll [ &_rmar &_lmar - ]
 .dv comment_len [ &ll 2 72 * - ]
-.sv comment_len
 
-.** .ta B b=1 .5i 1.5i 4.5i 
-.sv comment_len
 .ta B b=1 .5i 1.5i &{comment_len}p
-.xx 0
 
 .th .bc start CMD .bc end .cl ^: .bc start PARAMETER(S) .bc end .cl ^: .bc start COMMENTS .bc end 
 &row(**:<text>:Comment; all tokens to the next newline are ignored)
@@ -137,6 +133,7 @@ This is a test of the cn after a table
 .br page |
 .br lines |
 .br lmar |
+.br remain |
 .br rmar |
 .br tsize |
 .br Time |
@@ -152,6 +149,7 @@ This is a test of the cn after a table
 .br Set &ital(_page) to the current page number
 .br Set &ital(_lines) to the number of lines remaining in the current column
 .br Set &ital(_lmar) to the current left margin value
+.br Set &ital(_{i|p|l|=}remain) to the value of the remaining space in column
 .br Set &ital(_rmar) to the value of the right margin 
 .br Set &ital(_tsize) to the current text size value
 .br Set &ital(_time) to the current time (hh:mm)
