@@ -1,0 +1,207 @@
+.h1 Figure And Table Tricks
+When generating a page oriented document, e.g. PostScript, the author must be concerned with 
+the potential of splitting figures, tables, and illustrations across page boundaries. 
+The following sections provide some tricks for managing such things which are better 
+kept together. 
+
+.h2 Simple Space Reservation
+The &ital( conditional column ) command &c(cc) is the most basic way to ensure that there
+is enough room on the current page for the desired number of lines of text.  
+The command accepts a single parameter, the number of lines, and will cause the next 
+formatted output to appear at the top of the next column (on the next page if necessary)
+if the requested number of lines do not remain.  
+.sp
+
+When the number of required lines is small, the conditional column command, when 
+the number lines required grows using the conditional column command can result 
+in an excessive amount of whitespace being left in the document which probalby is not 
+desired. 
+
+.h3 Table Space Reservation
+Similar to the conditional column command, the &ital( table row ) &c(tr) command 
+provides an option (r=) which indicates the number of lines required for the row, and if
+not present a column eject is performed.  
+The parameter has the same effect as issuing a conditional column command immediately
+before the table row command, and also has the same whitespace side effect.
+
+
+.h2 Delaying Until Eject
+To avoid the whitspace side effect of the conditional column command, the &ital( on eject ) &c(oe) 
+command can be used to delaly one or more commands until the next column or page eject
+happens.  
+This allows an image, for insance, to be "pushed" to the next column or page while still 
+continuing to add text at the current output location without inducing extra white space. 
+In the case where the output is multiple columns, but the figure needs to span both columns, 
+and thus must be placed at the top of the next page, this is the only way to make it happen. 
+The following sections present an example of how to push an image to the next column. 
+
+.h3 Determining Remaining Space
+The on eject command has no prevision to push the command based on space, so it is up to 
+the author to write that into the document.  
+Therefore, the first step in pushing an image if there isn't enough room in the current 
+colum is to determine the remaining space. 
+
+.sp
+Assuming that the image requires two (2) inches of space, the &ital( get value ) command &c(gv)
+can be used to get the remaining space, and the space compared to what is needed and if
+the desreid space is unavailable an on eject command issued.
+.gv fig
+.dv space_fig &_fig
+Figure &space_fig illustrates this process using the &ital( _iremain ) variable (remaining space in inches) which is set 
+by the get value command.
+
+.sp
+.ca start eject1.ca
+&example_start
+  .gv remain
+  .if &_iremain 2 <=
+     .oe col .ep image.eps l=2i x=.5i close proportional
+  .ei
+     .ep image.eps l=2i x=.5i close proportional
+  .fi
+&example_end_fg(Pushing commands based on remaining space.)
+.ca end
+.gv remain
+.if &_lremain < 10
+	.oe .im eject1.ca
+.ei
+	.im eject1.ca
+.fi
+
+Note in figure &space_fig that the encapsulated postscript &c(ep) command is the same; the only difference
+is that if there isn't enough room the command becomes the parameters to the on eject command rather than 
+being executed directly. 
+For a simple image this is clear code, and the duplicated command could be captured in a variable 
+to help prevent maintenance issues, but not much else is needed. 
+
+.h3 More Complex Output
+If the item which may need to be pushed to the start of the next column or page is more complex, 
+i.e. it is more than can realistically be placed on a single on eject command, 
+then a different approach needs to be taken.
+The encapsulated postscript command is nothing more than a fancy imbed &c(im) command which causes
+the contents of a file to be loaded as though it appeared directly in the source. 
+To push a more complex set of output to the next column, the document source is saved into a separate
+file, and the imbed command is given as the parameters to the on eject command or executed 
+directly as illustrated in figure &space_fig.
+
+.sp
+This can be done by manually maintining the example source in its own file (e.g. example1.im) though
+when creating a large document this can result in an unmanagable number of small imbed files. 
+The preferred way to manage figures like this is via the &ital( capture ) &c(ca) command as illustrated
+.gv figure
+.dv ca_fig &_fig
+in figure &ca_fig which illustrates how the previous figure was coded in this document source.
+.sp
+
+
+.ca start eject2.ca
+&example_start
+ .ca start eject1.ca
+  &example_start
+   .gv remain
+   .if &_iremain 2 <=
+      .oe col .ep image.eps l=2i x=.5i close proportional
+   .ei
+      .ep image.eps l=2i x=.5i close proportional
+   .fi
+  &example_end_fg(Pushing commands based on remaining space.)
+ .ca end
+ .gv remain
+ .if &_lines < 10
+	 .oe .im eject1.ca
+ .ei
+	 .im eject1.ca
+ .fi
+&example_end_fg(Using the capture command to push a figure when needed.)
+.ca end
+.gv remain
+.if &_lremain 22 <
+	.oe col .im eject2.ca
+.ei
+	.im eject2.ca
+.fi
+
+The &ital( start capture ) command &c(ca start)  saves all lines until the &ital( end capture ) 
+&c(ca end) command is reached; the text is saved into the named file (eject1.ca in this case).
+Following the capture command, the same test for remaining space is performed as was done in the 
+original example in figure &space_fig, and if there isn't enough room the imbed command is delayed
+until the next column is started. 
+(The ^&example_start and ^&example_end macros in the figure do font and font size changes in order
+to render the example in a constant width font, and also stop and start formatting.)
+
+.h3 The if_room Macro
+At this point it should be obvious that for a simple imbed file, an &ital(if_room) macro could easily be
+written to make the source code more clean, and require less effort on the part of the document
+author in the long run.  
+Assuming the macro exists, which accepts the number of lines and the file name as arguments, 
+.gv fig
+.dv if_room_fig &_fig
+the line of code in figure &if_room_fig would replace the last six lines in figure &ca_fig.
+
+&example_start
+  &if_room( 22 : eject2.ca )
+&example_end_fg( Use of the if-room macro to replace several lines of code.)
+
+A similar &ital( if_room_ep ) macro could be written which accepts the amount of required space, and the 
+encapsulated postscript command, and also has the advantage of making the document easier to maintain. 
+
+.h2 Wide Tables And Figures
+When generating multiple column output there is often a need to include a table or illustration which does not
+fit into a single column. 
+&x provides the means to do this by temporarily reverting the document to single column mode, generating the 
+table, or including the figure, and then restoring the document to two column mode. 
+Generally, placing these illustrations at the top of the page work best, and require the least amount of effort
+on the part of the document author. 
+
+.h3 Column Setting Macros
+To begin, it is easiest if the author creates macros which place the document into single or mutiple column 
+mode as this makes shifting back and forth easier.  
+.gv fig 
+.dv shift_fig &_fig
+Figure &shift_fig illustrates macros to place the output into one and two column modes.
+
+&example_start
+  .dv set1col .cd 1 i=^&col_indent w=^&c1_width ^: .ll ^&c1_linesize .in ^&text_indent
+  .dv set2col .tt ^: .cd 2 i=^&col_indent w=^&c2_width g=^&gutter_width ^: .ju on  .ll ^&c2_linesize
+&example_end_fg(One and two column mode macros.)
+
+The column setup macros should be fairly straight forward with the exeption of the &ital( temporary top ) &c(tt) command.
+Following a mid-page switch from one column to two, a temporary top must be set at the current y position 
+so that when the next column is started it starts below the wide figure and not at the top of the 
+physical page.   
+The temporary top is cleared with the next page eject. 
+
+.h3 Saving The State
+The only other consideration that is needed when including a wide example, is the current state for the 
+main document. 
+Settings, such as indention and line length, will likely be altered by the wide figure, and care must be taken
+to preserve those values and then to restore them. 
+The &ital( push ) &c(pu) .sm , and &ital( pop ) &c(po) commands can be used to save and restore all of the state 
+that might be altered.  
+When using macros as illustrated in figure &shift_fig, the push and pop commands must be executed before and 
+after the respective column settings. 
+.gv figure
+.dv wide_fig &_fig
+Figure &wide_fig illustrates code switches to single column mode before incuding an encapsulated postscript file
+and then returns the setting to normal.
+
+
+.ca start wide.ca
+&example_start
+  .pu
+  &set1col 
+  .ep wide_figure.eps x=0i l=3i close proportional
+  .fg Wombat population in southern areas over the last 25 years.
+  .sp 1
+  .&set2col
+  .po
+&example_end_fg(Using push and pop to save and restore state.)
+.ca end
+.gv remain
+.if &_lremain 10 <
+	.oe col .im wide.ca
+.ei
+	.im wide.ca
+.fi
+
+
