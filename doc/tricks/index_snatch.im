@@ -1,0 +1,95 @@
+.** resume is needed if we never acutally set a snare
+.ix resume
+
+.ix snare `background colour`
+.ix snare expressions
+.ix snare group 
+.ix snare gutter
+.ix snare `half space`
+.ix snare macro
+.ix snare path
+.ix snare snare
+.ix snare synonym
+.ix snare variable
+
+.ix synonym path PATH
+.ix synonym path XFM_PATH
+.ix synonym comments **
+.ix synonym abort ab
+.ix synonym `as is` ai
+.ix synonym `bullet list` bl
+.ix synonym `bullet list` `begin list`
+.ix synonym `begin formatting` fo
+.ix synonym box bx
+.ix synonym `definition list` bd
+.ix synonym break br
+.ix synonym `line break` br
+.ix synonym `Line Break` br
+.ix synonym capture ca
+.ix synonym `column begin` cb
+.ix synonym `column definition` cd
+.ix synonym center ce
+.ix synonym `conditional column` cc
+.ix synonym `table cell` cl
+.ix synonym `text colour` co
+.ix synonym colour co
+.ix synonym `conditional page` cp
+.ix synonym `definition list item` di
+.ix synonym `double space` ds
+.ix synonym `define variable` dv
+.ix synonym `if-else` ^.ei
+.ix synonym `end definition list` ed
+.ix synonym `end list` el
+.ix synonym `encapsulated PostScript` ep
+.ix synonym `end table` et
+.ix synonym figure fg
+.ix synonym `if-else` fi
+.ix synonym `end if` fi
+.ix synonym `get values` gv
+.ix synonym header h1
+.ix synonym header h2
+.ix synonym header h3
+.ix synonym header h4
+.ix synonym header `paragraph header`
+.ix synonym `header numbering` hn
+.** .ix synonym `if-else` if
+.ix synonym `imbed file` im
+.ix synonym indent in
+.ix synonym index ix
+.ix synonym jump jm
+.ix synonym `justify text` ju
+.ix synonym `horizontal line` ln
+.ix synonym `horizontal line` `line, horizontal`
+.ix synonym `list item` li
+.ix synonym `line length` ll
+.ix synonym `line spacing` ls 
+.ix synonym `line weight` lw
+.ix synonym `no format` nf
+.ix synonym `new line` nl
+.ix synonym `on eject` oe
+.ix synonym `page eject` pa
+.ix synonym `new page` pa
+.ix synonym `page numbering` pn
+.ix synonym quit qu
+.ix synonym `running footer` rf
+.ix synonym `running header` rh
+.ix synonym `running matter font size` rs
+.ix synonym `section begin` sc
+.ix synonym smash sm
+.ix synonym space sp
+.ix synonym `blank lines` sp
+.ix synonym `single space` ss
+.ix synonym `show variable value` sv
+.ix synonym `set x` sx
+.ix synonym `set y` sy
+.ix synonym `start table` ta
+.ix synonym `table header` th
+.ix synonym `table row` tr
+.ix synonym `talbe of contents` tc
+.ix synonym `top margin, setting` tm
+.ix synonym `top margin, temporary` tt
+.ix synonym `two sided printing` ts
+.ix synonym trace xx
+
+.ix group Lists `bullet list` `definition list` `end definition list` `end list` `list item`
+.ix group Tables `end table` `start table` `table cell` `table row` `table header`
