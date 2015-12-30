@@ -51,14 +51,14 @@ xfm_src = cd.im cmds.im cmdtab.im ../cover_art.im gv_tab.im headtab.im ifroom.im
 	fig2dev -L eps ${prereq} ${target}
 
 # default doc -- two column mode
-xfm.ps: xfm.xfm $xfm_src
+xfm.ps: xfm.xfm $xfm_src ../logo.eps
 	export XFM_IMBED=../../templates
 	export XFM_PATH=.:../../templates
 	XDOC_PASS1=1 pfm xfm.xfm /dev/null 2>&1
 	pfm xfm.xfm xfm.ps
 
 # build the doc fomatted as a single column
-xfm_oc.ps:  xfm.xfm $xfm_src
+xfm_oc.ps:  xfm.xfm $xfm_src ../logo.eps
 	export XFM_IMBED=../../templates
 	export XFM_PATH=.:../../templates
 	XDOC_TWOCOL=0 XDOC_PASS1=1 pfm xfm.xfm /dev/null 2>&1
