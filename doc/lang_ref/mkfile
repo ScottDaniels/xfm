@@ -1,30 +1,65 @@
+
+# All source and documentation in the xfm tree are published with the following open source license:
+# Contributions to this source repository are assumed published with the same license.
+# 
+# =================================================================================================
+#    (c) Copyright 1995-2015 By E. Scott Daniels. All rights reserved.
+#
+#    Redistribution and use in source and binary forms, with or without modification, are
+#    permitted provided that the following conditions are met:
+#
+#        1. Redistributions of source code must retain the above copyright notice, this list of
+#            conditions and the following disclaimer.
+#
+#        2. Redistributions in binary form must reproduce the above copyright notice, this list
+#            of conditions and the following disclaimer in the documentation and/or other materials
+#            provided with the distribution.
+#
+#    THIS SOFTWARE IS PROVIDED BY E. Scott Daniels ``AS IS'' AND ANY EXPRESS OR IMPLIED
+#    WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND
+#    FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL E. Scott Daniels OR
+#    CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
+#    CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
+#    SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON
+#    ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING
+#    NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
+#    ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+#
+#    The views and conclusions contained in the software and documentation are those of the
+#    authors and should not be interpreted as representing official policies, either expressed
+#    or implied, of E. Scott Daniels.
+# =================================================================================================
+
+# Mnemonic:	mkfile
+# Abstract: Input file to plan-9 mk (superior to make). 
+#				mk xfm_oc.pdf to make the one column version of the document
+#				mk xfm.pdf to maek the two column (less pages) version
+#				mk nuke to clean up any droppings
+#
+#			We'll use the templates directory from the source, not what the user might have
+#			installed, to build our doc here.
+
 <../master.mk
 
-NUKE = $NUKE *.ca *.ps *.html *.toc
+NUKE = $NUKE *.ca *.ps *.pdf *.bcnfile *.html *.toc
 
-
-#xfm.toc::	xfm.xfm
-#	export XDOC_PASS1=1
-#	pfm xfm.xfm /dev/null
-
-xfm_src = cd.im cmds.im cmdtab.im cover_art.im doc_start.im gv_tab.im headtab.im ifroom.im \
+xfm_src = cd.im cmds.im cmdtab.im ../cover_art.im gv_tab.im headtab.im ifroom.im \
 	index_snatch.im ixcmds.im lists.im macros.im quickr.im table.im tcfig.im xfm_cover.im
 
 # this requires xfig tools
 %.eps : %.fig
 	fig2dev -L eps ${prereq} ${target}
 
-imbed_src = cd.im cmds.im cmdtab.im cover_art.im gv_tab.im headtab.im \
-	index_snatch.im ixcmds.im lists.im macros.im quickr.im table.im \
-	tcfig.im xfm_cover.im logo.eps
-
+# default doc -- two column mode
 xfm.ps: xfm.xfm $xfm_src
+	export XFM_IMBED=../../templates
+	export XFM_PATH=.:../../templates
 	XDOC_PASS1=1 pfm xfm.xfm /dev/null 2>&1
 	pfm xfm.xfm xfm.ps
 
 # build the doc fomatted as a single column
 xfm_oc.ps:  xfm.xfm $xfm_src
+	export XFM_IMBED=../../templates
+	export XFM_PATH=.:../../templates
 	XDOC_TWOCOL=0 XDOC_PASS1=1 pfm xfm.xfm /dev/null 2>&1
 	XDOC_TWOCOL=0 pfm xfm.xfm xfm.ps
-
-xfm_trick.ps:: xfm_trick.xfm
