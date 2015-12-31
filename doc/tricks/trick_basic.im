@@ -7,16 +7,16 @@ writing the code a bit more easy.
 .h2 Use Macros
 Nearly all of the &x tricks involve the creation of a macro. 
 A macro is simply an &x variable that contains commands rather than simple substitution text. 
-Macros can be as simple as a &lit(space) macro which is &lit(^.dv space ^.sp 1) or as complex as to contain 
-the definiton of variables and other macros. 
+Macros can be as simple as a &cw(space) macro which is &cw(^.dv space ^.sp 1) or as complex as to contain 
+the definition of variables and other macros. 
 .sp
 
 Like macros and/or functions in traditional programming languages, macros in &x make the writer's job easier, and 
 provide for easier maintenance of the document over time. 
-For instance, if a document defines the macro &lit(textfont,) then to change the font for the document requires one line 
+For instance, if a document defines the macro &cw(textfont,) then to change the font for the document requires one line 
 of change to the source, and a rebuild of the document. 
 The ease of this kind of change is really appreciated when compared to the effort needed to make the  same change to a document maintained 
-in a WYSIWYG environment (the number of paragraph selections, menu pull-downs, and highlights would be stagerring for a 
+in a WYSIWYG environment (the number of paragraph selections, menu pull-downs, and highlights would be staggering for a 
 document larger than a page or two).
 
 
@@ -26,12 +26,12 @@ Doing this causes the variable's value to be taken at the time the macro is used
 eliminates the need to predefine variables that are referenced by macros. 
 The carrot (^^) character is &ital(XFM's) escape character and when encountered during document processing
 it causes the next character to be interpreted without any special meaning that &x might give to it. 
-In the case of the characters &lit(^^&) the apersand is not recognised as the variable dereference symbol
+In the case of the characters &cw(^^&) the ampersand is not recognised as the variable dereference symbol
 and the ampersand is placed into the document, or used &ital(as is) in the macro definition. 
 
 .sp
 When an escape character is encountered, is is removed, and so when a macro definition statement contains
-&lit(^^&varname) the resulting value will contain just &lit(^&varname.)
+&cw(^^&varname) the resulting value will contain just &cw(^&varname.)
 As an example, consider the macro defined to start a non-formatted example that changes the font to a
 constant width font (cwfont) and then turns off formatting:
 
@@ -39,14 +39,14 @@ constant width font (cwfont) and then turns off formatting:
   .dv example_start .sf ^^&cwfont .nf
 &example_end
 
-The variable &lit(cwfont) will be expanded when the &lit(example_start) macro is used in the document 
+The variable &cw(cwfont) will be expanded when the &cw(example_start) macro is used in the document 
 rather than when the macro definition is created. 
-This allows the document writer to change the value of &lit(cwfont) as the document is generated without
+This allows the document writer to change the value of &cw(cwfont) as the document is generated without
 having to redefine the macro. 
 
 
 .h2 Output Considerations
-Macros make wonderful short-cuts, but also hide the differences between output format types.  
+Macros make wonderful shortcuts, but also hide the differences between output format types.  
 The same &x source can be used to generate different flavours of output, but for certain things a specific output 
 format will require a bit more work. 
 For instance, including an example 'in-line' when generating HTML is no big deal, but when generating page oriented output
@@ -58,14 +58,14 @@ final page oriented document look good some macro tricks will be necessary.
 Other considerations based on output type might be text indention, and header spacing. 
 It will quickly become obvious that for some of the macros that are defined, there will be differences based on the 
 output being generated. 
-The predefined variables &lit(hfm, pfm, tfm,) and &lit(rfm) can be used in conditional statements to help set up 
-these output dependant macros. 
+The predefined variables &cw(hfm, pfm,)  and &cw(tfm,) can be used in conditional statements to help set up 
+these output dependent macros. 
 
 .sp
 As an example, assume that for bullet lists the  character "+" is desired to set off each list item when generating formatted ASCII 
 text with &ital(hfm,) and the &ital(diamond) character from the zapfdingbats font is to be used for the page oriented formatters. 
-The following source input could be used to define the &lit(blic) (bullet listitem character) variable such that all begin list
-commands are the same: &lit(^.bl &blic.)
+The following source input could be used to define the &cw(blic) (bullet listitem character) variable such that all begin list
+commands are the same: &cw(^.bl &blic.)
 
 &example_start
   .if tfm
@@ -83,7 +83,7 @@ character when supplied on the begin list command and no special case needs to b
 .h2 Header Files
 It will not take long to realise that there are a fair few macro and variable definitions that most documents will benefit
 from. 
-Creating one or more header flies (like &lit(#include) files used by &bold(C) programmes) can be very beneficial. 
+Creating one or more header flies (like &cw(#include) files used by &bold(C) programmes) can be very beneficial. 
 Some authors prefer to build a single header file, and others prefer to build one header file for each output type, with 
 a master 'startup' header file that is included by each document.  
 The master file would have just a few statements:
@@ -96,11 +96,7 @@ The master file would have just a few statements:
      .if pfm
        .im pfmstart.im
      .ei
-        .if rfm
-           .im rfmstart.im
-        .ei
-           .im tfmstart.im
-        .fi
+       .im tfmstart.im
      .fi
   .fi
 
@@ -108,7 +104,8 @@ The master file would have just a few statements:
 
 .sp
 Some of the more common things that are defined in header files are:
-.sp
+.sp .5
+&indent
 .bl &lic1
 .li text font variable for normal font
 .li constant width font for examples, filenames or 'literal' strings 
@@ -118,13 +115,14 @@ Some of the more common things that are defined in header files are:
 .li header definitions (^.dh commands)
 .li link and image reference macros
 .el
+&uindent
 .sp
 
 
 .h2 Block Comments
 The comment command &c(**) can be used to cause &x to ignore all text from the comment symbol until the end of the current
-line, but &x does not support any kind of &ital(block comment) delimiters like the &stress(C) programmling language does
-with the &lit(/*) and &lit(*/) pairs. 
+line, but &x does not support any kind of &ital(block comment) delimiters like the &bold(C) programming language does
+with the &cw(/*) and &cw(*/) pairs. 
 Nonetheless, block comments can effectively be included in the document source by using an if statement that always 
 evaluates to zero. 
 The text between the if statement and the closing &c(fi) command will be ignored:
@@ -152,7 +150,7 @@ Using the show value command can save a lot of time when debugging.
 
 .sp
 If the show variable command does not yield enough information, turning on tracing just before and just after the 
-&lit(^.dv) command might help. 
+&cw(^.dv) command might help. 
 The trace command &c(xx) accepts a trace level number as a parameter; the larger the number the more output will be generated. 
 A trace level of 1 causes the define variable command to display the variable as it is being added to the hash table. 
 A trace level of 2 causes the tokens as they are processed to be listed, with a bit more information. 

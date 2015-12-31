@@ -7,7 +7,7 @@ by output type.
 .sp
 .h2 PostScript Images
 .dv ep encapsulated postscript 
-Images are included into a PostScript document using the encapsulated postscript command &lit(^.ep.)
+Images are included into a PostScript document using the encapsulated postscript command &cw(^.ep.)
 The &ep command allows the user to define the &ep file to be imbedded along with certain parameters 
 that define the amount of space that will be reserved for the drawing and options that allow the 
 drawing to be stretched and scaled. 
@@ -65,15 +65,15 @@ bit more complicated than including the raw code at desired spot in the document
 
 &example_end
 
-In addition to needing to escape the special HTML characters &lit(<) and &lit(>,) there are several things that 
+In addition to needing to escape the special HTML characters &cw(<) and &cw(>,) there are several things that 
 make this macro a bit more messy than most. 
-The image macro is broken into mulitple lines using the &x newline escape character (~) making it easier to read, but 
-sometimes making it tricker to code because it is easy to forget that certain commands (^.if and ^.ep in this case) 
-take a non-constant number of parameters and must be terminated with a hard newline or an lone colon (:) which imples 
+The image macro is broken into multiple lines using the &x newline escape character (~) making it easier to read, but 
+sometimes making it trickier to code because it is easy to forget that certain commands (^.if and ^.ep in this case) 
+take a variable number of parameters and must be terminated with a hard newline or an lone colon (:) which implies 
 that the end of the parameter list has been reached. 
-The colon characters must also be escaped so that they do not inadvertantly terminate the macro definition command. 
+The colon characters must also be escaped so that they do not inadvertently terminate the macro definition command. 
 The open square bracket also needs to be escaped because it is being used as a parameter on an ^x command and if not 
-eascaped will be viewd as an expression initiator. 
+escaped will be viewed as an expression initiator. 
 
 .sp
 
@@ -93,7 +93,7 @@ command causes what &x believes the macro value (definition) is to be written to
 .sp
 Fortunately, invoking the image macro is much easier than defining it. The only tricky thing is to remember that 
 the colon in the URL must be escaped or &x will interpret it as a parameter separator.
-The macro &ital(could) have been written to accept three parameters assuming that the second would be &lit(http) or 
+The macro &ital(could) have been written to accept three parameters assuming that the second would be &cw(http) or 
 some protocol string, and the third the rest of the URL, and the macro would be responsible for adding the colon. 
 
 &example_start
@@ -101,4 +101,5 @@ some protocol string, and the third the rest of the URL, and the macro would be 
 &example_end
 
 
-
+.** fluffy image stuff.
+.im trick_fluff.im 

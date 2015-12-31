@@ -24,7 +24,7 @@ alert box illustrated in figure .ev [ &_alert_fig 1 + ]
    .cl 
    .sp .75
    &bold( CAUTION^: ) .br
-   Reading too many tricks before dinner might spoil your appitite 
+   Reading too many tricks before dinner might spoil your appetite 
    for aardvark soup.
    .et
  .et
@@ -109,7 +109,7 @@ document requires a bit more work and is beyond the scope of this document.
 
 .h2 Image Proportions
 Encapsulated postscript images are automatically scaled based on the length (l=) parameter supplied 
-on the commmand. 
+on the command. 
 This allows the same illustration, the warning symbol in the previous examples, to be used and scaled 
 as is needed for the situation.  
 The &ital( proportional ) parameter instructs &x to maintain the images proportions in both the x and y 

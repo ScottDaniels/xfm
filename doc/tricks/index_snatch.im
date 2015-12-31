@@ -1,4 +1,4 @@
-.** resume is needed if we never acutally set a snare
+.** resume is needed if we never actually set a snare
 .ix resume
 
 .ix snare `background colour`
@@ -85,7 +85,7 @@
 .ix synonym `start table` ta
 .ix synonym `table header` th
 .ix synonym `table row` tr
-.ix synonym `talbe of contents` tc
+.ix synonym `table of contents` tc
 .ix synonym `top margin, setting` tm
 .ix synonym `top margin, temporary` tt
 .ix synonym `two sided printing` ts

@@ -14,7 +14,7 @@ if the requested number of lines do not remain.
 
 When the number of required lines is small, the conditional column command, when 
 the number lines required grows using the conditional column command can result 
-in an excessive amount of whitespace being left in the document which probalby is not 
+in an excessive amount of whitespace being left in the document which probably is not 
 desired. 
 
 .h3 Table Space Reservation
@@ -26,25 +26,25 @@ before the table row command, and also has the same whitespace side effect.
 
 
 .h2 Delaying Until Eject
-To avoid the whitspace side effect of the conditional column command, the &ital( on eject ) &c(oe) 
-command can be used to delaly one or more commands until the next column or page eject
+To avoid the whitespace side effect of the conditional column command, the &ital( on eject ) &c(oe) 
+command can be used to delay one or more commands until the next column or page eject
 happens.  
-This allows an image, for insance, to be "pushed" to the next column or page while still 
+This allows an image, for instance, to be "pushed" to the next column or page while still 
 continuing to add text at the current output location without inducing extra white space. 
 In the case where the output is multiple columns, but the figure needs to span both columns, 
 and thus must be placed at the top of the next page, this is the only way to make it happen. 
 The following sections present an example of how to push an image to the next column. 
 
 .h3 Determining Remaining Space
-The on eject command has no prevision to push the command based on space, so it is up to 
+The on eject command has no provision to push the command based on space, so it is up to 
 the author to write that into the document.  
 Therefore, the first step in pushing an image if there isn't enough room in the current 
-colum is to determine the remaining space. 
+column is to determine the remaining space. 
 
 .sp
 Assuming that the image requires two (2) inches of space, the &ital( get value ) command &c(gv)
 can be used to get the remaining space, and the space compared to what is needed and if
-the desreid space is unavailable an on eject command issued.
+the desired space is unavailable an on eject command issued.
 .gv fig
 .dv space_fig &_fig
 Figure &space_fig illustrates this process using the &ital( _iremain ) variable (remaining space in inches) which is set 
@@ -85,8 +85,8 @@ file, and the imbed command is given as the parameters to the on eject command o
 directly as illustrated in figure &space_fig.
 
 .sp
-This can be done by manually maintining the example source in its own file (e.g. example1.im) though
-when creating a large document this can result in an unmanagable number of small imbed files. 
+This can be done by manually maintaining the example source in its own file (e.g. example1.im) though
+when creating a large document this can result in an unmanageable number of small imbed files. 
 The preferred way to manage figures like this is via the &ital( capture ) &c(ca) command as illustrated
 .gv figure
 .dv ca_fig &_fig
@@ -154,7 +154,7 @@ Generally, placing these illustrations at the top of the page work best, and req
 on the part of the document author. 
 
 .h3 Column Setting Macros
-To begin, it is easiest if the author creates macros which place the document into single or mutiple column 
+To begin, it is easiest if the author creates macros which place the document into single or multiple column 
 mode as this makes shifting back and forth easier.  
 .gv fig 
 .dv shift_fig &_fig
@@ -165,7 +165,7 @@ Figure &shift_fig illustrates macros to place the output into one and two column
   .dv set2col .tt ^: .cd 2 i=^&col_indent w=^&c2_width g=^&gutter_width ^: .ju on  .ll ^&c2_linesize
 &example_end_fg(One and two column mode macros.)
 
-The column setup macros should be fairly straight forward with the exeption of the &ital( temporary top ) &c(tt) command.
+The column setup macros should be fairly straight forward with the exception of the &ital( temporary top ) &c(tt) command.
 Following a mid-page switch from one column to two, a temporary top must be set at the current y position 
 so that when the next column is started it starts below the wide figure and not at the top of the 
 physical page.   
@@ -182,7 +182,7 @@ When using macros as illustrated in figure &shift_fig, the push and pop commands
 after the respective column settings. 
 .gv figure
 .dv wide_fig &_fig
-Figure &wide_fig illustrates code switches to single column mode before incuding an encapsulated postscript file
+Figure &wide_fig illustrates code switches to single column mode before including an encapsulated postscript file
 and then returns the setting to normal.
 
 

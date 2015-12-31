@@ -51,6 +51,7 @@ trick_figs = caution_tangle
 %.eps : %.fig
 	fig2dev -L eps ${prereq} ${target}
 
-xfm_trick.ps:: xfm_trick.xfm ${trick_src:%=%.im} ${trick_figs:%=%.eps}
+xfm_trick.ps:: xfm_trick.xfm ../logo.eps ${trick_src:%=%.im} ${trick_figs:%=%.eps}
+	export XFM_IMBED=../../templates
 	export XFM_PATH=.:../../templates
 	XDOC_TWOCOL=0 pfm xfm_trick.xfm xfm_trick.ps
