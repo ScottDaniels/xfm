@@ -5,8 +5,7 @@
 .in 0i
 .st 16
 .in +1.5i
-.** &cover_title
-Stupid Tricks
+&cover_title
 .sp 10
 .st 10
 .gv Date

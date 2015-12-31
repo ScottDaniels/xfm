@@ -72,10 +72,12 @@
 	.if pass1
 		.tc on
 	.ei
+		&set1col
 		.tc off
 		.im cover.im		.** xfm cover is generic and uses cover-title var
 		.pa
 		.im ../license.im
+		.in +.5i
 		.im xfm_trick.toc		.** *.toc does a lead page eject
 		.pa
 	.fi
@@ -130,7 +132,7 @@ better than the worst grammar it contains!)
 	.et
 .fi
 
-.pn on 0
+.pn on 0 noline center f=%d
 .rh &doc_title
 .by 9.85i
 
@@ -154,6 +156,7 @@ better than the worst grammar it contains!)
 .im trick_images.im
 .im trick_float.im
 .im trick_front.im
+.im trick_slides.im
 
 .if false
 .h2 Back Matter

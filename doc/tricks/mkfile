@@ -39,9 +39,10 @@
 #			We'll use the templates directory from the source, not what the user might have
 #			installed, to build our doc here.
 
-<../master.mk
 
+ALL = xfm_trick.ps
 NUKE = $NUKE *.ca *.ps *.pdf *.bcnfile *.html *.toc
+<../master.mk
 
 
 trick_src = trick_basic  trick_float  trick_front  trick_images  trick_indent 
@@ -54,4 +55,5 @@ trick_figs = caution_tangle
 xfm_trick.ps:: xfm_trick.xfm ../logo.eps ${trick_src:%=%.im} ${trick_figs:%=%.eps}
 	export XFM_IMBED=../../templates
 	export XFM_PATH=.:../../templates
+	XDOC_PASS1=1 XDOC_TWOCOL=0 pfm xfm_trick.xfm xfm_trick.ps
 	XDOC_TWOCOL=0 pfm xfm_trick.xfm xfm_trick.ps
