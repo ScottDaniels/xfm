@@ -1,0 +1,83 @@
+.** generating slides
+
+.h1 Generating A Slide Deck
+
+.ix force `style, create`
+&x can be used to easily generate a slide deck (foils if you're old enough to 
+know them by that name).
+In the simplest form, for a postscript document, simply changing the page geometry from 8.5" by 11" to 
+the reverse (11 inches wide) and adjusting the column definition and line length
+is all that is necessary.  
+Page geometry must be supplied on the command line as the page size is defined in the postscript 
+preamble which is generated before any document source commands are parsed. 
+The following command line illustrates the use of the geomoetry flag (-g) which specifies the 
+geometry in x,y values.
+
+.sp .5
+&example_start
+  pfm -g 8ix11i xfm_slides. xfm_slides.ps
+&example_end_fg( Command line to change the page layout.)
+
+Note that the values are suffixed with an 'i' to indicate inches, and that the 'x' between the two 
+dimensions is required. 
+
+.h2 HTML Slides
+To generate a set of slides that can be provided for HTML browsers, a few extra steps are needed to 
+define a basic style layout. 
+The style provides a set of margins, and colours, using the &ital(create style) &c(cs) commmand. 
+
+.gv fig
+.dv style_fig &_fig
+A basic style setup is illustrated in figure &style_fig
+
+
+
+.ca start style.ca
+&example_start
+	.cd 1 11i i=1i
+	
+	.** needed for hfm  before startup
+    .dv back_color white
+    .dv text_color black
+    .dv base_colour white
+	.dv link_color blue
+ 
+	.** set defaults; overrides are below
+	.im startup.im
+
+  .if hfm
+    .** need some 'page layout' setup for HTML output to make it look pretty
+    .** provides margins
+    .dv start_page .cs start page x=width=700px x=height=500px x=margin=10px color=&text_color ~
+                 x=background-color=&base_colour ^:
+    .dv end_page .cs end ^:
+    .** limits text on the page
+    .dv start_canvas .cs start canvas  x=width=600px x=margin=70px color=text_color ~
+                 x=background-color=&back_color ^:
+    .dv end_canvas .cs end ^:
+    .co &text_color
+    .co back &back_color
+    .co link blue
+    .co vlink green
+
+    .dv page ^&end_canvas ^&end_page ^&start_page ^&start_canvas .sp 2
+    .dv first_slide ^&start_page ^&start_canvas .sp 2
+    .dv end_slide ^&end_canvas ^&end_page
+  .ei
+    .dv page .pa .im base.im
+    .dv first_slide .im base.im
+    .dv end_slide 
+  .fi
+&example_end_fg( Basic HTML style setup. )
+.ca end
+.gv remain
+.if &_lremain 36 <=
+	.oe .im style.ca
+.ei
+	.im style.ca
+
+Each slide is started by using the ^&page macro which does the right thing depending on the formatter that is 
+being used.  
+The ^&end_slide must be used after the last slide to properly terminate the style settings in the 
+HTML output; a null-op when generating postscript.
+
