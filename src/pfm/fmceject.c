@@ -99,10 +99,16 @@ void PFMceject( )
 		return;							/* must return so that col note imbed is processed before */
 	}
 
+	if( cur_col->flags & CF_TMP_MAR ) {		// if temp margins were set, reset them before moving on
+		cur_col->lmar = cur_col->olmar;
+		cur_col->width = cur_col->width;
+		cur_col->flags &= ~CF_TMP_MAR;
+	}
+
 	diffh = hlmar - cur_col->lmar; /* figure difference between col left mar */
 	diff = lmar - cur_col->lmar;   /* and what has been set using .in and .hm */
 	if( lilist != NULL )           /* if list in progress */
-	diffx = lilist->xpos - cur_col->lmar;  /* then calc difference */
+		diffx = lilist->xpos - cur_col->lmar;  /* then calc difference */
 
 	/* moved before peject in case it calls an oneject that puts in a drawing */
 	cury = topy;                   			/* make sure were at the top */
