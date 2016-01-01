@@ -111,12 +111,14 @@ void FMrunout( int page, int shift )
 		x = firstcol->anchor;    			// not shifting, x is the left column's left margin
 
 	if( flags3 & F3_PGNUM_CENTER ) {
-		pnx = (pagew/2)-4;					// center the page number else just use x   TODO: center on the length of string
+		//pnx = (pagew/2)-4;					// center the page number else just use x   TODO: center on the length of string
+	//	pnx = (firstcol->lmar + ((firstcol->lmar + (cb->lmar + cb->width)/2)) - 4;     //TODO -- center the string
+		pnx = (((cb->lmar + cb->width) - firstcol->lmar) / 2 ) + firstcol->lmar;
 	} else {
 		pnx = x;
 	}
 	
-	TRACE(1, "runout: header cmd=%s pnx=%d x=%d y=%d anchor=%d width=%d rmar=%d\n", cmd, pnx, x, y, cb->anchor, cb->width, cb->width + cb->anchor );
+	TRACE(1, "runout: header cmd=%s pnx=%d x=%d y=%d anchor=%d width=%d rmar=%d\n", cmd, pnx, x, y, firstcol->anchor, cb->width, cb->width + cb->lmar );
 	if( rhead != NULL )   /* if there is a running header defined */
 	{
 		y = topy - top_gutter - hfsize;
@@ -130,7 +132,7 @@ void FMrunout( int page, int shift )
 		if( flags3 & F3_RUNOUT_LINES )
 		{
 			if( y > 0 ) {
-				sprintf( buf, "%d %d moveto %d %d lineto\n", firstcol->lmar, -(y+4), cb->anchor + cb->width, -(y+4) );
+				sprintf( buf, "%d %d moveto %d %d lineto\n", firstcol->lmar, -(y+4), cb->lmar + cb->width, -(y+4) );
 				AFIwrite( ofile, buf );       				/* seperate header from text w/ line */
 			}
 		}
@@ -140,7 +142,7 @@ void FMrunout( int page, int shift )
 
 	if( flags3 & F3_RUNOUT_LINES && ( rfoot != NULL  ||  flags & PAGE_NUM) )  /* draw line to seperate */
 	{
-		sprintf( buf, " %d %d moveto %d %d lineto stroke\n", firstcol->anchor, -(y-10), cb->anchor + cb->width, -(y-10) );
+		sprintf( buf, " %d %d moveto %d %d lineto stroke\n", firstcol->anchor, -(y-10), cb->lmar + cb->width, -(y-10) );
 		AFIwrite( ofile, buf );
 	}
 
