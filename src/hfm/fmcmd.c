@@ -89,6 +89,7 @@ Contributions to this source repository are assumed published with the same lice
 *		17 Nov 2008 - Added flush to asis processing
 *		21 Jul 2010 - Updated for html 4.0/5.0  (things like <br /> 
 *		23 Dec 2015 - Ignore top gutter command (pfm only)
+*		01 Jan 2016 - Ignore floating margin command.
 **************************************************************************
 */
 int FMcmd( buf )
@@ -297,6 +298,9 @@ char *buf;
 			FMflush( );             /* output tag and set pointers */
 			break;
 	
+		case C_FLOATMAR:
+			FMignore( );
+
 		case C_GETVALUE:         /* put an FM value into a variable */
 			FMgetval( );
 			break;

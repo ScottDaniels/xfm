@@ -149,7 +149,9 @@ Contributions to this source repository are assumed published with the same lice
 #define LF_PROPORT    0x20     /* keep ep proportional in x and y direction */
 #define LF_STRETCH    0x40     /* stretch ep to fit space */
 
-#define	CF_SKIP		0x01	/* column block flags - skip this when drawing vert lines in table */
+								// column block flags
+#define	CF_SKIP		0x01		// skip this col when drawing v lines in table
+#define CF_TMP_MAR	0x02		// temporary margin/width has been set
 
 #define ADD           1        /* add/sub parameter from current setting */
 

@@ -36,7 +36,7 @@ src = fmaddtok fmasis fmbd fmbeglst fmbox fmbxend fmbxst \
 	fmrfoot fmright fmrun fmrunout fmsetcolour fmsetfon \
 	fmsetstr fmsetx fmsety fmspace fmstate fmtable fmtc \
 	fmtmpfon fmtmpy fmtoc fmtoksiz fmtopmar fmvartok \
-	fmsection fmcolnotes
+	fmsection fmcolnotes fmfloat_mar
 
 csrc = ${src:%=%.c}
 

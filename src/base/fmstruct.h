@@ -55,6 +55,7 @@ Contributions to this source repository are assumed published with the same lice
 *			13 Jan 2002 - Added symbol table support for variables - removed var list
 *			09 Mar 2015 - Added support to table for borders on tables in tables
 *							and line weight in tables.
+*			01 Jan 2016 -	Changes to support floating margins.
 **************************************************************************
 */
 
@@ -106,6 +107,9 @@ struct col_blk
 	struct col_blk *next;   
 	int	width;              	/* width (points) of the column */
 	int	lmar;               	/* base left margin of this column */
+	int	revert_y;				// y value where temp margings revert to original
+	int	olmar;					// orignal indention value during temporary setting
+	int	olinelen;				// original line length during temp setting
 	int	anchor;			/* inital lmar or forced left anchor of first col so header/feet dont float */
 	int	flags;
 };

@@ -64,7 +64,12 @@ Contributions to this source repository are assumed published with the same lice
 *  Date:     17 Aug 2001
 *  Author:   E. Scott Daniels
 *
-* .oe [n=name] [all] [del|col|page] <commands>
+*  Mods:	01 Jan 2016 - Added ability to avoid state saving (needed if .fm
+*				used in an on eject command. Corrected potential buffer 
+*				overrun bug.
+*
+* .oe [n=name] [nostate] [all] [list|del|col|page] <commands>
+*
 ****************************************************************************
 */
 struct eject_info {
@@ -79,6 +84,7 @@ struct eject_info {
 #define EF_COL	0x02		/* at next/all column ejects */
 #define EF_PAGE 0x04		/* at next/all page ejects */
 #define EF_DEL	0x08
+#define EF_NOSTATE 0x10		// don't save state 
 
 static struct eject_info *ej_head = NULL;
 static struct eject_info *ej_tail = NULL;
@@ -155,8 +161,15 @@ void FMateject( int page )
 				exit( 1 );
 			}
 	
+			if( ep->flags & EF_NOSTATE == 0 )
+				fprintf( f, ".pu\n" );					// save the current state before command
+
 			fprintf( f, "%s\n", ep->cmd_str );
-			TRACE( 1,  "ateject: queued for execution: %s\n", ep->cmd_str );
+
+			if( ep->flags & EF_NOSTATE == 0 )
+				fprintf( f, ".po\n" );					// restore state if saved
+
+			TRACE( 1,  "ateject: queued for execution: %s [%s state]\n", ep->cmd_str, ep->flags & EF_NOSTATE ? "no" : "saved"  );
 
 			if( ! (ep->flags & EF_ALL) )		/* if all flag is not on, then trash it after first use */
 				del_ej( ep, NULL );
@@ -169,7 +182,7 @@ void FMateject( int page )
 		sprintf( wrk, ".im %s", fname );
  		AFIpushtoken( fptr->file, wrk );  	/* push to imbed our file and then run it */
 
-		FMpush_state();
+		//FMpush_state();
 		
    		flags = flags & (255-NOFORMAT);      /* turn off noformat flag */
    		flags2 &= ~F2_ASIS;                  /* turn off asis flag */
@@ -180,7 +193,7 @@ void FMateject( int page )
 			FMcmd( tok );
 		}
 
-		FMpop_state();
+		//FMpop_state();
 		unlink( fname );
 	}
 }
@@ -197,53 +210,96 @@ static list_ej( )
 void FMoneject( )
 {
 	int 	flags = 0;
+	int		len;
 	int	recognised = 1;
 	char	*buf;
  	char	wrk[2048];  		/* tmp buffer to build new name in */
 	char	*name = NULL; 
+	int		count = 0;				// prevent buffer overrrun
 	struct eject_info *ep = NULL;
 
 	if( FMgetparm( &buf ) <= 0 )     /* get the first command or "all" */
  		return;                     /* no name entered then get out */
 
 	wrk[0] = 0;
-	while( recognised )
-	{
-		if( strcmp( "all", buf ) == 0 )
-			flags |= EF_ALL;
-		else
-		if( strncmp( "col", buf, 3 ) == 0 )
-			flags |= EF_COL;
-		else
-		if( strncmp( "page", buf, 4 ) == 0 )
-			flags |= EF_PAGE;
-		else
-		if( strncmp( "del", buf, 3 ) == 0 )
-			flags |= EF_DEL;
-		else
-		if( strncmp( "n=", buf, 2 ) == 0 )
-			name = strdup( buf+2 );
-		else
-		if( strncmp( "list", buf, 4 ) == 0 )
-		{
-			list_ej( );
-			return;
-		}
-		else
-		{
-			strcat( wrk, buf );		/* save first token of command and force exit */
-			break;
-		}
+	while( recognised ) {
+		switch( buf[0] ) {
+			case 'a':
+				if( strcmp( "all", buf ) == 0 ) {
+					flags |= EF_ALL;
+				} else {
+					recognised = 0;
+				}
+				break;
 	
-		if( FMgetparm( &buf ) <= 0 )     
-			if( ! flags & EF_DEL )		/* if not deleting, then */
- 				return;			/* there must be at least one command if not deleting */
+			case 'c':
+				if( strncmp( "col", buf, 3 ) == 0 ) {
+					flags |= EF_COL;
+				} else {
+					recognised = 0;
+				}
+				break;
+		
+			case 'p':
+				if( strncmp( "page", buf, 4 ) == 0 ) {
+					flags |= EF_PAGE;
+				} else {
+					recognised = 0;
+				}
+				break;
+		
+			case 'd':
+				if( strncmp( "del", buf, 3 ) == 0 ) {
+					flags |= EF_DEL;
+				} else {
+					recognised = 0;
+				}
+				break;
+		
+			case 'n':
+				if( strncmp( "n=", buf, 2 ) == 0 ) {
+					name = strdup( buf+2 );
+				} else {
+					if( strncmp( "nostate", buf, 7 ) == 0 ) {
+						flags |= EF_NOSTATE;
+					} else {
+						recognised = 0;
+					}
+				}
+				break;
+
+			case 'l':
+				if( strncmp( "list", buf, 4 ) == 0 ) {
+					list_ej( );
+					return;
+				} else {
+					recognised = 0;
+				}
+				break;
+
+			default:
+				recognised = 0;
+		}
+		
+		if( ! recognised ) {
+			strcat( wrk, buf );				/* save first token of command and force exit */
+		} else {
+			if( FMgetparm( &buf ) <= 0 )     
+				if( ! flags & EF_DEL )		/* if not deleting, then */
+ 					return;					/* there must be at least one command token if not deleting */
+		}
 	}
 
-	while( FMgetparm( &buf ) > 0 )
+	while( (len = FMgetparm( &buf )) > 0 )
 	{
-		if( *wrk )			/* if not the first thing added */
-			strcat( wrk, " " );	/* add a space before next thing */
+		count += len;
+		if( count > sizeof( wrk ) - 2 ) {
+			FMmsg( -1, "abort: onejet: buffer overrun processing command tokens (2k limit)" );
+			exit( 1 );
+		}
+
+		if( *wrk )						/* if not the first thing added */
+			strcat( wrk, " " );			/* add a space before next thing */
 		strcat( wrk, buf );
 	}
 
@@ -259,7 +315,7 @@ void FMoneject( )
 	ep = (struct eject_info *) malloc( sizeof( struct eject_info ) );
 	if( !ep )
 	{
-		fprintf( stderr, "error allocating ep in on eject\n" );
+		FMmsg( -1, "abort: onejet: unable to allocate ep struct" );
 		exit( 1 );
 	}
 
@@ -276,41 +332,7 @@ void FMoneject( )
 		ej_tail->next = ep;
 		ep->prev = ej_tail;
 		ej_tail = ep;
-	}
-	else
+	} else {
 		ej_head = ej_tail = ep;
-
-#ifdef OLD_STUFF
-
-	if( all )
-	{
-		if( col )
-		{
-			if( onallcoleject )
-				free( onallcoleject );
-			onallcoleject = strdup( wrk );
-		}
-		else
-		{
-			if( oneveryeject )
-				free( oneveryeject );
-			oneveryeject = strdup( wrk );
-		}
 	}
-	else
-	{
-		if( col )
-		{
-			if( oncoleject )
-				free( oncoleject );
-			oncoleject = strdup( wrk );
-		}
-		else
-		{
-			if( onnxteject )
-				free( onnxteject );
-			onnxteject = strdup( wrk );
-		}
-	}
-#endif
-}                         /* FMoneject */
+}

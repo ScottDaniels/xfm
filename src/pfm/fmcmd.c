@@ -224,6 +224,10 @@ int FMcmd( char *buf )
 
 		case C_FIGURE:           FMfigure( ); break;
 
+		case C_FLOATMAR:
+					FMfloat_mar( );
+					break;
+
 		case C_FORMAT:           FMformat( ); break;
 
 		case C_GETVALUE:         FMgetval( ); break;

@@ -74,6 +74,7 @@ Contributions to this source repository are assumed published with the same lice
 *		07 Jul 2013 - Allow for setting colours on substrings in the line. 
 *		11 Feb 2014 - Added at end flag for foot notes on last page
 *		18 Dec 2015 - now returns true if it ejected the page.
+*		01 Jan 2016 - Added support for floating margins.
 *****************************************************************************
 */
 int FMflush( )
@@ -178,6 +179,14 @@ int FMflush( )
 	*obuf = 0;
 	optr = 0;			/* reset the output buffer */
 	FMfmt_add( );		/* add the current font back to the list */
+
+	if( cur_col->flags & CF_TMP_MAR ) {
+		if( cury > cur_col->revert_y ) {
+			lmar = cur_col->olmar;
+			linelen = cur_col->olinelen;
+			cur_col->flags &= ~CF_TMP_MAR;
+		}
+	}
 
 	if( cn_space && cn_space + cury >= boty )
 	{
