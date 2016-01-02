@@ -85,6 +85,7 @@ Contributions to this source repository are assumed published with the same lice
 #define C_FIGURE      0x4647   /* .fg figure */
 #define C_FORMAT      0x464F   /* .fo format command */
 #define C_ENDIF       0x4649   /* .fi end if */
+#define C_FLOATMAR		0x464D	// floating margin (temp margin actually)
 
 #define C_GREY        0x4752   /* .gr set grey scale 0=white 10=black */
 #define C_GETVALUE    0x4756   /* .gv get an FM value into a variable */

@@ -82,6 +82,7 @@ Contributions to this source repository are assumed published with the same lice
 *		21 Oct 2007 - Added support (ignnores) indexing.
 *		20 Nov 2008 - Added stoprun support and cleaned up formatting.
 *		23 Dec 2015 - Ignored pfm top gutter command; formatting fixes.
+*		01 Jan 2015 - Ignore pfm floating margin command
 **************************************************************************
 */
 int FMcmd( buf )
@@ -261,6 +262,10 @@ char *buf;
 		case C_FIGURE:           /* generate figure information */
 			FMfigure( );
 
+			break;
+
+		case C_FLOATMAR:
+			FMignore();
 			break;
 
 		case C_FORMAT:           /* turn format on or off */

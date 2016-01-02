@@ -177,6 +177,14 @@ void FMjustify( )
 	*obuf = 0;
 	FMfmt_add( );		/* add the current font back to the list */
 
+	if( cur_col->flags & CF_TMP_MAR ) {			// check for temp margin reset
+		if( cury > cur_col->revert_y ) {
+			lmar = cur_col->olmar;
+			linelen = cur_col->olinelen;
+			cur_col->flags &= ~CF_TMP_MAR;
+		}
+	}
+
 	if( cn_space && cn_space + cury > boty )
 	{
 		TRACE(2,  "just: col-notes call lmar=%d cury=%d topy=%d boty=%d cn_space=%d obuf=(%s)\n", lmar, cury, topy, boty, cn_space,  obuf );
