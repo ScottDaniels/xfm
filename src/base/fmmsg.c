@@ -3,7 +3,7 @@ All source and documentation in the xfm tree are published with the following op
 Contributions to this source repository are assumed published with the same license. 
 
 =================================================================================================
-	(c) Copyright 1995-2015 By E. Scott Daniels. All rights reserved.
+	(c) Copyright 1995-2016 By E. Scott Daniels. All rights reserved.
 
 	Redistribution and use in source and binary forms, with or without modification, are
 	permitted provided that the following conditions are met:
@@ -75,13 +75,14 @@ Contributions to this source repository are assumed published with the same lice
 *				03 Apr 1997 - To get file info from AFI
 *				15 Dec 2005 - To write messages to stderr rather than stdout
 *				08 Jul 2013 - A bit of cleanup and to fix spacing in message. 
+*				01 Jan 2016 - Copyright change.
 ***************************************************************************
 */
 
   /* if the message text begins with a splat (*) then the current line number is also included */
 
  char *messages[ ] = {
- " FM000: Copyright (c) 1992-2013 E. Scott Daniels. All Rights reserved",
+ " FM000: Copyright (c) 1992-2016 E. Scott Daniels. All Rights reserved",
  " FM001: End of file reached for file: ",
  "*FM002: Too many files open. Unable to include: ",
  "*FM003: Unable to open file. File name: ",
