@@ -73,7 +73,8 @@ Contributions to this source repository are assumed published with the same lice
 *                           the line length and left margin combination.
 *             23 Oct 1992 - To convert to postscript
 *              6 Apr 1994 - To accept indention and gutter sizes
-*		10 Oct 2007 (sd) - Added a=v[ip] support to allow anchor setting for head/feet
+*			10 Oct 2007 (sd) - Added a=v[ip] support to allow anchor setting for head/feet
+*			02 Jan 2016 - Fix bug related to column block initialisation.
 ***************************************************************************
 */
 void FMcd( )
@@ -113,6 +114,11 @@ void FMcd( )
 	for( i; i > 0; i-- )   /* create new col management blocks */
 	{
 	 	ptr = (struct col_blk *) malloc( sizeof( struct col_blk ) );
+		if( ptr == NULL ) {
+			fprintf( stderr, "abort: unable to malloc storage for a col block\n" );
+			exit( 1 );
+		}
+		memset( ptr, 0, sizeof( *ptr ) );
 	 	ptr->next = firstcol;    /* add to list */
 	 	firstcol = ptr;
 	} 

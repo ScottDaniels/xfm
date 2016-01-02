@@ -86,7 +86,6 @@ void PFMceject( )
 	int diffx;    /* diff between x value in list blk and curcol lmar */
 	char *tok;
 
-	TRACE( 2, ">>> fmceject: starting\n" );
 	if( flags2 & F2_BOX )		/* if a box is inprogress */
 		FMbxend( );             /* then end the box right here */
 
