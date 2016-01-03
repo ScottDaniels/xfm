@@ -1,5 +1,5 @@
 
-.cd 1 i=1i w=7.2i
+.cd 1 i=1i w=7i
 .lw 0
 .in 0i
 .ll 7i
@@ -10,7 +10,7 @@ Original open source license:
 .sf Courier
 .st 8
 .nf
-    (c) Copyright 1995-2015 By E. Scott Daniels. All rights reserved.
+    (c) Copyright 1995-2016 By E. Scott Daniels. All rights reserved.
  
     Redistribution and use in source and binary forms, with or without modification, are
     permitted provided that the following conditions are met:
@@ -50,6 +50,3 @@ Intentionally void of meaningful information.
 .sp 3
 .bx end
 .sp
-
-.in -.5i
-.ll +1i
