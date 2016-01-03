@@ -67,6 +67,7 @@ Contributions to this source repository are assumed published with the same lice
 *  Mods:	01 Jan 2016 - Added ability to avoid state saving (needed if .fm
 *				used in an on eject command. Corrected potential buffer 
 *				overrun bug.
+*			03 Jan 2016 - Fixed bug introduced with floating margin change.
 *
 * .oe [n=name] [nostate] [all] [list|del|col|page] <commands>
 *
@@ -161,13 +162,7 @@ void FMateject( int page )
 				exit( 1 );
 			}
 	
-			if( ep->flags & EF_NOSTATE == 0 )
-				fprintf( f, ".pu\n" );					// save the current state before command
-
 			fprintf( f, "%s\n", ep->cmd_str );
-
-			if( ep->flags & EF_NOSTATE == 0 )
-				fprintf( f, ".po\n" );					// restore state if saved
 
 			TRACE( 1,  "ateject: queued for execution: %s [%s state]\n", ep->cmd_str, ep->flags & EF_NOSTATE ? "no" : "saved"  );
 
@@ -182,7 +177,8 @@ void FMateject( int page )
 		sprintf( wrk, ".im %s", fname );
  		AFIpushtoken( fptr->file, wrk );  	/* push to imbed our file and then run it */
 
-		//FMpush_state();
+		if( ep->flags & EF_NOSTATE == 0 )
+		FMpush_state();
 		
    		flags = flags & (255-NOFORMAT);      /* turn off noformat flag */
    		flags2 &= ~F2_ASIS;                  /* turn off asis flag */
@@ -193,7 +189,8 @@ void FMateject( int page )
 			FMcmd( tok );
 		}
 
-		//FMpop_state();
+		if( ep->flags & EF_NOSTATE == 0 )
+		FMpop_state();
 		unlink( fname );
 	}
 }
