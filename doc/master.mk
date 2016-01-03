@@ -1,5 +1,6 @@
 # global mk patterns
 
+
 MKSHEL = ksh
 
 %.txt: %xfm
@@ -20,3 +21,8 @@ MKSHEL = ksh
 	
 %.pdf::	%.ps
 	gs -dBATCH  -dNOPROMPT -dNOPAUSE -sDEVICE=pdfwrite ${prereq%% }
+
+all:V: $ALL
+
+nuke::
+	rm -f $NUKE
