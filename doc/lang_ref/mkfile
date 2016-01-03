@@ -39,9 +39,11 @@
 #			We'll use the templates directory from the source, not what the user might have
 #			installed, to build our doc here.
 
-<../master.mk
 
-NUKE = $NUKE *.ca *.ps *.pdf *.bcnfile *.html *.toc
+NUKE = *.ca *.ps *.pdf *.bcnfile *.html *.toc *.sp
+ALL = xfm.ps xfm_oc.ps
+
+<../master.mk
 
 xfm_src = cd.im cmds.im cmdtab.im ../cover_art.im gv_tab.im headtab.im ifroom.im \
 	index_snatch.im ixcmds.im lists.im macros.im quickr.im table.im tcfig.im xfm_cover.im
