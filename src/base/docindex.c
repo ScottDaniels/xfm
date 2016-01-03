@@ -51,7 +51,8 @@
 *	Date:		17 Oct 2007
 *	Author: 	E. Scott Daniels
 *
-*	Mod:		10 Mar 2011 - Correced bug with multiple word references 
+*	Mod:		10 Mar 2011 - Corrected bug with multiple word references 
+*				03 Jan 2016 - Corrected memset bug in di_group.
 * --------------------------------------------------------------------------------------------------------
 */
 
@@ -381,7 +382,7 @@ void di_group( char *name, char *word )
 			return;
 		}
 
-		memset( rp, 0, sizeof( rp ) );
+		memset( rp, 0, sizeof( *rp ) );
 		rp->entry = strdup( name );
 		rp->iword = strdup( name );
 		*rp->iword = toupper( *rp->iword );			/* make word to sort on */
