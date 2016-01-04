@@ -74,6 +74,8 @@ Contributions to this source repository are assumed published with the same lice
 *			26 May 2002 - To use the hyphenation library function to see if
 *				the word was in the hyph dictionary.
 *			11 Oct 2015 - Fixed escaping bug.
+*			03 Jan 2016 - Fixed bug which caused token to be dropped if
+*				just/fush called with multiple pending ateject things.
 *************************************************************************
 */
 static char *hyph_get( char *buf )		/* routine is lost, for now we always return null */
@@ -157,6 +159,7 @@ void FMaddtok( char *buf, int len )
 	char wbuf[2048];
 	int is_escaped = 0;	// prevent escape of backslant
 
+	buf = strdup( buf );		// dup so that it survivees flush/just call if at eject pending
 	len = strlen( buf );
  	words++;             /* increase the number of words in the document */
 
@@ -192,7 +195,7 @@ void FMaddtok( char *buf, int len )
 
 	if( (toksize = FMtoksize( buf, len )) > remain+4 )   /* room for it? */
  	{                                    /* no - put out current buffer */
-		TRACE( 1, "addtok: does not fit must flush: len=%d ok1=%d add (%s) to (%s)\n", len, ok1, buf, obuf );
+		TRACE( 1, "addtok: (%s) does not fit must flush: len=%d ok1=%d add (%s) to (%s)\n", buf, len, ok1, buf, obuf );
 		if( len == 1 && ok1 )
 		{
 			ok1 = 0;
@@ -218,6 +221,8 @@ void FMaddtok( char *buf, int len )
 
 			osize = 0;          /* new buffer has no size yet */
 		}
+
+		TRACE( 2, "addtok: done with just/flush buf=(%s) obuf=(%s)\n", buf, obuf );
   	}
 
  	if( optr == 0 && len == 1 && *buf == ' ' )
