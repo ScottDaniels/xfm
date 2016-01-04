@@ -87,7 +87,7 @@ static int state_idx = 0;
 
 void FMpush_state( )
 {
-	TRACE( 2, "fmstate: pushed: lmar=%d optr=%d obuf=(%s)\n", lmar, optr, obuf );
+	TRACE( 2, "fmstate: pushed: idx=%d lmar=%d optr=%d obuf=(%s)\n", state_idx, lmar, optr, obuf );
 	if( state_idx < 25 )
 	{
 		FMfmt_save( );
@@ -130,7 +130,7 @@ void FMpop_state( )
 	{
 		if( --state_idx <= 24 )
 		{
-			TRACE( 2, "fmstate: popped: oldlmar=%d newlmar=%d optr=%d obuf=(%s)\n", lmar, state_stack[state_idx].lmar, optr, obuf );
+			TRACE( 2, "fmstate: popped: idx=%d oldlmar=%d newlmar=%d optr=%d obuf=(%s)\n", state_idx, lmar, state_stack[state_idx].lmar, optr, obuf );
 			free( obuf );
 			free( inbuf );
 			free( curfont );
