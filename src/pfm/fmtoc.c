@@ -67,6 +67,7 @@ Contributions to this source repository are assumed published with the same lice
 *    Modified: 3 Feb 1989 - To not place page #s in toc if not numbering
 *             15 Dec 1992 - To convert for postscript and AFI
 *             11 Apr 1993 - To insert a newline on the last sprintf
+*				03 Jan 2016 - To adjust for new indent (non-break) behaviour.
 ****************************************************************************
 */
 void FMtoc( int level )
@@ -89,7 +90,7 @@ void FMtoc( int level )
  else
   AFIwrite( tocfile, ".sf Helvetica .st 10\n" );  /* normal text */
 
- snprintf( buf, sizeof( buf ),  ".in +%.2fi\n", (double) (level-1) * .5 );
+ snprintf( buf, sizeof( buf ),  ".br .in +%.2fi\n", (double) (level-1) * .5 );
  AFIwrite( tocfile, buf );
 
  for( i=0, j = 0; j < optr && i < 70; j++, i++ )   /* copy into toc buffer */
@@ -97,7 +98,7 @@ void FMtoc( int level )
  buf[i] = EOS;              /* terminate the string */
  AFIwrite( tocfile, buf );  /* and output it to the toc file */
 
- sprintf( buf, ".in -%.2fi\n", (double) (level-1) * .5 );
+ sprintf( buf, ".br .in -%.2fi\n", (double) (level-1) * .5 );
  AFIwrite( tocfile, buf );
  if( flags & PAGE_NUM )       /* if numbering the pages then place number */
   {
