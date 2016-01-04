@@ -83,6 +83,8 @@ Contributions to this source repository are assumed published with the same lice
 *	 			21 Oct 2007 - Added index interface
 *				26 Jun 2013 - Prevents 0 text size from being set on .st command (happening
 *							when .st &var and var not defined. 
+*				03 Jan 2016 - Removed errant flush before FMll() and indent
+*							calls.
 **************************************************************************
 */
 int FMcmd( char *buf )
@@ -169,7 +171,6 @@ int FMcmd( char *buf )
 		case C_EP:              FMep( ); break;
 
 		case C_CEJECT:           
-				//FMflush( );             /* flush what is there... must be done here */
 				PFMceject( );            /* eject column, flush page if in last column */
 				break;
 
@@ -268,7 +269,6 @@ int FMcmd( char *buf )
 		case C_IMBED:            FMimbed( ); break;
 
 		case C_INDENT:           /* user indention of next line */
-				FMflush( );             /* force a break then */
 				FMindent( &lmar );      /* indent the left margin value */
 				break;
 
@@ -302,7 +302,6 @@ int FMcmd( char *buf )
 				break;
 
 		case C_LL:                      /* reset line length */
-				FMflush( );                   /* terminate previous list item */
 				FMll( );
 				break;
 
