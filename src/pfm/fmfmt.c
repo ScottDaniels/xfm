@@ -233,4 +233,3 @@ int FMfmt_pop( int *size, char **font, char **colour, int *start, int *end, int 
 
 	return 0;
 }
-

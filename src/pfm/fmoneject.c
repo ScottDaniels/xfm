@@ -174,11 +174,12 @@ void FMateject( int page )
 	if( f )
 	{
 		fclose( f );
-		sprintf( wrk, ".im %s", fname );
- 		AFIpushtoken( fptr->file, wrk );  	/* push to imbed our file and then run it */
 
 		if( ep->flags & EF_NOSTATE == 0 )
-		FMpush_state();
+			FMpush_state();
+
+		sprintf( wrk, ".im %s", fname );
+ 		AFIpushtoken( fptr->file, wrk );  	/* push to imbed our file and then run it */
 		
    		flags = flags & (255-NOFORMAT);      /* turn off noformat flag */
    		flags2 &= ~F2_ASIS;                  /* turn off asis flag */
@@ -190,7 +191,7 @@ void FMateject( int page )
 		}
 
 		if( ep->flags & EF_NOSTATE == 0 )
-		FMpop_state();
+			FMpop_state();
 		unlink( fname );
 	}
 }

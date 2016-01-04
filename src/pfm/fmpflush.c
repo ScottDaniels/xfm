@@ -97,9 +97,10 @@ void FMpflush( )
 	{
 		TRACE( 3, "pflush: dumping column notes first, pushing .pa command back\n"  );
  		AFIpushtoken( fptr->file, ".pa" );  	/* page command to execute after the column notes are written */
+			
 		cn_space = 0;
 		FMcolnotes_show( 0 );			/* cause the column notes to be put in before eject */
-		return;
+		return;							// go run all of the commands which will 'end' with the page eject we just pushed
 	}
 
 	page++;                             /* increase the page number */
