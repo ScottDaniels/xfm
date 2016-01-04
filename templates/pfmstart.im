@@ -81,8 +81,10 @@
 
 
  .** straight indention
- .dv indent .ll -.25i .in +.25i
- .dv uindent .in -.25i .ll +.25i 
+ .if ! indent
+ 	.dv indent .br .ll -.25i .in +.25i
+ 	.dv uindent .br .in -.25i .ll +.25i 
+ .fi
 
  .** block indention
  .dv bindent .ll -.5i .in +.25i
