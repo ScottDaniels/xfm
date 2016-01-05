@@ -47,7 +47,7 @@ ALL = xfm.ps xfm_oc.ps
 
 xfm_src = cd.im cmds.im cmdtab.im ../cover_art.im gv_tab.im headtab.im ifroom.im \
 	index_snatch.im ixcmds.im lists.im macros.im quickr.im table.im tcfig.im xfm_cover.im
-xfm_eps = xfm_fm_ex1
+xfm_eps = xfm_fm_ex1 xfm_col_styles xfm_page_top
 
 # this requires xfig tools
 %.eps : %.fig

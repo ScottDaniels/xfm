@@ -5,7 +5,7 @@
 .st [ &textsize 2 - ]
 .sf &textfont
 &set1col
-.ll 6i
+.ll &{c1_linesize}i
 .sp
 .ju off
 

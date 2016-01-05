@@ -1,0 +1,104 @@
+
+.dv example_start .sp .5 .sf &cwfont .st ^[ &textsize 2 - ] .nf 
+.dv example_end .fo on .sf &textfont .st &textsize .fg $1 ^: .sp 1
+
+.dh 2 t=no
+.dh 3 t=no
+
+&set1col
+.if two_col_mode 1 =
+	.** needed only if in multi column mode
+	.pa
+.fi
+
+.h1 Appendix A - Column Layout Details
+This appendix contains more details with respect to the layout of columns and the relationship 
+between the indent &c(in) .sm , line length &c(ll) .sm , and column definition &c(cd) commands. 
+The top margin &c(tm,) and top gutter &c(tg) commands are also discussed. 
+
+.h2 Margins
+
+The left margin for text is a combination of the indention value specified with the indent &c(in) 
+command, and the column indention value specified on the column definition command. 
+.gv fig
+.dv col_fig &_fig
+Figure &col_fig illustrates two layouts when the column definition command is used to 
+set up the page in one or two column mode.  
+Colums are shown with grey shading, and text lines are shown inside of the columns with 
+a blueish tint. 
+.sp .5
+
+.ep xfm_col_styles.eps l=3i x=.15i proportional close
+.fg Column styles.
+
+.sp
+&x will generate an error if an attempt is made to set the line length past the 
+column width, and it will refuse to change the setting. 
+The same can happen if the indention value is changed which would push the 
+line with the current width past the edge of the column.  
+Assuming that the line length and indiention values generally cause the right
+margin of a line to be at, or very close to, the right margin of the column, 
+the task of shifting the indention of text to the right becomes a two step 
+process:
+
+&example_start
+ .br
+ .ll -.5i
+ .in +.5i
+&example_end( Illustration of setting the left margin indention one-half inch to the right.)
+
+The leading break is necessary as the indent and line length commands do not force a 
+line break.  
+Usually this is desired, however in some cases when processing on eject commands it is not desired, 
+and thus a manual break is required.  
+Generally indent, and unindent macros make the job of shifting the indention in and out easier 
+.gv fig
+and are demonstrated in figure &_fig.
+
+&example_start
+  .dv indent .br .ll -.5i .in +.5i
+  .dv unindent .br .in -.5i .ll +.5i
+&example_end( Indention macro definitions. )
+
+The unindent macro just reverses the process ensuing that the indention is moved before 
+the linelength is increased. 
+
+.h2 Two Column Diferences
+When setting up a two, or more, column document, an additional parameter is supplied on the 
+column definition command.  
+This paramter, &cw(g=) defines the gutter, or space between the columns. 
+In figure &col_fig the gutter is defined as a quarter (.25) inch.
+
+.sp
+&x does not allow column widths to be different because it only maintains a single 
+indention and line length value rather than a value for each column.  
+The width of each column is given by the second parameter on the column definition command. 
+
+.h2 Top Margins
+
+The top margin &c(tm) command is used to set the space between the top of the page and the 
+first line of text placed in each column.  
+The running header, if defined, is placed a distance above the first line of text as 
+defined by the top gutter &c(tg) command. 
+.gv fig
+.dv gutter_fig &_fig
+Both are visualised in figure &_fig.
+.sp 
+
+.ca start top.ca
+	.ep xfm_page_top.eps x=.5i l=3i close prportional
+	.fg Top of page commands and relative offisets.
+	.sp
+.ca end
+.gv remain
+.if  &_iremain 3 > 
+	.im top.ca
+.ei
+	.oe page .im top.ca
+.fi
+
+The Running header, and footer (shown with a green line in figure &gutter_fig), are justified such that their right margin is aligned with the right 
+margin of the right most column. 
+If the user desires to have the running header extend past the document text, then the line length
+and indention values must sum to less than the column width. 
+ 

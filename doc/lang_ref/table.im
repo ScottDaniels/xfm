@@ -32,7 +32,6 @@ The following is the syntax for the &ital(table) command:
 .sp
 
 Where:
-.sp
 &indent
 .bd .75i &ditext
 .di n : Causes &x to &bold(not) automatically set the first column parameters. 
@@ -84,7 +83,6 @@ The cell command accepts several parameters and has the following syntax:
 .ix force `background colour`
 .sp
 Where:
-.sp
 &indent 
 .bd .75i &ditext
 .di bg : Defines the colour that the background of the cell should be painted with.
@@ -123,7 +121,6 @@ The syntax of the &ital(table row) command is:
 .sp
 
 Where:
-.sp
 &indent
 .bd .75i &ditext
 .di n : Indicates that the first cell in the next row should &bold(not) be automatically 
