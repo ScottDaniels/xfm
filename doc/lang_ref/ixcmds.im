@@ -12,11 +12,11 @@ The general format of the &ital(index) command is:
 .sp
 
 .in +.2i
- &cw(^.ix) &ital(command [parameters])
+ &cw(^.ix) &ital(command ^[parameters])
 .in -.2i
 .sp
 
-The &ital(command) is one of several indexing sub-commands (described in greater detail in the following
+&ital(Command) is one of several indexing sub-commands (described in greater detail in the following
 paragraphs) and the parameters are any data that a specific command needs.
 .sp
 

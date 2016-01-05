@@ -2,14 +2,13 @@
 	.** .pa
 	&page_if_needed
 	&set1col
-	.** .cd 1 7.5i
-	.ll 6i
 	.in 0i
 .fi 
 
 .dv row    .tr r=5 ^: .bc start $1 .bc end .cl ^: $2 .cl ^: $3  
 
-.h1 Quick Reference
+.pa
+.h1 Appendix B -- Quick Reference
 The following tables provide a quick overview of the &x commands and the parameters that 
 they accept. Several conventions used in the tables are described below:
 .sp
@@ -64,9 +63,25 @@ This is a test of the cn after a table
 
 &row(ca:{start|end} <file>:Capture all lines until the end command and place into the file. )
 &row(cb::Column begin (eject column))
+&row(cc:<n>:Conditional column. Eject column if n rows do not remain in current column)
 &row(cd:<num> .br w=<distance> .br ^[g=<distance>] .br ^[i=<distance>]:Define num columns .br width of each .br gutter between columns .br Indention of left column from left margin)
 &row(ce:<text>:Center text on next line)
-&row(cc:<n>:Conditional column. Eject column if n rows do not remain in current column)
+
+.tr r=5L
+.bc start cl .bc end
+.cl
+.sp 1
+[c=bgcolour] .br 
+[a=alignval] .br 
+[s=span] .br
+[v=valignvalue]
+.cl
+Start next cell in the table.
+.br Set background colour (HTML only)
+.br Set alignment type (HTML only)
+.br Set the number of 'real' columns to span.
+.br Vertical alignment option (HTML only)
+
 &row(cp:<n>:Conditional page eject. Start new page if n columns are not left on current page)
 
 .tr r=17L
@@ -120,6 +135,22 @@ This is a test of the cn after a table
 &row(fg:<text>:Figure text with automatic numbering)
 &row(fi::End if/else)
 
+.tr r=7
+.bc start fm .bc end
+.cl
+.sp 1
+[i=dist]
+.br [l=dist]
+.br [w=dist] 
+.br [y=pts] 
+.cl
+Floating margin .br
+indent distance from left margin for temporary margin. .br
+length before returning margins to normal (if y= not set). .br
+width of line (forces right margin to be pulled in if needed.) .br
+Pts from top of page where normal margins are to resume.
+
+
 .tr r=17L
 .bc start gv .bc end
 .cl
@@ -172,7 +203,7 @@ This is a test of the cn after a table
 
 &row(nl::Force a newline in the output file (generally has no effect on the document appearance))
 
-&row(oe:^[all] {page | col} <cmd>:Causes <cmd> to be executed on the next page or column eject. If 'all' supplied then for every eject.)
+&row(oe:^[all] [nostate] {page | col} <cmd>:Causes <cmd> to be executed on the next page or column eject. If 'all' supplied then for every eject.) If nostate is given, then state is not saved/restored before and after command.
 
 &row(pa::Causes the next formatted text token to be placed at the top of the next page)
 &row(pn:on | off | n:Start/stop numbering pages; if n supplied set next page number to n+1)
@@ -193,13 +224,17 @@ This is a test of the cn after a table
 .tr r=8L
 .bc start ta .bc end
 .cl
-[b] .br
+c1 c2...cn .br
+[B] .br
+[b=n] .br
 [n] .br
 [w=pct] .br
 [c=#hhhhhh] .br
 [p=<points>]
 .cl
-Place borders on the table .br
+Start table c1, c2... are column width definitions (e.g. 1i 3i) .br
+Place left edge boarders (omit for table in table) .br
+Place borders on the table if n == 1.br
 Do not automatically generate first tr command .br
 Width as a percentage of screen size (hfm only) .br
 Colour for background of cell/row .br
@@ -231,84 +266,3 @@ Start next row in the table.
 
 .et
 .st &textsize
-
-.if false
-#define C_OUTLINE     0x4F55   /*  ou outline characters (true charpath) */
-#define C_SECTION     0x5343   /*  sc generate rtf section break */
-#define C_SETFONT     0x5346   /*  sf set font command */
-#define C_SHOWV       0x5356   /*  sv show current variable contents */
-#define C_SKIP        0x534B   /*  sk skip lines if not at top of col */
-#define C_SETSPACE    0x534C   /*  sl set line spacing (points) */
-#define C_SMASH		0x534D /*  sm smash; no space before next token -- psfm need for (&cw(xxx))*/
-#define C_SPACE       0x5350   /*  sp space command */
-#define C_SINGLESPACE 0x5353   /*  ss turn on single space mode */
-#define C_SETTXTSIZE  0x5354   /*  st set text size (points) */
-#define C_SETX        0x5358   /*  sx set x position command */
-#define C_SETY        0x5359   /*  sy set y position command */
-#define C_TABLE       0x5441   /*  ta start table */
-#define C_TABLEBRK    0x5442   /*  tb safe rfm table break */
-#define C_TABLEROW    0x5452   /*  tr start next table row */
-#define C_TOC         0x5443   /*  tc turn on/off table of contents */
-#define C_TOPMAR      0x544D   /*  tm top margin command */
-#define C_TWOSIDE     0x5453   /*  ts two sided page layout */
-#define C_TMPTOP      0x5454   /*  tt set topy to cury temporarily */
-#define C_TOUPPER     0x5455   /*  tu n turn n characters to upper */
-
-#define C_CDEFINE     0x4344   /*  cd column define command */
-#define C_CEJECT      0x4342   /*  cb column begin (eject) */
-#define C_CENTER      0x4345   /*  ce center */
-#define C_CCOL        0x4343   /*  cc conditional column eject */
-#define C_TABLECELL   0x434C   /*  cl start next table cell */
-#define C_COLOR       0x434F   /*  co set rgb color for text */
-#define C_COLOUR      0x434F   /*  co set rgb color for text */
-#define C_COMMENT     0x2A2A   /*  ** is a comment line; input line skipped */
-#define C_CPAGE       0x4350   /*  cp conditional page eject */
-#define C_DEFDELIM    0x4444   /*  dd define variable delimiter (default &) */
-#define C_DEFHEADER   0x4448   /*  dh define header command */
-#define C_DEFITEM     0x4449   /*  di definition list item */
-#define C_DOLOOP      0x444F   /*  do do loop */
-#define C_DOUBLESPACE 0x4453   /*  ds double space mode */
-#define C_DEFVAR      0x4456   /*  dv define variable */
-#define C_ENDDEFLST   0x4544   /*  ed end definition list */
-#define C_ELSE        0x4549   /*  ei else portion of if statement */
-#define C_ENDLIST     0x454C   /*  el end list */
-#define C_EP          0x4550   /*  ep embedded PostScript */
-#define C_ENDTABLE    0x4554   /*  et end table command */
-#define C_EVAL        0x4556   /*  ev evaluate - calc [ ] and include ans */
-#define C_FIGURE      0x4647   /*  fg figure */
-#define C_FORMAT      0x464F   /*  fo format command */
-#define C_ENDIF       0x4649   /* fi end if */
-#define C_GREY        0x4752   /*  gr set grey scale 0=white 10=black */
-#define C_GETVALUE    0x4756   /*  gv get an FM value into a variable */
-#define C_H1          0x4831   /*  h1 header level 1 */
-#define C_H2          0x4832   /*  h2 header level 2 */
-#define C_H3          0x4833   /*  h3 header level 3 */
-#define C_H4          0x4834   /*  h4 header level 4 */
-#define C_HDMARG      0x484D   /*   m header margin */
-#define C_HN          0x484E   /*  hn turn on/off header numbers */
-#define C_IF          0x4946   /*  if see if next lines should be included */
-#define C_IMBED       0x494D   /*  im imbed a file command */
-#define C_INDENT      0x494E   /*  in indent next line */
-#define C_JUMP        0x4A4D   /*  jm jump to token */
-#define C_JUSTIFY     0x4A55   /*  ju justify mode toggle command */
-#define C_LOWERCASE   0x4C43   /*  lc lower case to end of parm list */
-#define C_LISTITEM    0x4C49   /*   i list item */
-#define C_LL          0x4C4C   /*  ll line length command */
-#define C_LINE        0x4c4E   /*  ln draw line */
-#define C_LINESIZE    0x4C57   /*  lw set line width (width of a horiz line) */
-#define C_NOFORMAT    0x4E46   /*  nf no formatting */
-#define C_NEWLINE     0x4e4c   /*  nl force new line in output file */
-#define C_ONPAGEEJECT 0x4f45   /*  oe [all] <commands> to run on next page eject
-#define C_PAGE        0x5041   /*  pa page eject command */
-#define C_PAGENUM     0x504E   /*  pn page number toggle */
-#define C_PAGEMAR     0x504D   /*  pm page margin amount */
-#define C_PUNSPACE    0x5053   /*  ps punctuation space */
-#define C_QUIT        0x5155   /*  qu quit processing */
-#define C_RFOOT       0x5246   /*  rf running footer */
-#define C_RHEAD       0x5248   /*  rh running header */
-#define C_RIGHT       0x5249   /*  ri right justify */
-#define C_RSIZE       0x5253   /*  rs running h/f font size */
-#define C_TRACE		0x5858 /*  xx level */
-/*  op reserved for open output file */
-.fi
-

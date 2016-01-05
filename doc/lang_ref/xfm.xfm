@@ -35,10 +35,14 @@ skip_license
 
 .** self documenting document compiler!  xfm.xfm 
 
+.gv e XDOC_PASS1 pass1
+
 .** background for cover -- fetch before setup so we reset things
 .if pfm
-	.im ../cover_art.im
-	.co #000000
+	.if ! pass1 
+		.im ../cover_art.im
+		.co #000000
+	.fi
 .fi
 
 .dv index_snare_file index_snatch.im
@@ -92,9 +96,6 @@ skip_license
 .im doc_start.im
 .im ifroom.im
 
-.sv bold
-.sv ital
-
 .if hfm
 	&indent
 	.ta b=0 w=90
@@ -110,7 +111,6 @@ skip_license
 .** .dv x ^&ital(XFM)
 .dv x ^&ital({X}fm)
 
-.gv e XDOC_PASS1 pass1
 .if pfm
 	.if pass1 
 		.tc on
@@ -123,6 +123,7 @@ skip_license
 
 		&set1col
 		.im xfm.toc		.** *.toc does a lead page eject
+		.gv remain
 		.pa
 	.fi
 .ei
@@ -165,6 +166,7 @@ In addition, &x also provides the ability to share document sections and images
 between documents which can significantly reduce the maintenance effort when supporting related documents.
 The &ital(XFM Language Reference) describes the &x language and how to use it to generate documents and HTML pages.
 
+.br
 .ll +1ii
 .in -.5i
 .sp
@@ -202,8 +204,7 @@ the text as described by the commands, and writes the output to a single
 file. 
 The output format generated is determined by the actual formatter that 
 is used to parse the source file; &cw(hfm) produces HTML output, 
-&cw(pfm) produces PostScript output, &cw(rfm) produces Rich Text 
-Format output (RTF) and &cw(tfm) produces simple formatted text. 
+&cw(pfm) produces PostScript output, and &cw(tfm) produces simple formatted text. 
 With a few exceptions, all of the &x commands are supported by all formatters
 and if it is not possible to support the concept in a particular 
 output format (e.g. justified text in HTML) the command, and any 
@@ -216,7 +217,7 @@ Any of the &x formatters can be invoked with a simple command line syntax:
 xfm inputfile outputfile [command]
 &cwblke
 .sp
-Where &cw(xfm) is the formatter name: &cw(hfm, rfm, tfm,) or &cw(pfm.)
+Where &cw(xfm) is the formatter name: &cw(hfm, tfm,) or &cw(pfm.)
 The &ital(command) is any command that &x should treat as though it 
 appeared on the first line of the input file, and is optional. 
 In general this command is used to include a special setup file or to define
@@ -381,6 +382,7 @@ documents (in the same manner that a &bold(C) header file is included across mul
 files), or to include sections that are common to multiple documents. This can significantly 
 reduce the amount of document maintenance time when managing a library of related documents. 
 
+.** remainder are sections in their own modules...
 .sp 1
 .im cmds.im
 
@@ -394,8 +396,14 @@ reduce the amount of document maintenance time when managing a library of relate
 .im macros.im
 
 .sp 1
+.im float_mar.im
+
+
+.sp 1
 .im ixcmds.im
 .cc 100			.** force a col eject on the off chance there is a figure pending
+
+.im append_a.im
 .im quickr.im
 .if index_here
 	&index_here

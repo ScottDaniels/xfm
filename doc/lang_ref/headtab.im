@@ -2,11 +2,10 @@
 .st [ &textsize 2 - ]
 .sf &textfont
 &set1col
-.sv c1_linesize
 .sp
 .ju off
 .in 0 
-.ll 6i
+.ll &{c1_linesize}i
 
 .dv row .bc start $1 .cl ^: $2  .cl ^:  $3 .cl ^: $4  .cl ^: $5 .cl ^: $6 .cl ^:  $7 .cl ^:  $8  .cl ^:  $9  .cl ^:  $10 .bc end .tr
 .dv lastrow .bc start $1 .cl ^: $2  .cl ^:  $3 .cl ^: $4  .cl ^: $5 .cl ^: $6 .cl ^:  $7 .cl ^:  $8  .cl ^:  $9  .cl ^:  $10 .bc end 
@@ -49,11 +48,6 @@
 .sp 0
 .fg t=table Default properties for each header level.
 .sp
-
-.if pfm
-	.lw 0
-	.ln
-.fi
 
 .sp 2
 .po

@@ -93,8 +93,8 @@ current column number (0 is the first column) is placed into &cw(_coln.)
 
 .st &textsize
 .fg t=table  Get value command parameters and resulting variable definitions.
-.sp
+.sp 2
 
-.po
 .tt 
 &set2col
+.po
