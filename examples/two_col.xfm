@@ -1,0 +1,99 @@
+.** sample doc which demonstates a two column setup
+
+.** define two columns, each 3 inches wide with a quarter inch gutter between
+.** the column margin is one and a quater inchs from the page edge
+.cd 2 3i g=.25i i=1.25i
+.ju on
+.in 0i			.** no extra indentation -- the columns are small enough!
+.sf Times-roman
+.st 10p
+
+.** set up headers. no eject for h1, flush on the column margin, and no paragraph indention
+.hn off
+.dh 1 e=no m=0i i=0
+.dh 2 m=0i i=0
+.dh 3 s=10
+
+.if pfm
+	.dv super .sm .tf superscript 2/3 1 :
+.ei
+	.dv super .sm ^^^[$1]
+.fi
+
+.h1 Sample 2 Column
+This is an example of a two column document.  The colums are three inches each and are 
+separated with a quarter inch gutter.  The left column is indented one and a quater (1.25) 
+inches from the page edge.
+
+
+.h2 Some {X}fm Trivia
+One of the goals of {X}fm is to make the source document as readable as possible. 
+Formatting languages like [t]roff have difficult requirements about where 
+commands must be placed, and blank lines are interpreted as a 'paragraph' command
+which I find maddening. 
+Mark-up languages, such as HTML,  have other issues, namely the interspursing of the 
+tags which can make reading the document while editing difficult not to mention typing all 
+of the bloody '<' and '>' characters is just a pain. 
+HTML really is an 'object' or 'pcode' language, much in the same way that Postscript 
+is an object language,  and frankly anybody actually writing HTML 
+from scratch needs to have their head examined. 
+
+.h3 Hyphens
+{X}fm doesn't hyphonate.  
+At one time it did, but IMHO hypohonated words make the document more difficult to read
+as the flow of the sentence is broken even more than what is induced by the line's end. 
+Hyphonation also requires that the formatter actually understand the language, or requires
+the author to build some kind of hyphonation dictionary both of which are awkward for the 
+small benefit of more compact lines (in some cases).
+For all of these reasons it was removed. 
+
+.sp
+{X}fm avoids hyphonation by moving a word which will not fit to the next line. 
+When line justification is enabled (^.ju on) the space between words on the current line 
+is changed to push the last character out to the right margin.   
+In some cases this can leave noticable wide gaps on some lines, but I also observe that 
+this also happens in news papers and magazines, so it's not something that is considered
+a 'no-no' or they'd have stopped doing it long ago.  
+
+.gv remain
+.cc 2i
+.h3 Reverse Polish
+.** column note, automatic number
+.cn start atbot Times-roman 8p .5i
+The app is WPRN by Emmit Gray.
+.cn end
+
+The expression parser in {X}fm is reverse polish mostly because I've used HP calculators
+.** add column note in next line smashing it agains 'emulator'
+since the mid 1970s and it's just the right way. (I even have an HP 16-C emulator &super( 1 )
+on my Android phone.)
+There isn't a need for messy parens in an expression, and while it might take some getting used to
+the stack oriented notion is also the way postscript works, so it isn't that far fetched 
+of an implementation. 
+
+.h3 Mk Vs Make
+I was introduced to mk, Plan-9's make tool, in 1997 by its author, Andrew Hume.  
+I've come to love its simplicity, the fact that a recipe doesn't need bleeding backslashes 
+at the end of each line, and that variables are exported to the recipe's environment on execution. 
+With the exception of the Go! code that I write, I use it to manage all of my source.  
+
+.h3 Code Organisation
+The organisation of the {X}fm source might seem a bit odd, I certanly would think that if I had just forked
+a copy for the first time.
+Round about 1992 I set about a complete rewrite of the formatter and the RTF formatter (now deprecated)
+was born.   
+The ascii text and postscript formattters (tfm and pfm respectively) would come later, and used the rfm 
+source as their base code, so only specific formatter modules lived in the tfm and pfm directories.
+When I decided to deprecate the RTF formatter (does anybody use RTF these days?) I converted that directory 
+to the 'base' directory, but if you look closely there is still an fmmain.c module in there which was used
+as the entrypoint for the rfm formatter. 
+
+.sp
+File names might also seem a bit odd. 
+The original code was written on an MS-DOS system, and file names were limited to 8 characters at that point in time,
+so the majority of the filenames are less than descriptive. 
+
+.qu
+
+
+

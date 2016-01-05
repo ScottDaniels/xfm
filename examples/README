@@ -1,0 +1,22 @@
+Examples
+This directory contains some example documents that both serve as a set
+of regression tests and to help understand the language and methods
+of the {X}fm world better.   They aren't spell checked, and probably 
+only contain minimally useful text.
+
+These exampes are also simple complete documents which do not rely on 
+any 'startup' macros.  The starup macros are nice for consistency between
+documents, and eliminating some of the boiler plate mechanics, but 
+when learning a new programming language it's sometimes best to 
+have clear examples which don't hide anything.   
+
+All of the exaples here should format with all formatters, though
+not all of the deomonstrated features (e.g. floating margin) are
+supported by all features.  The following are the input source 
+files with an indication of the primary format type that the 
+document is targeted for:
+
+float_mar.xfm	Floating margins
+mix_col.xfm		Mixed one and two column output (postscript)
+two_col.xfm		Two column output
+html_style.xfm	"Better" HTML output using the two_col source

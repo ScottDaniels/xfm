@@ -1,0 +1,205 @@
+.** this document should generate correctly using all formatters.
+.** the most pleasing output will be with pfm which is the only one 
+.** that supports floating margins. 
+
+.cd 1 6i i=1i
+.ju on
+.sf Helvetica
+.st 10p
+.in .5i
+.hn off
+.dh 2 m=.5i i=0
+
+.** image macro; normally a part of hfmstart.im or other template imbed file
+.dv img ^<img src="$1"^> 
+
+This is an example document which demonstrates how to imbed an encapsulated postscript 
+file and 'float' the margin round the file. 
+It is possible to format this document with tfm and hfm, but as neither supports 
+floating margins output will be a bit different.  
+This first paragraph shows the document setup with respect to single column, which 
+is six (6) inches wide, and has an indention of one half (1/2) inch. 
+
+.sp
+.if pfm
+	.ep test_2x3.eps x=.5i l=3i  proportional noadvy
+	.fm l=3i i=+2.1i
+.ei
+	.if tfm 
+		[ IMAGE test_2x3.eps could not be included ] .br
+		.sp
+	.ei
+		.** will likely be a broken image, but it shows how it's done
+		&img(test_2x3.jpg) .br
+	.fi
+.fi
+
+This text should be 'floated' to the right of the image (postscript) that was inserted against the 
+left margin. 
+This text should continue for three (3) inches, and then should automatically revert
+to the original margins which should appear to float the text round the inserted 
+image. 
+.sp
+
+The remainder of the text is just filler fluff that illstrates that the text margins
+are reverted at the correct place based on the l= parameter in the ^.fm command that 
+is in the source. 
+
+.sp
+{X}fm started out as a text formatter for me to easily generate weekly status reports
+for my boss, Larry D. Kroeker, at Texas Instruments.  
+We had just received a new Epson dot matrix printer, which could be sent control 
+characters to enable bold font and the like, and I wanted something that could make
+my status reports stand out. 
+The year was 1983 and the usefulness of the newly released TI PCs was looking promising.
+
+.sp
+To illustrate placing the image on the right, and how to add a caption and avoid 
+overwriting it (a bit trickier), we'll add the same 2x3" image just below this 
+paragraph and force the text to the left of it until we are past it.
+.sp .5
+
+.if pfm
+	.** get and save the current y value so we can come back to it
+	.gv y
+	.dv top_y &_cury
+	.** we must advance the y value to add the figure, and adjust the margins for it. 
+	.ll -4i
+	.in +4i
+	.ep test_2x3.eps x=4.5i l=3i  proportional close
+	.fg This is the image we inserted.
+	.in -4i
+	.ll +4i
+	.** note that no length is given; when y= is used; length is assumed to be the current position
+	.** also, topy must be suffixed with 'p' because the value saved above is points.
+	.fm w=-2.1i y=&{top_y}p
+.ei
+	.if tfm
+		[ IMAGE not included ]
+		.sp
+	.ei
+		&img(test_2x3.jpg) .br
+	.fi
+.fi
+
+This is now text which should be pushed round the image that was placed on the right side of 
+the column. 
+The process involves (1) setting the indention and line length, (2) including the image, 
+(3) adding the figure comment, and (4) using the float margin (fm) command to start the temporary 
+margin such that formatted text does not over run the image. 
+
+.sp
+Yes, this will require a few extra lines of code in your documment, but if you want it to look 
+good, be maintainable, be able to keep your document source under source code control, etc. then
+it's worth the bit of extra effort.  
+Besides, it's no fun unless you've done it yourself!
+
+.sp
+And some more trivia as we flush out the page to verify that the text does miss the bottom of
+the image. 
+{X}fm got it's first real use when AT&T picked it up and used it on it's Gecko project.  {X}fm was
+used to format the manual pages of all of the utilities written for the project.  The man page source
+was included in the main programme, with the theory that if the documentation was embedded
+with the source, the programmer would be more likely to maintain it when in the code making 
+changes.  
+
+.sp
+Finally, we'll add a bit of code which will handle placing an image that must be pusehd off to the 
+next page, and won't start wrapping the text until that point. We will use the more complex 
+example of putting the image on the right again. 
+
+
+.** begin by capturing the code necessary to format round the image.  Then, execute the 
+.** code if room, and push it if not. 
+.** NOTE -- capture command snarfs all text/commands until it finds '.ca end' which 
+.** starts in the _first_ column; don't indent it.
+.if pfm
+	.ca start right_image.ca
+		.gv y
+		.dv top_y &_cury
+		.br
+		.ll -4i
+		.in +4i
+		.sp
+		.ep test_2x3.eps x=4.5i l=3i  proportional close
+		.fg This is the image we inserted.
+		.in -4i
+		.ll +4i
+		.fm w=-2.1i y=&{top_y}p
+.ca end
+	.gv remain
+	.if &_iremain 3.2 <
+		.** we must give nostate parm to prevent a push/pop of the state during eject processing
+		.oe column nostate .im right_image.ca
+	
+	.ei
+		.im right_image.ca
+	.fi
+.ei
+	.if tfm 
+		[IMAGE omitted; not supported in text output]
+	.ei
+		&image( test_2x3.jpg )
+	.fi
+.fi
+
+And here is more text that should nicely appear 'wrapped round' the the image. If there wasn't
+enough room for the image on the current page, then this text might appear in full width
+and the image pushed to the next page. What ever text doesn't fit on the current page will then 
+be wrapped.  It's difficult to predect what will be placed on the current page, so this paragraph
+will just ramble a bit more to prove the point.
+.sp
+
+I've used {X}fm extensively while working on my masters at Georgia Tech.  I've used it to produce
+written assignmens, programme write-ups, and to format the written response to take home exams. 
+I also maintain several HTML pages using {X}fm. 
+While there isn't a need to generate thoese documents in any other format (PDF or text), using a 
+formatting language, rather than marking up the text with difficult to read HTML tags, makes 
+perfect sense. 
+
+.** test the pop function 
+.fm pop
+
+.h2 New Header
+There was an '^.fm pop' function before this header which should have popped any existing floating margin
+before starting the header.  It seems that there might be times (h1 probalby) where this would be 
+something desired.  
+This text should be full width and below the last imaage. 
+Floating text round a table is probably the other use for this feature.  
+Tables can be done in the same manner as process an encapsulated postscript file with a trailing figure 
+statement.
+
+.sp .5
+.if tfm
+	[ Table omitted: not supported in text output ]
+.ei
+	.gv y
+	.dv tab_top &{_cury}p
+	.sp 1
+	.ta 1i .8i 1.2i b=1 B
+	.ce COL 1
+	.cl : .ce COL 2
+	.cl : .ce COL 3
+	.tr : Foo .cl : Bar .cl : FooBar 1
+	.tr : Foo .cl : Bar .cl : FooBar 2
+	.tr : Foo .cl : Bar .cl : FooBar 3
+	.tr : Foo .cl : Bar .cl : FooBar 4
+	.et
+	.fg t=table Silly table with silly contents
+	.if pfm
+		.fm i=+3.4i y=&tab_top
+	.fi
+	.sp 1
+.fi
+
+There should be a silly table, with silly contents to the right of this text. 
+This text should be nicely floated in the remainder  of the colum. The table takes
+about three inches of the column, and a bit of extra padding was given on the 
+^.fm command.  
+.sp
+Remember that when using the indent parameter on the ^.fm command (i=), it is best
+to use the relative distance (e.g. +3.2i) as {X}fm will compute the value of the 
+current left margin automatically.  This prevents the need to maintain the indention 
+amount should the margins for the document be adjusted later.  
+In a similar fashion, it is pobably best to compute the width based on a line length
+variable when wrapping text to the left of an image or table. 

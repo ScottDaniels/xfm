@@ -1,0 +1,39 @@
+.** sample doc with a mix of two and one column formatting.
+
+.** first an abstract which is a single column, then the remainder of the 
+.** document which is snarfed from the two_col.xfm example. There is one
+.** small difference between the two col setup in that example and this
+.** which is commented below.
+
+.** one column 4" wide
+.cd 1 5i i=1.75i 
+.ju on
+.in 0
+.sf Helvetica-bold
+.st 14p
+.ce ABSTRACT
+.sp .3
+.st 10p
+.sf Helvetica
+This example illustrates the code needed to place a single column abstract
+on top of a multicolumn document.  
+Nothing to it realy. 
+The remainder of the doc is formatted in two columns, and the source is 
+actually imbedded from the two_col.xfm source file and used as is.
+.sp .5
+.lw 0
+.ln 
+
+.** a little extra space
+.sp 2.5
+
+.** --------------------------------------------------------------------------
+.** switch to two column mode.  The only difference between this doc, and the 
+.** two col example doc is that we set the temporary top margin (.tt) to the 
+.** current y location so that on the column eject the right colmn on the first 
+.** page doesn't overlay the right side of the single column abstract.
+.** Because this is the only difference, we can set it and then just pull in 
+.** the exact same two_col document source -- maybe now you're beginngin to 
+.** see some of the advantages of {X}fm!
+.tt 
+.im two_col.xfm 

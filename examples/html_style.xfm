@@ -1,0 +1,16 @@
+
+.** This imbeds the two_col.xfm doc, but sets up for HTML if hfm formatter is 
+.** used to show how the create style (.cs) command can be used to enhance the
+.** html output.
+
+.** simple body style that indents the text a bit from the left, and sets a 
+.** width that keeps the text from running to the right edge for extremely wide
+.** browser windows.
+.cs start body position=absolute left=40px width=800px
+
+.** include the text (no special modifications needed otherwise)
+.im two_col.xfm
+
+.** end the style 
+.cs end
+
