@@ -70,6 +70,7 @@
 	cwfont		- font name for constant width text  &cw() or &cwblkb
 	litfont		- literal font &lit() or &cw() or &cwblkb
 	boldfont	- font used with &bold() or &stress() 
+	italfont	- font used with &ital() macro
 	difont		- font used for terms in a definition list
 	linesize	- length of text line
 	indentsize	- space that the &indent macro will shift things over
@@ -187,6 +188,10 @@
 	.fi
 	.if ! boldfont
 		.dv boldfont Helvetica-Bold
+	.fi
+
+	.if ! italfont
+		.dv italfont Helvetica-Oblique
 	.fi
 	.sf &textfont
 
