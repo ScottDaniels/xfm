@@ -72,6 +72,11 @@ Contributions to this source repository are assumed published with the same lice
 *  Author:   E. Scott Daniels
 *  Mods:	09 Mar 2013 - added support for super/subscripts
 *			11 Mar 2013 - added ability to change font for super/subscript.
+*			31 Jan 2016 - added user controlled displacement (d=) for super/subscript.
+*					Changed the default subscript displacement to tsize/4.
+*
+* 	Syntax:
+* 			.tf [d=displacement] {font-name|superscript|subscript} {font-size|m/n} <text>
 *
 *	allows for macros like: 
 *			.dv ital .sm .tf &italfont &textsize $1 ^:
@@ -146,52 +151,71 @@ void FMtmpfont( )
 
 	if( FMgetparm( &buf ) > 0 )
 	{
-		if( strcmp( buf, "superscript" ) == 0 )
-		{
-			ydisp = textsize/2;
-			if( (textsize = get_our_parms( NULL, &curfont )) <= 0 )
-				textsize = osize;
+		int len = 1;
+		while( len > 0 && buf[1] == '=' ) {					// pick up any x= parms
+			switch( buf[0] ) {
+				case 'd':
+					if( strncmp( buf, "d=", 2 ) == 0 ) {
+						ydisp = atoi( &buf[2] );
+					}
+					break;
 
-			if( curfont == NULL )
-			{
-				curfont = ofont;
-				ofont = NULL;
+				default:			// sliently ignore any other x= things
+					break;
 			}
 
-			FMfmt_yadd( ydisp );		/* ydisplacement format change */
+			len = FMgetparm( &buf );
 		}
-		else
-		{
-			if( strcmp( buf, "subscript" ) == 0 )
+
+		if( len > 0 ) {
+			if( strcmp( buf, "superscript" ) == 0 )
 			{
 				if( (textsize = get_our_parms( NULL, &curfont )) <= 0 )
 					textsize = osize;
-	
+
 				if( curfont == NULL )
 				{
 					curfont = ofont;
 					ofont = NULL;
 				}
 
-				ydisp = -textsize /2;
-				FMfmt_yadd( ydisp );		/* ydisplacement format change */
+				ydisp = textsize/2;
 			}
 			else
 			{
-				if( (textsize = get_our_parms( buf, &curfont )) <= 0 )
-					textsize = osize;
-	
-				if( curfont == NULL )
+				if( strcmp( buf, "subscript" ) == 0 )
 				{
-					curfont = ofont;
-					ofont = NULL;
-				}
+					if( (textsize = get_our_parms( NULL, &curfont )) <= 0 )
+						textsize = osize;
+		
+					if( curfont == NULL )
+					{
+						curfont = ofont;
+						ofont = NULL;
+					}
 
-				FMfmt_add( );			/* add a format block to the list without y displacement */
+					ydisp = -textsize /4;
+				}
+				else
+				{
+					if( (textsize = get_our_parms( buf, &curfont )) <= 0 )
+						textsize = osize;
+		
+					if( curfont == NULL )
+					{
+						curfont = ofont;
+						ofont = NULL;
+					}
+
+					FMfmt_add( );			/* add a format block to the list without y displacement */
+				}
 			}
 		}
 	}
 
+	if( ydisp != 0 ) {
+		FMfmt_yadd( ydisp );		// y displacement from d= or sub/superscript default
+	}
 
 	while( (len = FMgetparm( &buf )) )					/* rest of the parms go into the text */
 	{
@@ -228,5 +252,6 @@ void FMtmpfont( )
 		else
 			FMaddtok( tok, len );
 	}
+
 	TRACE( 2, "tmpfont: ends\n" );
-}     /* FMtmpfont */
+}
