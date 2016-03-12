@@ -435,10 +435,18 @@ void FMcell( int parms )
  Mnemonic: fmtr
  Abstract: start a new row in the current table
  Date: 		26 Oct 2001 - converted from hfml stuff
- syntax:   .tr [n] [c=bgcolour] [a=alignval] [r=reserve] [v=valignvalue]
- 			The n option prevents cell from being called.
-			r= will force a column break if the desired amount of space 
-			isn't remaining.
+ syntax:   .tr [n] [c=bgcolour] [a=alignval] [r=reserve] [v=valignvalue] [w=weight] [l=linecount]
+
+			w= allows the line weight (drawn between the current row and the 
+			   new) to be differnt than the default.
+
+			m= allows multiple lines to separate the row being terminated from 
+			   the next. Lines are spaced fairly close together.
+ 			The n option prevents table cell from being called automatically
+			(user needs to supply a first .cl command).
+
+			r= (reserve) will force a column break if the desired amount of 
+			space isn't remaining.
 
  Mods:		10 Apr 2007 -- fixed write of border to be in conditional.
 ---------------------------------------------------------------------------
@@ -456,6 +464,8 @@ void FMtr( int last )
 	int row_top = 0;		/* used to calc the depth of each row */
 	int	old_cn_space = 0;
 	int required = 0;		// points required for the next row; col eject if not enough
+	int	tmp_lw = -1;		// temp line weight (l=)
+	int lcount = 1;			// number of horizontal separating lines
 
 	colour[0] = 0;
 	align[0] = 0;
@@ -496,6 +506,12 @@ void FMtr( int last )
          sprintf( colour, "bgcolor=%s", ptr + 2 );
          break;
 
+		case 'l':
+			if( *(ptr+1) == '=' ) {
+				lcount = atoi( ptr+2 );
+			}
+			break;
+
        case 'n':
          do_cell = 0;
          break;
@@ -508,23 +524,45 @@ void FMtr( int last )
          sprintf( valign, "valign=%s", ptr + 2 );
          break;
 
+		case 'w':
+			if( *(ptr+1) == '=' ) {
+				tmp_lw = atoi( ptr+2 );
+			}
+			break;
 
-       default: 
+
+       default: 								// ignore anything unrecognised
          break;
       }
     }
 
 	cury = t->maxy + t->padding;
 
-	if( t->border )		// add top and vert for this row; bottom added at end if this is the last one
+	if( t->border ) 						// add vert lines for the row if borders are on
 	{
 		sprintf( obuf, "%d setlinewidth ", t->weight );
 		AFIwrite( ofile, obuf );
 		tab_vlines( t, 0 );					/* add vlines just for this row */
+	}
 
-		TRACE( 2, "table/tr-border: cury=%d\n", cury );
-		sprintf( obuf, "%d %d moveto %d %d rlineto stroke\n", t->lmar+t->padding, -cury, t->border_width-t->padding, 0 ); // top border
-		AFIwrite( ofile, obuf );			// bottom line for the row
+	if( t->border || tmp_lw >= 0 ) {							// add a top line if borders, or a temp line width was given
+		int line_y = cury;
+
+		TRACE( 2, "table/tr-border: cury=%d lcount=%d tlw=%d\n", cury, lcount, tmp_lw );
+		if( lcount && tmp_lw >= 0 ) {							// dont need if no line generated
+			sprintf( obuf, "%d setlinewidth ", tmp_lw );		// need a second adjustment
+			AFIwrite( ofile, obuf );
+		}
+
+		while( lcount > 0 ) {
+			//sprintf( obuf, "%d %d moveto %d %d rlineto stroke\n", t->lmar+t->padding, -cury, t->border_width-t->padding, 0 ); // top border
+			sprintf( obuf, "%d %d moveto %d %d rlineto stroke\n", t->lmar+t->padding, -line_y, t->border_width-t->padding, 0 ); // top border
+			AFIwrite( ofile, obuf );								// bottom line for the previous row
+
+			if( --lcount ) {										// small increase to cury if we have more to do
+				line_y += 2;
+			}
+		}
 	}
 
 	TRACE( 1, "table/tr: required=%d cn_space=%d ard=%d cury=%d boty=%d remain=%d\n", required, cn_space, t->ave_row_depth, cury, boty, boty-cury );
