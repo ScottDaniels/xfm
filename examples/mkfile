@@ -42,7 +42,7 @@ CLEAN = *.ca *.bcnfile *.ecnfile *.html *.toc *.sp *.eps
 NUKE = *.html *.txt *.ps *.pdf $CLEAN 
 
 TXT_OUT = float_mar.txt two_col.txt mix_col.txt
-PS_OUT = float_mar.ps two_col.ps mix_col.ps 
+PS_OUT = float_mar.ps two_col.ps mix_col.ps font.ps
 HTML_OUT = html_style.html 
 EPS_SRC = test_2x3.eps 
 
