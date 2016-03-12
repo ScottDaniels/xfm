@@ -74,6 +74,7 @@ Contributions to this source repository are assumed published with the same lice
 *             7 Apr 1994 - To use the getpts routine allowing user to enter
 *                          x value in inches or points.
 *            11 Apr 1994 - To take value relative to curcol's left margin
+*            31 Jan 2016 - To actually allow negative relative moves.
 ******************************************************************************
 */
 void FMsetx( )
@@ -86,7 +87,7 @@ void FMsetx( )
 
  if( (len = FMgetparm( &buf )) > 0 )   /* if user entered a parameter */
   {
-   if( buf[0] == '+' )    /* relative move? */
+   if( buf[0] == '+' || buf[0] == '-' )    /* relative move? */
     relmove = TRUE;       /* then set local flag */
 
    i = FMgetpts( buf, len );
