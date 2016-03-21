@@ -72,7 +72,7 @@ Contributions to this source repository are assumed published with the same lice
 #define MAX_X         595      /* max number of points in the x direction */
 #define MAX_DEFLIST   9        /* max number of concurrent def lists */
 #define MAX_LIITEMS   60       /* max number of list items per page */
-#define MAX_COLS      4        /* maximum columns of text on the page */
+#define MAX_COLS      20       /* maximum columns of text on the page */
 #define MAX_FONT      50       /* max length of the font string */
 #define MAX_LL        200      /* max characters per line */
 #define MAX_CELLS     100      /* max cells in a table row */
