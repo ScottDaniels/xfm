@@ -179,7 +179,7 @@ void FMtmpfont( )
 					ofont = NULL;
 				}
 
-				ydisp = textsize/2;
+				ydisp = (textsize * 5.2)/8;
 			}
 			else
 			{
