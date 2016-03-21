@@ -1,6 +1,6 @@
 /*
 All source and documentation in the xfm tree are published with the following open source license:
-Contributions to this source repository are assumed published with the same license. 
+Contributions to this source repository are assumed published with the same license.
 
 =================================================================================================
 	(c) Copyright 1995-2015 By E. Scott Daniels. All rights reserved.
@@ -32,16 +32,16 @@ Contributions to this source repository are assumed published with the same lice
 */
 
 
-#include <stdio.h>     
+#include <stdio.h>
 #include <stdlib.h>
-#include <fcntl.h>    
-#include <ctype.h>   
-#include <string.h> 
+#include <fcntl.h>
+#include <ctype.h>
+#include <string.h>
 #include <memory.h>
 #include <time.h>
 
 #include "symtab.h"		/* our utilities/tools */
-#include "../afileio/afidefs.h"   
+#include "../afileio/afidefs.h"
 
 
 #include "fmconst.h"               /* constant definitons */
@@ -77,11 +77,12 @@ Contributions to this source repository are assumed published with the same lice
 *  Modified: 20 Jul 1994 - To allow not processing
 *            27 Jul 1994 - To allow nested ifs and elses
 *            28 Jul 1994 - To allow ors and ands
+*            19 Mar 2016 - Correct problem with stack index.
 *****************************************************************************
 */
 
 #define VTY_CHAR  0
-#define VTY_NUM   1 
+#define VTY_NUM   1
 
 #define COP_AND   0
 #define COP_OR    1
@@ -150,10 +151,15 @@ void FMif( )
 	}
 
 	status[0] = FALSE;
+	memset( status, FALSE, sizeof( status ) );
 
 	do                        /* test each name on the if statment */
 	{
 		TRACE( 1, "if: working on token=(%s)\n", tok );
+		if( sidx >= 100 ) {
+			fprintf( stderr, "WARNING: stack in if expression exceeded depth of 100\n" );
+			return;
+		}
 
 		switch( tok[0] )
 		{
@@ -186,22 +192,22 @@ void FMif( )
 					char *vp = NULL;
 
 					TRACE( 1, "fmif: expanding variable %s\n", tok );
-					if( (vp = sym_get( symtab, tok+1, 0 )) != NULL )   
+					if( (vp = sym_get( symtab, tok+1, 0 )) != NULL )
 					{
-						if( isdigit( *vp ) )      
+						if( isdigit( *vp ) )
 						{
 							TRACE( 2, "fmif: variable expanded to number: %s\n", vp );
 							value[vidx].nval = atol( vp );
 							status[sidx] = not ? ! value[vidx].nval : value[vidx].nval;
-							value[vidx].type = VTY_NUM;    
+							value[vidx].type = VTY_NUM;
 							vidx++;
 						}
 						else
 						{
 							TRACE( 2, "fmif: variable expanded to string: %s\n", vp );
-							strcpy( value[vidx].cval, vp ); 
+							strcpy( value[vidx].cval, vp );
 							value[vidx].nval = not ? 0 : 1;
-							value[vidx].type = VTY_CHAR;    
+							value[vidx].type = VTY_CHAR;
 							vidx++;
 						}
 					}
@@ -233,7 +239,7 @@ void FMif( )
 					sidx = 1;
 				if( vidx >= 2 )
 				{
-					if( value[0].type == VTY_NUM && value[1].type == VTY_NUM ) 
+					if( value[0].type == VTY_NUM && value[1].type == VTY_NUM )
 						status[sidx] = value[0].nval < value[1].nval;
 					else
 						if( strcmp( value[0].cval, value[1].cval ) < 0 )
@@ -261,7 +267,7 @@ void FMif( )
 					sidx = 1;
 				if( vidx >= 2 )
 				{
-					if( value[0].type == VTY_NUM && value[1].type == VTY_NUM ) 
+					if( value[0].type == VTY_NUM && value[1].type == VTY_NUM )
 						status[sidx] = value[0].nval > value[1].nval;
 					else
 						if( strcmp( value[0].cval, value[1].cval ) > 0 )
@@ -292,7 +298,7 @@ void FMif( )
 					if( vidx >= 2 )
 					{
 						TRACE( 3, "if: testing two values\n" );
-						if( value[0].type == VTY_NUM && value[1].type == VTY_NUM ) 
+						if( value[0].type == VTY_NUM && value[1].type == VTY_NUM )
 						{
 							status[sidx] = ! (value[0].nval - value[1].nval);
 							TRACE( 2,  "num (%d) (%d) == %d (not=%d)\n", value[0].nval, value[1].nval, status[sidx], not );
@@ -319,20 +325,20 @@ void FMif( )
 					not = FALSE;
 					break;
 
-				case '"': 
+				case '"':
 					tok++;
 					len -= 2;
 					get_string( value[vidx].cval, tok );
 					value[vidx].nval = not ? 0 : 1;
-					value[vidx].type = VTY_CHAR;    
+					value[vidx].type = VTY_CHAR;
 					vidx++;
 					not = FALSE;
 					len = 0;
 					break;
 
 				default:                                 /* characters of somesort */
-					value[vidx].type = VTY_NUM; 
-					if( isdigit( tok[0] ) )      
+					value[vidx].type = VTY_NUM;
+					if( isdigit( tok[0] ) )
 					{
 						tok[len] = 0;
 						value[vidx].nval = atol( tok );
@@ -353,7 +359,7 @@ void FMif( )
 					break;
 			}
 
-		if( status[sidx] != 0 )
+		if( sidx < 100  &&  status[sidx] != 0 )
 			status[sidx] = TRUE;              /* set specifically to true */
 
 		if( vidx > 2 )
@@ -369,28 +375,33 @@ void FMif( )
 
 	TRACE(2, "fmif: expression evaluated to: %s\n", status[sidx-1] ? "TRUE" : "FALSE" );
 
-	if( ! status[sidx-1] )             /* statement evaluated to false */
-	{                                              /* then skip until .fi */
-		while( FMgettok( &tok ) > OK )   /* while tokens still left in the file */
-		{
-			if( strncmp( ".if", tok, 3 ) == 0 )  /* found nested if */
-				nested++;                           /* increase nested count */
-			else
-				if( strncmp( ".fi", tok, 3 ) == 0 )  /* found an end if */
-				{
-					if( nested == 0 )                   /* and we need only it */
-						return;                            /* then were done */
-					else
-						nested--;                          /* one less were looking for */
-				}
+	if( sidx > 0 ) {
+		if( ! status[sidx-1] )             /* statement evaluated to false */
+		{                                              /* then skip until .fi */
+			while( FMgettok( &tok ) > OK )   /* while tokens still left in the file */
+			{
+				if( strncmp( ".if", tok, 3 ) == 0 )  /* found nested if */
+					nested++;                           /* increase nested count */
 				else
-					if( (strncmp( ".ei", tok, 3 ) == 0) && (nested == 0) )  /* last else */
-						return;
-		}     
-	}              
-	else
-		return;        
+					if( strncmp( ".fi", tok, 3 ) == 0 )  /* found an end if */
+					{
+						if( nested == 0 )                   /* and we need only it */
+							return;                            /* then were done */
+						else
+							nested--;                          /* one less were looking for */
+					}
+					else
+						if( (strncmp( ".ei", tok, 3 ) == 0) && (nested == 0) )  /* last else */
+							return;
+			}
+		}
+		else
+			return;
+	} else {
+		fprintf( stderr, "WARNING: internal error processing if: sidx == 0\n" );
+		return;
+	}
 
 	FMmsg( E_UNEXEOF, ".if not terminated" );
-}    
+}
 
