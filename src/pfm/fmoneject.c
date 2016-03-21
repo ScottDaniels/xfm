@@ -68,6 +68,7 @@ Contributions to this source repository are assumed published with the same lice
 *				used in an on eject command. Corrected potential buffer 
 *				overrun bug.
 *			03 Jan 2016 - Fixed bug introduced with floating margin change.
+*			21 Mar 2016 - Fixed bug with pushing/popping state.
 *
 * .oe [n=name] [nostate] [all] [list|del|col|page] <commands>
 *
@@ -162,9 +163,13 @@ void FMateject( int page )
 				exit( 1 );
 			}
 	
-			fprintf( f, "%s\n", ep->cmd_str );
+			if( (ep->flags & EF_NOSTATE) == 0 ) {
+				fprintf( f, ".pu\n%s\n.po\n", ep->cmd_str );		// add push/pop around command if saving state
+			} else {
+				fprintf( f, "%s\n", ep->cmd_str );
+			}
 
-			TRACE( 1,  "ateject: queued for execution: %s [%s state]\n", ep->cmd_str, ep->flags & EF_NOSTATE ? "no" : "saved"  );
+			TRACE( 1,  "ateject: queued for execution: %s [%s state]\n", ep->cmd_str, ep->flags & EF_NOSTATE ? "NOT saving" : "saving"  );
 
 			if( ! (ep->flags & EF_ALL) )		/* if all flag is not on, then trash it after first use */
 				del_ej( ep, NULL );
@@ -174,9 +179,6 @@ void FMateject( int page )
 	if( f )
 	{
 		fclose( f );
-
-		if( ep->flags & EF_NOSTATE == 0 )
-			FMpush_state();
 
 		sprintf( wrk, ".im %s", fname );
  		AFIpushtoken( fptr->file, wrk );  	/* push to imbed our file and then run it */
@@ -190,9 +192,9 @@ void FMateject( int page )
 			FMcmd( tok );
 		}
 
-		if( ep->flags & EF_NOSTATE == 0 )
-			FMpop_state();
 		unlink( fname );
+	} else {
+		TRACE( 1, "ateject: skipped -- file not open?\n" );
 	}
 }
 
