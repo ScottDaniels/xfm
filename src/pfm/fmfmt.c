@@ -122,8 +122,9 @@ int FMfmt_largest( )				/* find the largest font in the list */
 	{
 		if( f->size > size )
 			size = f->size;
-		if( f->ydisp > 0 )							/* account for super/subscript */
-			size += f->size - abs( f->ydisp );
+		// this was leaving notible gaps.  TODO - check displacement and adjust size only if it is really needed; general super/sub doesn't need this
+	//	if( f->ydisp > 0 )							/* account for super/subscript */
+	//		size += f->size - abs( f->ydisp );
 	}
 
 	return size;
