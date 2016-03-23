@@ -61,6 +61,7 @@ Contributions to this source repository are assumed published with the same lice
 *				10 Apr 2007 - Memory leak cleanup 
 *				06 Nov 2007 - Pops leftover blocks when restoring state.
 *				07 Jul 2013 - cleanup 
+*				22 Mar 2016 - Prevent out of range issue on restore.
 * ---------------------------------------------------------------------
 */
 
@@ -85,6 +86,7 @@ void FMfmt_dump( )
 */
 int FMfmt_save( )
 {
+	TRACE( 2, "fmt_save: idx=%d pushing list=%p\n", fmt_idx, fmt_lst );
 	fmt_stack[fmt_idx++] = fmt_lst;
 	fmt_lst = NULL;
 
@@ -98,7 +100,7 @@ int FMfmt_save( )
 }
 
 /*
-	reset the list to nothing
+	Reset the list to what was previously saved.
 */
 int FMfmt_restore( )
 {
@@ -110,7 +112,12 @@ int FMfmt_restore( )
 	int	ydisp;
 
 	while( FMfmt_pop( &size, &font, &colour, &start, &end, &ydisp, &colour ) > 0 );		/* pop current things */
-	fmt_lst = fmt_stack[--fmt_idx];						/* point at old list */
+	if( fmt_idx > 0 ) {
+		fmt_lst = fmt_stack[--fmt_idx];						/* point at old list */
+	} else {
+		FMfmt_add();
+	}
+	TRACE( 2, "fmt_restore: idx=%d list=%p\n", fmt_idx, fmt_lst );
 }
 
 int FMfmt_largest( )				/* find the largest font in the list */
@@ -127,6 +134,7 @@ int FMfmt_largest( )				/* find the largest font in the list */
 	//		size += f->size - abs( f->ydisp );
 	}
 
+	TRACE( 2, "fmt_largest: list=%p size=%d\n", fmt_lst, size );
 	return size;
 }
 
@@ -145,6 +153,7 @@ static void add(  int ydisp )
 {
 	struct format_blk *new; 
 
+	TRACE( 2, "fmt_add: optr=%d listbefore=%p\n", optr, fmt_lst );
 	if( fmt_lst && fmt_lst->eidx == optr )		/* likely an .sf and .st command pair */
 	{
 		new = fmt_lst;			/* just reset the current one */
@@ -153,6 +162,7 @@ static void add(  int ydisp )
 		new->font = strdup( curfont );
 		new->size = textsize;
 		new->ydisp = ydisp;
+		new->sidx = optr ? optr-1: 0;
 		if( textcolour )
 			new->colour = strdup( textcolour );
 	}
@@ -207,6 +217,7 @@ int FMfmt_pop( int *size, char **font, char **colour, int *start, int *end, int 
 
 	if( fmt_lst )
 	{
+		TRACE( 2, "fmt_pop: %x\n", fmt_lst );
 		*ydisp = fmt_lst->ydisp;
 		*size = fmt_lst->size;
 		*font = fmt_lst->font;			/* pass back strings we duped earlier */
@@ -223,6 +234,7 @@ int FMfmt_pop( int *size, char **font, char **colour, int *start, int *end, int 
 	}
 	else
 	{
+		TRACE( 2, "fmt_pop: end %x\n", fmt_lst );
 		*ydisp = 0;
 		*size = textsize;
 		if( *font )
