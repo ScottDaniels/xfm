@@ -65,7 +65,8 @@ Contributions to this source repository are assumed published with the same lice
 * Date:		19 Nov 2001
 * Author:	E. Scott Daniels
 * Mods:		10 Apr 2007 - fixed leaks.
-*		06 Nov 2007 - pushes a new format block when state is pushed
+*			06 Nov 2007 - pushes a new format block when state is pushed
+*			22 Mar 2016 - Corrected placement of fm_add() call (it matters).
 * --------------------------------------------------------------------------------
 */
 static struct state {
@@ -91,7 +92,6 @@ void FMpush_state( )
 	if( state_idx < 25 )
 	{
 		FMfmt_save( );
-		FMfmt_add( );
 		state_stack[state_idx].obuf = obuf;
 		state_stack[state_idx].inbuf = inbuf;
 		state_stack[state_idx].osize = osize;
@@ -114,6 +114,7 @@ void FMpush_state( )
 
 		optr = 0;
 		*obuf = 0;
+		FMfmt_add( );						// must add after setting pointer
 	}
 	else
 	{
