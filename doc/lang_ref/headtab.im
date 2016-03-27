@@ -16,13 +16,13 @@
 .bc start
 .cl : .br
 .cl : .br
-.cl s=2 :  SKIP
+.cl s=2 :  LINES SKIPED
 .cl : .br
 .cl : .br
 .cl : .br
 .cl : .br
 .bc end
-.tr
+.tr l=0
 .bc start
        LEVEL
 .cl :  FONT

@@ -1,4 +1,5 @@
 
+.dv comment .dv remark >>>  $1 ^: .sv remark
 .h2 Lists
 &x supports two different styles of lists: bullet lists, and term or definition lists. 
 Bullet lists are simple lists with each item in the list marked with a special character, 
@@ -60,7 +61,7 @@ items:
 .sp
 
 .** ----------------------------------------------------------------------
-.ca bl_examp.ca
+.ca start bl_examp.ca
 .cc 15
 .** .bx start m
 .st [ &textsize 2 - ]
@@ -259,7 +260,7 @@ rendered in Helevetica-Bold font.
 .h3 Numbered lists
 The definition list can be put into an automatic number mode when the &cw(a=x) parameter is used to 
 indicate a starting value.  
-Optionally a printf format ( .sm&c(f=) .sm ) string can be supplied to control the format of the numbering
+Optionally a printf style format ( .sm &c(f=) .sm ) string can be supplied to control the format of the numbering
 given to the list.  
 When in automatic numbering mode, there is no term given and the &c(di) command must either be on a line
 by itself, or a command termination colon given.  
@@ -268,6 +269,7 @@ Figure &_fig contains a brief illustration of the source and output for an autom
 letters (e.g. a, b, c...). 
 
 .** -------------------- capture example that will be read in twice; once as source example and once to format to show output
+.** these lines are kept short so that they fit in the two column example
 .ca start di_src_examp2.ca
 .ju off
  .bd .25i Helvetica-Bold a=a f=%c)
@@ -282,9 +284,14 @@ letters (e.g. a, b, c...).
 .ca end
 
 .** -----------------------------------------------------------------------------------
-.ca start di_examp2.ca
+&comment( setting up )
+.ca start di_example2.ca
 .sp
-.cc 15
+.gv remain 
+.if &_iremain 4 <
+	.oe column .im di_example2.ca
+.ei
+	
 .** keep this box!
 .bx start  m
 &bold(Source^:)
@@ -313,6 +320,8 @@ letters (e.g. a, b, c...).
 	.if &_lines 15 >
 		.ln
 	.ei
+		.dv comment ejecting page lines = &_lines
+		.sv comment
 		.bx end
 		.cc 25
 		.bx start m
@@ -328,8 +337,18 @@ letters (e.g. a, b, c...).
 .bx end
 .fg Automatically numbered definition list.
 .sp 2
+
+.** end initial if remain 
+.fi
 .ca end
 .** -----------------------------------------------------------------------------------------
-&ifroom(25:di_examp2.ca)
+.** &ifroom(45:di_examp2.ca)
+.gv remain
+.if &_iremain 25 <
+&comment( pushing off second example)
+	.oe column .im di_example2.ca
+.ei
+	.im di_example2.ca
+.fi
 
 

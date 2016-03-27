@@ -114,7 +114,8 @@ The syntax of the &ital(table row) command is:
 .st [ &textsize 2 - ]
 .nf
  .tr [n] [a=align] [c=colour] 
-   [r=required] [v=valign]
+    [l=lines] [r=required] [v=valign]
+    [w=lwidth]
 .fo
 .sf &textfont
 .st &textsize
@@ -133,9 +134,15 @@ into the HTML document and cause the text in each of the cells to align in this 
 .di c=colour : Allows the user to define a background colour for all cells in the row. 
 This colour is overridden if the user specifies a colour on a cell command. 
 .sp .3
+.di l=lines : Causes multiple lines to be placed between the row being ended and the following row.
+If not supplied one line is placed (l=1), and l=0 may be used to drop the line between the cells.
+.sp .3
 .di r=required : Is a number suffixed with 'i' (inches), 'p' (points), or 'L' (lines) that
 indicates the amount of vertical space that is required for the next table row.  If there
 isn't enough space in the current column, then a column eject is performed. 
+.sp .3
+.di w=n : Specifies the line width in integer point values. If 0 (zero) is specified, the 
+thinnest possible line is generated.  
 .sp .3
 .di v=valign : Allows the user to supply the vertical alignment that the HTML browser 
 should apply to the text palced in each cell. The &ital(valign) parameter should be 
