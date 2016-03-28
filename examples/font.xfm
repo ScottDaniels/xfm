@@ -6,6 +6,12 @@
 .sf Times-roman
 .st 10p
 
+.dv sym_not ^^^^\330
+.dv sym_and ^^^^\331
+.dv sym_or ^^^^\332
+.dv sym .tf Symbol ^&textsize $1 ^:
+
+
 .** set up headers. no eject for h1, flush on the column margin, and no paragraph indention
 .hn off
 .dh 1 e=no m=0i i=0 f=Times-bold
@@ -103,6 +109,37 @@ command:
 
 The final full stop (.) is &ital( smashed ) up against the previous token ( .sm &ital( width ) .sm ), 
 while rendering it in the regular text font, and not in constant width font. 
+
+.h2 Symbols
+Using the symbol or zapfdingbats fonts is somewhat painless, but it can require the use of some clever escape sequences
+in order to cause {X}fm to insert an octal character representation into the final output. 
+For instance, the not symbol ( .sm &sym( &sym_not ) .sm ) is represnted with an octal value of \330 in the Symbol font. 
+The backslant character is generally considered to be a special character and thus is escaped when {X}fm places it into 
+the formatted document, so in order to render it unescaped it must be escaped in the {X}fm source.
+The easiest way to do this is to define a variable and a &ital( sym ) macro:
+.sp .5
+
+.sf &cw_font
+.st [ &text_size 2 -]
+.nf
+  .dv sym_not ^^^^^^^^\330
+  .dv sym .tf Symbol ^^&textsize $1 ^^:
+.fo 
+.sf &text_font
+.st &text_size
+.sp
+
+.h3 Escapes
+Escaping characters in {X}fm can be one of the more tricky bits when they are needed, and can be even more frustrating when 
+they must be used as a part of a macro (defined variable).
+In the above example four escapes are needed in order to treat them as two pairs during the definition process. 
+The result of the sym_not &cw( ^.dv ) command is &cw( ^^^^^^^^^\330 ) .sm .
+The pair is necessary as the carrot needs to surive the {X}fm parser as the source is interpreted which causes the 
+carrot and subsequent backslant to be placed in the output buffer.   The output rendering component then sees the 
+backslant as being escaped and allows it to be wrtten into the final postscript output without the usual
+postscript escape character.
+Using an escaped sequence as a parameter to a defined variable (macro) can require even more to be needed; the 
+easiest way to work through it is to add one at a time until the output is as desired.
 
 
 .h2 Subscripts and Superscripts
