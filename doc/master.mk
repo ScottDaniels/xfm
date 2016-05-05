@@ -20,7 +20,7 @@ MKSHEL = ksh
 	rfm ${prereq%% *} $target
 	
 %.pdf::	%.ps
-	gs -dBATCH  -dNOPROMPT -dNOPAUSE -sDEVICE=pdfwrite ${prereq%% }
+	gs $FONTS -dBATCH  -dNOPROMPT -dNOPAUSE -sDEVICE=pdfwrite -sOutputFile=${prereq%%.ps*}.pdf ${prereq%% *}
 
 all:V: $ALL
 
