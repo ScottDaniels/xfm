@@ -392,20 +392,21 @@ int FMcmd( char *buf )
 				{
 					*wbuf = 0;
 
-					for( tok = ptr; *tok && (isalpha( *tok ) || *tok == '-'); tok++ );
-					if(  *tok != 0 )								/* found non-alpha, assume closing . or ) or somesuch */
-					{
-						strcpy( wbuf, tok );
-						*tok = 0;
+					if( !isalpha( *ptr ) ) {
+						fprintf( stderr, "(%s @ %d) invalid font name: %s\n", fptr->name,  AFIstat( fptr->file, AFI_OPS, NULL ), ptr );
+					} else {
+						for( tok = ptr; *tok && (isalpha( *tok ) || *tok == '-'); tok++ );
+						if(  *tok != 0 )								/* found non-alpha, assume closing . or ) or somesuch */
+						{
+							strcpy( wbuf, tok );
+							*tok = 0;
+						}
+	
+						TRACE( 2, "setfont old=%s  new=%s\n", curfont, ptr );
+						free( curfont );          
+						curfont = strdup( ptr );
+						FMfmt_add( );		/* add a format block to the list */
 					}
-
-					TRACE( 2, "setfont old=%s  new=%s\n", curfont, ptr );
-					free( curfont );          
-					curfont = strdup( ptr );
-					FMfmt_add( );		/* add a format block to the list */
-
-					//if( *wbuf )
-     				//	AFIpushtoken( fptr->file, wbuf );
 				}
 				else
 					TRACE( 2, "setfont MISSING parameter!\n" );
