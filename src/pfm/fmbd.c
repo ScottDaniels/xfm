@@ -166,7 +166,7 @@ void FMbd( )
 	}
 
 	if( difont == NULL ) {
-		difont = strdup( textfont );
+		difont = strdup( curfont );
 	}
 
 	if( ! tsize )			/* no parms supplied, or bad parm */
