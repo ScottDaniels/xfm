@@ -72,6 +72,7 @@ Contributions to this source repository are assumed published with the same lice
 *                           indented in the stack and not the left marg value.
 *              6 Apr 1994 - To call getpts to get point value of term size
 *             10 Feb 2002 - To add auto skip option
+*             14 May 2016 - Corrected seg fault if font name not given.
 *
 *    .bd <termsize[p|i]> [right] [font name] [s=n]
 *         right - indicates that terms are to be right justified in the field
@@ -104,11 +105,11 @@ void FMbd( )
 	dlstackp++;				/* increase the definition list stack pointer */
 	memset( &dlstack[dlstackp], 0, sizeof( dlstack[0] ) );
 
-	while( (len = FMgetparm( &buf )) > 0 )    /* is there a length? */
-	{                                    /* process the parameter(s) entered */
-		if( ! j++ )
+	while( (len = FMgetparm( &buf )) > 0 )				// process to end of line or :
+	{
+		if( ! j++ )										// first parm is positional; term size
 		{
-			tsize = FMgetpts( buf, len );              /* get the term size in points */
+			tsize = FMgetpts( buf, len );
 			dlstack[dlstackp].indent = tsize;
 			lmar += tsize;                 /* set the new indented left margin */
 			linelen -= tsize;              /* shrink ll as to not shift the line any */
@@ -118,49 +119,55 @@ void FMbd( )
 			if( strncmp( buf, "right", len ) == 0 )  /* right just? */
 			{
 				flags2 |= F2_DIRIGHT;        /* turn on the flag */
-			}
-			else
-			if( strchr( buf, '=' ) )		/* something = something */
-			{
-				switch( *buf )
+			} else {
+				if( strchr( buf, '=' ) )		/* something = something */
 				{
-					case 'a':	
-						if( isdigit( *(buf+2) ) )
-						{
-							dlstack[dlstackp].anum = DI_ANUMI;	/* integer numbering */
-							dlstack[dlstackp].aidx = atoi( buf+2 );	/* where to start */
-						}
-						else
-						{
-							dlstack[dlstackp].anum = DI_ANUMA;	/* integer numbering */
-							dlstack[dlstackp].aidx = *(buf+2);	/* where to start */
-						}
-						break;
-
-					case 'F':	if( difont ) 
-								free( difont );			
-							difont = strdup( buf+2 );
+					switch( *buf )
+					{
+						case 'a':	
+							if( isdigit( *(buf+2) ) )
+							{
+								dlstack[dlstackp].anum = DI_ANUMI;	/* integer numbering */
+								dlstack[dlstackp].aidx = atoi( buf+2 );	/* where to start */
+							}
+							else
+							{
+								dlstack[dlstackp].anum = DI_ANUMA;	/* integer numbering */
+								dlstack[dlstackp].aidx = *(buf+2);	/* where to start */
+							}
 							break;
 	
-					case 'f':					/* format string */	
-							dlstack[dlstackp].fmt = strdup( buf+2 );
-							break;
-				
-					case 's':	
-						dlstack[dlstackp].skip = atoi( buf + 2 );
-						break;
+						case 'F':	
+								if( buf+2 ) {
+									if( difont ) 
+										free( difont );			
 
-					default:	break;
+									difont = strdup( buf+2 );
+								}
+								break;
+		
+						case 'f':					/* format string */	
+								dlstack[dlstackp].fmt = strdup( buf+2 );
+								break;
+					
+						case 's':	
+							dlstack[dlstackp].skip = atoi( buf + 2 );
+							break;
+	
+						default:	break;
+					}
+				} else {
+					if( difont != NULL )    /* free the font buffer if there */
+						free( difont );
+					difont = strdup( buf );
 				}
 			}
-			else
-			{
-				if( difont != NULL )    /* free the font buffer if there */
-					free( difont );
-				difont = strdup( buf );
-			}
 		}
-	}               /* end else */
+	}
+
+	if( difont == NULL ) {
+		difont = strdup( textfont );
+	}
 
 	if( ! tsize )			/* no parms supplied, or bad parm */
 	{
