@@ -8,12 +8,12 @@ Contributions to this source repository are assumed published with the same lice
 	Redistribution and use in source and binary forms, with or without modification, are
 	permitted provided that the following conditions are met:
 	
-   		1. Redistributions of source code must retain the above copyright notice, this list of
-      		conditions and the following disclaimer.
+				1. Redistributions of source code must retain the above copyright notice, this list of
+				conditions and the following disclaimer.
 		
-   		2. Redistributions in binary form must reproduce the above copyright notice, this list
-      		of conditions and the following disclaimer in the documentation and/or other materials
-      		provided with the distribution.
+				2. Redistributions in binary form must reproduce the above copyright notice, this list
+				of conditions and the following disclaimer in the documentation and/or other materials
+				provided with the distribution.
 	
 	THIS SOFTWARE IS PROVIDED BY E. Scott Daniels ``AS IS'' AND ANY EXPRESS OR IMPLIED
 	WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND
@@ -67,41 +67,50 @@ Contributions to this source repository are assumed published with the same lice
 *  Author:   E. Scott Daniels
 *
 *  Mods:	24 Dec 2015 - Added support to convert lines (L or l suffix) to points.
+*			02 Jul 2016 - Added support for cm, and to make modern with respect to 
+*				parm definitions and indention.
 *
 **************************************************************************************
 */
-int FMgetpts( tok, len )
- char *tok;
- int len;
-{
- int pts = 0;         /* points to return */
- double fval;          /* value for converting to float */
+int FMgetpts( char* tok, int len ) {
+	int pts = 0;         /* points to return */
+	double fval;          /* value for converting to float */
 
- switch( tok[len-1] )   /* look at last character of the token */
-  {
-   case 'i':                    /* units are inches */
-   case 'I':
-    fval = atof( tok );         /* convert to float */
-    fval = fval * 72.0;           /* convert to floating points */
-    pts = fval;                 /* convert to integer points */
-    break;
+	if( len < 2 ) {
+		return atoi( tok );
+	}
 
-   case 'p':                    /* user entered points */
-   case 'P':
-    pts = atoi( tok );          /* direct conversion to points */
-    break;
+	switch( tok[len-1] ) {				// exampine last char of the token
+		case 'c':
+		case 'C':
+			fval = atof( tok );
+			fval = fval * 28.8; 		// points/cm
+			return (int) fval;			// finally back to integer
+			break;
+		
+		case 'i':                    /* units are inches */
+		case 'I':
+			fval = atof( tok );         /* convert to float */
+			fval = fval * 72.0;           /* convert to floating points */
+			pts = fval;                 /* convert to integer points */
+			break;
 
-	case 'l':
-	case 'L':					// lines converted based on current text size and text space 
-		pts = atoi( tok );
-		pts *= textspace + textsize;
-		break;
+		case 'p':                    /* user entered points */
+		case 'P':
+			pts = atoi( tok );          /* direct conversion to points */
+			break;
 
-   default:                     /* nothing specified - assume characters */
-    pts = atoi( tok );          /* convet to integer */
-    pts *= PTWIDTH;             /* convert to points */
-    break;
-  }
+		case 'l':
+		case 'L':					// lines converted based on current text size and text space 
+			pts = atoi( tok );
+			pts *= textspace + textsize;
+			break;
 
- return( pts );           /* and send back calculated value */
-}                     /* FMgetpts */
+		default:                     /* nothing specified - assume characters */
+			pts = atoi( tok );          /* convet to integer */
+			pts *= PTWIDTH;             /* convert to points */
+			break;
+	}
+
+	return( pts );           /* and send back calculated value */
+}
