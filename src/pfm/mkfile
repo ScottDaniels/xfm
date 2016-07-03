@@ -31,7 +31,7 @@ libs = -L . -lpfm${gflag:-} -L../base -lxfm${gflag:-} -L../afileio -lafi${gflag:
 src = fmaddtok fmasis fmbd fmbeglst fmbox fmbxend fmbxst \
 	fmccol fmcd fmceject fmcmd fmcpage  \
 	fmditem fmdummy fmendlis fmep fmfigure fmflush fmfmt \
-	fmformat fmgetpts fmheader fmimbed fmindent fminit fmjustif \
+	fmformat fmheader fmimbed fmindent fminit fmjustif \
 	fmline fmnofmt fmoneject fmpflush  \
 	fmrfoot fmright fmrun fmrunout fmsetcolour fmsetfon \
 	fmsetstr fmsetx fmsety fmspace fmstate fmtable fmtc \
