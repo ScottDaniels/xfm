@@ -56,62 +56,152 @@ Contributions to this source repository are assumed published with the same lice
 ***************************************************************************
 *
 *  Mnemonic: 	FMcapture
-*  Abstract: 	capture all lines until .ca end command is noticed
-*		lines are written to the file named on the command 
+*  Abstract: 	capture all lines until .ca end command is noticed.
+*				Lines are written to the file named on the command. If
+*				'extend' is used instead of 'start' the file is opened and
+*				appended to. If 'shift' is given, then the first whitespace
+*				character is shifted off allowing for nested capture commands.
+*				If 'expand' is given, then all captured lines are searched for 
+*				simple variables (&name, not macros) and those are expanded into
+*				the capture file. 
+*				The '.ca end' MUST be in column 0.
 *  Parms:   
 *  Returns:  	Nothing.
 *  Date:     	06 November 2007
 *  Author:   	E. Scott Daniels
-*  Modified: 
+*  Modified: 	03 Jul 2016 - Added extend and shift options.
 *
-*  Command syntax:  .ca {start filename|end}
+*  Command syntax:  .ca [expand] [shift] {start|extend} filename
+*					.ca end
 *
 *****************************************************************************
 */
 
+/*
+	Get next parameter, assumed to be a filename, and return a dup'd string.
+	The current string is freed if passed in.
+*/
+static char* get_fname( char* cfname ) {
+	char* buf;
+
+	FMgetparm( &buf );
+	if( cfname != NULL ) {
+		free( cfname );
+	}
+	cfname = NULL;
+
+	if( buf != NULL ) {
+		cfname = strdup( buf );
+	}
+
+	return cfname;
+}
+
+#define F_SHIFT		0x01
+#define F_EXPAND	0x02
 void FMcapture( )
 {
 	FILE 	*f = NULL;
-	char 	*fname;
+	char 	*fname = NULL;
 	char 	*buf;
 	char	*cp;
-	int	i = 0;
+	char*	expanded;					// expanded buffer
+	int		exp_sz = 0;					// expanded buffer size
+	int		exp_used = 0;				// used in expanded buffer
+	const char	*mode = "w";			// capture file open mode; default to truncate/write
+	int		i = 0;
+	int		flags = 0;					// various flags for processing (F_ const)
 
-   	if( FMgetparm( &buf) != 0  )
-	{
-		if( strcmp( buf, "end" ) == 0 )			/* should not happen */
-			return;
-
-		if( strcmp( buf, "start" ) == 0 )
-			FMgetparm( &buf );
-
-		fname = strdup( buf );	
-		if( (f = fopen( fname, "w" )) == NULL )
-			FMmsg( E_CANTOPEN, fname );			/* we skip what was to be captured, so continue */
-
-		while( FMread( inbuf ) >= 0 )
-		{
-			if( inbuf[0] == CMDSYM )			/* must find .ca end in first spot */
-			{
-				if( inbuf[1] == 'c' && inbuf[2] == 'a' )  
-				{
-					for( cp = &inbuf[3]; *cp && (*cp == ' ' || *cp == '\t'); cp++ );
-					if( *cp && strncmp( cp, "end", 3 ) == 0 )
-					{
-						iptr = (cp+3) - inbuf;		/* should not be anything, but leave pointed past end */
-						if( f )
-							fclose( f );
-						TRACE( 1, "capture: %d lines captured in %s\n", i, fname );
-						free( fname );
-						return;                                     /* get out now */
+	while( FMgetparm( &buf ) > 0 ) {
+		switch( *buf ) {
+			case 'e':
+				if( strcmp( buf, "expand" ) == 0 ) {
+					flags |= F_EXPAND;
+				} else {
+					if( strcmp( buf, "extend" ) == 0 ) {
+						fname = get_fname( fname );
+						mode = "a";
+					} else {
+						if( strcmp( buf, "end" ) == 0 )
+							return; 						// shouldn't happen, but an extra ca end would trigger this
 					}
 				}
-    			} 
+				break;
 
-			if( f )
-				fprintf( f, "%s\n", inbuf );
-
-			i++;
+			case 's':
+				if( strcmp( buf, "shift" ) == 0 ) {
+					flags |= F_SHIFT;
+				} else {
+					if( strcmp( buf, "start" ) == 0 ) {
+						fname = get_fname( fname );
+				}
+			}
 		}
 	}
+
+	if( fname == NULL || !*fname ) {
+		FMmsg( E_CANTOPEN, "filename or start/extend missing on capture command" );
+	} else {
+		if( (f = fopen( fname, mode )) == NULL )
+			FMmsg( E_CANTOPEN, fname );					// we skip what was to be captured, so we must contintinue
+	}
+
+	while( FMread( inbuf ) >= 0 )
+	{
+		if( inbuf[0] == CMDSYM )			/* must find .ca end in first spot */
+		{
+			if( inbuf[1] == 'c' && inbuf[2] == 'a' )  
+			{
+				for( cp = &inbuf[3]; *cp && (*cp == ' ' || *cp == '\t'); cp++ );
+				if( *cp && strncmp( cp, "end", 3 ) == 0 )
+				{
+					iptr = (cp+3) - inbuf;		/* should not be anything, but leave pointed past end */
+					if( f )
+						fclose( f );
+					TRACE( 1, "capture: %d lines captured in %s\n", i, fname );
+					if( fname ) {
+						free( fname );
+					}
+					return;                                     /* get out now */
+				}
+			}
+		} 
+
+		if( f ) {
+			TRACE( 2, "capture: adding: %s\n", inbuf );
+			if( (flags & F_SHIFT) && isspace( *inbuf ) ) {
+				cp = inbuf+1;
+			} else {
+				cp = inbuf;
+			}	
+
+			if( flags & F_EXPAND ) {		// look for simple variables and expand them into the capture file
+				char*	vp;					// at next variable
+
+				while( (vp = strchr( cp, '&' ))  != NULL ) {
+					*vp = 0;
+					fprintf( f, "%s", cp );		// out everything before &
+					cp = vp+1;
+					for( vp += 2; *vp && !isspace( *vp ); vp++ );		// find terminating character
+					if( *vp != 0 ) {									// terminate var name and advance vp if not end of buffer.
+						*vp = 0;
+						vp++;
+					}
+					if( (buf = sym_get( symtab, cp, 0 )) ) {			// find expansion of variable name
+						fprintf( f, "%s ", buf );						// and put it out
+						TRACE( 2, "capture: expanded: %s\n", buf );
+					} else {
+						fprintf( f, "&%s ", cp );			// didn't expand, just leave it
+					}
+					cp = vp;
+				}
+			}
+
+			TRACE( 2, "capture: final buffer out: (%s)\n", cp );
+			fprintf( f, "%s\n", cp );						// all of buffer if not expanding, bit after last var if expanding
+		}
+
+		i++;
+	}
+
 }
