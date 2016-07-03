@@ -128,6 +128,7 @@ void FMtable( )
 	t->old_linelen = linelen;
 	t->lmar = lmar;
 	t->hlmar = hlmar;
+
 	t->padding = 5;				/* padding inside of cell */
 	t->maxy = cury;
 	t->edge_borders = 0;			// default to no edges for table in table
@@ -722,12 +723,17 @@ void FMendtable( void )
 	AFIpushtoken( fptr->file, ":" );			/* fmtr calls get parm; prevent eating things */
 	FMtr( ts_index > 1 ? 0 : 1 );				/* flush out last row (adds bottom and side borders if needed */
 
-	for( cur_col = firstcol; cur_col; cur_col = next )
-	{
-		next = cur_col->next;
-		free( cur_col );
+	if( firstcol != t->col_list ) {
+		for( cur_col = firstcol; cur_col; cur_col = next )
+		{
+			next = cur_col->next;
+			cur_col->next = NULL;		// fail if reuse is tried
+			free( cur_col );
+		}
 	}
 
+	TRACE( 2, "tab_end: reset first col from %p to %p\n", firstcol, t->col_list );
+	TRACE( 2, "tab_end: reset cur_col from %p to %p\n", cur_col, t->cur_col );
 	cur_col = t->cur_col;
 	lmar = t->lmar;
 	hlmar = t->hlmar;
