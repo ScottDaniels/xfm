@@ -268,7 +268,7 @@
 			.dv beglist ^&indent .bl
 			.dv endlist .el ^&uindent
 			.dv begbox .sp 1 .ln
-			.dv endbox .ln .sp 1
+			.dv endbox .ln ^: .sp 1
 			.dv begtable .sp 1 ^[TABLE - formatting not preserved] .ln  
 			.dv endtable .ln 
 			.dv cell | .br
@@ -279,7 +279,7 @@
 		.ei
 			.if pfm
 				.if index_snare_file
-					.ix space .sp 1 .cc 5 %c .ln  .sp 0 
+					.ix space .sp 1 .cc 5 %c .ln  ^: .sp 0 
 					.ix term .br %s  `^`   ^`` %d
 					.ix groupb .sp 0 %s .br .ll -.25i .in +.25i 
 					.ix groupe .sp 1 .in -.25i .ll +.25i 
