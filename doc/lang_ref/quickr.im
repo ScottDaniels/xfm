@@ -29,9 +29,12 @@ be supplied.
 .sp .5
 .di <points> : A numerical value is expected and is treated as points. 
 .sp .5
-.di <distance> : A numerical value is expected and its units are assumed to be determined
-by an appended 'p' or 'i' indicating points or inches respectfully. 
+.di <dist> : A numerical value is expected and its units are assumed to be determined
+by an appended 'c,' 'p' or 'i' indicating centimeters, points or inches respectfully. 
 For vertical distances, a suffix of 'l' (lower case L) can be used to indicate number of lines.
+.sp .5
+.di <rdist> : Same as for <dist> except that the value may be prefixed with either a plus or minus (+ or -) sign
+to change the distance relative to the current setting.
 .sp .5
 .ed
 .ll +.5i
@@ -64,7 +67,7 @@ This is a test of the cn after a table
 &row(ca:{start|end} <file>:Capture all lines until the end command and place into the file. )
 &row(cb::Column begin (eject column))
 &row(cc:<n>:Conditional column. Eject column if n rows do not remain in current column)
-&row(cd:<num> .br w=<distance> .br ^[g=<distance>] .br ^[i=<distance>]:Define num columns .br width of each .br gutter between columns .br Indention of left column from left margin)
+&row(cd:<num> .br w=<dist> .br ^[g=<distance>] .br ^[i=<distance>]:Define num columns .br width of each .br gutter between columns .br Indention of left column from left margin)
 &row(ce:<text>:Center text on next line)
 
 .tr r=5L
@@ -94,7 +97,7 @@ Start next cell in the table.
 .br [i=<chars>]
 .br [u={on|off}]
 .br [t={on|off]
-.br [m=<distance>]
+.br [m=<dist>]
 .br [e={page|col|none}]
 .cl
 .br Define header properties for header level  <level>.
@@ -118,15 +121,15 @@ Start next cell in the table.
 .bc start ep .bc end 
 .cl
 .sp
-.br [l=<distance>] 
-.br [x=<distance>
+.br [l=<dist>] 
+.br [x=<dist>
 .br [center| .br close| .br stretch| .br proportional]
 .cl
     Include an encapsulated PostScript file.
 .br Distance along the Y axis to reserve
-.br Distance to shift X portion of origin
+.br Distance to shift X from the left margin
 .br Centers drawing between margins
-.br Releases unused space reserved by l=<distance>
+.br Releases unused space reserved by l=<dist>
 .br Attempt to use all of reserved space by changing height/width ratio
 .br Stretch, but keep drawing proportional with original height/width
 
@@ -179,7 +182,7 @@ Pts from top of page where normal margins are to resume.
 .br Set &ital(_host) to the host name (UNIX only)
 .br Set &ital(_page) to the current page number
 .br Set &ital(_lines) to the number of lines remaining in the current column
-.br Set &ital(_lmar) to the current left margin value
+.br Set &ital(_lmar) to the current left margin value (points)
 .br Set &ital(_{i|p|l|=}remain) to the value of the remaining space in column
 .br Set &ital(_rmar) to the value of the right margin 
 .br Set &ital(_tsize) to the current text size value
@@ -191,12 +194,13 @@ Pts from top of page where normal margins are to resume.
 
 &row(if:<expression>:Causes next lines of source to be 'executed' if <expression> is true)
 &row(im:<filename>:Causes <filename> to be read and process as if it were included at the location of the imbed command in the file currently being processed)
-&row(in:<distance>:Sets the distance text is placed from the left column edge)
+&row(in:<rdist>:Sets the distance text is placed from the left column edge)
 
 &row(jm:<target>:Searches for the target token skipping all text and commands until it reaches the target)
 
 &row(li::Insert a line break and place a bullet character before writing the next formatted text token)
-&row(ll:<distance>:Set the line length to <distance>)
+&row(ll:<rdist>:Set the line length inside the column)
+&row(ln:[a=<rdist>] [l=<rdist>] [r=<rdist>]:Flush and add a solid line. Options specify the space after the line before the next text is inserted, and the left and right margins.)
 &row(ls:<points>:Line spacing, space between lines, to <points>)
 &row(lw:<points>:Set the size of lines drawn with the line command)
 &row(nf::Cause the all lines of source, until a format command, to be placed into the document without formatting)
@@ -215,7 +219,7 @@ Pts from top of page where normal margins are to resume.
 &row(rs:<points>:Set the runing header/footer size to <points>)
 
 &row(sm::Smash -- prevent whitespace between previous and next tokens.)
-&row(sp:<n>:Generate 'n' number of blank lines. )
+&row(sp:<n>:Generate 'n' number of blank lines. N may be a decimal (e.g. .5) )
 &row(ss::Turn single spaceing between lines on. (see &cmd(ds) .sm ) )
 &row(sv:<name>:Show the value of the named variable on the standard error device)
 &row(sx:<points>:Set x position to 'n'  (pfm only) )
@@ -240,9 +244,9 @@ Width as a percentage of screen size (hfm only) .br
 Colour for background of cell/row .br
 Padding of text from cell boundaries .br
 
-&row(tg:n{p|i}:Set the top gutter (space up from the top margin that running header is placed.) )
+&row(tg:<dist>:Set the top gutter (space up from the top margin that running header is placed.) )
 &row(th:<text>:Define table header text/commands )
-&row(tm:n{p|i}:Set the top margin)
+&row(tm:<dist>:Set the top margin)
 
 .tr r=10L
 .bc start tr .bc end
@@ -251,7 +255,7 @@ Padding of text from cell boundaries .br
 [n] .br 
 [c=bgcolour] .br 
 [a=alignval] .br 
-[r=n{i|p|L}] .br 
+[r=<dist>] .br 
 [v=valignvalue]
 .cl
 Start next row in the table.

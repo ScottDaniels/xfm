@@ -41,7 +41,7 @@
 
 
 NUKE = *.ca *.ps *.pdf *.bcnfile *.html *.toc *.sp
-ALL = xfm.ps xfm_oc.ps
+ALL = xfm.pdf xfm_oc.ps
 
 <../master.mk
 
