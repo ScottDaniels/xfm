@@ -64,25 +64,25 @@ This is a test of the cn after a table
 &row(ai::All input until the next ^.fo command is written to the output file as is (see &cmd(nf) .sm ) )
 &row(br::Cause the next formatted text token to be placed at the beginning of a new line)
 
-&row(ca:{start|end} <file>:Capture all lines until the end command and place into the file. )
+&row(ca:[expand] [shift] {start|extend <file> .br end:Capture all lines until the end command and place into the file. Extend appends the source to the file. Shift shifts the left most space character before adding the source to the file.)
 &row(cb::Column begin (eject column))
 &row(cc:<n>:Conditional column. Eject column if n rows do not remain in current column)
 &row(cd:<num> .br w=<dist> .br ^[g=<distance>] .br ^[i=<distance>]:Define num columns .br width of each .br gutter between columns .br Indention of left column from left margin)
 &row(ce:<text>:Center text on next line)
 
-.tr r=5L
+.tr r=8L
 .bc start cl .bc end
 .cl
 .sp 1
 [c=bgcolour] .br 
 [a=alignval] .br 
 [s=span] .br
-[v=valignvalue]
+[v=valignvalue] .br
 .cl
-Start next cell in the table.
+Start next cell in the table
 .br Set background colour (HTML only)
 .br Set alignment type (HTML only)
-.br Set the number of 'real' columns to span.
+.br Set the number of 'real' columns to span
 .br Vertical alignment option (HTML only)
 
 &row(cp:<n>:Conditional page eject. Start new page if n columns are not left on current page)
@@ -222,15 +222,19 @@ Padding of text from cell boundaries .br
 [n] .br 
 [c=bgcolour] .br 
 [a=alignval] .br 
-[r=<dist>] .br 
+[m=n] .br
+[r=<dist>] .br
 [v=valignvalue]
+[w=n] 
 .cl
 Start next row in the table.
 .br Don't automatically start column
 .br Set background colour (HTML only)
 .br Set alignment type (HTML only)
-.br Require vertical space (inches, points, lines)
+.br Cause n horizontal lines to be written following the row (pfm only)
+.br Require vertical space break page if not available.
 .br Vertical alignment option (HTML only)
+.br Set the line weight to n (pfm only)
 
 
 &row(xx:<level>:Set trace to <level> where level should be 0-3. 0 is off. Trace information is written to the standard error device.)

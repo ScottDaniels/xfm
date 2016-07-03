@@ -1,5 +1,4 @@
 
-.dv comment .dv remark >>>  $1 ^: .sv remark
 .h2 Lists
 &x supports two different styles of lists: bullet lists, and term or definition lists. 
 Bullet lists are simple lists with each item in the list marked with a special character, 
@@ -284,7 +283,6 @@ letters (e.g. a, b, c...).
 .ca end
 
 .** -----------------------------------------------------------------------------------
-&comment( setting up )
 .ca start di_example2.ca
 .sp
 .gv remain 
@@ -313,14 +311,14 @@ letters (e.g. a, b, c...).
 .fi
 
 .sp
-.gv lines
+.gv remain
 .if hfm
 	.hr
 .ei
-	.if &_lines 15 >
+	.if &_iremain 4 >
 		.ln
 	.ei
-		.dv comment ejecting page lines = &_lines
+		.dv comment ejecting page remain = &_iremain wanted 4
 		.sv comment
 		.bx end
 		.cc 25
@@ -344,8 +342,7 @@ letters (e.g. a, b, c...).
 .** -----------------------------------------------------------------------------------------
 .** &ifroom(45:di_examp2.ca)
 .gv remain
-.if &_iremain 25 <
-&comment( pushing off second example)
+.if &_iremain 6 <
 	.oe column .im di_example2.ca
 .ei
 	.im di_example2.ca

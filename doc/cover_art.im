@@ -105,7 +105,7 @@ skip_license
       .dv beglist ^&indent .bl
       .dv endlist .el ^&uindent
       .dv begbox .sp 1 .ln
-      .dv endbox .ln .sp 1
+      .dv endbox .ln : .sp 1
 .fo
 
 .if false

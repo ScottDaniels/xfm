@@ -393,6 +393,26 @@ command allows that to be avoided if it makes more sense.
 .sp
 The capture command accepts either a &cw(start) or &cw(end) directive;  the name
 of the capture file is expected to follow the start directive.
+The start directive causes the named file to be opened and all of the lines from the 
+source are placed into the file until the end statement is reached. 
+The &ital( start ) directive may be replaced with the &ital( extend ) directive which 
+will open the target file in append mode.  
+The capture end statement (.ca end) &bold( must ) start in column zero. 
+.sp 
+The capture command supports two additional options which may be supplied on the start (extend) 
+command line:
+
+.sp .5
+&indent
+.bd .75i  Helvetica
+.di expand : Causes simple variables (&name) to be expanded when encountered in the source.
+.sp .3
+.di shift : Causes the leading tab or whitespace character (just one) to be stripped. This 
+allows capture commands to be embedded.
+.ed
+&uindent
+.sp 
+
 .gv fig
 Figure &_fig contains sample code which demonstrates the capture command.
 .sp
@@ -616,7 +636,7 @@ used to define these macros.
 .sp
 
 .** -------------------------- capture -----------------------------
-.ca macros_examp.ca
+.ca start macros_examp.ca
 .sp
 .cc 12
 .** .bx start  m
@@ -1390,7 +1410,7 @@ this code is executed, otherwise it is placed at the top of the next page (this 
 necessary as HTML documents have no concept of page or columns).
 
 .** -----------------------------------------------------------------------
-.ca oe_examp.ca
+.ca start oe_examp.ca
 .sp
 .cc 8
 .** .bx start m
@@ -1554,7 +1574,7 @@ created is the same as the input file with the extension replaced with &cw(.toc.
 .gv fig
 .dv tcfig &_fig
 .** ----------------------------------------------------------------------------
-.ca toc_examp.ca
+.ca start toc_examp.ca
 .cc 12
 .** .bx start m
 .st [ &textsize 2 - ]

@@ -45,6 +45,7 @@ skip_license
 	.fi
 .fi
 
+.dv comment .dv remark >>>  $1 ^: .sv remark
 .dv index_snare_file index_snatch.im
 
 .dv doc_title {X}fm Language Reference
@@ -401,7 +402,7 @@ reduce the amount of document maintenance time when managing a library of relate
 
 .sp 1
 .im ixcmds.im
-.cc 100			.** force a col eject on the off chance there is a figure pending
+.cp 100			.** force a col eject on the off chance there is a figure pending
 
 .im append_a.im
 .im quickr.im
