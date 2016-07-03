@@ -114,8 +114,8 @@ char *mname[13] = {
 
 void FMgetval( )
 {
-	char	*buf;             /* pointer to parameter to use */
-	char	*ep;		/* pointer to value of env var */
+	char	*buf;			/* pointer to parameter to use */
+	char	*ep;			/* pointer to value of env var */
 	char	*ename;           /* pointer to environment var name */
 	char	work[128];
 	char	value[2048];        /* buffer to build .dv commands in */
@@ -282,8 +282,17 @@ void FMgetval( )
        break;
 	
 	case 's':
-			strcpy( vname, "_sect" );
-		snprintf( value, sizeof( value ), "%d", pnum[0] );
+		strcpy( vname, "_sect" );
+		ep = FMget_header_num();				// if numbering, get the number
+		if( ! ep ) {
+			ep = FMget_header_txt();			// else get the string
+		}
+		
+		if( ep ) {
+			snprintf( value, sizeof( value ), "%s", ep );
+		} else {
+			return;
+		}
 		break;
 
 

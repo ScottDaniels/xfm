@@ -84,6 +84,8 @@ Contributions to this source repository are assumed published with the same lice
 *					too early.
 *			18 Dec 2015 - Prevent an extra page/col eject if flush does
 *					one too.
+*			03 Jul 2016 - Add support for getting better section info for
+*					.gv command.
 **************************************************************************
 */
 /*
@@ -112,6 +114,7 @@ void FMheader( struct header_blk *hptr )
 	int j;              /* index variables */
 	int i;
 	char buf[2048];     /* buffer to build stuff in */
+	char stxt[2048];	// section string to save for .gv
 	char *ptr;          /* pointer to header string */
 	int oldlmar;        /* temp storage for left mar value */
 	int oldsize;        /* temp storage for text size value */
@@ -193,6 +196,10 @@ void FMheader( struct header_blk *hptr )
 
 	if( flags & PARA_NUM )         			 /* number the paragraph if necessary */
 	{
+		char*	hnum;
+
+		hnum = FMmk_header_snum( hptr->level );
+#ifdef KEEP
 		sprintf( buf, "%d.%d.%d.%d", pnum[0], pnum[1], pnum[2], pnum[3] );
 		for( i = 0, j = 0; buf[i] && j < hptr->level;  i++ )
 		{
@@ -200,16 +207,23 @@ void FMheader( struct header_blk *hptr )
 				j++;
 		}             
 		buf[i] = 0;
-		FMaddtok( buf, strlen( buf ) );
+#endif
+		FMaddtok( hnum, strlen( hnum ) );
+		free( hnum );
 	}
 
+	stxt[0] = 0;
 	while( (len = FMgetparm( &ptr )) > 0 )    /* get next token in string */
 	{
 		if( hptr->flags & HTOUPPER )
 			for( i = 0; i < len; i++ )
 				ptr[i] = toupper( ptr[i] );
+		if( (strlen( stxt ) + len) < sizeof( stxt ) - 1 ) {
+			strcat( stxt, ptr );
+		}
 		FMaddtok( ptr, len );
 	}
+	FMmk_header_stxt( stxt );
 
 				/* the call to FMtoc must be made while the header is in obuf */
 	if( hptr->flags & HTOC )       /* put this in table of contents? */
