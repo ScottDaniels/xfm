@@ -1,0 +1,257 @@
+
+.** sample doc which demonstrates two pass formatting in order to best deal with future figure, section and page numbers
+
+.cd 1 6.5i i=1i
+.ll 6i
+.ju on
+.in .5i
+.sf Times-roman
+.st 10p
+
+.pn on 0 f=-%d- center
+
+.** set up headers. no eject for h1, flush on the column margin, and no paragraph indention
+.hn on
+.dh 1 e=no m=0i i=0
+.dh 2 m=0i i=0
+.dh 3 s=10
+
+.if pfm
+	.dv super .sm .tf superscript 2/3 $1 :
+.ei
+	.dv super .sm ^^^[$1]
+.fi
+
+.lw 0
+.dv example_start .sp 0.5  .st ^[ ^&textsize 2 - ]  .sf ^&cwfont .nf
+.dv example_end .fo on .st ^&textsize .sf ^&textfont .sp 0.5  .sp 1
+.dv sm_example_start .sp 0.5  .st ^[ ^&textsize 2 - ]  .sf ^&cwfont .nf
+.dv sm_example_end .fo on .st ^&textsize .sf ^&textfont .sp 0.5
+.dv example_end_fg .fo on .st ^&textsize .sf ^&textfont .sp 0.5   .fg $1 ^: .sp 1
+
+.dv ital .tf Times-oblique ^&textsize $1
+.dv bold .tf Times-bold ^&textsize $1
+.dv stress .tf Times-bold ^&textsize $1
+.dv stress .tf Courier ^&cwsize $1
+.dv cwfont Courier
+.dv textfont Times-roman
+.dv textsize 10p
+.dv cwsize 80
+.dv indent .ll -.5i .in +.5i
+.dv uindent .in -.5i .ll +.5i
+
+.** if this is the second pass, then imbed the setup variables we captured during first pass
+.gv e XFM_PASS cur_pass
+.if &cur_pass 2 =
+	.im setup.ca
+.ei
+	.** ensure the file is truncated (all other use will be with extend)
+	.ca start setup.ca
+.ca end
+.fi
+
+.h1 Sample 2 Pass
+This document source is intended to be formatted twice.  The first pass is used to capture
+the location of various figures (both figure number and the section and page they appear
+in/on), while the second pass then inserts the information into the final document. 
+The output from the first pass should be discarded, and thus the invocation command
+sequence will be something like the following:
+
+&example_start
+  XFM_PASS=1 pfm two_pass.xfm /dev/null
+  XFM_PASS=2 pfm two_pass.xfm two_pass.ps
+&example_end_fg( Command lines to process this document with two passes. )
+
+For most documents there is no need to use two passes to format the document, however two 
+specific cases do require a second pass:
+.sp .5
+&indent
+.bl l
+.li When a table of contents is to be inserted
+.sp .3
+.li When future figure, section, or page number references are needed.
+.el
+&uindent
+.sp
+
+This example expicitly tests the capture command's ability to achieve the use of 
+future references for page, sections and figure numbers.
+
+
+.h2 Forward Referencing
+In a normal document, we might reference some concept briefly in an introduction or 
+related section, but defer any details of the concept until later in the document. 
+It is generally nice to provide, at the time of the iniital reference, a forward 
+reference to the section where the detailed explanation begins by providing the 
+reader with the section number and/or page number where the details might be found.  
+
+.sp
+.gv sect
+.dv earlier_sect &_sect
+So, here we introduce the concept of &ital( foo, ) and we'll inform you that the details
+of &ital( foo ) can be found in section &foo_sect which begins on page &foo_page.
+
+.sp
+Looking at the source for this document, the page and section numbers which appear
+in the previous paragraph are inserted using the variables ^&foo_sect and ^&foo_page, 
+however neither of those to variables are defined before their use, yet they appear
+correctly in the text. 
+This is achieved by capturing the current section and page during the first pass
+and placing it into a capture file which was imbedded at the start of this 
+document during the second pass. 
+The following illustrates the {X}fm code which is used to imbed the captured variables
+during the second pass, and to reset the capture file during the first pass.
+
+&example_start
+  .gv e XFM_PASS cur_pass
+  .if &cur_pass 2 =
+    .im setup.ca
+  .ei
+    .** ensure the file is truncated (all other use will be with extend)
+    .ca start setup.ca
+  .ca end
+  .fi
+&example_end_fg( {X}fm code to imbed the forward references during pass 2.)
+
+Note that the ending capture command &bold( must ) be placed in column zero (0)
+(this is not a typo).
+.sp
+
+The code gets the current environment variable &cw( XFM_PASS ) set on the command line
+and when it has the value of 2, the setup capture file is imbedded. 
+When the pass is not 2, the capture file is cleared.
+
+
+.h2 The Ordering Of Figures
+With the on-eject command (^.oe) it is possible that figure ordering is not known at the 
+time that the document source is created.  
+For example, a figure might require 3 inches of space in the document and thus be &ital( pushed )
+to the next page, allowing a subsequently defined figure to be placed ahead of it, and with the 
+lower figure number, making it impossible to reference the figure in advance. 
+
+.sp
+To demonstrate, two figures are defined in the source following this text. 
+The first figure supplied in the source, which is ultimately rendered as &long_ex_fig, 
+is set up to require more space than remains on the current page and thus is 
+forced to the next page, while the second figure, &short_ex_fig, is allowed to appear on the current page
+and thus earlier.  
+
+.** first capture the figure contents into it's own file. the shift parameter is needed
+.** to allow the embedded capture command
+.ca shift start long_ex.ca
+    .** this will capture the current figure number for future reference
+	.gv figure
+	.ca expand extend setup.ca
+		.dv long_ex_fig &_fig
+	.ca end
+	&example_start
+      This is some figure that we forced to appear on the next page.
+      It was defined before the previous figure.
+	&example_end_fg( This figure was defined first.)
+	.xx 0
+.ca end
+.gv remain
+.if &_iremain < 99
+	.oe page .im long_ex.ca
+.ei
+	.im long_ex.ca
+.fi
+
+.gv figure
+	.xx 2
+.ca expand extend setup.ca
+	.dv short_ex_fig &_fig
+.ca end
+	.xx 0
+&example_start
+  This is the small example allowed to appear first and thus
+  will receive the earlier figure number
+&example_end_fg(The 'smaller' example. )
+
+.sp
+How is this accomplished?  
+First, the long figure contents are captured into its own capture file. 
+The current amount of space remaining on the page is checked, and if less than 
+what we feel is required for the example, then an on eject command is issued to 
+imbed the capture file at the next page eject; otherwise the capture file is 
+immediately embedded.
+So far, this is the normal processing for &ital( floating ) a figure to the next 
+page or column based on space. 
+
+.sp
+The difference is that in the figure source that is captured, a second capture
+command is added which adds the current (next) figure number to the setup 
+capture file as a define variable command. 
+The result is that duing pass two, the setup capture file will then define the 
+variable ^&long_ex_fig which was used earlier in this text to generate the correct
+figure number without having to know the exact ordering of figures at the time the 
+document was written. 
+.sp
+A similar technique was used for the small example; in a real document it too 
+would probably have been checked for remaining space, but for this example that 
+check was omitted.
+The previously mentioned concept of &ital( foo ) is actually our illustration of 
+the {X}fm code needed to make this happen and it appears in section &foo_sect.
+
+.h2 The Realisation Of Foo
+.gv section
+.gv page
+.ca expand extend setup.ca
+	.dv foo_sect &_sect
+	.dv foo_page &_page
+.ca end
+Here, finally is the alluded to section which details foo.  
+In this case, foo is the what was needed to capture the figure number for the &ital( larger )
+example when it was pushed after the smaller example.  
+(In this case the larger example wasn't all that large, but was forced to be presented in the document
+after the smaller example.)
+
+.sp
+.gv figure
+The crux of the figure code is shown in figure &_fig. 
+It executes  a get value (.gv) command, and then uses  a capture command to add the value
+to the setup capture file. 
+This is done as "a part of" the figure; i.e. at the time that the code which presents the figure 
+is actually parsed by {X}fm. 
+
+&example_start
+  .gv figure
+  .ca expand extend setup.ca
+    .dv long_ex_fig &_fig
+  .ca end
+&example_end_fg( Code which sets the figure variable in the setup capture file.)
+
+There are two important aspects about this small snipit of code. 
+First, the get value (.gv) command is used to suss out the figure number &bold( at the time that the figure is generated.) 
+Second, the &ital( expand ) option is given on the capture (.ca) command.  
+This causes the capture command to expand the variable ^&_fig as it is saved in the &ital( setup.ca ) file.
+The remainder of the example, including the code necessary to ensure that there is enough space 
+remaining, and the on eject (.oe) command if there is not, is as would be coded for any other example that
+might need to float to the next page. 
+.sp
+
+This section was referenced back in section &earlier_sect. 
+To do this we used a variable ^&foo_sect which was defined with the following code, and captured in the setup file, 
+when this section was finally started in the source:
+
+&example_start
+  .h2 The Realisation Of Foo
+  .gv section
+  .gv page
+  .ca expand extend setup.ca
+    .dv foo_sect &_sect
+    .dv foo_page &_page
+  .ca end
+&example_end_fg( Setting the section value of a future section.)
+
+.h2 Conclusion
+It probably would be nice if {X}fm had a two pass command line option, but including a second command in a 
+mkfile seems to be a minor inconvenience.  
+Even if a two pass option was available, there still would be the need to set up the forward references
+as are illustrated here, so the overall amount of work wouldn't be that much less. 
+Floating figures are a huge feature of {X}fm, and the ability to accurately reference them by number, regardless
+of where they are placed, and without having to manually maintain them, is just as big of a win. 
+.qu
+
+
+
