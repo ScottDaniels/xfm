@@ -123,7 +123,7 @@ Start next cell in the table.
 .sp
 .br [l=<dist>] 
 .br [x=<dist>
-.br [center| .br close| .br stretch| .br proportional]
+.br [center| .br close | .br stretch | .br proportional]
 .cl
     Include an encapsulated PostScript file.
 .br Distance along the Y axis to reserve
@@ -154,40 +154,7 @@ width of line (forces right margin to be pulled in if needed.) .br
 Pts from top of page where normal margins are to resume.
 
 
-.tr r=17L
-.bc start gv .bc end
-.cl
-.sp
-.br { Date |
-.br date |
-.br env <ename> <xname> |
-.br figure |
-.br font |
-.br host |
-.br page |
-.br lines |
-.br lmar |
-.br remain |
-.br rmar |
-.br tsize |
-.br Time |
-.br yval }
-.cl
-    Get a value into a variable
-.br Set &ital(_date) to format dd <month> yyyy
-.br Set &ital(_date) using format mm/dd/yyyy
-.br Set &ital(xname) to value that environment variable &ital(ename) has
-.br Set &ital(_fig) to figure number of next figure
-.br Set &ital(_font) to the current font
-.br Set &ital(_host) to the host name (UNIX only)
-.br Set &ital(_page) to the current page number
-.br Set &ital(_lines) to the number of lines remaining in the current column
-.br Set &ital(_lmar) to the current left margin value (points)
-.br Set &ital(_{i|p|l|=}remain) to the value of the remaining space in column
-.br Set &ital(_rmar) to the value of the right margin 
-.br Set &ital(_tsize) to the current text size value
-.br Set &ital(_time) to the current time (hh:mm)
-.br Set &ital(_cury) to the current Y position in the column (points)
+&row(gv::Get value is described at end due to the number of parameters.)
 
 &row(h_:<text>:Generate a header where '_' is replaced with a 1, 2, 3, or 4)
 &row(hn:on | off | n:Turn off or on header numbering. If n is supplied, sets number to n)
@@ -267,6 +234,55 @@ Start next row in the table.
 
 
 &row(xx:<level>:Set trace to <level> where level should be 0-3. 0 is off. Trace information is written to the standard error device.)
+
+.tr r=27L
+.bc start gv .bc end
+.cl
+.sp
+.br { Date |
+.br date |
+.br Edate |
+.br env <ename> <xname> |
+.br figure |
+.br Figure |
+.br font |
+.br host |
+.br idate | 
+.br lines |
+.br lmar |
+.br page |
+.br remain |
+.br rmar |
+.br sect | 
+.br table |
+.br Table |
+.br tsize |
+.br Time |
+.br ver |
+.br yval }
+.cl
+    Get the named value into a variable
+.br Set &ital(_date) to format dd <month> yyyy
+.br Set &ital(_date) using format mm/dd/yyyy
+.br Set &ital(_date) using Eurpoean format dd/mm/yyyy
+.br Set &ital(xname) to value that environment variable &ital(ename) has
+.br Set &ital(_fig) to figure number of next figure
+.br Set &ital(_fig) to figure number of next figure and increase the number.
+.br Set &ital(_font) to the current font
+.br Set &ital(_host) to the host name (UNIX only)
+.br Set &ital(_date) using ISO extended format yyyy-mm-dd
+.br Set &ital(_lines) to the number of lines remaining in the current column
+.br Set &ital(_lmar) to the current left margin value (points)
+.br Set &ital(_page) to the current page number
+.br Set &ital(_{i|p|l|=}remain) to the value of the remaining space in column
+.br Set &ital(_rmar) to the value of the right margin 
+.br Set &ital(_sect) to the current section number
+.br Set &ital(_table) to the next table number
+.br Set &ital(_table) to the next table number and increase the number
+.br Set &ital(_tsize) to the current text size value
+.br Set &ital(_time) to the current time (hh:mm)
+.br Set &ital(_ver) to the current pfm|hfm|tfm version number
+.br Set &ital(_cury) to the current Y position in the column (points)
 
 .et
 .st &textsize
