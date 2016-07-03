@@ -99,7 +99,7 @@ Contributions to this source repository are assumed published with the same lice
  "*FM014: Left margin set less than term size, term ignored",
  "*FM015: Parameter takes line length past the current column width",
  " FM016: Unexpected end of input file",
- "*FM017: Parameter missing or out of range",
+ "*FM017: Parameter missing, out of range, or unrecognised",
  "*FM018: %%boundingbox statement missing or invalid in file",
  "*FM019: Definition list not started. .di command ignored",
  "*FM020: Unrecognized parameter: ",

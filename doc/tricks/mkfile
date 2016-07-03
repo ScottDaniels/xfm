@@ -45,7 +45,7 @@ NUKE = $NUKE *.ca *.ps *.pdf *.bcnfile *.html *.toc
 <../master.mk
 
 
-trick_src = trick_basic  trick_float  trick_front  trick_images  trick_indent 
+trick_src = trick_basic  trick_float  trick_front  trick_images  trick_indent trick_line
 trick_figs = caution_tangle
 
 # this requires xfig tools

@@ -119,6 +119,7 @@ to build a document that you can be proud to have written.
 (Of course for verbal language and grammar skills you are on your own; regardless of how
 well you can use &x to generate nice looking text, your document will never be any 
 better than the worst grammar it contains!)
+.sp .1
 
 
 .ll +1ii
@@ -157,6 +158,7 @@ better than the worst grammar it contains!)
 .im trick_float.im
 .im trick_front.im
 .im trick_slides.im
+.im trick_line.im
 
 .if false
 .h2 Back Matter

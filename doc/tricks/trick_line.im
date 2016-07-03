@@ -1,0 +1,35 @@
+.h1 Lines
+
+The ^.ln command is used to draw lines, and by default the line is drawn from the current left 
+margin until the end of the current column.  
+The line command takes options which allow either the left or right points of the line to be 
+defined either as an absolute value, or relative to the current left margin and end of column. 
+The  &cw(l=) and &cw(r=) options are used to set a left or right margin for the line, and the value
+supplied may be prefix with either a plus sign (+) or minus sign (-) to indicate a relative value. 
+
+.sp
+
+.cc 4i
+&example_start
+  .ln 
+  .ln l=+1i r=-1i
+  .ln l=3i a=.5i
+  This should be an inch below the previous line. And finally...
+  .gv lmar
+  .dv xx [ &_lmar 4 + ]
+  .ln l=+1i r=&{xx}i
+&example_end
+
+.ln 
+.ln l=+1i r=-1i
+.ln l=3i a=.5i
+This should be one half inch below the previous line. And finally...
+
+.gv lmar
+.dv xx [ &_lmar 72 3 *  + ]
+.ln l=+1i r=&{xx}p
+
+The first line causes a default line to be drawn using the current lmar to end of column defaults. 
+The second causes a line centered 1 inch from the present left margin, and column length.
+The third line is started three inches from the left margin, has the default right margin, and the space after
+the line (a=) is set to one half inch.

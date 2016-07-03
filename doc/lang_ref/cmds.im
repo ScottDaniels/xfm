@@ -12,9 +12,10 @@ no syntax is given with the command description, then the command
 does not accept any parameters and the token immediately following the
 command string is taken to be text or another command.
 It is assumed that any distance parameters (e.g. widths, lengths, or sizes)
-can all have either a &cw(p) or an &cw(i) appended to the value
-to indicate points or inches and thus this option is not illustrated
-in any of the syntax examples.
+can all have a &cw(p,) a &cw(c,) or an &cw(i) appended to the value
+to indicate points, centimeters.
+In the examples &cw( <dist> ) is used to indicate a numeric value which 
+is assumed to have one of these characters appended (e.g. 1.2i 3c).
 
 
 .h2 Formatting Control
@@ -368,7 +369,7 @@ The &ital(bottom Y) command has the following syntax:
 .sf &cwfont
 .st [ &textsize 2 - ]
 .nf
-   .by <distance>{i|p}
+   .by <dist>
 .fo
 .sf &textfont
 .st &textsize
@@ -1318,11 +1319,30 @@ all of the C code until it found a token that was at the start of the
 
 .h2 Horizontal Lines
 The &ital(line) &c(ln) command can be used to draw a horizontal line from the left
-margin to the right margin.  When generating a PostScript document, the width of
+margin to the right edge of the current column.  
+When generating a PostScript document, the width of
 the line can be set using the &ital(line width) &c(lw) command.  The &ital(line)
 command accepts no parameters, while the &ital(line width) command accepts the
 width of the line in points.  All lines are drawn using the line size set with
 the &ital(line width) command until the next &ital(line width) command is encountered.
+.sp
+
+.cc 1i
+The line command accepts three optional parameters which allow the space after the line
+(a=), and the left and right margins (l=, r=) to be defined. 
+The following is the syntax for the line command:
+.sp
+.sf &cwfont
+.st [ &textsize 2 - ]
+.nf
+ .ln [a=<dist>] [l=<dist>] [r=<dist>]
+.fo
+.sf &textfont
+.st &textsize
+.sp
+
+The left and right margin values can be made relative to the default by prefixing the 
+number with a plus (+) or minus (-) sign.
 
 .h2 Inserting A Newline Character
 When &x is generating HTML, and PostScript, the output written to the document
