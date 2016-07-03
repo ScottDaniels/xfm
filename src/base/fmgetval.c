@@ -148,6 +148,12 @@ void FMgetval( )
        snprintf( value, sizeof( value ), "%d/%d/%d", m, d, 1900 + y );  /* create value */
        break;
 
+	case 'E':								// eurpoean date dd/mm/yyyy
+       get_mdy( &m, &d, &y );				// values
+		strcpy( vname, "_date" );			// variable name
+       snprintf( value, sizeof( value ), "%d/%d/%d", d, m, 1900 + y );  // value
+       break;
+
      case 'e':								/* e env-name xfm-var-name */
 			if( FMgetparm( &buf ) > 0 )		/* if there is a parameter on the line */
 			{
@@ -166,17 +172,13 @@ void FMgetval( )
 			}
 			break;
 	
-     case 'F':                      /* set figure number or font variable AND advance the counter */
+     case 'F':                      /* set figure number variable AND advance the counter */
 		if( *(buf+1) == 'i' )
 		{
-			if( flags & PARA_NUM )
-			{
-				strcpy( vname, "_fig" );
+			strcpy( vname, "_fig" );
+			if( flags & PARA_NUM ) {
 				snprintf( value, sizeof( value ), "%d-%d", pnum[0], fig );
-			}
-			else
-			{
-				strcpy( vname, "_fig" );
+			} else {
 				snprintf( value, sizeof( value ), "%d", fig );
 			}
 			fig++;
@@ -209,6 +211,12 @@ void FMgetval( )
        gethostname( work, 128 );
 		strcpy( vname, "_host" );
        snprintf( value, sizeof( value ), "%s", work );
+       break;
+
+	case 'i':								// ISO 8601 extended date
+       get_mdy( &m, &d, &y );				// values
+		strcpy( vname, "_date" );			// variable name
+       snprintf( value, sizeof( value ), "%d-%d-%d", 1900 + y, m, y );  // value
        break;
 
      case 'l':      /* set margin variables (lmar) or lines remaining in col (lines) */
