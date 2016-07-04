@@ -67,11 +67,12 @@ Contributions to this source repository are assumed published with the same lice
 *   Date:     8 December 1988
 *   Author:   E. Scott Daniels
 *
-*   Modified: 29 Oct 1992 - To convert for postscript generation
-*              9 Mar 1993 - To escape ( ) and \ characters and to insert
+*   Modified:	29 Oct 1992 - To convert for postscript generation
+*				09 Mar 1993 - To escape ( ) and \ characters and to insert
 *                           blank lines where found in the input text.
-*              6 Apr 1994 - To remove dependancy on linelength.
-*		10 Apr 2007 - Fixed buffer underflow
+*				06 Apr 1994 - To remove dependancy on linelength.
+*				10 Apr 2007 - Fixed buffer underflow
+*				03 Jul 2016 - Support for tabs.
 *******************************************************************************
 */
 void FMnofmt( )
@@ -83,14 +84,22 @@ void FMnofmt( )
 
 	while( status >= 0  &&  inbuf[0] != CMDSYM && *inbuf != vardelim ) 
 	{
-		for( i = 0; i < MAX_READ-1 && inbuf[i] != EOS; i++, optr++ )
+		for( i = 0; i < MAX_READ-1 && inbuf[i] != EOS; i++ )
 		{
 			if( inbuf[i] == '(' || inbuf[i] == ')' || inbuf[i] == '\\' )
 			{
-				obuf[optr] = '\\';     /* escape the character first */
-				optr++;
+				obuf[optr++] = '\\';     /* escape the character first */
+				obuf[optr++] = inbuf[i];         /* copy the buffer as is */
+			} else {
+				if( inbuf[i] == '\t' ) {
+					int j;
+					for( j = 0; j < 4; j++ ) {
+						obuf[optr++] = ' ';
+					}
+				} else {
+					obuf[optr++] = inbuf[i];         /* copy the buffer as is */
+				}
 			}
-			obuf[optr] = inbuf[i];         /* copy the buffer as is */
 		}
 	
 		obuf[optr++] = ' ';    /* flush assumes addtok adds a trail blank and truncates */

@@ -67,41 +67,51 @@ Contributions to this source repository are assumed published with the same lice
 *   Date:     8 December 1988
 *   Author:   E. Scott Daniels
 *
-*   Modified:  7 Jul 1994 - To convert to rfm
-*              4 Oct 1994 - To reduce amount skipped in y direction.
+*   Modified:	07 Jul 1994 - To convert to rfm
+*				04 Oct 1994 - To reduce amount skipped in y direction.
+*				03 Jul 2016 - Fixed blank line bug, now handles tabs. Add support
+*					for tabs.
 *******************************************************************************
 */
 void FMnofmt( )
 {
- int status;            /* status of the read */
- int i;                 /* loop index */
+	int status;            /* status of the read */
+	int i;                 /* loop index */
 
- status = FMread( inbuf );        /* get the next buffer */
+	status = FMread( inbuf );        /* get the next buffer */
 
- while( status >= 0  &&  inbuf[0] != CMDSYM && *inbuf != vardelim )
-  {
-   for( i = 0; i < MAX_READ-1 && inbuf[i] != EOS; i++, optr++ )
-    {
-     /*if( inbuf[i] == '(' || inbuf[i] == ')' || inbuf[i] == '\\' )*/
-     if( inbuf[i] == '{' || inbuf[i] == '}' || inbuf[i] == '\\' )
-      {
-       obuf[optr] = '\\';     /* escape the character first */
-       optr++;
-      }
-     obuf[optr] = inbuf[i];         /* copy the buffer as is */
-    }
+	while( status >= 0  &&  inbuf[0] != CMDSYM && *inbuf != vardelim )
+	{
+		for( i = 0; i < MAX_READ-1 && inbuf[i] != EOS; i++, optr++ )
+		{
+			if( inbuf[i] == '{' || inbuf[i] == '}' || inbuf[i] == '\\' )
+			{
+				obuf[optr] = '\\';     /* escape the character first */
+				optr++;
+				obuf[optr] = inbuf[i];         /* copy the buffer as is */
+			} else {
+				if( inbuf[i] == '\t' ) {
+					int j;
+					for( j = 0; j < 4; j++ ) {
+						obuf[optr++] = ' ';
+					}
+				}
+			}
+			obuf[optr] = inbuf[i];         /* copy the buffer as is */
+		}
 
-   if( optr == 0 )        /* if this was a blank line */
-    obuf[optr++] = ' ';   /* give flush a blank to write */
-   obuf[optr] = EOS;      /* terminate buffer for flush */
+		//if( optr == 0 )        /* if this was a blank line */
+		//	obuf[optr++] = ' ';   /* give flush a blank to write */
+		obuf[optr] = EOS;      /* terminate buffer for flush */
 
-   FMflush( );            /* send the line on its way */
-   cury--;                /* dont skip so far */
-   FMpara( 0, TRUE );     /* force a paragraph end */
+		FMflush( );            /* send the line on its way */
+		cury--;                /* dont skip so far */
+		FMpara( 0, TRUE );     /* force a paragraph end */
+	
+		status = FMread( inbuf );   /* get the next line and loop back */
+	}           /* end while */
 
-   status = FMread( inbuf );   /* get the next line and loop back */
-  }           /* end while */
-
- AFIpushtoken( fptr->file, inbuf );   /* put command token back to process */
- iptr = optr = 0;              /* return pointing at beginning */
+	AFIpushtoken( fptr->file, inbuf );   /* put command token back to process */
+	iptr = optr = 0;              /* return pointing at beginning */
 }              /* FMnofmt */
+
