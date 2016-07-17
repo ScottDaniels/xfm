@@ -51,6 +51,7 @@ Contributions to this source repository are assumed published with the same lice
 #include "fmcmds.h"
 #include "fmstruct.h"              /* structure definitions */
 #include "fmproto.h"
+#include "pfmproto.h"
 
 /*
 ****************************************************************************
@@ -73,6 +74,7 @@ Contributions to this source repository are assumed published with the same lice
 *              6 Apr 1994 - To call getpts to get point value of term size
 *             10 Feb 2002 - To add auto skip option
 *             14 May 2016 - Corrected seg fault if font name not given.
+*			17 Jul 2016 - Bring decls into the modern world.
 *
 *    .bd <termsize[p|i]> [right] [font name] [s=n]
 *         right - indicates that terms are to be right justified in the field
@@ -81,7 +83,7 @@ Contributions to this source repository are assumed published with the same lice
 *   Copyright (c) 1989  E. Scott Daniels. All rights reserved.
 ***************************************************************************
 */
-void FMbd( )
+extern void FMbd( void )
 {
 	char *buf;           /* pointer at the token */
 	int len;             /* len of parameter entered */

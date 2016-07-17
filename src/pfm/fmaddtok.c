@@ -51,6 +51,7 @@ Contributions to this source repository are assumed published with the same lice
 #include "fmcmds.h"
 #include "fmstruct.h"              /* structure definitions */
 #include "fmproto.h"
+#include "pfmproto.h"
 
 /*
 *************************************************************************
@@ -76,6 +77,7 @@ Contributions to this source repository are assumed published with the same lice
 *			11 Oct 2015 - Fixed escaping bug.
 *			03 Jan 2016 - Fixed bug which caused token to be dropped if
 *				just/fush called with multiple pending ateject things.
+*			17 Jul 2016 - Bring decls into the modern world.
 *************************************************************************
 */
 static char *hyph_get( char *buf )		/* routine is lost, for now we always return null */
@@ -83,7 +85,7 @@ static char *hyph_get( char *buf )		/* routine is lost, for now we always return
 	return NULL;
 }
 
-void FMchop( char *buf, int len, int remain )
+extern void FMchop( char *buf, int len, int remain )
 {
 	char	t1[1024];
 	char	t2[1024];
@@ -150,9 +152,9 @@ void FMchop( char *buf, int len, int remain )
 		flags3 |= F3_HYPHEN;
 }
 
-void FMaddtok( char *buf, int len )
+extern void FMaddtok( char *buf, int len )
 {
-	static ok1 = 1; 	/* ok to add a single char at end w/o remain check (for font change .) */
+	static int ok1 = 1; 	/* ok to add a single char at end w/o remain check (for font change .) */
 	int remain;          /* calculated space remaining before the right margin */
 	int i;               /* loop index */
 	int toksize;         /* size of token in points */

@@ -50,6 +50,7 @@ Contributions to this source repository are assumed published with the same lice
 #include "fmcmds.h"
 #include "fmstruct.h"              /* structure definitions */
 #include "fmproto.h"
+#include "pfmproto.h"
 
 /*
 *****************************************************************************
@@ -70,9 +71,10 @@ Contributions to this source repository are assumed published with the same lice
 *			23 Aug 2011 - Added page number centering and user formatted string.
 *			23 Dec 2015 - Better management of running header via top gutter.
 *			27 Dec 2015 - Fixed bug with header line (twice).
+*			17 Jul 2016 - Bring decls into the modern world.
 ****************************************************************************
 */
-void FMrunout( int page, int shift )
+extern void FMrunout( int page, int shift )
 {
 	struct col_blk *cb;		// pointer at the right most column block
 	char *cmd = "show";      /* default to show command with header text info */

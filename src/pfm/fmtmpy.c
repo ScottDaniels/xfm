@@ -51,6 +51,7 @@ Contributions to this source repository are assumed published with the same lice
 #include "fmcmds.h"
 #include "fmstruct.h"              /* structure definitions */
 #include "fmproto.h"
+#include "pfmproto.h"
 
 /*
 ****************************************************************************
@@ -69,11 +70,12 @@ Contributions to this source repository are assumed published with the same lice
 *  Returns:  Nothing.
 *  Date:     7 April 1994
 *  Author:   E. Scott Daniels
+*	Mods:	17 Jul 2016 - Bring decls into the modern world.
 *
 *	.tt [value]
 *****************************************************************************
 */
-void FMtmpy( cmd )
+extern void FMtmpy( int cmd )
 {
  char *buf;         /* pointer to the parameter */
  int len;

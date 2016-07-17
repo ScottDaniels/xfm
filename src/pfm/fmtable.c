@@ -69,6 +69,7 @@ Contributions to this source repository are assumed published with the same lice
 *						and to force edges for tables in tables.
 *		22 Dec 2015 - Corrected bug with top border if page eject.
 *		24 Dec 2015 - Added r= option for table row command.
+*		17 Jul 2016 - Bring decls into the modern world.
 * 
 *  The n option allows user to turn off (no execute) the automatic
 *  creation of the first cell. This allows them to call .tr and .cl 
@@ -89,9 +90,9 @@ Contributions to this source repository are assumed published with the same lice
 */
 static void tab_vlines( struct table_mgt_blk *t, int setfree );
 
-void FMpause_table( void );
+//void FMpause_table( void );
 
-void FMtable( )
+extern void FMtable(  void )
 {
 	struct table_mgt_blk *t;
 	struct	col_blk 	*col;
@@ -280,7 +281,7 @@ void FMtable( )
 *  .th string
 * --------------------------------------------------------------------------
 */
-void FMth( )
+extern void FMth( void )
 {
 	struct table_mgt_blk *t;
 	char	*buf;
@@ -326,7 +327,7 @@ void FMth( )
 * --------------------------------------------------------------------------
 */
 
-void FMcell( int parms )
+extern void FMcell( int parms )
 {
 	struct table_mgt_blk *t;
 	int	span = 1;	/* number of defined columns to span */
@@ -452,7 +453,7 @@ void FMcell( int parms )
  Mods:		10 Apr 2007 -- fixed write of border to be in conditional.
 ---------------------------------------------------------------------------
 */
-void FMtr( int last )
+extern void FMtr( int last )
  {
 	struct table_mgt_blk *t = NULL;
 	char *ptr = NULL;             /* pointer at parms */
@@ -637,7 +638,7 @@ static void tab_vlines( struct table_mgt_blk *t, int setfree )
 	end of the page when a table spans a page boundary. We assume table row has been the source of 
 	this and has cleaned up the last row, so no need to call.
 */
-void FMpause_table( void ) {
+extern void FMpause_table( void ) {
 
 	struct	table_mgt_blk *t;
 	struct	col_blk *next;
@@ -663,7 +664,7 @@ void FMpause_table( void ) {
 /*
 	Restart a paused table
 */
-void FMrestart_table( ) {
+extern void FMrestart_table( void ) {
 	struct	table_mgt_blk *t;
 
 	if( ts_index <= 0 || ! (t = table_stack[ts_index-1]) ) {
@@ -706,7 +707,7 @@ void FMrestart_table( ) {
 	}
 }
 
-void FMendtable( void )
+extern void FMendtable( void )
 {
 
 	struct	table_mgt_blk *t;

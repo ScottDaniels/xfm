@@ -77,9 +77,10 @@ Contributions to this source repository are assumed published with the same lice
 *			26 Oct 2006 - Now uses FMatejet() to do stacked eject commands
 *				and to allow a set of commands on the .oe command.
 *			26 Jun 2013 - calls colnotes_show() if needed before doing the eject
+*			17 Jul 2016 - Bring decls into the modern world.
 ***********************************************************************************
 */
-void PFMceject( )
+extern void PFMceject( void )
 {
 	int diff;     /* difference between lmar in col block and current lmar */
 	int diffh;    /* difference betweeh header lmar in col block and current */

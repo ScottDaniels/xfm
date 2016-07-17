@@ -83,11 +83,11 @@ Contributions to this source repository are assumed published with the same lice
 *	 			21 Oct 2007 - Added index interface
 *				26 Jun 2013 - Prevents 0 text size from being set on .st command (happening
 *							when .st &var and var not defined. 
-*				03 Jan 2016 - Removed errant flush before FMll() and indent
-*							calls.
+*				03 Jan 2016 - Removed errant flush before FMll() and indent calls.
+*				17 Jul 2016 - Bring decls into the modern world.
 **************************************************************************
 */
-int FMcmd( char *buf )
+extern int FMcmd( char *buf )
 {
 	int cmd;                  /* command converted to integer for switch */
 	int i;                    /* temp integer */

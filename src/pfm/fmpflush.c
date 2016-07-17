@@ -51,6 +51,7 @@ Contributions to this source repository are assumed published with the same lice
 #include "fmcmds.h"
 #include "fmstruct.h"              /* structure definitions */
 #include "fmproto.h"
+#include "pfmproto.h"
 
 /*
 *****************************************************************************
@@ -79,9 +80,10 @@ Contributions to this source repository are assumed published with the same lice
 *						doing the eject. 
 *				07 Jul 2013 - Colour support changes. 
 *				18 Dec 2015 - Cleaned up commented out code.
+*				17 Jul 2016 - Bring decls into the modern world.
 *****************************************************************************
 */
-void FMpflush( )
+extern void FMpflush( void )
 {
 	int diff;                   /* difference between default lmar and cur lmar*/
 	int diffh;                  /* difference between default lmar and header */

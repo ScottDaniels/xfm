@@ -51,6 +51,7 @@ Contributions to this source repository are assumed published with the same lice
 #include "fmcmds.h"
 #include "fmstruct.h"              /* structure definitions */
 #include "fmproto.h"
+#include "pfmproto.h"
 
 UTdspace( ) { return( 0 ); }
 KPmget( ) { return( 0 ); }

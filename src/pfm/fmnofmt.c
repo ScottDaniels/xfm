@@ -51,6 +51,7 @@ Contributions to this source repository are assumed published with the same lice
 #include "fmcmds.h"
 #include "fmstruct.h"              /* structure definitions */
 #include "fmproto.h"
+#include "pfmproto.h"
 
 /*
 *****************************************************************************
@@ -73,9 +74,10 @@ Contributions to this source repository are assumed published with the same lice
 *				06 Apr 1994 - To remove dependancy on linelength.
 *				10 Apr 2007 - Fixed buffer underflow
 *				03 Jul 2016 - Support for tabs.
+*				17 Jul 2016 - Bring decls into the modern world.
 *******************************************************************************
 */
-void FMnofmt( )
+extern void FMnofmt( void )
 {
 	int status;            /* status of the read */
 	int i;                 /* loop index */

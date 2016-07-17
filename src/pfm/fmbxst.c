@@ -51,6 +51,7 @@ Contributions to this source repository are assumed published with the same lice
 #include "fmcmds.h"
 #include "fmstruct.h"              /* structure definitions */
 #include "fmproto.h"
+#include "pfmproto.h"
 
 /*
 **************************************************************************
@@ -84,9 +85,10 @@ Contributions to this source repository are assumed published with the same lice
 *			20 Mar 2013 - Fixed problem with margins.
 *			23 Jun 2013 - Reverse the left setting as it was backwards
 *			25 Dec 2015 - Corrected bug with column oriented boxes.
+*			17 Jul 2016 - Bring decls into the modern world.
 **************************************************************************
 */
-void FMbxstart( int option, char *colour, int border, int width, char *align )
+extern void FMbxstart( int option, char *colour, int border, int width, char *align )
 {
  int len;          /* length of paramters passed in */
  char *buf;        /* pointer to next option to parse */

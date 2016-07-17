@@ -51,6 +51,7 @@ Contributions to this source repository are assumed published with the same lice
 #include "fmcmds.h"
 #include "fmstruct.h"              /* structure definitions */
 #include "fmproto.h"
+#include "pfmproto.h"
 
 /*
 ****************************************************************************
@@ -62,6 +63,7 @@ Contributions to this source repository are assumed published with the same lice
 * Returns:  Nothing.
 * Date:     Original 5 May 1989 Rewritten for Postscript 15 October 1992
 * Author:   E. Scott Daniels
+* Mods:		17 Jul 2016 - Bring decls into the modern world.
 *
 * Modified: 11 Nov 1992 - To call flush before start and end
 *             so we dont flush on an h on/off call.
@@ -70,7 +72,7 @@ Contributions to this source repository are assumed published with the same lice
 * .bx H {on | off} start/stop drawing horizontal lines
 ****************************************************************************
 */
-void FMbox( )
+extern void FMbox( void )
 {
  int len;        /* length of parameter entered on .bx command */
  char *buf;      /* pointer at the input buffer information */

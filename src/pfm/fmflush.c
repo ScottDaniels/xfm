@@ -65,19 +65,20 @@ Contributions to this source repository are assumed published with the same lice
 *  Author:   E. Scott Daniels
 *
 *  Modified: 10 Oct 2001 - Converted to use format blocks
-*	     20 Nov 2002 - Added kludgey way to set colours, provides some support, but not 
-*			as finite of control as in hfm.
-*		10 Apr 2007 - Memory leak cleanup 
-*		09 Mar 2013 - Corrected bug that was causing font size not to change
-*			when needed in the middle of the line. Super/subscript changes.
-*		21 Mar 2013 - eliminated some uneeded blanks in ps output.
-*		07 Jul 2013 - Allow for setting colours on substrings in the line. 
-*		11 Feb 2014 - Added at end flag for foot notes on last page
-*		18 Dec 2015 - now returns true if it ejected the page.
-*		01 Jan 2016 - Added support for floating margins.
+*	     	20 Nov 2002 - Added kludgey way to set colours, provides some support, but not 
+*				as finite of control as in hfm.
+*			10 Apr 2007 - Memory leak cleanup 
+*			09 Mar 2013 - Corrected bug that was causing font size not to change
+*				when needed in the middle of the line. Super/subscript changes.
+*			21 Mar 2013 - eliminated some uneeded blanks in ps output.
+*			07 Jul 2013 - Allow for setting colours on substrings in the line. 
+*			11 Feb 2014 - Added at end flag for foot notes on last page
+*			18 Dec 2015 - now returns true if it ejected the page.
+*			01 Jan 2016 - Added support for floating margins.
+*			17 Jul 2016 - Bring decls into the modern world.
 *****************************************************************************
 */
-int FMflush( )
+extern int FMflush( void )
 {
 	int 	i;			/* loop index */
 	int		j;

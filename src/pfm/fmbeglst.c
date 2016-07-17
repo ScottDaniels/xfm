@@ -51,6 +51,7 @@ Contributions to this source repository are assumed published with the same lice
 #include "fmcmds.h"
 #include "fmstruct.h"              /* structure definitions */
 #include "fmproto.h"
+#include "pfmproto.h"
 
 /*
 *****************************************************************************
@@ -70,9 +71,10 @@ Contributions to this source repository are assumed published with the same lice
 *             6 Apr 1994 - To move to a pure points environment.
 *             4 May 1994 - To accept a size for the list item mark on .bl cmd
 *                          made parameters non positional.
+*			17 Jul 2016 - Bring decls into the modern world.
 ******************************************************************************
 */
-void FMbeglst( )
+extern void FMbeglst( void )
 {
  struct li_blk *new;     /* new allocated block */
  char *buf;              /* pointer at next tokin in buffer */

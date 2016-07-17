@@ -52,6 +52,7 @@ Contributions to this source repository are assumed published with the same lice
 #include "fmcmds.h"
 #include "fmstruct.h"              /* structure definitions */
 #include "fmproto.h"
+#include "pfmproto.h"
 
 /*
 ****************************************************************************
@@ -77,9 +78,10 @@ Contributions to this source repository are assumed published with the same lice
 *              13 Apr 1992 - To no longer break when blank as first char
 *				18 Nov 2001 - To rewrite to allow for immediate ex of .im 
 *				18 Dec 2015 - Call pflush at end only if cury not at top.
+*			17 Jul 2016 - Bring decls into the modern world.
 **************************************************************************
 */
-main( int argc, char **argv ) {
+extern int main( int argc, char **argv ) {
  int len;          /* length of token */
  char *buf;        /* buffer pointer to token */
 
@@ -96,11 +98,6 @@ main( int argc, char **argv ) {
 		rhead = rfoot = NULL;	/* no headers or footer either */
 
 		AFIclose( tocfile );	/* close the toc file */
-#ifdef KEEP
-		len = sprintf( inbuf, ".im %s", tocname );  /* create imbed command */
-		FMopen( inbuf );
-		FMrun( );
-#endif
 	}                      /* end if toc file open */
 
 	FMflush( );            		 /* flush the current line to page buffer */

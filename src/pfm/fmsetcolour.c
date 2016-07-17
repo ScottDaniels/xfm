@@ -52,6 +52,7 @@ Contributions to this source repository are assumed published with the same lice
 #include "fmcmds.h"
 #include "fmstruct.h"              /* structure definitions */
 #include "fmproto.h"
+#include "pfmproto.h"
 
 /* --------------------------------------------------------------------------
 *
@@ -62,6 +63,7 @@ Contributions to this source repository are assumed published with the same lice
 * Author:	E. Scott Daniels
 *			07 Jul 2013 - converted to setting up for FMfmt(), and added push
 *				pop functions.
+*			17 Jul 2016 - Bring decls into the modern world.
 * --------------------------------------------------------------------------
 */
 
@@ -71,7 +73,7 @@ static	int cs_idx = 0;
 static char *lastcolour = NULL;  
 
 
-extern void FMsetcolour( char *colour );
+//extern void FMsetcolour( char *colour );
 
 /*
 	pop the top of the colour stack and cause it to be set in the doc. 

@@ -51,6 +51,7 @@ Contributions to this source repository are assumed published with the same lice
 #include "fmcmds.h"
 #include "fmstruct.h"              /* structure definitions */
 #include "fmproto.h"
+#include "pfmproto.h"
 
 /*
 ******************************************************************************
@@ -74,6 +75,7 @@ Contributions to this source repository are assumed published with the same lice
 *			11 Mar 2013 - added ability to change font for super/subscript.
 *			31 Jan 2016 - added user controlled displacement (d=) for super/subscript.
 *					Changed the default subscript displacement to tsize/4.
+*			17 Jul 2016 - Bring decls into the modern world.
 *
 * 	Syntax:
 * 			.tf [d=displacement] {font-name|superscript|subscript} {font-size|m/n} <text>
@@ -135,7 +137,7 @@ static int get_our_parms( char *buf, char **fname )
 	return parse_value( buf, textsize );
 }
 
-void FMtmpfont( )
+extern void FMtmpfont( void )
 {
 	char 	*buf = NULL;
 	char	*ofont = NULL;		/* old font */

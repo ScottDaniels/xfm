@@ -51,6 +51,7 @@ Contributions to this source repository are assumed published with the same lice
 #include "fmcmds.h"
 #include "fmstruct.h"              /* structure definitions */
 #include "fmproto.h"
+#include "pfmproto.h"
 
 /*
 ****************************************************************************
@@ -80,12 +81,13 @@ Contributions to this source repository are assumed published with the same lice
 *               7 Apr 1994- To allow multiple tokens in a def item.
 *	       12 Aug 2001- To set ocace after first flush.
 *	       10 Feb 2002- To support auto skip option
-*		10 Apr 2007 - Fixed bug in assignment of curfont;
+*			10 Apr 2007 - Fixed bug in assignment of curfont;
+*			17 Jul 2016 - Bring decls into the modern world.
 *
 *   Copyright (c) 1989  E. Scott Daniels. All rights reserved.
 ***************************************************************************
 */
-void FMditem( )
+extern void FMditem( void )
 {
  char *buf;           /* pointer at the token */
  char *oldfont;       /* holder of current font when changing font */

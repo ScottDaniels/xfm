@@ -51,6 +51,7 @@ Contributions to this source repository are assumed published with the same lice
 #include "fmcmds.h"
 #include "fmstruct.h"              /* structure definitions */
 #include "fmproto.h"
+#include "pfmproto.h"
 
 /*
 **************************************************************************
@@ -65,13 +66,14 @@ Contributions to this source repository are assumed published with the same lice
 *   Date:     7 July 1989
 *   Author:   E. Scott Daniels
 *
-*   Modified: 26 Oct 1992 - To return token length of 0 when single : is
-*               encountered. This allows empty commands in variables (commands
-*               that may allow user to omit parameters)
-*             28 Jul 1994 - To free the var buffer when end is reached.
+*   Modified: 	26 Oct 1992 - To return token length of 0 when single : is
+*  	             encountered. This allows empty commands in variables (commands
+*  	             that may allow user to omit parameters)
+*  	           28 Jul 1994 - To free the var buffer when end is reached.
+*				17 Jul 2016 - Bring decls into the modern world.
 ***************************************************************************
 */
-FMvartok( char **buf )
+extern int FMvartok( char **buf )
 {
  int tokstart;            /* offset in expansion string where token starts */
 

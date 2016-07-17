@@ -73,9 +73,10 @@ Contributions to this source repository are assumed published with the same lice
 *				09 Mar 2013 - Corrected bug with size and added super/subscript support
 *				07 Jul 2013 - Allows for setting colour on substrings. 
 *				24 Jul 2013 - Adjusts cury if needed after an eject that might have inserted something.
+*			17 Jul 2016 - Bring decls into the modern world.
 ***********************************************************************************************************
 */
-void FMjustify( )
+extern void FMjustify( void )
 {
  	char jbuf[1024];    /* initial work buffer */
  	char jjbuf[1024];    /* work buffer */

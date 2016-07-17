@@ -51,6 +51,7 @@ Contributions to this source repository are assumed published with the same lice
 #include "fmcmds.h"
 #include "fmstruct.h"              /* structure definitions */
 #include "fmproto.h"
+#include "pfmproto.h"
 
 /*
 *****************************************************************************
@@ -72,9 +73,10 @@ Contributions to this source repository are assumed published with the same lice
 *				11 Apr 1994 - To check for box to see what margins to use.
 *				20 Mar 2013 - Tweaks to work with changes to the box lmar.
 *				02 Jul 2016 - Allow left and right margin settings
+*				17 Jul 2016 - Bring decls into the modern world.
 *****************************************************************************
 */
-void FMline( )
+extern void FMline( void )
 {
 	char out[512];  /* output buffer */
 	int len;        /* lenght of output string */
@@ -134,7 +136,7 @@ void FMline( )
 /*
 	a partial line that is centered in the column
 */
-void FMcline( )
+extern void FMcline( void )
 {
  char out[100];  /* output buffer */
  int len;        /* lenght of output string */

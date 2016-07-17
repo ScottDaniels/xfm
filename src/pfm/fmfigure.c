@@ -51,7 +51,7 @@ Contributions to this source repository are assumed published with the same lice
 #include "fmcmds.h"
 #include "fmstruct.h"              /* structure definitions */
 #include "fmproto.h"
-
+#include "pfmproto.h"
 /*
 **************************************************************************
 *
@@ -77,9 +77,10 @@ Contributions to this source repository are assumed published with the same lice
 *			    13 Oct 2001 - To setup for fonts using the font blocks
 *				04 Mar 2014 - To allow for preallocation of figure numbers and 
 *					to support their use on the .fg command
+*				17 Jul 2016 - Bring decls into the modern world.
 *****************************************************************************
 */
-void FMfigure( )
+extern void FMfigure( void )
 {
 	int i;              /* loop index and parameter length */
 	char *buf;          /* pointer at parameter list entered */

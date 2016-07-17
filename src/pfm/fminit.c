@@ -91,9 +91,10 @@ Contributions to this source repository are assumed published with the same lice
 *						oneject processing.
 *				22 Mar 2011 - Correctly set boty when geometry (-g) is given.
 *				07 Jul 2013 - Changed initialisation of text colour to use setcolour. 
+*				17 Jul 2016 - Bring decls into the modern world.
 *****************************************************************************
 */
-int FMinit( int argc, char **argv )
+extern int FMinit( int argc, char **argv )
 {
 	int i;               /* loop index */
 	char buf[1024];

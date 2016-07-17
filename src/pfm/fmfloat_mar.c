@@ -51,6 +51,7 @@ Contributions to this source repository are assumed published with the same lice
 #include "fmcmds.h"
 #include "fmstruct.h"              /* structure definitions */
 #include "fmproto.h"
+#include "pfmproto.h"
 
 /*
 *****************************************************************************
@@ -61,6 +62,7 @@ Contributions to this source repository are assumed published with the same lice
 *  Date:		01 January 2016
 *  Author:		E. Scott Daniels
 *  Mods:
+*				17 Jul 2016 - Bring decls into the modern world.
 *
 * .fm [i=distance] [w=distance] l=distance [y=yvalue]
 *     l = temp left margin indention from current left margin
@@ -70,7 +72,7 @@ Contributions to this source repository are assumed published with the same lice
 * .fm pop  .** pop the current float and set y to the reset value
 *****************************************************************************
 */
-void FMfloat_mar( )
+extern void FMfloat_mar( void )
 {
 	char *ebuf;						// input buffer 
 	char *buf;						// pointer to info in input buffer

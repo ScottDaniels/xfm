@@ -51,6 +51,7 @@ Contributions to this source repository are assumed published with the same lice
 #include "fmcmds.h"
 #include "fmstruct.h"              /* structure definitions */
 #include "fmproto.h"
+#include "pfmproto.h"
 
 /*
 *****************************************************************************
@@ -75,10 +76,11 @@ Contributions to this source repository are assumed published with the same lice
 *  Date:     24 March 1994
 *  Author:   E. Scott Daniels
 *  Mods:
-*		10 Apr 2007 - Memory leak cleanup.
-*		29 Oct 2007 - Handles BeginData/EndData ignoring comment like 
-*			statements that appear inside of them.
-*		23 Mar 2011 - correccted problem not closing file.
+*			10 Apr 2007 - Memory leak cleanup.
+*			29 Oct 2007 - Handles BeginData/EndData ignoring comment like 
+*				statements that appear inside of them.
+*			23 Mar 2011 - correccted problem not closing file.
+*			17 Jul 2016 - Bring decls into the modern world.
 *
 * .ep filename [l=n] [x=n] [center|close|stretch|proportional] [noadvy]
 *     l=10i  -length to reserve is 10 inches
@@ -92,7 +94,7 @@ Contributions to this source repository are assumed published with the same lice
 *     proport-keep drawing proportional in x and y direction
 *****************************************************************************
 */
-void FMep( )
+extern void FMep(  void )
 {
 	float xscale = 1.0;            /* scale calculation variables */
 	float yscale = 1.0;

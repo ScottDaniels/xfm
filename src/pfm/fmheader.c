@@ -86,6 +86,7 @@ Contributions to this source repository are assumed published with the same lice
 *					one too.
 *			03 Jul 2016 - Add support for getting better section info for
 *					.gv command.
+*			17 Jul 2016 - Bring decls into the modern world.
 **************************************************************************
 */
 /*
@@ -107,7 +108,7 @@ static int push_cmd( int level )
 	return 0;
 }
 
-void FMheader( struct header_blk *hptr )
+extern void FMheader( struct header_blk *hptr )
 {
 	int	short_out = 0;	/* set if we had to push the header command back on and defer processing */
 	int len;            /* len of parm token */

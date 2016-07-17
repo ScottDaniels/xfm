@@ -51,6 +51,7 @@ Contributions to this source repository are assumed published with the same lice
 #include "fmcmds.h"
 #include "fmstruct.h"              /* structure definitions */
 #include "fmproto.h"
+#include "pfmproto.h"
 
 /*
 ****************************************************************************
@@ -64,11 +65,12 @@ Contributions to this source repository are assumed published with the same lice
 *   Author:    E. Scott Daniels
 *
 *   Modified:   
+*				17 Jul 2016 - Bring decls into the modern world.
 *                            so n can be postfixed with p (points) or i (in).
 *   .sc start c[lass]=class-name f[ont]=font-name s[ize]=font-size (classname ignored)
 ***************************************************************************
 */
-void FMsection ( ) 
+extern void FMsection ( void )
 {
 	char	*buf;          /* pointer at the token */
 	int		len;

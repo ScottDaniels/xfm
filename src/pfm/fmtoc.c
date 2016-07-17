@@ -50,6 +50,7 @@ Contributions to this source repository are assumed published with the same lice
 #include "fmcmds.h"
 #include "fmstruct.h"              /* structure definitions */
 #include "fmproto.h"
+#include "pfmproto.h"
 
 /*
 ***************************************************************************
@@ -68,9 +69,10 @@ Contributions to this source repository are assumed published with the same lice
 *             15 Dec 1992 - To convert for postscript and AFI
 *             11 Apr 1993 - To insert a newline on the last sprintf
 *				03 Jan 2016 - To adjust for new indent (non-break) behaviour.
+*			17 Jul 2016 - Bring decls into the modern world.
 ****************************************************************************
 */
-void FMtoc( int level )
+extern void FMtoc( int level )
 {
  char buf[MAX_READ];      /* buffer to build toc entry in */
  int i;                   /* pointer into buffer */

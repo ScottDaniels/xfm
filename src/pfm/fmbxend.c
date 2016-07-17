@@ -51,6 +51,7 @@ Contributions to this source repository are assumed published with the same lice
 #include "fmcmds.h"
 #include "fmstruct.h"              /* structure definitions */
 #include "fmproto.h"
+#include "pfmproto.h"
 
 /*
 *****************************************************************************
@@ -75,9 +76,10 @@ Contributions to this source repository are assumed published with the same lice
 *            23 Apr 1992 - To base vert lines on lmar in the box structure
 *                          and not the physical left margin of the page.
 *            11 Apr 1994 - lmar/rmar are now relative to column not absolute.
+*			17 Jul 2016 - Bring decls into the modern world.
 *****************************************************************************
 */
-void FMbxend( )
+extern void FMbxend( void )
 {
  char buf[255];      /* buffer to build output string in */
  int len;            /* length of output to write */

@@ -34,6 +34,7 @@ Contributions to this source repository are assumed published with the same lice
 
 #include <stdio.h>     
 #include <stdlib.h>
+#include <unistd.h>
 #include <fcntl.h>    
 #include <ctype.h>   
 #include <string.h> 
@@ -51,6 +52,7 @@ Contributions to this source repository are assumed published with the same lice
 #include "fmcmds.h"
 #include "fmstruct.h"              /* structure definitions */
 #include "fmproto.h"
+#include "pfmproto.h"
 
 /*
 *****************************************************************************
@@ -69,6 +71,7 @@ Contributions to this source repository are assumed published with the same lice
 *				overrun bug.
 *			03 Jan 2016 - Fixed bug introduced with floating margin change.
 *			21 Mar 2016 - Fixed bug with pushing/popping state.
+*			17 Jul 2016 - Bring decls into the modern world.
 *
 * .oe [n=name] [nostate] [all] [list|del|col|page] <commands>
 *
@@ -102,7 +105,7 @@ static struct eject_info *find_ej( char *name )
 	return NULL;
 }
 
-static del_ej( struct eject_info *ep, char *name )
+static void del_ej( struct eject_info *ep, char *name )
 {
 	struct eject_info *dp;
 
@@ -136,7 +139,7 @@ static del_ej( struct eject_info *ep, char *name )
 }
 
 /* do the ejects for the specified type */
-void FMateject( int page )
+extern void FMateject( int page )
 {
 	FILE	*f = NULL;
 	struct eject_info *ep;
@@ -198,7 +201,7 @@ void FMateject( int page )
 	}
 }
 
-static list_ej( )
+static void list_ej( )
 {
 	struct eject_info *ep;
 
@@ -207,7 +210,7 @@ static list_ej( )
 
 }
 
-void FMoneject( )
+extern void FMoneject( void )
 {
 	int 	flags = 0;
 	int		len;

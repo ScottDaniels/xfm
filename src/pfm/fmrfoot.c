@@ -51,6 +51,7 @@ Contributions to this source repository are assumed published with the same lice
 #include "fmcmds.h"
 #include "fmstruct.h"              /* structure definitions */
 #include "fmproto.h"
+#include "pfmproto.h"
 
 /*
 ****************************************************************************
@@ -69,9 +70,10 @@ Contributions to this source repository are assumed published with the same lice
 *              29 Oct 1992 - To null pointer when removed and to write EOS
 *                            in the array that is allocated.
 *              27 Nov 1992 - Removed reference to rfootlen
+*				17 Jul 2016 - Bring decls into the modern world.
 ***************************************************************************
 */
-void FMrfoot( )
+extern void FMrfoot( void )
 {
  char *buf;          /* pointer at the token */
  int i;

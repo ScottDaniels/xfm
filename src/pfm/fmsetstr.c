@@ -51,6 +51,7 @@ Contributions to this source repository are assumed published with the same lice
 #include "fmcmds.h"
 #include "fmstruct.h"              /* structure definitions */
 #include "fmproto.h"
+#include "pfmproto.h"
 
 /*
 ****************************************************************************
@@ -68,10 +69,11 @@ Contributions to this source repository are assumed published with the same lice
 *   Returns:   Nothing.
 *   Date:      6 June 1993
 *   Author:    E. Scott Daniels
+*	Mods:		17 Jul 2016 - Bring decls into the modern world.
 *
 ***************************************************************************
 */
-void FMsetstr( char **string, int slen )
+extern void FMsetstr( char **string, int slen )
 {
  char *buf;          /* pointer at the token */
  char *lstring;      /* local pointer at the string */

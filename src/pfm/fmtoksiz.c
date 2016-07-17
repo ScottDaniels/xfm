@@ -51,6 +51,7 @@ Contributions to this source repository are assumed published with the same lice
 #include "fmcmds.h"
 #include "fmstruct.h"              /* structure definitions */
 #include "fmproto.h"
+#include "pfmproto.h"
 
 /*
 ****************************************************************************
@@ -63,6 +64,7 @@ Contributions to this source repository are assumed published with the same lice
 *  Returns:  Integer number of points required to display the token.
 *  Date:     6 April 1994
 *  Author:   E. Scott Daniels
+*	Mods:	17 Jul 2016 - Bring decls into the modern world.
 *
 *****************************************************************************
 */
@@ -89,9 +91,7 @@ int unknown[ ] =  /* point sizes for 100 point characters */
 
 #include	"fonts.h"		/* widts for various fonts */
 
-FMtoksize( tok, len )
- char *tok;
- int len;
+extern int FMtoksize( char* tok, int len )
 {
  int i;            /* loop index */
  int size = 32;    /* calculated size - start assuming a blank seperates */

@@ -51,6 +51,7 @@ Contributions to this source repository are assumed published with the same lice
 #include "fmcmds.h"
 #include "fmstruct.h"              /* structure definitions */
 #include "fmproto.h"
+#include "pfmproto.h"
 
 /*
 ****************************************************************************
@@ -67,11 +68,12 @@ Contributions to this source repository are assumed published with the same lice
 *              24 Mar 1994 - To allow amount to be specified in pts or inches
 *               6 Apr 1994 - To use FMgetpts routine to convert value to pts
 *                            so n can be postfixed with p (points) or i (in).
+*			17 Jul 2016 - Bring decls into the modern world.
+*
 *   .in n | +n | -n  (indention not changed if n is omitted)
 ***************************************************************************
 */
-void FMindent( mar )
- int *mar;
+extern void FMindent( int* mar )
 {
  char *buf;          /* pointer at the token */
  int len;

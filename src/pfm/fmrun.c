@@ -51,6 +51,7 @@ Contributions to this source repository are assumed published with the same lice
 #include "fmcmds.h"
 #include "fmstruct.h"              /* structure definitions */
 #include "fmproto.h"
+#include "pfmproto.h"
 
 /*
 * -------------------------------------------------------------
@@ -67,12 +68,13 @@ Contributions to this source repository are assumed published with the same lice
 *
 * Date: 	18 Nov 2001
 * Author: 	E. Scott Daniels
-*		10 Apr 2007 - Memory leak cleanup 
+*			10 Apr 2007 - Memory leak cleanup 
+*			17 Jul 2016 - Bring decls into the modern world.
 *
 * -------------------------------------------------------------
 */
 
-void FMrun( )
+extern void FMrun( void )
 {
 	char	*buf = NULL;
 	int	len = 1;

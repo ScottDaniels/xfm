@@ -31,8 +31,10 @@ Contributions to this source repository are assumed published with the same lice
 =================================================================================================
 */
 
+#include <sys/types.h>
 #include <stdio.h>     
 #include <stdlib.h>
+#include <unistd.h>
 #include <fcntl.h>    
 #include <ctype.h>   
 #include <string.h> 
@@ -50,6 +52,7 @@ Contributions to this source repository are assumed published with the same lice
 #include "fmcmds.h"
 #include "fmstruct.h"              /* structure definitions */
 #include "fmproto.h"
+#include "pfmproto.h"
 
 /*
 *****************************************************************************

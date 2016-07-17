@@ -51,6 +51,7 @@ Contributions to this source repository are assumed published with the same lice
 #include "fmcmds.h"
 #include "fmstruct.h"              /* structure definitions */
 #include "fmproto.h"
+#include "pfmproto.h"
 
 /*
 * ---------------------------------------------------------------------
@@ -62,18 +63,19 @@ Contributions to this source repository are assumed published with the same lice
 *				06 Nov 2007 - Pops leftover blocks when restoring state.
 *				07 Jul 2013 - cleanup 
 *				22 Mar 2016 - Prevent out of range issue on restore.
+*				17 Jul 2016 - Bring decls into the modern world.
 * ---------------------------------------------------------------------
 */
 
 #define FMT_STACK_SIZE	25
 
-void FMfmt_add( );
+//void FMfmt_add( );
 
 static struct format_blk *fmt_lst = NULL;	/* pointer to the current format list */
 static struct format_blk *fmt_stack[FMT_STACK_SIZE];
 static int fmt_idx = 0;
 
-void FMfmt_dump( )
+extern void FMfmt_dump( void )
 {
 	struct format_blk *f;
 	
@@ -84,7 +86,7 @@ void FMfmt_dump( )
 /*
 	push the current list and start a new one
 */
-int FMfmt_save( )
+extern int FMfmt_save( void )
 {
 	TRACE( 2, "fmt_save: idx=%d pushing list=%p\n", fmt_idx, fmt_lst );
 	fmt_stack[fmt_idx++] = fmt_lst;
@@ -102,7 +104,7 @@ int FMfmt_save( )
 /*
 	Reset the list to what was previously saved.
 */
-int FMfmt_restore( )
+extern int FMfmt_restore( void )
 {
 	int size;
 	char *font;
@@ -111,7 +113,7 @@ int FMfmt_restore( )
 	int end;
 	int	ydisp;
 
-	while( FMfmt_pop( &size, &font, &colour, &start, &end, &ydisp, &colour ) > 0 );		/* pop current things */
+	while( FMfmt_pop( &size, &font, &colour, &start, &end, &ydisp ) > 0 );		/* pop current things */
 	if( fmt_idx > 0 ) {
 		fmt_lst = fmt_stack[--fmt_idx];						/* point at old list */
 	} else {
@@ -120,7 +122,7 @@ int FMfmt_restore( )
 	TRACE( 2, "fmt_restore: idx=%d list=%p\n", fmt_idx, fmt_lst );
 }
 
-int FMfmt_largest( )				/* find the largest font in the list */
+extern int FMfmt_largest( void )				/* find the largest font in the list */
 {
 	struct format_blk *f;
 	int 	size = textsize;
@@ -139,7 +141,7 @@ int FMfmt_largest( )				/* find the largest font in the list */
 }
 
 /* mark the ending position of the top block */
-void FMfmt_end( )
+extern void FMfmt_end( void )
 {
 	if( fmt_lst )
 		fmt_lst->eidx = optr - 2;
@@ -193,7 +195,7 @@ static void add(  int ydisp )
 /*
 	add with no y displacement
 */
-extern void FMfmt_add( )
+extern void FMfmt_add( void )
 {
 	add( 0 );
 }
@@ -201,7 +203,7 @@ extern void FMfmt_add( )
 /*
 	add a block with a y displacement value 
 */
-void FMfmt_yadd( int v )
+extern void FMfmt_yadd( int v )
 {
 	add( v );
 }
@@ -209,7 +211,7 @@ void FMfmt_yadd( int v )
 /* 
 	return the information from the top block and pop the block from the stack.
 */
-int FMfmt_pop( int *size, char **font, char **colour, int *start, int *end, int *ydisp )
+extern int FMfmt_pop( int *size, char **font, char **colour, int *start, int *end, int *ydisp )
 {
 	struct format_blk *next;
 

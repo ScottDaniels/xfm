@@ -51,6 +51,7 @@ Contributions to this source repository are assumed published with the same lice
 #include "fmcmds.h"
 #include "fmstruct.h"              /* structure definitions */
 #include "fmproto.h"
+#include "pfmproto.h"
 
 /*
 ****************************************************************************
@@ -65,10 +66,11 @@ Contributions to this source repository are assumed published with the same lice
 *   .ll  n | +n | -n  (default if n omitted is 65)
 *
 *   Modified:  1 Jul 1994 - To convert to rfm
+*				17 Jul 2016 - Bring decls into the modern world.
 ***************************************************************************
 */
 foo = bar;
-void FMll( )
+extern void FMll( void )
 {
  char *buf;          /* pointer at the token */
  char obuf[25];

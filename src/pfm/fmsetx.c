@@ -51,6 +51,7 @@ Contributions to this source repository are assumed published with the same lice
 #include "fmcmds.h"
 #include "fmstruct.h"              /* structure definitions */
 #include "fmproto.h"
+#include "pfmproto.h"
 
 /*
 ****************************************************************************
@@ -75,9 +76,10 @@ Contributions to this source repository are assumed published with the same lice
 *                          x value in inches or points.
 *            11 Apr 1994 - To take value relative to curcol's left margin
 *            31 Jan 2016 - To actually allow negative relative moves.
+*			17 Jul 2016 - Bring decls into the modern world.
 ******************************************************************************
 */
-void FMsetx( )
+extern void FMsetx( void )
 {
  char *buf;            /* pointer at the parameter user has entered */
  int len;              /* length of parameter entered */

@@ -75,9 +75,10 @@ Contributions to this source repository are assumed published with the same lice
 *              6 Apr 1994 - To accept indention and gutter sizes
 *			10 Oct 2007 (sd) - Added a=v[ip] support to allow anchor setting for head/feet
 *			02 Jan 2016 - Fix bug related to column block initialisation.
+*			17 Jul 2016 - Bring decls into the modern world.
 ***************************************************************************
 */
-void FMcd( )
+extern void FMcd(  void )
 {
 	char *buf;                 /* pointer at the token */
 	int gutter = DEF_GUTTER;   /* gutter value between cols */

@@ -51,6 +51,7 @@ Contributions to this source repository are assumed published with the same lice
 #include "fmcmds.h"
 #include "fmstruct.h"              /* structure definitions */
 #include "fmproto.h"
+#include "pfmproto.h"
 
 /*
 *************************************************************************
@@ -67,10 +68,11 @@ Contributions to this source repository are assumed published with the same lice
 *   Modified:  5 May 1992 - To support postscript conversion.
 *             27 Nov 1992 - To support asis flag
 *             28 Jan 1993 - To ensure parm before conversion to uppercase
+*			17 Jul 2016 - Bring decls into the modern world.
 *
 ***************************************************************************
 */
-void FMformat( )
+extern void FMformat( void )
 {
  int i;              /* lengnth of parameter entered on the command line */
  char *buf;          /* pointer to the parameter entered */

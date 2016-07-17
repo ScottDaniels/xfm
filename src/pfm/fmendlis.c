@@ -51,6 +51,7 @@ Contributions to this source repository are assumed published with the same lice
 #include "fmcmds.h"
 #include "fmstruct.h"              /* structure definitions */
 #include "fmproto.h"
+#include "pfmproto.h"
 
 /*
 ******************************************************************************
@@ -76,10 +77,10 @@ Contributions to this source repository are assumed published with the same lice
 *             6 Jun 1993 - To output bullet characters in octal (\xxx).
 *             6 Apr 1994 - To convert to pure points.
 *             4 May 1994 - To use block->size value for adjustments
+*			17 Jul 2016 - Bring decls into the modern world.
 ******************************************************************************
 */
-void FMendlist( option )
- int option;
+extern void FMendlist( int option )
 {
  struct li_blk *liptr;       /* pointer at list item block to delete */
  char outbuf[80];            /* buffer to build output string in */

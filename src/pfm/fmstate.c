@@ -51,6 +51,7 @@ Contributions to this source repository are assumed published with the same lice
 #include "fmcmds.h"
 #include "fmstruct.h"              /* structure definitions */
 #include "fmproto.h"
+#include "pfmproto.h"
 
 /* 
 * --------------------------------------------------------------------------------
@@ -67,6 +68,7 @@ Contributions to this source repository are assumed published with the same lice
 * Mods:		10 Apr 2007 - fixed leaks.
 *			06 Nov 2007 - pushes a new format block when state is pushed
 *			22 Mar 2016 - Corrected placement of fm_add() call (it matters).
+*			17 Jul 2016 - Bring decls into the modern world.
 * --------------------------------------------------------------------------------
 */
 static struct state {
@@ -86,7 +88,7 @@ static struct state {
 } state_stack[25];
 static int state_idx = 0;
 
-void FMpush_state( )
+extern void FMpush_state( void )
 {
 	TRACE( 2, "fmstate: pushed: idx=%d lmar=%d optr=%d obuf=(%s)\n", state_idx, lmar, optr, obuf );
 	if( state_idx < 25 )
@@ -125,7 +127,7 @@ void FMpush_state( )
 	state_idx++;
 }
 
-void FMpop_state( )
+extern void FMpop_state( void )
 {
 	if( state_idx > 0 )
 	{

@@ -51,6 +51,7 @@ Contributions to this source repository are assumed published with the same lice
 #include "fmcmds.h"
 #include "fmstruct.h"              /* structure definitions */
 #include "fmproto.h"
+#include "pfmproto.h"
 
 /*
 ****************************************************************************
@@ -66,10 +67,11 @@ Contributions to this source repository are assumed published with the same lice
 *		24 Aug 2011 - Now accepts fraction e.g. .5 rather than neg for halfspace
 *		10 Mar 2013 - Corrected problem with optional parms; must be checked before 
 *					the call to flush().
+*		17 Jul 2016 - Bring decls into the modern world.
 *
 ***************************************************************************
 */
-void FMspace( )
+extern void FMspace( void  )
 {
 	char *buf;          /* pointer at the token */
 	float lines = 1;

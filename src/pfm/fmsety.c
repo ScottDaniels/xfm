@@ -51,6 +51,7 @@ Contributions to this source repository are assumed published with the same lice
 #include "fmcmds.h"
 #include "fmstruct.h"              /* structure definitions */
 #include "fmproto.h"
+#include "pfmproto.h"
 
 /*
 ****************************************************************************
@@ -64,10 +65,11 @@ Contributions to this source repository are assumed published with the same lice
 *  Author:   E. Scott Daniels
 *
 *  Modified: 	10 Dec 1992 - To use AFI routines for ansi compatability
-*		12 Nov 2007 - Added ability to move relative to current position
+*			12 Nov 2007 - Added ability to move relative to current position
+*			17 Jul 2016 - Bring decls into the modern world.
 ******************************************************************************
 */
-void FMsety( )
+extern void FMsety( void )
 {
 	char *buf;    /* pointer at the parameter user has entered */
 	int i;        /* new x position */

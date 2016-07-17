@@ -51,6 +51,7 @@ Contributions to this source repository are assumed published with the same lice
 #include "fmcmds.h"
 #include "fmstruct.h"              /* structure definitions */
 #include "fmproto.h"
+#include "pfmproto.h"
 
 /*
 ****************************************************************************
@@ -63,10 +64,11 @@ Contributions to this source repository are assumed published with the same lice
 *   Date:      3 December 1988
 *   Author:    E. Scott Daniels
 *   Modified:  5 May 1992 - To support postscript conversion
+*			17 Jul 2016 - Bring decls into the modern world.
 *
 ***************************************************************************
 */
-void FMcpage( )
+extern void FMcpage( void )
 {
  char *buf;          /* pointer at the token */
  int len;

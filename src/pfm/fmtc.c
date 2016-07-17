@@ -51,6 +51,7 @@ Contributions to this source repository are assumed published with the same lice
 #include "fmcmds.h"
 #include "fmstruct.h"              /* structure definitions */
 #include "fmproto.h"
+#include "pfmproto.h"
 
 /*
 ****************************************************************************
@@ -71,9 +72,10 @@ Contributions to this source repository are assumed published with the same lice
 *   Modified:  23 Apr 1991 - To open toc file based on buffer not const
 *              15 Dec 1992 - To convert to postscript and AFI
 *               7 Apr 1994 - To setup for TOC now that linesize/cd are points
+*			17 Jul 2016 - Bring decls into the modern world.
 ***************************************************************************
 */
-void FMtc( )
+extern void FMtc( void )
 {
  char *buf;           /* pointer at the token */
  int len;             /* len of parameter entered */

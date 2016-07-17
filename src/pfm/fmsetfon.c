@@ -51,6 +51,7 @@ Contributions to this source repository are assumed published with the same lice
 #include "fmcmds.h"
 #include "fmstruct.h"              /* structure definitions */
 #include "fmproto.h"
+#include "pfmproto.h"
 
 /*
 ******************************************************************************
@@ -65,11 +66,10 @@ Contributions to this source repository are assumed published with the same lice
 *  Author:   E. Scott Daniels
 *
 *  Modified: 10 Dec 1992 - To use AFI routines for ansi compatability
+*			17 Jul 2016 - Bring decls into the modern world.
 ****************************************************************************
 */
-void FMsetfont( fname, fsize )
- char *fname;
- int fsize;
+extern void FMsetfont( char* fname, int fsize )
 {
  char buf[80];
  int len;

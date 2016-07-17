@@ -51,6 +51,7 @@ Contributions to this source repository are assumed published with the same lice
 #include "fmcmds.h"
 #include "fmstruct.h"              /* structure definitions */
 #include "fmproto.h"
+#include "pfmproto.h"
 
 /*
 ****************************************************************************
@@ -77,10 +78,11 @@ Contributions to this source repository are assumed published with the same lice
 *                          to be set/reset.
 *            17 Aug 1994 - To allow for header margin relative offset value
 *            15 Dec 1994 - To allow skip values only up to 99.
-*	     24 Oct 2007 - Corrected bug in t= parsing
+*		     24 Oct 2007 - Corrected bug in t= parsing
+*			17 Jul 2016 - Bring decls into the modern world.
 *****************************************************************************
 */
-void FMdefheader( )
+extern void FMdefheader( void )
 {
 	char *buf;                /* pointer at next parm to parse */
 	int level;                /* current level we are working with */
