@@ -74,12 +74,13 @@ Contributions to this source repository are assumed published with the same lice
 *                            them someplace.
 *              10 Dec 1992 - To use AFI routines (which use ansi std fread)
 *               3 Apr 1997 - To begin phase out of this routine.
-*	       19 Oct 2001 - Cleanup - finish work started on in 97
-*	        5 Feb 2001 - To save name 
-*		21 Oct 2007 - Some general doc cleanup.
+*	       		19 Oct 2001 - Cleanup - finish work started on in 97
+*	   		     5 Feb 2001 - To save name 
+*				21 Oct 2007 - Some general doc cleanup.
+*				17 Jul 2016 - Changes for better prototype generation.
 **************************************************************************
 */
-int FMopen( char *name )
+extern int FMopen( char *name )
 {
 	int i;                   /* loop index */
 

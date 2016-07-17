@@ -76,9 +76,10 @@ Contributions to this source repository are assumed published with the same lice
 *				22 Feb 1994 - To ensure text font is set properly
 *				04 Mar 2014 - To allow for preallocation of figure numbers and 
 *					to support their use on the .fg command
+*				17 Jul 2016 - Changes for better prototype generation.
 *****************************************************************************
 */
-void FMfigure( )
+extern void FMfigure(  void )
 {
 	int i;              /* loop index and parameter length */
 	char *buf;          /* pointer at parameter list entered */

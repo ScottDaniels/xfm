@@ -69,10 +69,11 @@ Contributions to this source repository are assumed published with the same lice
 *  Mods:	24 Dec 2015 - Added support to convert lines (L or l suffix) to points.
 *			02 Jul 2016 - Added support for cm, and to make modern with respect to 
 *				parm definitions and indention.
+*			17 Jul 2016 - Changes for better prototype generation.
 *
 **************************************************************************************
 */
-int FMgetpts( char* tok, int len ) {
+extern int FMgetpts( char* tok, int len ) {
 	int pts = 0;         /* points to return */
 	double fval;          /* value for converting to float */
 

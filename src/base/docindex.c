@@ -53,6 +53,7 @@
 *
 *	Mod:		10 Mar 2011 - Corrected bug with multiple word references 
 *				03 Jan 2016 - Corrected memset bug in di_group.
+*				17 Jul 2016 - Changes for better prototype generation.
 * --------------------------------------------------------------------------------------------------------
 */
 
@@ -61,6 +62,7 @@
 #include <string.h>
 #include <memory.h>
 #include <stdlib.h>
+#include <ctype.h>
 
 #include "symtab.h"
 
@@ -338,14 +340,14 @@ static Ref_info *enroll( char *entry, int insert, int class )
 	references to be tracked.  each word is referenced by a word-map which points 
 	back to the registration.
 */
-void di_register( char *name, int insert )
+extern void di_register( char *name, int insert )
 {
 	enroll( name, 1, ENTRY_CLASS );
 }
 
 
 /* add a syn (new) that is tracked and reported on as though it were existing */
-void di_synonym( char *exist, char *new )	
+extern void di_synonym( char *exist, char *new )	
 {
 	Ref_info	*orp;		/* old entry */
 	Ref_info	*srp;		/* synonym entry */
@@ -365,7 +367,7 @@ void di_synonym( char *exist, char *new )
 	srp->flags |= RF_SYN;			/* set syn flag */
 }
 
-void di_group( char *name, char *word )
+extern void di_group( char *name, char *word )
 {
 	Ref_info 	*rp;
 	Ref_info	*ip;		/* point where group block is inserted into the list */
@@ -397,7 +399,7 @@ void di_group( char *name, char *word )
 }
 
 /* add an observation of the word, if it has been registered */
-void di_add( char *name, int pg )
+extern void di_add( char *name, int pg )
 {
 	Ref_info *rp;
 	Ref_info *ip;
@@ -462,7 +464,7 @@ void di_add( char *name, int pg )
 /* ufmt supplies the format for the word and first page number allowing something 
    like ".di %s : %d" to be supplied for pfm
 */
-void di_list( FILE *f, char *ufmt, char *uspace, char *gfmtb, char *gfmte )
+extern void di_list( FILE *f, char *ufmt, char *uspace, char *gfmtb, char *gfmte )
 {
 	Ref_info *rp;
 	char	fmt[1024];

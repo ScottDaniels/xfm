@@ -71,9 +71,10 @@ Contributions to this source repository are assumed published with the same lice
 *  Author:   E. Scott Daniels
 *
 *  Modified:  1 Jul 1994 - To convert to rfm.
+*				17 Jul 2016 - Changes for better prototype generation.
 *****************************************************************************
 */
-void FMbxend( )
+extern void FMbxend( void )
 {
  char buf[255];      /* buffer to build output string in */
  int len;            /* length of output to write */

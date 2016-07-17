@@ -71,9 +71,10 @@ Contributions to this source repository are assumed published with the same lice
 *
 *   Modified: 13 Jul 1994 - To convert to rfm
 *              9 Sep 1994 - To check first parameter properly
+*				17 Jul 2016 - Changes for better prototype generation.
 ***************************************************************************
 */
-void FMcd( )
+extern void FMcd( void  )
 {
  char *buf;                 /* pointer at the token */
  int gutter = DEF_GUTTER;   /* gutter value between cols */

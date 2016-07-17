@@ -61,11 +61,12 @@ Contributions to this source repository are assumed published with the same lice
 *   Returns:   Nothing.
 *   Date:      2 December 1988
 *   Author:    E. Scott Daniels
+*	Mods:		17 Jul 2016 - Changes for better prototype generation.
 *
 *   .hn [on | off | n] if parameter omitted on assumed.
 ***************************************************************************
 */
-void FMhn( )
+extern void FMhn(  void )
 {
  char *buf;          /* pointer at the token */
  int len;

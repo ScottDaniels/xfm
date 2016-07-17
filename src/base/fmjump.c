@@ -65,10 +65,11 @@ Contributions to this source repository are assumed published with the same lice
 *  Returns:  Nothing
 *  Date:     14 April 1997
 *  Author:   E. Scott Daniels
+*	Mods:	17 Jul 2016 - Changes for better prototype generation.
 *
 *****************************************************************************
 */
-void FMjump( )
+extern void FMjump(  void )
 {
  char *tok;            /* pointer to the next token to check */
  char label[256];      /* buffer to put lable we seek into */

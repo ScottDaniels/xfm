@@ -70,9 +70,10 @@ Contributions to this source repository are assumed published with the same lice
 *             20 Jul 1994 - To convert to rfm
 *              1 Aug 1994 - To write directly from inbuf
 *              3 Apr 1997 - To use AFI's new tokenizing support!
+*				17 Jul 2016 - Changes for better prototype generation.
 *******************************************************************************
 */
-void FMasis( )
+extern void FMasis( void  )
 {
  int len;               /* length of string to put in outfile */
 

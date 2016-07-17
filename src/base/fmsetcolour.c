@@ -57,6 +57,7 @@ Contributions to this source repository are assumed published with the same lice
 * Author:   E. Scott Daniels
 *
 * Modified:
+*				17 Jul 2016 - Changes for better prototype generation.
 *
 *	.co <textcolour>		# back compatable
 *	.co text <string>
@@ -66,7 +67,7 @@ Contributions to this source repository are assumed published with the same lice
 *
 ****************************************************************************
 */
-void FMset_colour( )
+extern void FMset_colour(  void )
 {
 	char	*buf;
 

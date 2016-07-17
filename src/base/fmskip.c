@@ -62,10 +62,11 @@ Contributions to this source repository are assumed published with the same lice
 *
 * Date:     3 April 2001 - HBD me!
 * Author:   E. Scott Daniels
+*	Mods:	17 Jul 2016 - Changes for better prototype generation.
 * 
 ----------------------------------------------------------------------
 */
-void FMskip( )
+extern void FMskip(  void )
 {
  char buf[4096];
 

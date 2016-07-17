@@ -64,12 +64,11 @@ Contributions to this source repository are assumed published with the same lice
 *  Date:     11 May 1992
 *  Author:   E. Scott Daniels
 *
-*  Modified: 29 Jun 1994 - To convert to rfm
+*  Modified:	29 Jun 1994 - To convert to rfm
+*				17 Jul 2016 - Changes for better prototype generation.
 ****************************************************************************
 */
-void FMsetfont( fname, fsize )
- char *fname;
- int fsize;
+extern void FMsetfont( char* fname, int fsize )
 {
  char buf[80];
  int len;

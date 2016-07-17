@@ -72,9 +72,10 @@ Contributions to this source repository are assumed published with the same lice
 *             8 Dec 1994 - To write par mark at top only if not in def list.
 *            27 Jan 2000 - To not put hard page if in single col mode to
 *                          prevent small # words with large spaces on last ln
+*				17 Jul 2016 - Changes for better prototype generation.
 ****************************************************************************
 */
-void FMceject( int force )
+extern void FMceject( int force )
 {
  int diff;     /* difference between lmar in col block and current lmar */
  int diffh;    /* difference betweeh header lmar in col block and current */

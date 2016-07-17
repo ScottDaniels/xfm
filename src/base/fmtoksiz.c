@@ -63,6 +63,7 @@ Contributions to this source repository are assumed published with the same lice
 *  Returns:  Integer number of points required to display the token.
 *  Date:     6 April 1994
 *  Author:   E. Scott Daniels
+*	Mods:	17 Jul 2016 - Changes for better prototype generation.
 *
 *****************************************************************************
 */
@@ -87,9 +88,7 @@ int charwidth[ ] =  /* point sizes for 100 point characters */
  };          /* end character width table */
 
 
-int FMtoksize( tok, len )
- char *tok;
- int len;
+extern int FMtoksize( char* tok, int len )
 {
  int i;            /* loop index */
  int size = 32;    /* calculated size - start assuming a blank seperates */
@@ -104,5 +103,5 @@ int FMtoksize( tok, len )
    size = (size * textsize) / 95;   /* adjust size for text size */
   }
 
- return( size );       /* send the value back */
+ return size;       /* send the value back */
 }                   /* FMtoksize */

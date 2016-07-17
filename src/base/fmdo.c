@@ -72,9 +72,10 @@ Contributions to this source repository are assumed published with the same lice
 *  .dv for .dv $1 $2 ^: .do $1 $3 $5 .dv $1 ^^[ ^^&$1 $4 ]
 *
 *  Modified: 	13 Jan 2002 - To use symboltable for vars
+*				17 Jul 2016 - Changes for better prototype generation.
 ****************************************************************************
 */
-void FMdo( )
+extern void FMdo(  void )
 {
 	return;
 

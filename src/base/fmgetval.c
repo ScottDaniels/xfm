@@ -34,6 +34,7 @@ Contributions to this source repository are assumed published with the same lice
 
 #include <stdio.h>     
 #include <stdlib.h>
+#include <unistd.h>
 #include <fcntl.h>    
 #include <ctype.h>   
 #include <string.h> 
@@ -101,6 +102,7 @@ Contributions to this source repository are assumed published with the same lice
 *			04 Mar 2014 - Added Fi[gure] and Ta[ble] types to set vars and incr the value
 *			28 Dec 2015 - Correct variable name (_lremain not right).
 *						  Correct computation of right mar for .gv rmar.
+*				17 Jul 2016 - Changes for better prototype generation.
 **************************************************************************************************
 */
 /*
@@ -112,7 +114,7 @@ char *mname[13] = {
  "August", "September", "October", "November", "December" 
 };
 
-void FMgetval( )
+extern void FMgetval( void )
 {
 	char	*buf;			/* pointer to parameter to use */
 	char	*ep;			/* pointer to value of env var */

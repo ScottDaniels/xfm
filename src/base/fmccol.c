@@ -68,10 +68,10 @@ Contributions to this source repository are assumed published with the same lice
 *   Modified:  23 Nov 1992 - To support postscript conversion
 *                            To accept a parameter - if not 0 dont read parm
 *                            use parameter instead.
+*				17 Jul 2016 - Changes for better prototype generation.
 ***************************************************************************
 */
-void FMccol( skip )
- int skip;
+extern void FMccol( int skip )
 {
  char *buf;          /* pointer at the token */
  int len;
@@ -84,9 +84,8 @@ void FMccol( skip )
   else
    skip = 2;                         /* otherwise default to 2 lines */
 
- if( ((skip * (textsize + textspace)) + cury) >= boty )
-{fprintf( stderr, "ccol: cury=%d skip=%d bot=%d space=%d\n", cury, skip, boty,
- textsize+textspace);
-  FMceject( 1 );                        /* eject col if not enough there */
-}
+	 if( ((skip * (textsize + textspace)) + cury) >= boty ) {
+		//fprintf( stderr, "ccol: cury=%d skip=%d bot=%d space=%d\n", cury, skip, boty, textsize+textspace);
+		FMceject( 1 );                        /* eject col if not enough there */
+	}
 }               /* FMccol */

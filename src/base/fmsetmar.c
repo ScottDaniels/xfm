@@ -63,9 +63,10 @@ Contributions to this source repository are assumed published with the same lice
 *  Date:     6 July 1994
 *  Author:   E. Scott Daniels
 *
+*	Mods:	17 Jul 2016 - Changes for better prototype generation.
 *******************************************************************************
 */
-void FMsetmar( )
+extern void FMsetmar( void )
 {
  char wbuf[80];          /* ouput work buffer */
  int dist;               /* distance to bring margin in from edge */

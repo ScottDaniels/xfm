@@ -68,6 +68,7 @@ Contributions to this source repository are assumed published with the same lice
 *				15 Dec 1994 - To seperate skip before/after numbers.
 *				03 Jul 2016 - To capture the most recent section number 
 *					and header string for .gv command.
+*				17 Jul 2016 - Changes for better prototype generation.
 **************************************************************************
 */
 
@@ -93,7 +94,7 @@ extern char* FMget_header_txt( ) {
 /*
 	Creates the section number string.
 */
-char* FMmk_header_snum( int level ) {
+extern char* FMmk_header_snum( int level ) {
 	char	wbuf[100];
 	char	sbuf[10];
 	int i;
@@ -122,7 +123,7 @@ char* FMmk_header_snum( int level ) {
 /*
 	Save a copy of the last header text.
 */
-void FMmk_header_stxt( char* txt ) {
+extern void FMmk_header_stxt( char* txt ) {
 	if( last_stxt ) {
 		free( last_stxt );
 	}

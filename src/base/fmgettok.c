@@ -68,10 +68,11 @@ Contributions to this source repository are assumed published with the same lice
 *             9-01-89 - To support user defined variable delimiter
 *             4-13-93 - To allow a quoted string as one token
 *             4-03-97 - To use AFI tokenizing support!
-*		22 Oct 2007 - Fixes to backquoting token.
+*			22 Oct 2007 - Fixes to backquoting token.
+*				17 Jul 2016 - Changes for better prototype generation.
 ****************************************************************************
 */
-int FMgettok( char **buf )
+extern int FMgettok( char **buf )
 {
 	int 	len = ERROR;     /* length of buffer read from input file */
 	int 	i;               /* loop index */

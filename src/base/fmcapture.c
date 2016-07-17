@@ -70,6 +70,7 @@ Contributions to this source repository are assumed published with the same lice
 *  Date:     	06 November 2007
 *  Author:   	E. Scott Daniels
 *  Modified: 	03 Jul 2016 - Added extend and shift options.
+*				17 Jul 2016 - Changes for better prototype generation.
 *
 *  Command syntax:  .ca [expand] [shift] {start|extend} filename
 *					.ca end
@@ -99,7 +100,7 @@ static char* get_fname( char* cfname ) {
 
 #define F_SHIFT		0x01
 #define F_EXPAND	0x02
-void FMcapture( )
+extern void FMcapture( void )
 {
 	FILE 	*f = NULL;
 	char 	*fname = NULL;

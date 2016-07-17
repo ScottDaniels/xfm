@@ -78,6 +78,7 @@ Contributions to this source repository are assumed published with the same lice
 *            27 Jul 1994 - To allow nested ifs and elses
 *            28 Jul 1994 - To allow ors and ands
 *            19 Mar 2016 - Correct problem with stack index.
+*				17 Jul 2016 - Changes for better prototype generation.
 *****************************************************************************
 */
 
@@ -129,7 +130,7 @@ static void get_string( char *buf, char *tok )
 	while( (len = FMgetparm( &tok )) != 0 );    /* get parm - if none then return */
 }
 
-void FMif( )
+extern void FMif(  void )
 {
 	char *tok;                   /* pointer to the token */
 	char *var;                   /* pointer to expanded var string */

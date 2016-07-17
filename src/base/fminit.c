@@ -70,11 +70,12 @@ Contributions to this source repository are assumed published with the same lice
 *                           To look and use environment variable to define
 *                            the font table. (RFM_FTABLE)
 *              3 Apr 1994 - To use AFI's new tokenizer!
-*		13 Jan 2002 - To reference vars via symbol table - removed varlist
-*		08 Nov 2006 - To allow input to default from stdin rather than having to say
+*				13 Jan 2002 - To reference vars via symbol table - removed varlist
+*				08 Nov 2006 - To allow input to default from stdin rather than having to say
+*				17 Jul 2016 - Changes for better prototype generation.
 ******************************************************************************
 */
-int FMinit( int argc, char **argv )
+extern int FMinit( int argc, char **argv )
 {
 	int i;               /* loop index */
 	char *ptr;           /* pointer to argument */

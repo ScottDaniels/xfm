@@ -81,12 +81,13 @@ Contributions to this source repository are assumed published with the same lice
 *            7 Apr 94- To allow : to stop processing.
 *            3 Apr 97- To use new AFI tokenizer!
 *            8 Apr 97- To support `xxx xxx` tokens in a parm list 
-*	    19 Oct 06- Addded parm string to TRACE.
-*		22 Nov 2006 - corrected escape of [
-*		20 Oct 2007 - corrected handling of backquotes
+*			19 Oct 06- Addded parm string to TRACE.
+*			22 Nov 2006 - corrected escape of [
+*			20 Oct 2007 - corrected handling of backquotes
+*			17 Jul 2016 - Changes for better prototype generation.
 ****************************************************************************
 */
-int FMgetparm( char **buf )
+extern int FMgetparm( char **buf )
 {
 	int i;                  /* loop index */
 	int j;

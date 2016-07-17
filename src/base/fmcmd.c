@@ -31,6 +31,7 @@ Contributions to this source repository are assumed published with the same lice
 =================================================================================================
 */
 
+///  DEPRECATED ---   each type (pfm, tfm, etc) should provide this.
 
 #include <stdio.h>     
 #include <stdlib.h>
@@ -80,10 +81,10 @@ Contributions to this source repository are assumed published with the same lice
 *                           left margin; correct multi column problem
 *             14 Jan 2000 - Added block center capability as it is great in HFM
 *			  13 Nov 2007 - Added runstop support
+*				17 Jul 2016 - Changes for better prototype generation.
 **************************************************************************
 */
-int FMcmd( buf )
-char *buf;
+extern int FMcmd( char* buf )
 {
 	int cmd;                  /* command converted to integer for switch */
 	int i;                    /* temp integer */

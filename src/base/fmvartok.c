@@ -69,10 +69,10 @@ Contributions to this source repository are assumed published with the same lice
 *               encountered. This allows empty commands in variables (commands
 *               that may allow user to omit parameters)
 *             28 Jul 1994 - To free the var buffer when end is reached.
+*				17 Jul 2016 - Changes for better prototype generation.
 ***************************************************************************
 */
-int FMvartok( buf )
- char **buf;
+extern int FMvartok( char ** buf )
 {
  int tokstart;            /* offset in expansion string where token starts */
 

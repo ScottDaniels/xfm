@@ -64,9 +64,10 @@ Contributions to this source repository are assumed published with the same lice
 *
 *   Modified:  25 Mar 1993 - To convert to postscript.
 *               7 Apr 1994 - To allow getpts routine to get & convert parm
+*				17 Jul 2016 - Changes for better prototype generation.
 ***************************************************************************
 */
-void FMtopmar( )
+extern void FMtopmar( void )
 {
  char *buf;          /* pointer at the token */
  int len;

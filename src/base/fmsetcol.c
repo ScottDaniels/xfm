@@ -62,11 +62,11 @@ Contributions to this source repository are assumed published with the same lice
 *  Returns:  Nothing
 *  Date:     13 July 1994
 *  Author:   E. Scott Daniels
+*  Mods:	17 Jul 2016 - Changes for better prototype generation.
 *
 ******************************************************************************
 */
-void FMsetcol( gutter )
- int gutter;
+extern void FMsetcol( int gutter )
 {
  struct col_blk *cptr;         /* pointer into column list */
  int i;

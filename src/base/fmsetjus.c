@@ -62,9 +62,10 @@ Contributions to this source repository are assumed published with the same lice
 *   Date:      10 December 1988
 *   Author:    E. Scott Daniels
 *
+*	Modified:	17 Jul 2016 - Changes for better prototype generation.
 ***************************************************************************
 */
-void FMsetjust( )
+extern void FMsetjust( void )
 {
  char *buf;          /* pointer at the token */
  int len;

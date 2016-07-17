@@ -63,9 +63,10 @@ Contributions to this source repository are assumed published with the same lice
 *  Author:   E. Scott Daniels
 *
 *  Modified: 
+*				17 Jul 2016 - Changes for better prototype generation.
 ****************************************************************************
 */
-void FMcomma( )
+extern void FMcomma(  void )
 {
 	char *buf;               /* parameter pointer */
 	char	*p;

@@ -68,11 +68,10 @@ Contributions to this source repository are assumed published with the same lice
 *  Modified: 10 Dec 1992 - To use AFI routines for ansi compatability
 *            21 Feb 1994 - To use rightxy instead of right
 *			  09 Oct 2012 - Increased buf size to allow 1024 character header/footers
+*				17 Jul 2016 - Changes for better prototype generation.
 ****************************************************************************
 */
-void FMrunout( page, shift )
- int page;
- int shift;
+extern void FMrunout( int page, int shift )
 {
  char *cmd = "show";      /* default to show command with header text info */
  int y;                   /* spot for writing the footer/page number info */

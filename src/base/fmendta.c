@@ -62,12 +62,13 @@ Contributions to this source repository are assumed published with the same lice
 *  Returns:  Nothing.
 *  Date:     18 April 1997
 *  Author:   E. Scott Daniels
+*  Mods:	17 Jul 2016 - Changes for better prototype generation.
 *  
 *  command syntax: .et
 *
 ***************************************************************************
 */
-void FMendtable( )
+extern void FMendtable(  void )
 {
  AFIwrite( ofile, "\\cell \\intbl \\row \\pard}" );
 

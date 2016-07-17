@@ -66,9 +66,10 @@ Contributions to this source repository are assumed published with the same lice
 *
 *   Modified:	01 Jul 1994 - To convert to rfm
 *				08 Jul 2013 - Better error message.
+*				17 Jul 2016 - Changes for better prototype generation.
 ***************************************************************************
 */
-void FMll( )
+extern void FMll(  void )
 {
 	char *buf;          /* pointer at the token */
 	char obuf[256];

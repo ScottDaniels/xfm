@@ -34,6 +34,7 @@ Mnemonic: symtab.c
 Abstract: Basic symbol table routines.
 Date:     11 Feb 2000
 Author:   E. Scott Daniels
+Mods:		17 Jul 2016 - Changes for better prototype generation.
 -------------------------------------------------------------------------
 */
 
@@ -158,7 +159,7 @@ static int putin( Sym_tab *table, char *name, unsigned int class, void *val, int
 /* --- public functions ---- */
 
 /* delete all elements in the table */
-void sym_clear( Sym_tab *table )
+extern void sym_clear( Sym_tab *table )
 {
 	Sym_ele **sym_tab;
 	int i; 
@@ -170,7 +171,7 @@ void sym_clear( Sym_tab *table )
 			del_ele( table, i, sym_tab[i] );
 }
 
-void sym_dump( Sym_tab *table )
+extern void sym_dump( Sym_tab *table )
 {
 	int i; 
 	Sym_ele *eptr;
@@ -193,7 +194,7 @@ void sym_dump( Sym_tab *table )
 
 /* allocate a table the size requested - best if size is prime */
 /* returns a pointer to the management block */
-Sym_tab *sym_alloc( int size )
+extern Sym_tab *sym_alloc( int size )
 {
 	int i;
 	Sym_tab *table;
@@ -224,7 +225,7 @@ Sym_tab *sym_alloc( int size )
 }
 
 /* delete a named element */
-void sym_del( Sym_tab *table, unsigned char *name, unsigned int class )
+extern void sym_del( Sym_tab *table, unsigned char *name, unsigned int class )
 {
 	Sym_ele **sym_tab;
 	Sym_ele *eptr;    /* pointer into hash table */ 
@@ -240,7 +241,7 @@ void sym_del( Sym_tab *table, unsigned char *name, unsigned int class )
 }
 
 
-void *sym_get( Sym_tab *table, unsigned char *name, unsigned int class )
+extern void *sym_get( Sym_tab *table, unsigned char *name, unsigned int class )
 {
 	Sym_ele **sym_tab;
 	Sym_ele *eptr;    /* pointer into hash table */ 
@@ -274,7 +275,7 @@ call, or delete the entry!
 /* put an element, replace if there */
 /* creates local copy of data (assumes string) */
 /* returns 1 if new, 0 if existed */
-int sym_put( Sym_tab *table, unsigned char *name, unsigned int class, void *val )
+extern int sym_put( Sym_tab *table, unsigned char *name, unsigned int class, void *val )
 {
 	return putin( table, name, class, val, FL_COPY );
 }
@@ -288,7 +289,7 @@ int sym_map( Sym_tab *table, unsigned char *name, unsigned int class, void *val 
 }
 
 /* dump some statistics to stderr dev. Higher level is the more info dumpped */
-void sym_stats( Sym_tab *table, int level )
+extern void sym_stats( Sym_tab *table, int level )
 {
 	Sym_ele *eptr;    /* pointer into the elements */
 	Sym_ele **sym_tab;
@@ -345,7 +346,7 @@ void sym_stats( Sym_tab *table, int level )
 	table->size, table->inhabitants, table->size - empty, table->deaths, max_chain, twoper );
 }
 
-void sym_foreach_class( Sym_tab *st, unsigned int class, void (* user_fun)(), void *user_data )
+extern void sym_foreach_class( Sym_tab *st, unsigned int class, void (* user_fun)(), void *user_data )
 {
 	Sym_ele **list;
 	Sym_ele *se;

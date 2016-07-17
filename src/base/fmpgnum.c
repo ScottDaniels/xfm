@@ -66,9 +66,10 @@ Contributions to this source repository are assumed published with the same lice
 *
 *   Mod:		29 Aug 2011 -- Added center, format and noline support
 *
+*				17 Jul 2016 - Changes for better prototype generation.
 ***************************************************************************
 */
-void FMpgnum( )
+extern void FMpgnum(  void )
 {
  	char *buf;          /* pointer at the token */
  	int len;            /* length of parameter entered */

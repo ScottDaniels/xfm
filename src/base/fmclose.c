@@ -67,11 +67,12 @@ Contributions to this source repository are assumed published with the same lice
 *   Modified: 16 Mar 1990 - Not to use FI routine.. there must be a bug
 *                           in them somewhere.
 *             10 Dec 1992 - To use AFI fileio (used ansi std fread rtns)
-
+*
 *              3 Apr 1997 - Prep for phase out
+*				17 Jul 2016 - Changes for better prototype generation.
 ************************************************************************
 */
-void FMclose( )
+extern void FMclose(  void )
 {
  char buf[100];        /* buffer to report number records in file */
 

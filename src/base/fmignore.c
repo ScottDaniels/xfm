@@ -55,9 +55,10 @@ Contributions to this source repository are assumed published with the same lice
 /*
   Mnemonic: 	FMingnore
   Abstract: 	Ignores any other tokens until a newline (or simulated newline) 
-  Author: 	E. Scott Daniels
+  Author: 		E. Scott Daniels
+  Mods:			17 Jul 2016 - Changes for better prototype generation.
 */
-void FMignore( )
+extern void FMignore(  void )
 {
 	char *ptr;
 

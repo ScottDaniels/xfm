@@ -35,8 +35,9 @@ Contributions to this source repository are assumed published with the same lice
 * ---------------------------------------------------------------------------
 *  Mnemonic:	fmindex
 *  Abstract:	Support for adding an index to the document
-*  Date:	19 Oct 2007
-*  Author: 	E. Scott Daniels
+*  Date:		19 Oct 2007
+*  Author: 		E. Scott Daniels
+*  Mods: 		17 Jul 2016 - Changes for better prototype generation.
 *
 *	.ix snare word [word...]	# add words to list for index
 *	.ix synonym existing new	# add new as a synonym for existng
@@ -55,6 +56,7 @@ Contributions to this source repository are assumed published with the same lice
 
 #include <stdio.h>     
 #include <stdlib.h>
+#include <unistd.h>
 #include <fcntl.h>    
 #include <ctype.h>   
 #include <string.h> 
@@ -108,7 +110,7 @@ static void insert( )
 }
 
 
-void fmindex( )
+extern void fmindex(  void )
 { 
 	char	*buf;
 	int 	len;

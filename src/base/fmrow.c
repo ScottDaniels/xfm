@@ -66,10 +66,11 @@ Contributions to this source repository are assumed published with the same lice
 *  command syntax:  .tr
 *
 *
-*  Modified: 5 Jun 1997 - To set par flag and update cury for each row
+*  Modified:	5 Jun 1997 - To set par flag and update cury for each row
+*				17 Jul 2016 - Changes for better prototype generation.
 ***************************************************************************
 */
-void FMrow( int option )
+extern void FMrow( int option )
 {
  char obuf[256];       /* buffer to build output in */
  int i;                /* loop index */ 

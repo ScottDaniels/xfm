@@ -63,10 +63,11 @@ Contributions to this source repository are assumed published with the same lice
 *   Author:    E. Scott Daniels
 *   Modified:  29 Jun 1994 - To support rfm conversion
 *              18 Jul 1994 - To allow listitems in boxes
+*				17 Jul 2016 - Changes for better prototype generation.
 *
 ***************************************************************************
 */
-void FMspace( )
+extern void FMspace(  void )
 {
  char *buf;          /* pointer at the token */
  int len;
@@ -92,15 +93,8 @@ void FMspace( )
     AFIwrite( ofile, "\\par" );    /* just end paragraph if not in list item */
   }
 
-#ifdef KEEP
- if( flags2 & F2_BOX )             /* if in a box then write box stuff */
-	FMbxstart( FALSE, 0, 0, 0, 0 );
-#endif
-
  for( ; len > 0; len-- )          /* skip lines */
-  AFIwrite( ofile, "\\par" );     /* force a new "paragraph" for each blank */
+  AFIwrite( ofile, "\n" );		    /* force a new "paragraph" for each blank */
 
-
- /*flags2 |= F2_SETFONT;    */      /* force flush to set up stuff */
  rflags |= RF_PAR;    /* turn on par flag */
 }               /* FMspace */

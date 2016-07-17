@@ -72,10 +72,12 @@ Contributions to this source repository are assumed published with the same lice
 *              15 Dec 1992 - To convert to postscript and AFI
 *               7 Apr 1994 - To setup for TOC now that linesize/cd are points
 *               6 Sep 1994 - Conversion for RFM
+*				17 Jul 2016 - Changes for better prototype generation.
+
 *	.tc [on|off] (default is on)
 ***************************************************************************
 */
-void FMtc( )
+extern void FMtc( void )
 {
 	char *buf;           /* pointer at the token */
 	int len;             /* len of parameter entered */

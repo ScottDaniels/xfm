@@ -74,6 +74,7 @@ Contributions to this source repository are assumed published with the same lice
 *  Returns:  Nothing.
 *  Date:     24 March 1994
 *  Author:   E. Scott Daniels
+*  Mods:	17 Jul 2016 - Changes for better prototype generation.
 *
 * .ep [l=n] [x=n] [center|close|stretch|proportional] [noadvy]
 *     l=10i  -length to reserve is 10 inches
@@ -87,7 +88,7 @@ Contributions to this source repository are assumed published with the same lice
 *     proport-keep drawing proportional in x and y direction
 *****************************************************************************
 */
-void FMep( )
+extern void FMep( void  )
 {
  float xscale = 1.0;            /* scale calculation variables */
  float yscale = 1.0;

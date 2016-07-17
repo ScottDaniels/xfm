@@ -71,9 +71,10 @@ Contributions to this source repository are assumed published with the same lice
 *				04 Oct 1994 - To reduce amount skipped in y direction.
 *				03 Jul 2016 - Fixed blank line bug, now handles tabs. Add support
 *					for tabs.
+*				17 Jul 2016 - Changes for better prototype generation.
 *******************************************************************************
 */
-void FMnofmt( )
+extern void FMnofmt(  void )
 {
 	int status;            /* status of the read */
 	int i;                 /* loop index */

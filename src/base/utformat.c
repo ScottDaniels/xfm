@@ -85,15 +85,11 @@ Contributions to this source repository are assumed published with the same lice
 *  Date:     27 December 1993
 *  Author:   E. Scott Daniels
 *
-*  Modified: 10 Feb 1995 - To free toks array if we allocated it
+*  Modified:	10 Feb 1995 - To free toks array if we allocated it
+*				17 Jul 2016 - Changes for better prototype generation.
 ***************************************************************************
 */
-UTformat( inbuf, inlist, outbuf, control, delim )
- char *inbuf;
- char **inlist;
- char *outbuf;
- char *control;
- char *delim;
+extern void UTformat( char* inbuf, char** inlist, char* outbuf, char* control, char* delim )
 {
  int fieldsize = 0; /* minimum field size to display a token in */
  int i;             /* loop indexes - token vars */

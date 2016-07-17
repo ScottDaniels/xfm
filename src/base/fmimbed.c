@@ -63,18 +63,19 @@ Contributions to this source repository are assumed published with the same lice
 *  Date:     15 November 1988
 *  Author:   E. Scott Daniels
 *  Modified: 	25 Aug 2000 - to add NF option
-*		13 Nov 207 - Added run/stop command to stream to mark pop of 
-*			the fmrun() command and return to this function. Allows
-*			this rouitine to drive the imbed which is needed
-*			for things like oneject that imbed files and push/pop the 
-*			environment before/after the file. Basically negates the 
-*			AFIchain() feature where the imbed file was pushed onto 
-*			the stack of open files. c'est la vie! 
+*			13 Nov 207 - Added run/stop command to stream to mark pop of 
+*				the fmrun() command and return to this function. Allows
+*				this rouitine to drive the imbed which is needed
+*				for things like oneject that imbed files and push/pop the 
+*				environment before/after the file. Basically negates the 
+*				AFIchain() feature where the imbed file was pushed onto 
+*				the stack of open files. c'est la vie! 
+*			17 Jul 2016 - Changes for better prototype generation.
 *
 * .im [nf] filename
 ***************************************************************************
 */
-void FMimbed( )
+extern void FMimbed(  void )
 {
 	char *fp = 0;
 	char *buf;      /* pointer into the imput buffer of the fname token */

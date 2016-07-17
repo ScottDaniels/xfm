@@ -69,9 +69,10 @@ Contributions to this source repository are assumed published with the same lice
 *  Author:   E. Scott Daniels
 *
 *  Modified: 13 Jul 1994 - To convert to rfm.
+*				17 Jul 2016 - Changes for better prototype generation.
 ******************************************************************************
 */
-void FMsetx( )
+extern void FMsetx(  void )
 {
  char *buf;            /* pointer at the parameter user has entered */
  int len;              /* length of parameter entered */

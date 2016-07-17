@@ -63,14 +63,15 @@ Contributions to this source repository are assumed published with the same lice
 *  Returns:  Nothing.
 *  Date:     18 April 1997
 *  Author:   E. Scott Daniels
-*  Modified: 15 Feb 1999 - to support w=xx hfm table width
+*  Modified:	15 Feb 1999 - to support w=xx hfm table width
+*				17 Jul 2016 - Changes for better prototype generation.
 *
 *  Command syntax:  .ta [b] [w=xx] <width1> <width2> ... <widthn>
 *
 *****************************************************************************
 */
 
-void FMtable( )
+extern void FMtable(  void )
 {
  char *buf;        /* pointer at next input parameter */
  int len;          /* length of token */

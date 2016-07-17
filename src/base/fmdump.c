@@ -52,7 +52,7 @@ Contributions to this source repository are assumed published with the same lice
 #include "fmstruct.h"              /* structure definitions */
 #include "fmproto.h"
 
-fmdump( char *ptr )
+extern void fmdump( char *ptr )
 {
  int i;
 

@@ -66,12 +66,11 @@ Contributions to this source repository are assumed published with the same lice
 *  Returns:  nothing/
 *  Author:   E. Scott Daniels
 *
-*  Modified: 19 Jul 1994 - To allow list items in boxes
+*  Modified:	19 Jul 1994 - To allow list items in boxes
+*				17 Jul 2016 - Changes for better prototype generation.
 ****************************************************************************
 */
-void FMpara( fi, opt )
- int fi;
- int opt;
+extern void FMpara( int fi, int opt )
 {
  char buf[81];        /* output build buffer */
  int right;           /* value for right shift */

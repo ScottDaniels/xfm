@@ -66,9 +66,10 @@ Contributions to this source repository are assumed published with the same lice
 *  Modified: 04 Dec 1992 - To call flush if spaces are 0
 *            10 Dec 1992 - To use AFI routines for ansi compatability
 *             6 Apr 1994 - To take advantage of linelen being points now
+*				17 Jul 2016 - Changes for better prototype generation.
 *****************************************************************************
 */
-void FMjustify( )
+extern void FMjustify(  void )
 {
  int spaces;        /* number of blank spaces */
  int i;             /* loop index */

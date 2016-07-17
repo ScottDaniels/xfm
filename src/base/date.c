@@ -42,7 +42,7 @@
 #include <time.h>
 #include <stdlib.h>
 
-void get_mdy( int *m, int *d, int *y )
+extern void get_mdy( int *m, int *d, int *y )
 {
  time_t t;						/* pointer returned by clock, filled in by time */
  struct tm *cur_time;			/* structure for localtime call to fill in */
@@ -61,7 +61,7 @@ void get_mdy( int *m, int *d, int *y )
 	Return time in hours, minutes, seconds by writing to user supplied
 	addresses.
 */
-void get_times( int *h, int *m, int *s )
+extern void get_times( int *h, int *m, int *s )
 {
  time_t t;               /* pointer returned by clock, filled in by time */
  struct tm *cur_time;         /* structure for localtime call to fill in */

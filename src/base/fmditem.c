@@ -69,11 +69,12 @@ Contributions to this source repository are assumed published with the same lice
 *   Date:      1 January 1989 (Happy New Year!)
 *   Author:    E. Scott Daniels
 *   Modified:   1 Jul 1994 - To convert to rfm.
+*				17 Jul 2016 - Changes for better prototype generation.
 *
 *   Copyright (c) 1994  E. Scott Daniels. All rights reserved.
 ***************************************************************************
 */
-void FMditem( )
+extern void FMditem( void )
 {
  char *buf;           /* pointer at the token */
  char *oldfont;       /* holder of current font when changing font */

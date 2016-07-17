@@ -67,9 +67,10 @@ Contributions to this source repository are assumed published with the same lice
 *    Modified: 29 Jun 1994 - To convert to rfm
 *               8 Dec 1994 - To put a para mark before page if not there
 *                            and if not in a list item list.
+*				17 Jul 2016 - Changes for better prototype generation.
 *****************************************************************************
 */
-void FMpflush( )
+extern void FMpflush(  void )
 {
  int diff;                   /* difference between default lmar and cur lmar*/
  int diffh;                  /* difference between default lmar and header */

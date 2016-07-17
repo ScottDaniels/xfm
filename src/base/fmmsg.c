@@ -76,6 +76,7 @@ Contributions to this source repository are assumed published with the same lice
 *				15 Dec 2005 - To write messages to stderr rather than stdout
 *				08 Jul 2013 - A bit of cleanup and to fix spacing in message. 
 *				01 Jan 2016 - Copyright change.
+*				17 Jul 2016 - Changes for better prototype generation.
 ***************************************************************************
 */
 
@@ -106,7 +107,7 @@ Contributions to this source repository are assumed published with the same lice
   "  "  };
 
 
-void FMmsg( int msg, char *buf )
+extern void FMmsg( int msg, char *buf )
 {
 	char	wbuf[1024];
 	char *ptr;              	/*  pointer at the message */

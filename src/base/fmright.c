@@ -62,12 +62,13 @@ Contributions to this source repository are assumed published with the same lice
 *  Returns:  Nothing.
 *  Date:     28 July 1994
 *  Author:   E. Scott Daniels
+*	Mods:	17 Jul 2016 - Changes for better prototype generation.
 *
 *            .ri <text to place in doc> <eos>
 *
 *****************************************************************************
 */
-void FMright( )
+extern void FMright(  void )
 {
  char *buf;          /* pointer at parameters */
  int len;            /* length of the token */

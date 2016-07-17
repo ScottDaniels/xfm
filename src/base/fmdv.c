@@ -76,6 +76,7 @@ Contributions to this source repository are assumed published with the same lice
 *            21 Nov 1999 - To make string not use fixed buffer size
 *			12 Jan 2002 - To convert to symbol table 
 *			21 Aug 2011 - Added support for internal setting. 
+*				17 Jul 2016 - Changes for better prototype generation.
 ****************************************************************************
 */
 
@@ -84,7 +85,7 @@ Contributions to this source repository are assumed published with the same lice
    command line read.
 	2011/08/21
 */
-void FMset_var( char *vname, char *buf )
+extern void FMset_var( char *vname, char *buf )
 {
 	char *value = NULL;			/* dup buffer to set name to */
 	char *ovalue = NULL;	 	/* original value */
@@ -103,7 +104,7 @@ void FMset_var( char *vname, char *buf )
 }
 
 /* parses input buffer for .dv command and defines the variable */
-void FMdv( )
+extern void FMdv( void )
 {
 	char *buf;               /* parameter pointer */
 	char *value;	 	/* pointer to current value - if prev defined */

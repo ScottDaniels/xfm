@@ -67,9 +67,10 @@ Contributions to this source repository are assumed published with the same lice
 *              6 Dec 1994 - To reset font even if nothing to write.
 *              7 Dec 1994 - To prevent par mark at page top if in li list
 *             14 Dec 1994 - To prevent par mark at top if in di list
+*				17 Jul 2016 - Changes for better prototype generation.
 ****************************************************************************
 */
-int FMflush( )
+extern int FMflush( void )
 {
  int len;           /* length of the output string */
  char fbuf[512];    /* buffer to build flush strings in */
@@ -92,14 +93,6 @@ int FMflush( )
  if( cury >= boty )      /* if this would take us off the page... */
   {
    FMceject( 0 );          /* move on if past the end */
-#ifdef KEEP
-commented out because it puts a para before a line and we are not
-page breaking.
-   if( rhead != NULL  &&  lilist == NULL && dlstackp == -1 )
-    {                           /* if a header - insert a blank line at top */
-     AFIwrite( ofile, "\\par" );      /* if not in a list */
-    }
-#endif
   }
 
  if( (flags2 & (F2_CENTER | F2_RIGHT | F2_TRUECHAR)) == 0 )  /* no flags */

@@ -64,9 +64,10 @@ Contributions to this source repository are assumed published with the same lice
 *
 *  Modified: 19 Jul 1994 - To allow list items in boxes
 *             8 Dec 1995 - To use font in list item block
+*				17 Jul 2016 - Changes for better prototype generation.
 ******************************************************************************
 */
-void FMlisti( )
+extern void FMlisti(  void )
 {
  struct li_blk *lptr;         /* pointer into listitem list */
  char buf[81];                /* output buffer */

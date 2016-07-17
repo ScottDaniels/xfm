@@ -70,9 +70,10 @@ Contributions to this source repository are assumed published with the same lice
 * Author:   E. Scott Daniels
 *
 * Mod:		13 Jul 2011 -- Added code to skip parameters 
+*				17 Jul 2016 - Changes for better prototype generation.
 ****************************************************************************
 */
-void FMsection( )
+extern void FMsection(  void )
 {
 	char *ptr;
 

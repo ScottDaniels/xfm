@@ -67,9 +67,10 @@ Contributions to this source repository are assumed published with the same lice
 *  Author:   E. Scott Daniels
 *
 *  Modified: 27 Jul 1994 - To allow nested ifs in else clauses
+*				17 Jul 2016 - Changes for better prototype generation.
 *****************************************************************************
 */
-void FMelse( )
+extern void FMelse(  void )
 {
  char *tok;              /* pointer to the token */
  int nested = 0;         /* number of nested levels we must resolve */

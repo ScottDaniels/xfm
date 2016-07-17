@@ -68,10 +68,10 @@ Contributions to this source repository are assumed published with the same lice
 *                         bug.
 *           10 Dev 1990 - To use AFI fileio routines (using ansi std f rtns)
 *            3 Apr 1997 - To convert for AFI tokenizer!
+*				17 Jul 2016 - Changes for better prototype generation.
 ***************************************************************************
 */
-int FMread( buf )
- char *buf;
+extern int FMread( char* buf )
 {
  int status = ERROR;    /* read status */
 

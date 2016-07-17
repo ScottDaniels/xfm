@@ -58,14 +58,15 @@ Contributions to this source repository are assumed published with the same lice
 *		device.
 *  Date: 	13 January 2002
 *  Author: 	E. Scott Daniels
+*	Mods:	17 Jul 2016 - Changes for better prototype generation.
 * -------------------------------------------------------------------------
 */
-void show_a_var( Sym_tab *st, Sym_ele *se, char *name, char *value, char *data )
+static void show_a_var( Sym_tab *st, Sym_ele *se, char *name, char *value, char *data )
 {
 	fprintf( stderr, "showvar: %s = (%s)\n", name, value );
 }
 
-FMshowvars( )
+extern void FMshowvars(  void )
 {
 	sym_foreach_class( symtab, 0, show_a_var, NULL );
 }

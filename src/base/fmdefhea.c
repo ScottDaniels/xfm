@@ -77,10 +77,11 @@ Contributions to this source repository are assumed published with the same lice
 *                          to be set/reset.
 *            17 Aug 1994 - To allow for header margin relative offset value
 *            15 Dec 1994 - To all skip values up to 99.
-*		23 Oct 2007 - Corrected pars error on t=
+*			23 Oct 2007 - Corrected pars error on t=
+*				17 Jul 2016 - Changes for better prototype generation.
 *****************************************************************************
 */
-void FMdefheader( )
+extern void FMdefheader(  void )
 {
 	char *buf;                /* pointer at next parm to parse */
 	int level;                /* current level we are working with */

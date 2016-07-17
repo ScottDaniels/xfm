@@ -64,9 +64,10 @@ Contributions to this source repository are assumed published with the same lice
 *  Author:   E. Scott Daniels
 *
 *  Modified: 10 Dec 1992 - To use AFI routines for ansi compatability
+*				17 Jul 2016 - Changes for better prototype generation.
 ******************************************************************************
 */
-void FMsety( )
+extern void FMsety( void )
 {
  char *buf;    /* pointer at the parameter user has entered */
  int i;        /* new x position */

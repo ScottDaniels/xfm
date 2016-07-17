@@ -60,12 +60,13 @@ Contributions to this source repository are assumed published with the same lice
 *		the rest of the tokens on the command line.
 * Date: 	18 Nov 2001
 * Author: 	E. Scott Daniels
-*		10 Apr 2007 - Memory leak cleanup 
+*		  		10 Apr 2007 - Memory leak cleanup 
+*				17 Jul 2016 - Changes for better prototype generation.
 *
 * -------------------------------------------------------------
 */
 
-void FMrun( )
+extern void FMrun( void )
 {
 	char	*buf = NULL;
 	int	len = 1;

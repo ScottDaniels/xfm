@@ -68,9 +68,10 @@ Contributions to this source repository are assumed published with the same lice
 *              29 Oct 1992 - To null pointer when removed and to write EOS
 *                            inside of the array.
 *              27 Nov 1992 - To remove reference to rheadlen
+*				17 Jul 2016 - Changes for better prototype generation.
 ***************************************************************************
 */
-FMrhead( )
+extern void FMrhead( void )
 {
  char *buf;          /* pointer at the token */
  int i;

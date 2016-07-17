@@ -72,10 +72,10 @@ Contributions to this source repository are assumed published with the same lice
 *  Author:   E. Scott Daniels
 *
 *  Modified:  1 Jul 1994 - To convet to rfm
+*				17 Jul 2016 - Changes for better prototype generation.
 ******************************************************************************
 */
-void FMendlist( option )
- int option;
+extern void FMendlist( int option )
 {
  struct li_blk *liptr;       /* pointer at list item block to delete */
  char outbuf[80];            /* buffer to build output string in */

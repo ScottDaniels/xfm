@@ -72,10 +72,11 @@ Contributions to this source repository are assumed published with the same lice
 *  Date:     15 October 192
 *  Author:   E. Scott Daniels
 *  Modified:  1 July 1994 - To convert to rtf
+*				17 Jul 2016 - Changes for better prototype generation.
 *****************************************************************************
 */
 /*void FMbxstart( option )*/
-void FMbxstart( int option, char *colour, int border, int width, char *align )
+extern void FMbxstart( int option, char *colour, int border, int width, char *align )
 {
  int len;          /* length of paramters passed in */
  char *buf;        /* pointer to next option to parse */

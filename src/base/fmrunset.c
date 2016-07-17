@@ -67,10 +67,11 @@ Contributions to this source repository are assumed published with the same lice
 *  Date:     11 July 1994
 *  Author:   E. Scott Daniels
 *
-*  Modified: 12 Jul 1994 - To allow page number and footer.
+*  Modified:	12 Jul 1994 - To allow page number and footer.
+*				17 Jul 2016 - Changes for better prototype generation.
 ******************************************************************************
 */
-void FMrunset( )
+extern void FMrunset( void )
 {
  int right;               /* value for right indent of header */
  char obuf[81];           /* work buffer for output */

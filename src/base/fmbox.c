@@ -63,14 +63,16 @@ Contributions to this source repository are assumed published with the same lice
 * Date:     Original 5 May 1989 Rewritten for Postscript 15 October 1992
 * Author:   E. Scott Daniels
 *
-* Modified: 11 Nov 1992 - To call flush before start and end
-*             so we dont flush on an h on/off call.
+* Modified: 	11 Nov 1992 - To call flush before start and end
+*             		so we dont flush on an h on/off call.
+*				17 Jul 2016 - Changes for better prototype generation.
+
 * .bx {start | end} [H] <vert col1> <vert col2>... <vert col10>
 *      H - draw a horizontal line after each line of text
 * .bx H {on | off} start/stop drawing horizontal lines
 ****************************************************************************
 */
-void FMbox( )
+extern void FMbox(  void )
 {
  int len;        /* length of parameter entered on .bx command */
  char *buf;      /* pointer at the input buffer information */

@@ -71,10 +71,10 @@ Contributions to this source repository are assumed published with the same lice
 *            10 Jun 1997 - To add TIME command
 *                          To add FRAC command
 *                          To add INT command
+*				17 Jul 2016 - Changes for better prototype generation.
 **************************************************************************
 */
-int FMevalex( rbuf )
- char *rbuf;
+extern int FMevalex( char* rbuf )
 {
  int i;             /* integer value */
  int sp = 0;        /* stack pointer */
@@ -88,7 +88,7 @@ int FMevalex( rbuf )
 
  stack[0] = 0;
 
-while( FMgetparm( &buf ) ) 
+ while( FMgetparm( &buf ) ) 
   {
 	TRACE( 3, "expr: working on (%s)\n", buf );
 

@@ -77,9 +77,10 @@ Contributions to this source repository are assumed published with the same lice
 *					issues. now accepts x1= x2= parameters if user really
 *					wants to do this. Should cause less headaches
 *			06 Jul 2013 - negative p2 value now supported.
+*				17 Jul 2016 - Changes for better prototype generation.
 *****************************************************************************
 */
-void FMcenter( )
+extern void FMcenter(  void )
 {
 	char *buf;          /* pointer at parameters */
 	int i;              /* length of the token */

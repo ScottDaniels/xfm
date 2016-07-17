@@ -68,12 +68,11 @@ Contributions to this source repository are assumed published with the same lice
 *   Returns:   Nothing.
 *   Date:      6 June 1993
 *   Author:    E. Scott Daniels
+*	Mods: 		17 Jul 2016 - Changes for better prototype generation.
 *
 ***************************************************************************
 */
-void FMsetstr( string, slen )
- char **string;
- int slen;
+extern void FMsetstr( char **string, int slen )
 {
  char *buf;          /* pointer at the token */
  char *lstring;      /* local pointer at the string */

@@ -64,10 +64,11 @@ Contributions to this source repository are assumed published with the same lice
 *  Author:   E. Scott Daniels
 *
 *  Modified: 
+*				17 Jul 2016 - Changes for better prototype generation.
 *****************************************************************************
 */
 
-char *FMcollect( )
+extern char *FMcollect(  void )
 {
 	char	buf[8192];
 	int	blen = 0;

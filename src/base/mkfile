@@ -34,7 +34,7 @@ libs = -L../afileio -lafi${gflag:-}
 
 # source for the lib
 src = fmaddtok fmasis fmbd fmbeglst fmbox fmbxend fmbxst fmcapture fmccol fmcd fmceject \
-	fmcenter fmclose fmcmd fmcollect fmcomma fmcpage fmdefhea fmditem fmdo fmdummy fmdump \
+	fmcenter fmclose fmcollect fmcomma fmcpage fmdefhea fmditem fmdo fmdump \
 	fmdv fmelse fmendlis fmendta fmep fmevalex fmfigure fmflush fmformat fmgetpar fmgetpts \
 	fmgettok fmgetval fmheader fmhn fmif fmignore fmimbed fmindent fmindex fminit fmjump \
 	fmjustif fmline fmlisti fmll fmmsg fmnofmt fmopen fmpara fmpflush fmpgnum fmread fmrfoot \
