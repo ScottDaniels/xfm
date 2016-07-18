@@ -58,12 +58,13 @@ Contributions to this source repository are assumed published with the same lice
 *  Abstract: Start  the next cell
 *  Date:     22 Feb 1999 - broken out of cmd 
 *  Author:   E. Scott Daniels
+*	Mods:	17 Jul 2016 - Bring prototypes into modern era.
 * 
 *  .cl [c=bgcolour] [t=fgcolour] [s=span-cols] [a=align-type]
 * --------------------------------------------------------------------------
 */
 
-void FMcell( int parms )
+extern void FMcell( int parms )
 {
  char buf[256];
  char buf2[256];

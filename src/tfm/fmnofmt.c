@@ -73,9 +73,10 @@ Contributions to this source repository are assumed published with the same lice
 *              4 Apr 1997 - To use the new tokenizer in AFIleio!
 *             15 Apr 1997 - To return if vardelim is in first col too
 *              2 Apr 2001 - Converted back to TFM... going round and round.
+*				17 Jul 2016 - Bring prototypes into modern era.
 *******************************************************************************
 */
-void FMnofmt( )
+extern void FMnofmt( void )
 {
  char *buf;             /* work buffer */
  int status;            /* status of the read */

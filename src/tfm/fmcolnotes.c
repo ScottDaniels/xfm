@@ -33,6 +33,7 @@ Contributions to this source repository are assumed published with the same lice
 
 #include <stdio.h>     
 #include <stdlib.h>
+#include <unistd.h>
 #include <fcntl.h>    
 #include <ctype.h>   
 #include <string.h> 
@@ -50,6 +51,7 @@ Contributions to this source repository are assumed published with the same lice
 #include "fmcmds.h"
 #include "fmstruct.h"              /* structure definitions */
 #include "fmproto.h"
+#include "tfmproto.h"
 
 /*
 *****************************************************************************
@@ -61,6 +63,7 @@ Contributions to this source repository are assumed published with the same lice
 *  Returns:  Nothing.
 *  Date:     10 Mar 2013
 *  Author:   E. Scott Daniels
+*	Mods:	17 Jul 2016 - Bring prototypes into modern era.
 *
 * .cn start {atclose | atbot} [s=symbol] font fontsize space
 * .cn show
@@ -253,7 +256,7 @@ extern int FMcolnotes_show( int end )
 	return 1;
 }
 
-extern void FMcolnotes( )
+extern void FMcolnotes( void )
 {
 	char	*buf;
 

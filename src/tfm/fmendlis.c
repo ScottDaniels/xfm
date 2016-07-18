@@ -75,10 +75,10 @@ Contributions to this source repository are assumed published with the same lice
 *  Modified:  1 Jul 1994 - To convet to rfm
 *             6 Dec 1996 - To convert to hfm
 *            21 Mar 2001 - Tracing our roots into the soil; TFM
+*				17 Jul 2016 - Bring prototypes into modern era.
 ******************************************************************************
 */
-void FMendlist( option )
- int option;
+extern void FMendlist( int option )
 {
  struct li_blk *liptr;       /* pointer at list item block to delete */
  char outbuf[80];            /* buffer to build output string in */

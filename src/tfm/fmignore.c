@@ -59,10 +59,11 @@ Contributions to this source repository are assumed published with the same lice
 * Returns:  Nothing
 * Date:     24 March 2001
 * Author:   E. Scott Daniels
+*	Mods: 	17 Jul 2016 - Bring prototypes into modern era.
 * ------------------------------------------------------------------------
 */
 
-void FMignore( )
+extern void FMignore( void )
  {
   char *ptr;
 

@@ -71,9 +71,10 @@ Contributions to this source repository are assumed published with the same lice
 *            	28 Apr 1993 - To set same y flag if move to not necessary
 *             	06 Dec 1996 - To convert to hfm (ignore x1, x2 if there)
 *				05 Jul 2013 - Support in tfm now. 
+*				17 Jul 2016 - Bring prototypes into modern era.
 *****************************************************************************
 */
-void FMcenter( )
+extern void FMcenter( void )
 {
 	char *buf;          /* pointer at parameters */
 	int i;              /* length of the token */

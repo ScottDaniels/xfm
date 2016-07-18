@@ -78,9 +78,10 @@ Contributions to this source repository are assumed published with the same lice
 *            29 Apr 1997 - To make a one celled table for the box
 *            26 Mar 2000 - To add border and width parms
 *            23 Mar 2001 - To make inert for TFM; here we go again!
+*				17 Jul 2016 - Bring prototypes into modern era.
 *****************************************************************************
 */
-void FMbxstart( int option, char *colour, int border, int width, char *align )
+extern void FMbxstart( int option, char *colour, int border, int width, char *align )
 {
  FMignore( );    /* ignore all parameters for the command */
 }                       /* FMbxstart */

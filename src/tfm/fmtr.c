@@ -51,6 +51,7 @@ Contributions to this source repository are assumed published with the same lice
 #include "fmcmds.h"
 #include "fmstruct.h"              /* structure definitions */
 #include "fmproto.h"
+#include "tfmproto.h"
 
 /*
 ---------------------------------------------------------------------------
@@ -60,7 +61,7 @@ Contributions to this source repository are assumed published with the same lice
  syntax:   .tr [n] [c=bgcolour] [a=alignval] [v=valignvalue]
 ---------------------------------------------------------------------------
 */
-void FMtr( )
+extern void FMtr( void )
  {
    char *ptr;             /* pointer at parms */
    int len;

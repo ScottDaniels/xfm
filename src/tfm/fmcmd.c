@@ -51,6 +51,7 @@ Contributions to this source repository are assumed published with the same lice
 #include "fmcmds.h"
 #include "fmstruct.h"              /* structure definitions */
 #include "fmproto.h"
+#include "tfmproto.h"
 
 /*
 ***************************************************************************
@@ -79,14 +80,14 @@ Contributions to this source repository are assumed published with the same lice
 *            21 Feb 1994 - To handle shift value in dlstack rather than old
 *                          left margin; correct multi column problem
 *             6 Dec 1996 - Conversion to hfm
-*		21 Oct 2007 - Added support (ignnores) indexing.
-*		20 Nov 2008 - Added stoprun support and cleaned up formatting.
-*		23 Dec 2015 - Ignored pfm top gutter command; formatting fixes.
-*		01 Jan 2015 - Ignore pfm floating margin command
+*			21 Oct 2007 - Added support (ignnores) indexing.
+*			20 Nov 2008 - Added stoprun support and cleaned up formatting.
+*			23 Dec 2015 - Ignored pfm top gutter command; formatting fixes.
+*			01 Jan 2015 - Ignore pfm floating margin command
+*			17 Jul 2016 - Bring prototypes into modern era.
 **************************************************************************
 */
-int FMcmd( buf )
-char *buf;
+extern int FMcmd( char* buf )
 {
 	int cmd;                  /* command converted to integer for switch */
 	int i;                    /* temp integer */

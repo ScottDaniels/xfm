@@ -64,15 +64,16 @@ Contributions to this source repository are assumed published with the same lice
 *  Date:     12 November 1992
 *  Author:   E. Scott Daniels
 *
-*  Modified: 04 Dec 1992 - To call flush if spaces are 0
-*            10 Dec 1992 - To use AFI routines for ansi compatability
-*             6 Apr 1994 - To take advantage of linelen being points now
-*            23 Mar 2001 - Drastically modified to go back to TFM
-*			07 Jul 2013 - Cleanup 
-*			02 Jun 2015 - corrected problem with altrenateing end being 1 off.
+*  Modified: 	04 Dec 1992 - To call flush if spaces are 0
+*            	10 Dec 1992 - To use AFI routines for ansi compatability
+*             	6 Apr 1994 - To take advantage of linelen being points now
+*      	      	23 Mar 2001 - Drastically modified to go back to TFM
+*				07 Jul 2013 - Cleanup 
+*				02 Jun 2015 - corrected problem with altrenateing end being 1 off.
+*				17 Jul 2016 - Bring prototypes into modern era.
 *****************************************************************************
 */
-void FMjustify( )
+extern void FMjustify(  void )
 {
 static int direction = 0;   /* direction of travel on spaces */
 

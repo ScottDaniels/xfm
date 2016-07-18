@@ -67,9 +67,10 @@ Contributions to this source repository are assumed published with the same lice
 *             8 Dec 1995 - To use font in list item block
 *             6 Dec 1996 - To convert to hfm
 *            21 Mar 2001 - Rebirth of the original; TFM
+*				17 Jul 2016 - Bring prototypes into modern era.
 ******************************************************************************
 */
-void FMlisti( )
+extern void FMlisti( void )
 {
  struct li_blk *lptr;         /* pointer into listitem list */
  char buf[81];                /* output buffer */

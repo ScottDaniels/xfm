@@ -72,9 +72,10 @@ Contributions to this source repository are assumed published with the same lice
 *            25 Nov 1996 - Correct problems picking up f= parameter
 *             6 Dec 1996 - To convert for hfm
 *            21 Mar 2001 - Back to the thing that started it all; TFM
+*				17 Jul 2016 - Bring prototypes into modern era.
 ******************************************************************************
 */
-void FMbeglst( )
+extern void FMbeglst( void )
 {
  struct li_blk *new;     /* new allocated block */
  char *buf;              /* pointer at next tokin in buffer */

@@ -75,9 +75,10 @@ Contributions to this source repository are assumed published with the same lice
 *            29 Dec 1997 - To end the one celled centered table used to box
 *            23 Sep 2000 - To remove the ref to if in box flag
 *            23 Mar 2001 - To make inert for TFM.  Onece again we play here!
+*				17 Jul 2016 - Bring prototypes into modern era.
 *****************************************************************************
 */
-void FMbxend( )
+extern void FMbxend( void )
 {
  FMignore( );    /* ignore all parameters for the command */
 }                                                     /* FMbxend */

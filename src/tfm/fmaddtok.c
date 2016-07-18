@@ -72,11 +72,10 @@ Contributions to this source repository are assumed published with the same lice
 *                           is ignored as browser will provide.
 *             21 Mar 2001 - Ironicly back to whence we began - tfm
 *             23 Apr 2001 - To add support for .tu command
+*				17 Jul 2016 - Bring prototypes into modern era.
 *************************************************************************
 */
-void FMaddtok( buf, len )
- char *buf;
- int len;
+extern void FMaddtok( char* buf, int len )
 {
  int remain;          /* calculated space remaining before the right margin */
  int i;               /* loop index */

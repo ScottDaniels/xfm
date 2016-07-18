@@ -65,9 +65,10 @@ Contributions to this source repository are assumed published with the same lice
 *               6 Dec 1996 - To convert for hfm
 *			   15 Jan 2012 - pulled into tfm
 *				05 Jul 2013 - to handle .5 pfm style skipping -- defaults to 1
+*				17 Jul 2016 - Bring prototypes into modern era.
 ***************************************************************************
 */
-void FMspace( )
+extern void FMspace( void )
 {
 	char *buf;          /* pointer at the token */
 	int len = 1;		/* number of lines to skip */

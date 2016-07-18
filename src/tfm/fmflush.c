@@ -59,8 +59,9 @@ Contributions to this source repository are assumed published with the same lice
 *   Mnemonic: FMflush
 *   Abstract: This routine is responsible for flushing the output buffer
 *             to the output file and resetting the output buffer pointer.
+*				The return value is to be consistent with other versions and
+*				is meaningless in the context of tfm.
 *   Parms:    None.
-*   Returns:  Nothing.
 *   Date:     15 November 1988
 *   Author:   E. Scott Daniels
 *
@@ -74,9 +75,10 @@ Contributions to this source repository are assumed published with the same lice
 *             22 Jan 2000 - To strncmp for color rather than strcmp
 *             21 Mar 2001 - Revisiting an old friend; tfm conversion
 *			07 Jul 2013 - Support centered text
+*				17 Jul 2016 - Bring prototypes into modern era.
 ****************************************************************************
 */
-int FMflush( )
+extern int FMflush( void )
 {
 	char *xp;
 	char *dp;               /* pointers to walk through buffers */
@@ -129,7 +131,7 @@ int FMflush( )
 	flags2 &= ~F2_DIBUFFER;
 
 	if( optr == 0 ) 		 /* nothing to do so return */
-		return;
+		return 0;
 
 	/* copy only the cached portion of the output buffer */
 	if( ! (flags2 & F2_CENTER) )
@@ -140,4 +142,6 @@ int FMflush( )
 	
 	*obuf = EOS;             /* reset */
 	optr = 0;
+
+	return 0;
 }

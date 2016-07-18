@@ -68,9 +68,10 @@ TFM
 *            11 Apr 1994 - To check for box to see what margins to use.
 *             6 Dec 1996 - Converted for hfm
 *            21 Mar 2001 - Resurection of sorts; back to TFM!
+*				17 Jul 2016 - Bring prototypes into modern era.
 *****************************************************************************
 */
-void FMline( )
+extern void FMline( void )
 {
  char out[100];  /* output buffer */
 

@@ -74,11 +74,12 @@ Contributions to this source repository are assumed published with the same lice
 *             15 Apr 1997 - To get tokens as commands from command line.
 *             31 Mar 2000 - To init text colour
 *             21 Mar 2001 - What goes round, comes round; back to TFM!
-*	 	08 Nov 2006 - added version number, converted tocname build to sanity.
+*			 	08 Nov 2006 - added version number, converted tocname build to sanity.
+*				17 Jul 2016 - Bring prototypes into modern era.
 ******************************************************************************
 */
 
-int FMinit( int argc, char **argv )
+extern int FMinit( int argc, char **argv )
 {
 	int i;               /* loop index */
 	char *ptr;           /* pointer to argument */

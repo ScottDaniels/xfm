@@ -68,11 +68,11 @@ TFM
 *   Modified: 30 Jun 1994 - Conversion to rfm (not much changed)
 *             15 Dec 1994 - To seperate skip before/after numbers.
 *             21 Mar 2001 - Remoiving the mothballs to mod to TFM
-*	      06 Nov 2001 - Added spacing before/after 
+*		      06 Nov 2001 - Added spacing before/after 
+*				17 Jul 2016 - Bring prototypes into modern era.
 **************************************************************************
 */
-void FMheader( hptr )
- struct header_blk *hptr;
+extern void FMheader( struct header_blk* hptr )
 {
  int len;            /* len of parm token */
  int j;              /* index variables */

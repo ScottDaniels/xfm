@@ -74,14 +74,15 @@ TFM
 *              30 Apr 1997 - To convert to use tables instead of dd/di
 *              23 Mar 2001 - Back to the egg; changes for a new TFM
 *              19 Apr 2001 - To fix extra space when term was size-1 in len.
-* 	       10 Feb 2002 - To support skip (does not support format option 
+*	 	       10 Feb 2002 - To support skip (does not support format option 
 *    				because of fixed width and justification (right)
-*				issues.
+*					issues.
+*				17 Jul 2016 - Bring prototypes into modern era.
 *
 *   Copyright (c) 1994  E. Scott Daniels. All rights reserved.
 ***************************************************************************
 */
-void FMditem( )
+extern void FMditem(  void )
 {
  char *buf;           /* pointer at the token */
  char fmt[10];

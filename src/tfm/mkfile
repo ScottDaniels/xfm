@@ -27,12 +27,14 @@ libraries:N: $tfmlib
 
 libs = -L../hfm -lhfm${gflag:-} -L../base -lxfm${gflag:-} -L../afileio -lafi${gflag:-} 
 
-# source for the tfm lib
-src = fmaddtok fmbd fmbeglst fmbxend fmbxst fmcell fmcmd \
+# source for the tfm lib. fmcmd.o is NOT put into the limbrary as it isn't referenced by anything
+# here and must be pulled in on the cc command which builds fmmain.c to force its inclusion.
+src = fmaddtok fmbd fmbeglst fmbxend fmbxst fmcell \
 	fmditem fmendlis fmflush fmheader fmignore fminit \
 	fmjustif fmline fmlisti fmnofmt fmpara fmtable fmtr fmspace fmcenter fmcolnotes
 
 obj = ${src:%=%.o}
+csrc = ${src:%=%.c}
 
 $tfmlib(%.o):N:    %.o
 $tfmlib:   ${src:%=$tfmlib(%.o)}
@@ -43,5 +45,5 @@ $tfmlib:   ${src:%=$tfmlib(%.o)}
 	ranlib $tfmlib || true
 	)'
 
-tfm:	fmmain.c $obj
-	$CC $CFLAGS $IFLAGS -o tfm $obj fmmain.c $libs 
+tfm: libraries	fmmain.c fmcmd.c $obj
+	$CC $CFLAGS $IFLAGS -o tfm fmmain.c fmcmd.c -L . -ltfm${gflag} $libs 

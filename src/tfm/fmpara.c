@@ -64,9 +64,10 @@ Contributions to this source repository are assumed published with the same lice
 *  Modified: 19 Jul 1994 - To allow list items in boxes
 *             6 Dec 1996 - Converted for hfm
 *            21 Mar 2001 - Maybe you can go home - TFM mods.
+*				17 Jul 2016 - Bring prototypes into modern era.
 ****************************************************************************
 */
-void FMpara( int i, int j )
+extern void FMpara( int i, int j )
 {
  strcat( obuf, " " );     /* add tag to  output buffer */
  optr++;
