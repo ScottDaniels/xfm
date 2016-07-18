@@ -1,13 +1,13 @@
 /*
 	Mnemonic:	tfmproto.h
 	Abatract:	Protocol statements for the functions which are either unique to tfm or override
-				a function in the base library. This can be gnerated with the following command 
-				provided all external functions are written with 'external' starting in column
-				1 followed by the type an function name on the same line:
+				a function in the base library. This can be gnerated with the command following the
+				flower box provided all external functions are written with 'external' starting in 
+				column 1 followed by the type an function name on the same line.
 
-				for x in *.c; do egrep "^extern" ${x:-foo}; done |  sort -k 2,2 | sed 's/{//; s/).*/);/'
 	Author:		E. Scott Daniels
 */
+//				for x in *.c; do egrep "^extern" ${x:-foo}; done |  sort -k 2,2 | sed 's/{//; s/).*/);/'
 
 extern int FMcolnotes_show( int end );
 extern int FMflush( void );
