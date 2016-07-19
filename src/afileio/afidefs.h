@@ -75,6 +75,7 @@ int AFIpushtoken( AFIHANDLE file, char *buf );
 int AFIread( int file, char *rec );
 int AFIreadp( int file, char *buf );		/* pipe read */
 int AFIseek( int file, long offset, int loc );
+int AFIopenp( char *name, char *mode, char *path );
 void AFIsetflag( int file, int flag, int opt );
 int AFIsetsize( int file, int num );
 int AFIsettoken( AFIHANDLE file, Sym_tab *st, char *tsep, char varsym, char escsym, char *psep );
