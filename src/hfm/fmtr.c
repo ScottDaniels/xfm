@@ -50,6 +50,7 @@ Contributions to this source repository are assumed published with the same lice
 #include "fmcmds.h"
 #include "fmstruct.h"              /* structure definitions */
 #include "fmproto.h"
+#include "hfmproto.h"
 
 /*
 ---------------------------------------------------------------------------
@@ -60,9 +61,10 @@ Abstract: 	start a new row in the current table
 			The pfm r= option is ignored.
 
 Mods:		24 Dec 2015 - Added support to ignore r= optoin.
+*			18 Jul 2016 - Add consistent, and sometimes modern, prototypes.
 ---------------------------------------------------------------------------
 */
-void FMtr( )
+extern void FMtr( void )
 {
 	char *ptr;             /* pointer at parms */
 	int len;

@@ -67,6 +67,7 @@ Contributions to this source repository are assumed published with the same lice
 *            7 Dec 1996 - For hfm conversion (boxing not supported)
 *                         Horizontal line drawn instead of box
 *           26 Mar 2000 - To add w= and b= support
+*			18 Jul 2016 - Add consistent, and sometimes modern, prototypes.
 *
 * Original TFM style, not supported; use tables instead
 * .bx {start | end} [H] <vert col1> <vert col2>... <vert col10>
@@ -76,7 +77,7 @@ Contributions to this source repository are assumed published with the same lice
 * .bx end | start [b=bordersize] [w=width] [c=bgcolour] [t=textcolour]
 ****************************************************************************
 */
-void FMbox( )
+extern void FMbox( void )
 {
 	int len;        /* length of parameter entered on .bx command */
 	char *buf;      /* pointer at the input buffer information */

@@ -69,10 +69,10 @@ Contributions to this source repository are assumed published with the same lice
 *             11 Apr 1993 - To insert a newline on the last sprintf
 *              6 Sep 1994 - Conversion for RFM
 *              6 Dec 1996 - Conversion to hfm
+*			18 Jul 2016 - Add consistent, and sometimes modern, prototypes.
 ****************************************************************************
 */
-void FMtoc( level )
- int level;
+extern void FMtoc( int level )
 {
  char buf[MAX_READ];      /* buffer to build toc entry in */
  int i;                   /* pointer into buffer */

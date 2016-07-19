@@ -27,9 +27,11 @@ libraries:N: $hfmlib
 
 libs = -L../base -lxfm${gflag:-} -L../afileio -lafi${gflag:-}
 
-# source for the lib
+# source for the lib. Everything _except_ fmcmd which is referenced only by 
+# fmrun in the base library and must be known before the base library is linked.
+#
 src = fmaddtok fmbd fmbeglst fmbox fmbxend fmbxst fmcd fmceject fmcell \
-	fmcenter fmcmd fmcss fmditem fmelse fmendlis \
+	fmcenter fmcss fmditem fmelse fmendlis \
 	fmflush fmheader fmindent fminit fmjustif fmline fmlisti fmll  \
 	fmnofmt fmpara fmpflush fmright fmrunset fmsectio fmsetcol fmsetfon \
 	fmsetmar fmsetx fmsety fmspace fmtable fmtc fmtoc fmtoksiz fmtr fmestack
@@ -46,5 +48,5 @@ $hfmlib:   ${src:%=$hfmlib(%.o)}
 	ranlib $hfmlib || true
 	)'
 
-hfm:	fmmain.c $obj 
-	$CC $CFLAGS $IFLAGS -o hfm fmmain.c $obj  $libs 
+hfm:	fmmain.c fmcmd.c $obj 
+	$CC $CFLAGS $IFLAGS -o hfm fmmain.c fmcmd.c -L . -lhfm${gflag}  $libs 

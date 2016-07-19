@@ -55,8 +55,8 @@ Contributions to this source repository are assumed published with the same lice
 ****************************************************************************
 *
 *  Mnemonic: FMceject
-*  Abstract: dummy function for hfm as it's not supported but needs to overrid
-8			and do nothing.
+*  Abstract: dummy function for hfm as it's not supported but needs to override
+*			base function and do nothing.
 *  Parms:    None.
 *  Date:     6 May 1992
 *  Returns:  Nothing.
@@ -65,8 +65,9 @@ Contributions to this source repository are assumed published with the same lice
 *  Modified: 13 Jul 1994 - To convert to rfm
 *             8 Dec 1994 - To write par mark at top only if not in def list.
 *             6 Dec 1996 - To convert to hfm (not supported)
+*			18 Jul 2016 - Add consistent, and sometimes modern, prototypes.
 ****************************************************************************
 */
-void FMceject( int i )
+extern void FMceject( int i )
 {
 }                         /* FMceject */

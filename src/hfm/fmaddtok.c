@@ -68,13 +68,12 @@ Contributions to this source repository are assumed published with the same lice
 *                           the number of characters in the buffer as
 *                           display utility will format, punctuation space
 *                           is ignored as browser will provide.
-*             23 Apr 2001 - To add support for .tu command
-*		22 Oct 2006  - Added support .sm command
+*           23 Apr 2001 - To add support for .tu command
+*			22 Oct 2006  - Added support .sm command
+*			18 Jul 2016 - Add consistent, and sometimes modern, prototypes.
 *************************************************************************
 */
-void FMaddtok( buf, len )
- char *buf;
- int len;
+extern void FMaddtok( char* buf, int len )
 {
  int remain;          /* calculated space remaining before the right margin */
  int i;               /* loop index */

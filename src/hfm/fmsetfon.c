@@ -64,11 +64,10 @@ Contributions to this source repository are assumed published with the same lice
 *
 *  Modified: 29 Jun 1994 - To convert to rfm
 *             6 Dec 1996 - To convert to hfm (not supported)
+*			18 Jul 2016 - Add consistent, and sometimes modern, prototypes.
 ****************************************************************************
 */
-void FMsetfont( fname, fsize )
- char *fname;
- int fsize;
+extern void FMsetfont( char* fname, int fsize )
 {
  return;
 }     /* FMsetfont */

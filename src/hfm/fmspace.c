@@ -63,9 +63,10 @@ Contributions to this source repository are assumed published with the same lice
 *   Modified:  29 Jun 1994 - To support rfm conversion
 *              18 Jul 1994 - To allow listitems in boxes
 *               6 Dec 1996 - To convert for hfm
+*			18 Jul 2016 - Add consistent, and sometimes modern, prototypes.
 ***************************************************************************
 */
-void FMspace( )
+extern void FMspace( void )
 {
 	char *buf;          /* pointer at the token */
 	int len;

@@ -62,9 +62,10 @@ Contributions to this source repository are assumed published with the same lice
 *  Date:     6 July 1994
 *  Author:   E. Scott Daniels
 *  Modified:  6 Dec 1996 - Converted to hfm - not necessary
+*			18 Jul 2016 - Add consistent, and sometimes modern, prototypes.
 *******************************************************************************
 */
-void FMsetmar( )
+extern void FMsetmar( void )
 {
  return;
 }   /* FMsetmar */

@@ -53,6 +53,7 @@ Contributions to this source repository are assumed published with the same lice
 */
 #include <stdio.h>     
 #include <stdlib.h>
+#include <unistd.h>
 #include <fcntl.h>    
 #include <ctype.h>   
 #include <string.h> 
@@ -69,6 +70,7 @@ Contributions to this source repository are assumed published with the same lice
 #include "fmcmds.h"
 #include "fmstruct.h"              /* structure definitions */
 #include "fmproto.h"
+#include "hfmproto.h"
 
 /*
 ****************************************************************************
@@ -90,9 +92,10 @@ Contributions to this source repository are assumed published with the same lice
 *             	22 Jan 2000 - To strncmp for color rather than strcmp
 *		27 Nov 2002 - To add no font support
 *		21 Jul 2010 - html 4.0/5.0 changes.
+*			18 Jul 2016 - Add consistent, and sometimes modern, prototypes.
 ****************************************************************************
 */
-int FMflush( )
+extern int FMflush( void )
 {
 	int fd;
 	int len;           		/* length of the output string */
@@ -141,7 +144,7 @@ int FMflush( )
 	}
 
 	if( optr == 0 )  			/* nothing to do so return -- must be after style check */
-		return;
+		return 0;
 
 	*fbuf = 0;
 	if( flags2 & F2_SETFONT )			/* font/size/colour was changed; set before flushing text */

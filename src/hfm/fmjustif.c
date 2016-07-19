@@ -66,8 +66,9 @@ Contributions to this source repository are assumed published with the same lice
 *            10 Dec 1992 - To use AFI routines for ansi compatability
 *             6 Apr 1994 - To take advantage of linelen being points now
 *             6 Dec 1996 - Converted for hfm - not used
+*			18 Jul 2016 - Add consistent, and sometimes modern, prototypes.
 *****************************************************************************
 */
-void FMjustify( )
+extern void FMjustify( void )
 {
 }           /* FMjustify */

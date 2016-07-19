@@ -55,9 +55,7 @@ Contributions to this source repository are assumed published with the same lice
 *****************************************************************************
 *
 *    Mnemonic: FMpflush
-*    Abstract: This routine causes the running header and footer to be placed
-*              into the file and then issues the newp command which will issue
-*              a showpage and then a translate.
+*    Abstract: Dummy; html has no concept of page.
 *    Parms:    None.
 *    Returns:  Nothing
 *    Date:     1 December 1988
@@ -67,8 +65,9 @@ Contributions to this source repository are assumed published with the same lice
 *               8 Dec 1994 - To put a para mark before page if not there
 *                            and if not in a list item list.
 *               6 Dec 1996 - To convert to hfm (no longer needed)
+*				18 Jul 2016 - Add consistent, and sometimes modern, prototypes.
 *****************************************************************************
 */
-void FMpflush( )
+extern void FMpflush( void )
 {
 }                              /* FMpflush */

@@ -70,9 +70,10 @@ Contributions to this source repository are assumed published with the same lice
 *  Modified: 25 Mar 1993 - To accept points between which text is centered
 *            28 Apr 1993 - To set same y flag if move to not necessary
 *             6 Dec 1996 - To convert to hfm (ignore x1, x2 if there)
+*			18 Jul 2016 - Add consistent, and sometimes modern, prototypes.
 *****************************************************************************
 */
-void FMcenter( )
+extern void FMcenter( void )
 {
  char *buf;          /* pointer at parameters */
  int i;              /* length of the token */

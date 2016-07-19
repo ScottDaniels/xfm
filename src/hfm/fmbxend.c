@@ -73,9 +73,10 @@ Contributions to this source repository are assumed published with the same lice
 *             6 Dec 1996 - To convert for hfm
 *            29 Dec 1997 - To end the one celled centered table used to box
 *            23 Sep 2000 - To remove the ref to if in box flag
+*			18 Jul 2016 - Add consistent, and sometimes modern, prototypes.
 *****************************************************************************
 */
-void FMbxend( )
+extern void FMbxend( void )
 {
  char buf[255];      /* buffer to build output string in */
  int len;            /* length of output to write */

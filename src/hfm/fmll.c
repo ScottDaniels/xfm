@@ -61,11 +61,12 @@ Contributions to this source repository are assumed published with the same lice
 *   Returns:   Nothing.
 *   Date:      2 April 1997
 *   Author:    E. Scott Daniels
+*	Mods:		18 Jul 2016 - Add consistent, and sometimes modern, prototypes.
 *
 *   .ll [+|-]n[i|p]
 ***************************************************************************
 */
-void FMll( )
+extern void FMll( void )
 {
  char *buf;                 /* pointer at the token */
  int len;                   /* length of parameter string */

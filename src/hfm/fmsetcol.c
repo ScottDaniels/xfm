@@ -62,10 +62,10 @@ Contributions to this source repository are assumed published with the same lice
 *  Date:     13 July 1994
 *  Author:   E. Scott Daniels
 *  Modified: 6 Dec 1996 - To convert for hfm (not supported)
+*			18 Jul 2016 - Add consistent, and sometimes modern, prototypes.
 *
 ******************************************************************************
 */
-void FMsetcol( gutter )
- int gutter;
+extern void FMsetcol( int gutter )
 {
 }            /* FMsetcol */

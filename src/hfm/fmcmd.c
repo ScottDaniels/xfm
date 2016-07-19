@@ -50,6 +50,7 @@ Contributions to this source repository are assumed published with the same lice
 #include "fmcmds.h"
 #include "fmstruct.h"              /* structure definitions */
 #include "fmproto.h"
+#include "hfmproto.h"
 
 /*
 ***************************************************************************
@@ -90,10 +91,10 @@ Contributions to this source repository are assumed published with the same lice
 *		21 Jul 2010 - Updated for html 4.0/5.0  (things like <br /> 
 *		23 Dec 2015 - Ignore top gutter command (pfm only)
 *		01 Jan 2016 - Ignore floating margin command.
+*		18 Jul 2016 - Add consistent, and sometimes modern, prototypes.
 **************************************************************************
 */
-int FMcmd( buf )
-char *buf;
+extern int FMcmd( char* buf )
 {
 	int cmd;                  /* command converted to integer for switch */
 	int i;                    /* temp integer */

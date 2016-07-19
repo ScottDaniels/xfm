@@ -86,6 +86,7 @@ Contributions to this source repository are assumed published with the same lice
 *  Author:   E. Scott Daniels
 *
 *  Modified: 10 Feb 1995 - To free toks array if we allocated it
+*			18 Jul 2016 - Add consistent, and sometimes modern, prototypes.
 ***************************************************************************
 */
 #include <string.h>
@@ -93,7 +94,7 @@ Contributions to this source repository are assumed published with the same lice
 
 
 /* copy from sub to out replacing escaped delimiters with their char */
-int copybuf( char *in, char *out, char escsym )
+extern int copybuf( char *in, char *out, char escsym )
  {
   int k = 0;
 
@@ -110,7 +111,7 @@ int copybuf( char *in, char *out, char escsym )
  }
 
 
-void UTformat( char *inbuf, char **inlist, char *outbuf,
+extern void UTformat( char *inbuf, char **inlist, char *outbuf,
                char *control, char *delim, char escsym)
 {
  int fieldsize = 0; /* minimum field size to display a token in */

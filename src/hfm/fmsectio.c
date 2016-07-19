@@ -68,10 +68,11 @@ Contributions to this source repository are assumed published with the same lice
 * Date:     12 August 1994 (shoud be on vacation)
 * Author:   E. Scott Daniels
 * Modified:  6 Dec 1996 - To convert to hfm (not supported)
+*			18 Jul 2016 - Add consistent, and sometimes modern, prototypes.
 *
 * .sc
 ****************************************************************************
 */
-void FMsection( )
+extern void FMsection( void )
 {
 }                        /* FMsection */

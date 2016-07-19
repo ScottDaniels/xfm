@@ -69,9 +69,10 @@ Contributions to this source repository are assumed published with the same lice
 *                          made parameters non positional.
 *            25 Nov 1996 - Correct problems picking up f= parameter
 *             6 Dec 1996 - To convert for hfm
+*			18 Jul 2016 - Add consistent, and sometimes modern, prototypes.
 ******************************************************************************
 */
-void FMbeglst( )
+extern void FMbeglst( void )
 {
  struct li_blk *new;     /* new allocated block */
  char *buf;              /* pointer at next tokin in buffer */

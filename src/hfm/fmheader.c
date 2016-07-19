@@ -65,9 +65,10 @@ Contributions to this source repository are assumed published with the same lice
 *
 *   Modified: 30 Jun 1994 - Conversion to rfm (not much changed)
 *             15 Dec 1994 - To seperate skip before/after numbers.
+*			18 Jul 2016 - Add consistent, and sometimes modern, prototypes.
 **************************************************************************
 */
-void FMheader( struct header_blk *hptr )
+extern void FMheader( struct header_blk *hptr )
 {
 	int len;            /* len of parm token */
 	int j;              /* index variables */

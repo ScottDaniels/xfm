@@ -66,9 +66,10 @@ Contributions to this source repository are assumed published with the same lice
 *            22 Sep 1994 - To allow for relative moves (+/-) and to allow
 *                          specification in points or inches.
 *             6 Dec 1996 - To convert to hfm (not supported)
+*			18 Jul 2016 - Add consistent, and sometimes modern, prototypes.
 ******************************************************************************
 */
-void FMsety( )
+extern void FMsety( void )
 {
  char *buf;         /* pointer at the parameter user has entered */
 

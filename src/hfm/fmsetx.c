@@ -69,9 +69,10 @@ Contributions to this source repository are assumed published with the same lice
 *
 *  Modified: 13 Jul 1994 - To convert to rfm.
 *             6 Dec 1996 - To convert for hfm (not supported)
+*			18 Jul 2016 - Add consistent, and sometimes modern, prototypes.
 ******************************************************************************
 */
-void FMsetx( )
+extern void FMsetx( void )
 {
  char *buf;            /* pointer at the parameter user has entered */
 

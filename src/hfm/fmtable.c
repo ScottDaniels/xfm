@@ -69,6 +69,7 @@ Contributions to this source repository are assumed published with the same lice
 #include "fmcmds.h"
 #include "fmstruct.h"              /* structure definitions */
 #include "fmproto.h"
+#include "hfmproto.h"
 
 /*
 * --------------------------------------------------------------------------
@@ -84,11 +85,12 @@ Contributions to this source repository are assumed published with the same lice
 *  omitting w= allows browser to scale table. xx is a percentage.
 *
 *	Mod:	02 Nov 2006 - ensured that table block is 0d before use.
-*		10 Apr 2007 - fixed buffer overrun.
-*		21 Jul 2010 - html 4.0 changes
+*			10 Apr 2007 - fixed buffer overrun.
+*			21 Jul 2010 - html 4.0 changes
+*			18 Jul 2016 - Add consistent, and sometimes modern, prototypes.
 * --------------------------------------------------------------------------
 */
-void FMtable( )
+extern void FMtable( void )
 {
  struct table_mgt_blk *t;
 	char style[256];
@@ -225,7 +227,7 @@ void FMtable( )
 *  .th string
 * --------------------------------------------------------------------------
 */
-void FMth( )
+extern void FMth( void )
 {
 	struct table_mgt_blk *t;
 	char	*buf;
@@ -259,7 +261,7 @@ void FMth( )
 	
 }
 
-void FMendtable( )
+extern void FMendtable( void )
 {
 
 	FMflush( );

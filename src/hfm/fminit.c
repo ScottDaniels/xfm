@@ -50,6 +50,7 @@ Contributions to this source repository are assumed published with the same lice
 #include "fmcmds.h"
 #include "fmstruct.h"              /* structure definitions */
 #include "fmproto.h"
+#include "hfmproto.h"
 
 /*
 ****************************************************************************
@@ -72,14 +73,15 @@ Contributions to this source repository are assumed published with the same lice
 *              4 Apr 1997 - To put in support for AFI's new tokenizer!
 *             15 Apr 1997 - To get tokens as commands from command line.
 *             31 Mar 2000 - To init text colour
-*		08 Nov 2006 - Better arg processing; no parms allows stdin/out by default
-*			rather than forcing a specification.
-*		22 Oct 2007 - AFI settoken nolonger needs backquote as a seperator; fmgetparm
-*			and fmgettok do the right thing now. 
-*		21 Jul 2010 - html 4.0/5.0 changes.
+*			08 Nov 2006 - Better arg processing; no parms allows stdin/out by default
+*				rather than forcing a specification.
+*			22 Oct 2007 - AFI settoken nolonger needs backquote as a seperator; fmgetparm
+*				and fmgettok do the right thing now. 
+*			21 Jul 2010 - html 4.0/5.0 changes.
+*			18 Jul 2016 - Add consistent, and sometimes modern, prototypes.
 ******************************************************************************
 */
-int FMinit( int argc, char **argv )
+extern int FMinit( int argc, char **argv )
 {
 	int i;               /* loop index */
 	char *ptr;           /* pointer to argument */

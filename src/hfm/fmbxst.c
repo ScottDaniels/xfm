@@ -75,10 +75,11 @@ Contributions to this source repository are assumed published with the same lice
 *  Modified:  1 Jul 1994 - To convert to rtf
 *            29 Apr 1997 - To make a one celled table for the box
 *            26 Mar 2000 - To add border and width parms
-*		27 Aug 2004 - To add alignment 
+*			27 Aug 2004 - To add alignment 
+*			18 Jul 2016 - Add consistent, and sometimes modern, prototypes.
 *****************************************************************************
 */
-void FMbxstart( int option, char *colour, int border, int width, char *align )
+extern void FMbxstart( int option, char *colour, int border, int width, char *align )
 {
  int len;          /* length of paramters passed in */
  char *buf;        /* pointer to next option to parse */

@@ -71,12 +71,13 @@ Contributions to this source repository are assumed published with the same lice
 *               6 Dec 1996 - To convert to hfm
 *              30 Apr 1997 - To convert to use tables instead of dd/di
 *              10 Feb 2002 - To add support for skip and format options
-*		14 Sep 2002 - To support colour change for term
+*				14 Sep 2002 - To support colour change for term
+*				18 Jul 2016 - Add consistent, and sometimes modern, prototypes.
 *
 *   Copyright (c) 1994  E. Scott Daniels. All rights reserved.
 ***************************************************************************
 */
-void FMditem( )
+extern void FMditem( void )
 {
  char *buf;           /* pointer at the token */
  int len;             /* len of parameter entered */

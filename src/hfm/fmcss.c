@@ -85,6 +85,7 @@ Contributions to this source repository are assumed published with the same lice
 * Modified: 
 *		05 Jul 2009 - Added :class to name token 
 *		26 Jul 2015 - Allow multiple fields for something like border-right 1px,solid,grey
+*		18 Jul 2016 - Add consistent, and sometimes modern, prototypes.
 * --------------------------------------------------------------------------------
 * .cs file filename		set file name from which css style commands are loaded (must be before
 *				the first command that causes a flush. 
@@ -153,9 +154,9 @@ Contributions to this source repository are assumed published with the same lice
 #define CSS_DIV 2
 #define CSS_CLASS 3
 
-void FMcss( )
+extern void FMcss( void )
 {
-	static depth = 0;		/* if in a div then we set the no font flag */
+	static int depth = 0;		/* if in a div then we set the no font flag */
 
 	int type = CSS_END;		/* default if .cs is put in */
 	int len;        /* length of parameter entered on .bx command */

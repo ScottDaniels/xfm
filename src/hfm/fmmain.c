@@ -73,6 +73,7 @@ Contributions to this source repository are assumed published with the same lice
 #include "fmcmds.h"
 #include "fmstruct.h"              /* structure definitions */
 #include "fmproto.h"
+#include "hfmproto.h"
 
 /*
 ****************************************************************************
@@ -96,10 +97,11 @@ Contributions to this source repository are assumed published with the same lice
 *              15 Dec 1992 - To output a newline to stdout at end of run
 *              21 Dec 1992 - To process the .toc file generated
 *              13 Apr 1992 - To no longer break when blank as first char
-*		19 Nov 2001 - Conversion to use FMrun()
+*				19 Nov 2001 - Conversion to use FMrun()
+*				18 Jul 2016 - Add consistent, and sometimes modern, prototypes.
 **************************************************************************
 */
-main( int argc, char **argv )
+int main( int argc, char **argv )
 {
 	int 	len;          /* length of token */
 	char 	*buf;        /* buffer pointer to token */

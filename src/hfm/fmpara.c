@@ -62,10 +62,11 @@ Contributions to this source repository are assumed published with the same lice
 *
 *  Modified: 	19 Jul 1994 - To allow list items in boxes
 *             	06 Dec 1996 - Converted for hfm
-*		21 Jul 2010 - Updated for html 4.0/5.0
+*				21 Jul 2010 - Updated for html 4.0/5.0
+*				18 Jul 2016 - Add consistent, and sometimes modern, prototypes.
 ****************************************************************************
 */
-void FMpara( int i, int j )
+extern void FMpara( int i, int j )
 {
  	strcat( obuf, "<br />" );     /* add tag to  output buffer */
  	optr += 5;

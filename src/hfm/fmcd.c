@@ -71,9 +71,10 @@ Contributions to this source repository are assumed published with the same lice
 *   Modified: 13 Jul 1994 - To convert to rfm
 *              9 Sep 1994 - To check first parameter properly
 *              7 Dec 1996 - To convert to hfm - not supported
+*				18 Jul 2016 - Add consistent, and sometimes modern, prototypes.
 ***************************************************************************
 */
-void FMcd( )
+extern void FMcd( void )
 {
  char *buf;                 /* pointer at the token */
 
