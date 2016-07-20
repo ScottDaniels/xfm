@@ -42,6 +42,7 @@
 #define _REENTRANT 1                 /* include _r prototypes */
 
 #include <stdio.h>                   /* include from searched location */
+#include <unistd.h>
 #include <stdlib.h>
 #include <fcntl.h>
 #include <ctype.h>

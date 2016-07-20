@@ -50,6 +50,7 @@
 *		22 Oct 2007 - Fixed bug that truncated first character of leading
 *			whitespace when F_WHITE flag is set.
 *		31 Oct 2009 - Fixed conditional expression bug.
+*		19 Jul 2016 - Correct declaration of depth.
 ***************************************************************************
 */
 
@@ -58,7 +59,7 @@
 
 int AFIgettoken( AFIHANDLE file, char *buf )
 {
-	static depth = 0;
+	static int depth = 0;
 	int len = AFI_ERROR;           /* length of the token we are passing back */
 	int i;                         /* loop index */
 	int j;
