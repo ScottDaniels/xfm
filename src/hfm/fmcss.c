@@ -308,7 +308,6 @@ extern void FMcss( void )
 						if( *ccp == ',' ) {
 							*ccp = ' ';
 						}
-fprintf( stderr, ">>>%s\n", cp );
 					sprintf( wbuf, "%s: %s; ", buf, cp );
 				}
 			}
