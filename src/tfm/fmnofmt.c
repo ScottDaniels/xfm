@@ -74,6 +74,8 @@ Contributions to this source repository are assumed published with the same lice
 *             15 Apr 1997 - To return if vardelim is in first col too
 *              2 Apr 2001 - Converted back to TFM... going round and round.
 *				17 Jul 2016 - Bring prototypes into modern era.
+*				26 Oct 2016 - Add indention support to be consistent with *fm formatters.
+*								Fix buffer overrun potential.
 *******************************************************************************
 */
 extern void FMnofmt( void )
@@ -81,41 +83,29 @@ extern void FMnofmt( void )
  char *buf;             /* work buffer */
  int status;            /* status of the read */
  int i;                 /* loop index */
+	int iv;				// indention value
+	int	max_op;			// maximum out pointer
+
+	iv = (lmar/7);      /* basic indent value converted to char */
 
  status = FMread( inbuf );        /* get the next buffer */
 
  while( status >= 0  &&  inbuf[0] != CMDSYM && *inbuf != vardelim ) 
   {
-   for( i = 0; i < MAX_READ-1 && inbuf[i] != EOS; i++, optr++ )
+	for( i = 0; i < iv; i++ ) {		// no formatted stuff is still indented
+		obuf[i] = ' ';
+	}
+
+	optr = i;
+   for( i=0; i < MAX_READ-1 && inbuf[i] != EOS; i++, optr++ )
     {
-     switch( inbuf[i] )          /* properly escape html special chars */
+     switch( inbuf[i] )
       {
-#ifdef NEVER_ME
-       case '>':
-        obuf[optr] = EOS;                 /* terminate for strcat */
-        strcat( obuf, "&gt;" );           /* copy in the character */
-        optr += 3;                        /* incr past the html esc string */
-        osize += 3;                       /* incr number of chars in output */
-        break;
-
-       case '<':
-        obuf[optr] = EOS;                 /* terminate for strcat */
-        strcat( obuf, "&lt;" );           /* copy in the character */
-        optr += 3;                        /* incr past the html esc string */
-        osize += 3;                       /* incr number of chars in output */
-        break;
-
-       case '&':
-        obuf[optr] = EOS;                 /* terminate for strcat */
-        strcat( obuf, "&amp;" );          /* copy in the character */
-        optr += 4;                        /* incr past the html esce string */
-        osize += 4;                       /* incr number of chars in output */
-        break;
-#endif
+		// if there is ever thing that must be escaped, do it here
 
        default:                 /* not a special character - just copy in */
         obuf[optr] = inbuf[i];
-        obuf[optr+1] = EOS;     /* terminate incase of strcat on next loop */
+        //obuf[optr+1] = EOS;     /* terminate incase of strcat on next loop */
         break;
       }
     }                          /* end while stuff in input buffer to copy */
