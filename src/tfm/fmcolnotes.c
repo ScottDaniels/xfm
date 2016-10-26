@@ -66,7 +66,7 @@ Contributions to this source repository are assumed published with the same lice
 *	Mods:	17 Jul 2016 - Bring prototypes into modern era.
 *
 * .cn start {atclose | atbot} [s=symbol] font fontsize space
-* .cn show
+* .cn {show|showend}
 * .cn end
 ****************************************************************************
 */
@@ -94,7 +94,7 @@ static void cnstart( )
 
 	while( (len = FMgetparm( &buf )) > 0 )
 	{
-		if( strcmp( buf, "atclose" ) == 0 || strcmp( buf, "atbot" ) == 0 )
+		if( strcmp( buf, "atclose" ) == 0 || strcmp( buf, "atend" ) == 0 )
 		{
 			target_id = &eid;
 			if( !(target = efile) )			/* yes this is an assignment! */
@@ -172,6 +172,7 @@ static void cnstart( )
 
 	/* check symbol and use that */
 	if( target_id == &eid )				/* end notes have [%d] rather than super script format */
+		TRACE( 1,  "colnote: saving [%d]\n", *target_id );		
 		fprintf( target, ".ll -.2i .in +.15i\n[%d]\n", (*target_id)++ );		/* writes in default font */
 #ifdef NOT_SUPPORTED
 	else
