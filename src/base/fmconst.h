@@ -61,7 +61,8 @@ Contributions to this source repository are assumed published with the same lice
 #define DI_ANUMI      1         /* integer di auto numbering */
 #define DI_ANUMA      2         /* alpha di auto numbering */
 
-#define MAX_READ      2048     /* size of read, max size of column */
+#define IO_BUF_LEN		2048		// size of the input output bufferes allocated
+#define MAX_READ      IO_BUF_LEN    /* size of read, max size of column */
 #define MAX_FILES     10       /* max level of imbed files permitted */
 #define MAX_HLEVELS   4        /* max number of header levels */
 #define MAX_VCOL      10       /* maximum number of vertical columns */

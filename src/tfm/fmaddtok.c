@@ -83,6 +83,11 @@ extern void FMaddtok( char* buf, int len )
 
  flags2 |= F2_OK2JUST;
 
+	if( flags2 & F2_SMASH && optr > 1 ) {
+		optr--;
+		flags2 &= ~F2_SMASH;
+	}
+	
  words++;             /* increase the number of words in the document */
 
  if( len > ((linelen/7) - optr) )         /* room for it? */

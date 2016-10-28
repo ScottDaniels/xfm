@@ -321,6 +321,7 @@ extern int FMcmd( char* buf )
 		case C_INDENT:           /* user indention of next line */
 			FMflush( );             /* force a break then */
 			FMindent( &lmar );      /* get the users info from input and assign */
+			TRACE( 3, "cmd: indent  lmar=%d\n", lmar );
 			FMpara( 0, 0 );         /* set up the paragraph with new indention */
 			break;
 
@@ -365,6 +366,7 @@ extern int FMcmd( char* buf )
 			break;
 
 		case C_LINE:             /* put a line from lmar to col rmar */
+		case C_HLINE:
 			FMline( );              /* so do it! */
 			break;
 
@@ -513,6 +515,8 @@ extern int FMcmd( char* buf )
 		case C_STOPRUN:	 
 			rc = 2; 
 			break;			/* cause fmrun to pop */
+
+		case C_SMASH:	 flags2 |= F2_SMASH; break;
 
 		case C_TABLE:                        /* generate start table tags */
 			/* FMtable( ); */

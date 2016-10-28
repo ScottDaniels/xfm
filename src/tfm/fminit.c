@@ -90,7 +90,7 @@ extern int FMinit( int argc, char **argv )
 	char *ofname = "stdout";  /* default to standard output */
 	char *ifname = "stdin";
 
-	version = strdup( "tfm V2.1/0b086" );
+	version = strdup( "tfm V2.2/0a266" );
 
 	if( argc >= 2 )
 	{
@@ -148,8 +148,8 @@ extern int FMinit( int argc, char **argv )
 	optr = 0;                 /* start at beginning of the output buffer */
 	linelen = 64 * 7;
 
-	obuf = (char *) malloc( sizeof( char ) * 2048 );
-	inbuf = (char *) malloc( sizeof( char ) * 2048 );
+	obuf = (char *) malloc( sizeof( char ) * IO_BUF_LEN );
+	inbuf = (char *) malloc( sizeof( char ) * IO_BUF_LEN );
 	if( !obuf )
 	{
 		printf( "malloc of obuf failed\n" );
