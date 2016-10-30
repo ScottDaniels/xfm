@@ -65,6 +65,11 @@ ALL = $EPS_SRC $HTML_OUT $PS_OUT $TXT_OUT
 	rm -f *.ecnfile
 	rm -f *.bcnfile
 
+%.md:: %.xfm
+	MARKDOWN=1 tfm $prereq stdout | sed 's/^ //' >$target
+	rm -f *.ecnfile
+	rm -f *.bcnfile
+
 all:V: $ALL
 
 float_mar.ps::  float_mar.xfm test_2x3.eps

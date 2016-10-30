@@ -1,0 +1,96 @@
+
+.** example document illustrating the markdown imbed (template) file
+
+.im  ../templates/markdown.im
+.dv x {X}fm
+
+&h1(Markdown Imbed -- Sample Document)
+This document can be processed by both the &ital(pfm) and &ital(tfm) formatters.  If the environment
+variable &cw(MARKdOWN) is set, and the formatter is &ital(tfm,) the output should be sutible to be 
+presented by a markdown interpreter. 
+The markdown imbed file allows a document to normally be formatted with &ital(pfm,) but when necessary
+a markdown formatted file can be generated from the same source. 
+
+.sp
+The markdown imbed file provides a set of macros which in some cases, translate &x commands into markdown 
+tags (e.g. ^&h1 which renders the # markdown tag ahead of the header text).
+In other cases the macros, such as &ital(start_note) which places a column note at the end of the 
+document when generating markdown output.
+Markdown is a very limited text rendering "language" with definition lists the most noticible 
+missing element, so some macros like &ital(beg_dlist) do little if anything at all when generating
+markdown output. 
+
+.sp
+The remainder of this document will illustrate the use of the macros in the markdown imbed file &super .sm .  
+&start_note( .5i )
+This is a column note that, when the document is formatted using &ital(pfm,)  will appear at the end of 
+the current column. When formatting is performed with the marktdown template and the &ital(tfm) formatter
+this note is placed at the end of the document.
+&end_note
+
+&h2(Bullet List)
+The bullet list is introduced with the usual ^x ^.bl command, however the list item character is wrapped
+in the variables &cw(lic1) and &cw(lic2.) 
+A sample bullet list is below.
+.sp .5
+
+&indent
+.bl &lic1
+.li First item in the list.
+.sp .3
+.li Second item in he list.
+.sp .3
+.li Third item.
+.el
+&uindent
+.sp
+
+&h2(Definition Lists)
+Definition lists are a staple of any well written document, but are not supported in the least by markdown.
+To cope, the markdown macro set does nothing for begin and end defintion list commands, and 
+when a definition item command is encountered, it causes the term to be placed at the start of a new line
+and rendered in bold font. 
+While this is similar to a definition list, there is no indention of the definition text which accompanies the term.
+The ^&beg_list macro takes the parameters which normally would be given on the ^.bd &x command.
+An example definition list follows.
+
+.sp .5
+&indent
+&def_list( 1i Helvetica-Bold )
+&di(Shark) A fish that nobody wants to swim with.
+.sp .3
+&di(Dolphin) Usually regarded as a friendly ocean dwellng mamal.
+.sp .3
+&di(Orca) Another large ocean dwelling mamal which is also known as the killer whale.
+&end_dlist
+&uindent
+.sp
+
+&h2(Unformatted Text)
+Typically examples are placed into an &x document using the no format command which renders the following lines of
+input exactly as is; with out formatting.  
+The font and font size are typically changed before the example starts, and to make things convenient for the 
+author, an example start and example end macro are used.
+When generating markdown output, such examples are set off with an indention of at least 4 characters which is also handled 
+by the example macro.  
+The following is the definition of the example macro for both normal &ital(pfm) (postscript) formatting, and when 
+the &ital(tfm) formatter is used to generate markdown output.
+.sp .5
+&ex_start
+  .** sample markdown macros
+  .dv ex_start .ll -4 .in .5i .sp 2 .fo off 
+  .dv ex_end .fo on .in 0i .ll +4 .sp 2
+
+
+  .** sample normal postscript macros
+  .dv ex_start .ll -.25i .in +.25i .sf Courier .st ^&extextsize .fo off
+  .** ex_end macro calls _must_ be placed in col 0 to cause an exit from no-format mode.
+  .dv ex_end .fo on .sf ^&textfont .st ^&textsize .in -.25i .ll +.25i .sp .1
+&ex_end
+.fg Example illustration
+.sp
+The &ital(pfm) macros assume that the &ital(textfont) and &ital(textsize) variables have been defined.
+
+.** at the end, we must force the end notes to be generated
+&line
+.cn showend
