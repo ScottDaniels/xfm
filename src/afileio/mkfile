@@ -47,3 +47,9 @@ $afilib:   ${src:%=$afilib(%.o)}
 
 publish:V: $afilib
 	cp *.a ../lib
+
+# copy things to a public lib/include spot as this can/is used by other things.
+export:V:	$afilib
+	cp libafi.a $HOME/lib/
+	cp afidefs.h $HOME/include/afi.h
+
