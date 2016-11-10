@@ -20,7 +20,8 @@
 .**
 .**				Macros provided by this file (not mentioned above):
 .**					fontsize, textfont, extextsize, ditext, cwfont
-.**					bold, ital, cw
+.**					bold(), ital(), cw()
+.**					note(), super()
 .**					start_note, end_note  -- Column notes with qutomatic superscript
 .**					line
 .**					
@@ -77,6 +78,7 @@
 .dv di .di $1 ^: 
 
 .dv line .ln
+.dv break .br
 
 .if pfm
 	.pn on 0 center f=-%d- noline
@@ -85,7 +87,8 @@
 	.** a .gv remain command must be executed before each use of this macro
 	.dv ifroom .if ^&_iremain $1 > ^:  .im $2  .ei .oe page .im $2 .fi
 
-	.dv super .dv ss_num ^[ ^&ss_num 1 + ] ^: .sm .tf superscript 2/3 ^&ss_num  ^:
+	.dv super .sm .tf superscript 2/3 $1  ^:
+	.dv note .dv ss_num ^[ ^&ss_num 1 + ] ^: .sm .tf superscript 2/3 ^&ss_num  ^:
 	.dv start_note .cn start atbot Times-roman 8p $1
 	.dv end_note .cn end
 
@@ -95,8 +98,12 @@
 	.dv bold .tf Helvetica-bold  ^&fontsize $1  ^:
 	.dv ital .tf Helvetica-Oblique  ^&fontsize $1  ^:
 	.dv cw .tf Courier 8p  $1 ^:
+
+	..* image has the form:  &imate(postscript cmd:link:url)
+	.dv image .ep $1
 .ei
-	.dv super .dv ss_num ^[ ^&ss_num 1 + ] ^: .sm ^[ .sm ^&{ss_num}]
+	.dv super .sm ^[ .sm ^&{ss_num}]
+	.dv note .dv ss_num ^[ ^&ss_num 1 + ] ^: .sm ^[ .sm ^&{ss_num}]
 
 	.dv start_note .cn start atend Times-roman 8p .5i
 	.dv end_note .cn end
@@ -107,11 +114,14 @@
 	.dv lic2 +
 
 	.dv ifroom .im $2
+	.dv image .br ^[image] $3 .br
 
 	.** if the env var is set, redefine macros to generate the limited markdown things
 	.gv e MARKDOWN markdown
 	.if markdown
+		.dv break `  ` .br
 		.ju off
+		.dv image .ep ^[ .sm $2] ($3)
 
 		.** no concept of a definition list in markdown; no start/end and just make the text bold to emulate
 		.dv def_list  .sp 1

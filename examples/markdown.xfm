@@ -21,7 +21,7 @@ missing element, so some macros like &ital(beg_dlist) do little if anything at a
 markdown output. 
 
 .sp
-The remainder of this document will illustrate the use of the macros in the markdown imbed file &super .sm .  
+The remainder of this document will illustrate the use of the macros in the markdown imbed file &note .sm .  
 &start_note( .5i )
 This is a column note that, when the document is formatted using &ital(pfm,)  will appear at the end of 
 the current column. When formatting is performed with the marktdown template and the &ital(tfm) formatter
@@ -90,6 +90,42 @@ the &ital(tfm) formatter is used to generate markdown output.
 .fg Example illustration
 .sp
 The &ital(pfm) macros assume that the &ital(textfont) and &ital(textsize) variables have been defined.
+
+&h2(Images)
+There is no universal way to incporporate an image into a document. 
+In the Postscript world, an image can be converted to an encapsulated postscript file (.eps) and imbedded directly into the 
+document.  
+For an HTML file, the image must reside on a host which is reachable via a URL making the maintenance of HTML documents 
+a bit more tricky. 
+For ASCII text, well there is no such thing.
+From an &x perspective, it's also a bit tricky to incorporate an image smoothly in the code.  
+Woth the &ital(markdown) setup file, there is an &cw(image) macro which can help.  
+The macro accepts three parameters:
+.sp .5
+&indent
+.** .bd .25i a=1
+.bl &lic1
+	.li  The parameters which would be given on an encapsulated postscript &x command (^.ep).
+	.li  The &ital(alternate text) which would be displayed in the ASCII document or if the broswer rendering the 
+		markdown output is unable to follow and embedd the image directly.
+	.li  The URL where the image resides such that it can be displayed by the browser or clicked on as a link.
+.el
+&uindent
+.sp .5
+The macro doesn't eliminate the need to mantain a copy of the encapsulated postscript file during document generation, 
+nor does it make the distribution of the markdown easier as the image files need to be placed on some host with an http/https 
+server, but it does eliminate the need for any if-then-else logic in the document.
+The following is an example of how the image macro is used.
+.sp /5
+
+&ex_start
+  &image( x=.5i some_image.eps close proportional:
+         Grass Growing:http^://server.image.com:/grass.jpg )
+&ex_end
+.fg Sample image mancro usasg (broken onto multiple lines to prevent a long line in the output).
+.sp
+It should be noted that the colon in the URL &bold(must) be escaped otherwise the remainder of the URL is 
+evaluated as the fourth parameter to the macro.
 
 .** at the end, we must force the end notes to be generated
 &line
