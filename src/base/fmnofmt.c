@@ -72,6 +72,7 @@ Contributions to this source repository are assumed published with the same lice
 *				03 Jul 2016 - Fixed blank line bug, now handles tabs. Add support
 *					for tabs.
 *				17 Jul 2016 - Changes for better prototype generation.
+*				26 Oct 2016 - Correct bug when tab encountered
 *******************************************************************************
 */
 extern void FMnofmt(  void )
@@ -85,7 +86,8 @@ extern void FMnofmt(  void )
 	{
 		for( i = 0; i < MAX_READ-1 && inbuf[i] != EOS; i++, optr++ )
 		{
-			if( inbuf[i] == '{' || inbuf[i] == '}' || inbuf[i] == '\\' )
+			//if( inbuf[i] == '{' || inbuf[i] == '}' || inbuf[i] == '\\' )
+			if( inbuf[i] == '\\' )
 			{
 				obuf[optr] = '\\';     /* escape the character first */
 				optr++;
@@ -96,9 +98,10 @@ extern void FMnofmt(  void )
 					for( j = 0; j < 4; j++ ) {
 						obuf[optr++] = ' ';
 					}
+				} else {
+					obuf[optr] = inbuf[i];         /* copy the buffer as is */
 				}
 			}
-			obuf[optr] = inbuf[i];         /* copy the buffer as is */
 		}
 
 		//if( optr == 0 )        /* if this was a blank line */
@@ -107,7 +110,7 @@ extern void FMnofmt(  void )
 
 		FMflush( );            /* send the line on its way */
 		cury--;                /* dont skip so far */
-		FMpara( 0, TRUE );     /* force a paragraph end */
+		//FMpara( 0, TRUE );     /* force a paragraph end */
 	
 		status = FMread( inbuf );   /* get the next line and loop back */
 	}           /* end while */
