@@ -162,7 +162,7 @@ extern void FMtmpfont( void )
 					}
 					break;
 
-				default:			// sliently ignore any other x= things
+				default:			// sliently ignore any other d= things
 					break;
 			}
 
@@ -181,7 +181,7 @@ extern void FMtmpfont( void )
 					ofont = NULL;
 				}
 
-				ydisp = (textsize * 5.2)/8;
+				ydisp = (osize *.85) - (textsize / 2);	// shift it to the top of the current text, then down by half of the new size
 			}
 			else
 			{
