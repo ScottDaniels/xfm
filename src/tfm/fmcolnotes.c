@@ -64,6 +64,7 @@ Contributions to this source repository are assumed published with the same lice
 *  Date:     10 Mar 2013
 *  Author:   E. Scott Daniels
 *	Mods:	17 Jul 2016 - Bring prototypes into modern era.
+*			23 Jan 2017 - Correct bug when atbot used.
 *
 * .cn start {atclose | atbot} [s=symbol] font fontsize space
 * .cn {show|showend}
@@ -90,7 +91,7 @@ static void cnstart( )
 	struct cn_info	*new;
 	char	symbol = 0;
 	int		i;
-	int		*target_id;
+	int		*target_id = NULL;
 
 	while( (len = FMgetparm( &buf )) > 0 )
 	{
@@ -112,10 +113,10 @@ static void cnstart( )
 			else
 				fprintf( target, ".sp .5\n" );
 		}
-#ifdef NOT_SUPPORTED
 		else
 		if( strcmp( buf, "atbot" ) == 0 )
 		{
+			fprintf( stderr, "Warning: column note 'atbot' used and is not supported. column note ignored\n" );
 			target_id = &bid;
 			if( !(target = bfile) )			/* yes this is an assignment! */
 			{
@@ -133,7 +134,6 @@ static void cnstart( )
 			else
 				fprintf( target, ".sp .5\n" );
 		}
-#endif
 		else
 		if( strncmp( buf, "s=", 2 ) == 0 )
 			symbol = *(buf+2);
@@ -141,9 +141,9 @@ static void cnstart( )
 			break;			/* assume positional parameters */	
 	}
 
-	if( target == NULL )
+	if( target_id == NULL || target == NULL )			// invalid at* command
 	{
-		fprintf( stderr, "bad column notes (.cn) command parameters: expected: .cn start {atbot|atend} <font> <size> <space>\n" );
+		fprintf( stderr, "bad column notes (.cn) command parameters: expected: .cn start {atclose|atend} <font> <size> <space>\n" );
 		exit( 1 );
 	}
 
