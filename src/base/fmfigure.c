@@ -55,8 +55,7 @@ Contributions to this source repository are assumed published with the same lice
 /*
 **************************************************************************
 *
-*   Mnemonic: FMfigure
-*   Abstract: This routine places a blank line and then the word "figure"
+*   Mnemonic: FMfigure *   Abstract: This routine places a blank line and then the word "figure"
 *             and figure number into the file. The line following this
 *             line will contain the user input statement if entered on the
 *             command line. This routine should later be modified to contain
@@ -77,6 +76,7 @@ Contributions to this source repository are assumed published with the same lice
 *				04 Mar 2014 - To allow for preallocation of figure numbers and 
 *					to support their use on the .fg command
 *				17 Jul 2016 - Changes for better prototype generation.
+*				26 Jan 2017 - Fix bug introduced by allowing n= on command.
 *****************************************************************************
 */
 extern void FMfigure(  void )
@@ -135,9 +135,9 @@ extern void FMfigure(  void )
 	}
 
 	if( flags & PARA_NUM )                      /* if numbering the paragraphs, add it to the number */
- 		sprintf( obuf, "%s %d-%d: ", type, pnum[0], fig );   
+ 		sprintf( obuf, "%s %d-%d: ", type, pnum[0], fnum );   
 	else
- 		sprintf( obuf, "%s %d: ", type, fig );   /* gen fig number */
+ 		sprintf( obuf, "%s %d: ", type, fnum );   /* gen fig number */
 
 
 	optr = strlen( obuf );    /* set pointer to be past the label */
