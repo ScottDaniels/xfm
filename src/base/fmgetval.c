@@ -85,6 +85,7 @@ Contributions to this source repository are assumed published with the same lice
 *				t[xt]  	- Set variable _tsize to current text point size
 *				T[able]	- Set the variable _table to the current number AND advance the number
 *				T[ime] 	- Set variable _time to current hours and minutes
+*				w[ords]	- set the variable _words to be the current word count
 *				v[er]  	- XFM/HFM/RFM version number into _ver
 *				y  		- Set variable _cury to the current y value
 *
@@ -342,6 +343,11 @@ extern void FMgetval( void )
 			snprintf( value, sizeof( value ), "%02d:%02d", h, m );
 		}
        break;
+
+     case 'w':
+			strcpy( vname, "_words" );
+			snprintf( value, sizeof( value ), "%d", words );
+			break;
 
      case 'v':
 			strcpy( vname, "_ver" );
