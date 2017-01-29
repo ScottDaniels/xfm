@@ -1,0 +1,141 @@
+.h1 Variable Reference Tricks
+
+For the most part, referencing variables and macros is fairly straight forward.
+Even the concept of defining a macro with an escaped variable reference so that the
+value of the embedded reference is expanded when the macro is expanded, and not the
+value the variable has when the macro is defined, isn't that much more difficult to
+understand.
+However, when a macro needs to both set a variable, and then reference that variable,
+the macro syntax can become difficult enough to require some knowledge about how the
+parser is working with the input in order to build a macro that works.
+
+
+.h2 Very Late Variable Expansion
+Consider the need to count words in a paragraph, or section of text.
+&x provides a word count variable which can be refreshed with the &cw( ^.gv words ) command, and
+with a few easy commands the following code would present the number of words in the paragraph
+on stderr:
+
+&example_start
+  .gv words
+  .dv watstart &_words
+  A paragraph of text which is formatted.
+  .gv words
+  .dv count [ &_words &watstart - ]
+  .sv count
+&example_end
+
+The code here is quite simple.
+The current word count is saved in a variable &cw( watstart ) (words at start. ) 
+At the end of the text which needs to be counted, the word count is again &ital( fetched ) and the original
+word count subtracted from it. 
+The only tricky bit is that the difference, the count, is saved into its own variable so that it can
+be shown on the standard error device with the &cw( ^.sv ) command.
+.sp
+
+While the code is not complex, it would be nice to wrap it all in a macro such that only a single
+command before and after the section is needed.
+For example two macros: &cw( start_count ) and &cw( end_count ) could be written to make the document 
+source easier to write and maintain.
+
+.sp
+.h3 The start_count macro
+The &ital( knee jerk ) macro for the word count setup, which is buggy,  might look something like this:
+
+&example_start
+  .dv start_count .gv words .dv watstart ^&_words ^:
+&example_end
+
+Because of the way &x parses and executes commands, the example above will fail to record the correct
+number of words which have been placed into the output prior to the execution of the macro.
+When an &x statement is executed, the complete statement (up to the next new line or lone colon) is parsed,
+including the expansion of any variables, then the interpreter is presented with the tokens for execution.
+In general this just works, but in this case the &cw( ^&_words ) variable is expanded with the
+value of &cw( _words ) before the &cw( ^.gv ) command is executed, and thus the value saved in
+&cw( watstart ) is not correct.
+
+.sp
+When the original example was executed this is not a problem as there is a newline between the &cw( ^.gv )
+command and the &cw( ^.dv ) command so when the &cw( _words ) variable is expanded the &cw( ^.gv ) command
+has executed and the variable is set with the correct value.
+
+.sp
+The problem becomes how to cause the get value command to execute before the &cw( _words ) variable is
+expanded, or in other words how to delay the expansion of the variable until the last possible moment.
+The solution is to use a combination of the evaluate command (.ev) with a doubly escaped variable name.
+The evaluation command causes the reparsing of the next logical token and is usually used to force a
+computation in the source like this:
+
+&example_start
+  The sum of our costs is .ev [ &food &drink &tax + + ] .sm .
+&example_end
+
+In this case the logical next token is the expression between square brackets.
+However, with the word count start macro, there is no expression, and to further complicate the
+problem the variable that needs to be evaluated late in the process is in the middle of the define
+variable command.
+To solve this back quotes are used to group the whole define variable command and present that to
+the evaluate for expansion. 
+The final, correct, version of the macro is illustrated below:
+
+&example_start
+  .dv start_count  .gv words .ev ^^^`.dv watstart ^^^^&_words^^^` ^:
+&example_end
+
+The back ticks are escaped so that they are not interpreted as the start_count macro is defined,
+and the &cw( _words ) reference is double escaped to prevent the expansion both when the macro
+is defined and when it is initially expanded during the initial reference; we need the &cw( _words )
+variable to be expanded when the evaluate command is executed and not before.
+
+.sp
+To help with the visualisation the buffer stored with the &cw( start_count ) macro is this:
+
+&example_start
+  .gv words .ev `.dv watstart ^^&_words` :
+&example_end
+
+Notice that the first set of escape characters are stripped away.  When the macro is referenced
+the initial expansion which is given to the interpreter becomes:
+
+&example_start
+  .gv words .ev `.dv watstart &_words` :
+&example_end
+
+The get value command is executed, and the word count value saved by &x in the &cw(_words) variable.
+Then the evaluate command is executed which causes all of the tokens contained in the back ticks to
+be reprocessed (run through the parser anew)  causing the value of &cw( _words ) to  finally be inserted. 
+Because the get variable command has already been acted on, the value is correct. 
+The result of the evaluation command is to leave the define variable command, with the expanded value,
+in the buffer which is then interpreted by &x.
+
+.h3 The end_count macro
+In a similar fashion, the &cw( end_count ) macro can be defined.
+The definition uses the same back tick and evaluation technique to allow the word count variable to
+be set before executing the math to generate the difference between the two values.
+The macro is illustrated below:
+
+&example_start
+  .dv end_cont .gv words .ev ^^^`.dv count ^^^[ ^^^^&_words ^^^&watstart - ]^` ^^^: .sv tag
+&example_end
+
+The &cw( watstart ) variable needs only to be escaped once as it's value is known when the macro
+is expanded and thus expansion does not need to wait until the evaluate command is executed.
+
+.h3 More useful word count
+The output generated by the previously defined macro set is useful, but if there are many instances
+where counting words of a section of text is needed, then augmenting the macros to show both
+a count, and a tag, might make them a bit more useful. 
+The following is a revision to the &cw( end_count ) macro which allows a &ital( tag ) to be passed.
+The tag and the count will be displayed on the same line when written to standard error (the code 
+in the following example has been split on to two lines for formatting purposes in this 
+document and should not be split when used in practice).
+
+&example_start
+  .dv end_count .dv tag $1 ^^^: .gv words 
+        .ev ^^^`.dv count ^^^[ ^^^^&_words ^^^^&watstart - ]^^^` ^^^: .sv tag count
+&example_end
+
+The tag is placed into a variable, and then at the end of the macro the values of both the tag
+and count variables are written to the standard error device.
+
+

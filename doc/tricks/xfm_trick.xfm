@@ -159,6 +159,7 @@ better than the worst grammar it contains!)
 .im trick_front.im
 .im trick_slides.im
 .im trick_line.im
+.im trick_vars.im
 
 .if false
 .h2 Back Matter
