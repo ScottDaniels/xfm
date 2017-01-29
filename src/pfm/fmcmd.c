@@ -85,7 +85,8 @@ Contributions to this source repository are assumed published with the same lice
 *							when .st &var and var not defined. 
 *				03 Jan 2016 - Removed errant flush before FMll() and indent calls.
 *				17 Jul 2016 - Bring decls into the modern world.
-**************************************************************************
+*				29 Jan 2017 - Print all vars on a .sv command rather than just one, on same line
+*******************************************************************************************************
 */
 extern int FMcmd( char *buf )
 {
@@ -366,10 +367,18 @@ extern int FMcmd( char *buf )
 						FMshowvars( );
 					else
 					{
-						if( (ptr = sym_get( symtab, buf, 0 )) )
-							fprintf( stderr, "(%s @ %ld) %s = (%s)\n", fptr->name, AFIstat( fptr->file, AFI_OPS, NULL), buf, ptr );
-						else
-							fprintf( stderr, "(%s @ %ld) %s = UNDEFINED\n", fptr->name, AFIstat( fptr->file, AFI_OPS, NULL), buf );
+						fprintf( stderr, "(%s @ %ld)", fptr->name, AFIstat( fptr->file, AFI_OPS, NULL) );
+						do {
+							if( (ptr = sym_get( symtab, buf, 0 )) ) {
+								//fprintf( stderr, "(%s @ %ld) %s = (%s)\n", fptr->name, AFIstat( fptr->file, AFI_OPS, NULL), buf, ptr );
+								fprintf( stderr, " %s = (%s)",  buf, ptr );
+							} else {
+								//fprintf( stderr, "(%s @ %ld) %s = UNDEFINED\n", fptr->name, AFIstat( fptr->file, AFI_OPS, NULL), buf );
+								fprintf( stderr, " %s = UNDEFINED",  buf );
+							}
+						} while( (len = FMgetparm( &buf ) > 0 ) );
+
+						fprintf( stderr, "\n" );
 					}
 				}
 				break;
