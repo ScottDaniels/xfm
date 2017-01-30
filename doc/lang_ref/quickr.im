@@ -263,6 +263,7 @@ Start next row in the table.
 .br tsize |
 .br Time |
 .br ver |
+.br words |
 .br yval }
 .cl
     Get the named value into a variable
@@ -286,6 +287,7 @@ Start next row in the table.
 .br Set &ital(_tsize) to the current text size value
 .br Set &ital(_time) to the current time (hh:mm)
 .br Set &ital(_ver) to the current pfm|hfm|tfm version number
+.br Set &ital(_words) to the current number of words which have been processed
 .br Set &ital(_cury) to the current Y position in the column (points)
 
 .et
