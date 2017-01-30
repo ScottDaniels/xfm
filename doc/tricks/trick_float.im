@@ -51,6 +51,7 @@ Figure &space_fig illustrates this process using the &ital( _iremain ) variable 
 by the get value command.
 
 .sp
+.** ------------------- space fig -----------------------------
 .ca start eject1.ca
 &example_start
   .gv remain
@@ -61,12 +62,8 @@ by the get value command.
   .fi
 &example_end_fg(Pushing commands based on remaining space.)
 .ca end
-.gv remain
-.if &_lremain < 10
-	.oe .im eject1.ca
-.ei
-	.im eject1.ca
-.fi
+&ifroom_l( 10 : eject1.ca )
+
 
 Note in figure &space_fig that the encapsulated postscript &c(ep) command is the same; the only difference
 is that if there isn't enough room the command becomes the parameters to the on eject command rather than 
@@ -84,16 +81,7 @@ To push a more complex set of output to the next column, the document source is 
 file, and the imbed command is given as the parameters to the on eject command or executed 
 directly as illustrated in figure &space_fig.
 
-.sp
-This can be done by manually maintaining the example source in its own file (e.g. example1.im) though
-when creating a large document this can result in an unmanageable number of small imbed files. 
-The preferred way to manage figures like this is via the &ital( capture ) &c(ca) command as illustrated
-.gv figure
 .dv ca_fig &_fig
-in figure &ca_fig which illustrates how the previous figure was coded in this document source.
-.sp
-
-
 .ca start eject2.ca
 &example_start
  .ca start eject1.ca
@@ -107,19 +95,22 @@ in figure &ca_fig which illustrates how the previous figure was coded in this do
   &example_end_fg(Pushing commands based on remaining space.)
  .ca end
  .gv remain
- .if &_lines < 10
+ .if &_lines 10 <
 	 .oe .im eject1.ca
  .ei
 	 .im eject1.ca
  .fi
 &example_end_fg(Using the capture command to push a figure when needed.)
 .ca end
-.gv remain
-.if &_lremain 22 <
-	.oe col .im eject2.ca
-.ei
-	.im eject2.ca
-.fi
+&ifroom_l( 22 : eject2.ca )
+
+.sp
+This can be done by manually maintaining the example source in its own file (e.g. example1.im) though
+when creating a large document this can result in an unmanageable number of small imbed files. 
+The preferred way to manage figures like this is via the &ital( capture ) &c(ca) command as illustrated
+.gv figure
+in figure &ca_fig which illustrates how the previous figure was coded in this document source.
+.sp
 
 The &ital( start capture ) command &c(ca start)  saves all lines until the &ital( end capture ) 
 &c(ca end) command is reached; the text is saved into the named file (eject1.ca in this case).
@@ -142,8 +133,21 @@ the line of code in figure &if_room_fig would replace the last six lines in figu
   &if_room( 22 : eject2.ca )
 &example_end_fg( Use of the if-room macro to replace several lines of code.)
 
-A similar &ital( if_room_ep ) macro could be written which accepts the amount of required space, and the 
-encapsulated postscript command, and also has the advantage of making the document easier to maintain. 
+.gv fig
+Two &cw( if_room ) macros definitions are illustrated in figure &_fig; one checks the remaining space
+for lines and the other for the supplied number of inches.
+This macro involves a trick of it's own, using the evaluate command, which is explained in 
+detail in the &ital( Variable Reference Tricks) section of this document.
+(The macro definitions have been split across multiple lines only for formatting purposes in 
+this document and if used, should exist on one input line in the document source.)
+
+&example_start
+  .dv if_room_l .gv remain 
+         .ev ^`.if  ^^^&_lremain $1 > ^` .im $2 .ei .oe col .im $2 .fi .ei .im $2
+  .dv if_room_i .gv remain 
+         .ev ^`.if  ^^^&_iremain $1 > ^` .im $2 .ei .oe col .im $2 .fi .ei .im $2
+&example_end_fg(The if_room_l (lines) and if_room_i (inches) macro definitions.)
+
 
 .h2 Wide Tables And Figures
 When generating multiple column output there is often a need to include a table or illustration which does not
@@ -197,11 +201,4 @@ and then returns the setting to normal.
   .po
 &example_end_fg(Using push and pop to save and restore state.)
 .ca end
-.gv remain
-.if &_lremain 10 <
-	.oe col .im wide.ca
-.ei
-	.im wide.ca
-.fi
-
-
+&ifroom_l( 10 : wide.ca )

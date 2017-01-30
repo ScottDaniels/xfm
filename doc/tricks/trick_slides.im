@@ -70,11 +70,7 @@ A basic style setup is illustrated in figure &style_fig
   .fi
 &example_end_fg( Basic HTML style setup. )
 .ca end
-.gv remain
-.if &_lremain 36 <=
-	.oe .im style.ca
-.ei
-	.im style.ca
+&ifroom_l( 36 : style.ca )
 
 Each slide is started by using the ^&page macro which does the right thing depending on the formatter that is 
 being used.  

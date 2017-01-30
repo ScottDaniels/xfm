@@ -19,6 +19,7 @@
 .dv back_color #0d0e0f  
 
 .if pfm
+	.im ../lang_ref/ifroom.im
 	.dv right_mar 1i
 	.dv col_indent 1i
 	.dv index_cols 2
@@ -43,6 +44,11 @@
 	.dv text_indent 0i
 	.dv header_indent 0i
 	.dv col1_width 6.25i
+.ei
+	.** for hfm and tfm, just do it as it's not page oriented
+	.dv ifroom  .im $2 
+	.dv ifroom_l  .im $2 
+	.dv ifroom_i  .im $2 
 .fi
 
 .if ! imbed
