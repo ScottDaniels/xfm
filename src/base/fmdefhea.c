@@ -173,11 +173,11 @@ extern void FMdefheader(  void )
 				if( tok ) {
 					hptr->askip = strtof( tok, NULL );
 				} else {
-					hptr->askip = hptr->bskip;
+					hptr->askip = ((int) hptr->bskip) % 10;				// assume old style 20 2 before, 0 after
+					hptr->bskip /= 10;
 				}
 
-				//hptr->skip = atoi( &buf[2] );   /* convert to integer */
-				hptr->skip = (int) hptr->bskip;
+				hptr->skip = (int) (hptr->bskip * 10) + hptr->askip;
 
 				if( hptr->skip < 0 || hptr->skip > 99 )
 					hptr->skip = 2;     /* dont let user go crazy */
