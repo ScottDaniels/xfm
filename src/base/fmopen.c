@@ -104,7 +104,7 @@ extern int FMopen( char *name )
 		}
 		
 		AFIsetsize( fptr->file, MAX_READ-1 );       /* input buffer size */
-		strcpy( fptr->name, name );
+		fptr->name = strdup( name );
 	}
 	else
 	{

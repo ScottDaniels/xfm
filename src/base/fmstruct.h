@@ -56,6 +56,7 @@ Contributions to this source repository are assumed published with the same lice
 *			09 Mar 2015 - Added support to table for borders on tables in tables
 *							and line weight in tables.
 *			01 Jan 2016 -	Changes to support floating margins.
+*			12 Aug 2017 - Change name to prevent possible buffer overrun
 **************************************************************************
 */
 
@@ -118,7 +119,7 @@ struct col_blk
   {
    struct fblk *next;     /* pointer to the next block in the list */
    int file;              /* file number of the file */
-   char name[256];         /* name of the file */
+   char* name;			// name of the file 
    int status;            /* current file status */
    long count;            /* number of records processed for the file */
    int fnum;              /* internal imbed number of the file */
