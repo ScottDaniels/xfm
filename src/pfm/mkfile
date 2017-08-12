@@ -58,5 +58,5 @@ $pfmlib:    ${src:%=$pfmlib(%.o)}
 	ranlib $pfmlib || true
 	)'
 
-pfm:: fmmain.c $pfmlib ../base/libxfm$gflag.a
+pfm:: fmmain.c $pfmlib ../base/libxfm$gflag.a ../afileio/libafi.a
 	$CC $CFLAGS $IFLAGS -o pfm fmmain.c $libs 
