@@ -67,6 +67,7 @@ Contributions to this source repository are assumed published with the same lice
 *   Mod:		29 Aug 2011 -- Added center, format and noline support
 *
 *				17 Jul 2016 - Changes for better prototype generation.
+*				11 Aug 2017 - reset format string on each call
 ***************************************************************************
 */
 extern void FMpgnum(  void )
@@ -78,6 +79,10 @@ extern void FMpgnum(  void )
 	flags = flags | PAGE_NUM;				/* default to on */
 	flags3 &= ~F3_PGNUM_CENTER;				/* default to off */
 	flags3 |= F3_RUNOUT_LINES;				/* default to lines */
+	if( pgnum_fmt != NULL ) {
+		free( pgnum_fmt );
+		pgnum_fmt = NULL;
+	}
 
 	while( (len = FMgetparm( &buf )) > 0 )
 	{
