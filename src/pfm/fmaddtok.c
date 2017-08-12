@@ -227,14 +227,18 @@ extern void FMaddtok( char *buf, int len )
 		TRACE( 2, "addtok: done with just/flush buf=(%s) obuf=(%s)\n", buf, obuf );
   	}
 
- 	if( optr == 0 && len == 1 && *buf == ' ' )
+ 	if( optr == 0 && len == 1 && *buf == ' ' ) {
+		free( buf );
 		return;
+	}
 
  	if( optr == 0 && *buf == ' ' )			/* squelch lead blanks at the beginning of a buffer */
  	{
 		while( *buf++ == ' ' );
-		if( *buf == 0 )
+		if( *buf == 0 ) {
+			free( buf );
 			return;
+		}
  		toksize = FMtoksize( buf, len );		/* need to recalc */
  	}
 
@@ -266,5 +270,6 @@ extern void FMaddtok( char *buf, int len )
 		}
 
 	obuf[optr] = EOS;             /* terminate buffer incase we flush */
+	free( buf );
 }                 /* FMaddtok */
 
