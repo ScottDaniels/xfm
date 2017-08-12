@@ -48,6 +48,7 @@
 *                           rather than a non standard option string.
 *             11 Mar 1997 - To support opening a pipe.
 *              3 Apr 1997 - To init operations counter
+*				12 Aug 2017 - Convert filename to allocated string
 **************************************************************************
 */
 #include "afisetup.h"              /* get necessary include stuff */
@@ -85,7 +86,8 @@ int AFIopen( char *name, char *opts )
 	new->tmb = NULL;               /* not tokenizing at this point */
 
 
-	strncpy( new->name, name, MAX_NAME );  /* save the file name */
+	//strncpy( new->name, name, MAX_NAME );  // save the file name 
+	new->name = strdup( name );
 	new->chain = NULL;             /* initially nothing pointed to here */
 
 	if( strchr( opts, 'b' ) != NULL )    	/* binary specified? */

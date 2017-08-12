@@ -42,7 +42,8 @@
 *
 *    Modified: 11 Mar 1997 - To handle pipes
 *              28 Mar 1997 - To handle tokenized input mgt blocks
-*		10 Apr 2007 - Now free tsep.
+*				10 Apr 2007 - Now free tsep.
+*				12 Aug 2017 - Support dynamically allocated filenames.
 *
 ***************************************************************************
 */
@@ -89,6 +90,10 @@ int AFIclose1( int file )
 	}
 	else
 		if( ptr->file != NULL )                     /* valid file pointer */
+
+	if( ptr->name ) {
+		free( ptr->name );
+	}
 
 	fclose( ptr->file );                       /* do the close */
 

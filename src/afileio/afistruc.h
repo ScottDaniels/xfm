@@ -69,7 +69,7 @@ struct file_block  /* defines an open file - pointed to by files array */
   struct file_block *chain;     /* pointer to next file block in chain */
   struct pipe_blk *pptr;        /* pointer to pipe info if file is a pipe */
   struct tokenmgt_blk *tmb;     /* token management block for tokenized strm */
-  char name[MAX_NAME+1];        /* name of the file */
+  char* name;			        /* name of the file */
   FILE *file;                   /* real file handle (pointer) */
   int flags;                    /* read write flags */
   int max;                      /* max number of characters to read/write */

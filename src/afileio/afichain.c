@@ -45,6 +45,7 @@
 *    Modified: 4 Jan 1994 - To correct call to open
 *              8 Jan 1995 - To call AFIopenp if p is in options string.
 *             28 Mar 1997 - To support tokenized input streams
+*				12 Aug 2017 - Convert name to allocaed string.
 ****************************************************************************
 */
 #include "afisetup.h"        /* include all needed header files */
@@ -72,13 +73,16 @@ int AFIchain( int file, char *fname, char *opts, char *path )
  if( tfile < AFI_OK )
   return( AFI_ERROR );
 
- tptr = afi_files[tfile];          /* get pointer to file block for new file */
- tptr->chain = ptr;            /* put infront of existing file block */
- tptr->flags = ptr->flags;     /* make duplicate of previously opened file */
+ tptr = afi_files[tfile];      /* get pointer to file block for new file */
+ tptr->chain = ptr;            /* chain in front of existing file block */
+
+ tptr->flags = ptr->flags;     // absorbe properties of the already open file
  tptr->flags &= ~F_STDIN;      /* cannot reopen the standard input file */
  tptr->max = ptr->max;
- strncpy( tptr->name, fname, MAX_NAME );  /* copy the file name in */
- tptr->name[MAX_NAME] = EOS;                 /* just in case long name */
+
+	if( tptr->name == NULL ) {
+		tptr->name = strdup( fname );		// should have been saved by open, but chance not
+	}
 
  if( ptr->tmb != NULL )         /* file was setup for tokenized input */
   {                             /* so do the same and copy existing environ */
