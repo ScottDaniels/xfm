@@ -87,10 +87,14 @@ Contributions to this source repository are assumed published with the same lice
 *			03 Jul 2016 - Add support for getting better section info for
 *					.gv command.
 *			17 Jul 2016 - Bring decls into the modern world.
+*			12 Aug 2017 - Enable fracion before/after spacing and required
+					space after.
 **************************************************************************
 */
 /*
-	pushes the .hX command back if we need to column note or somesuch
+	pushes the .hX command back if we need to column note or somesuch.
+	Returns true if we had to push the command back on to make way for
+	end of colum stuff.
 */
 static int push_cmd( int level )
 {
@@ -110,6 +114,7 @@ static int push_cmd( int level )
 
 extern void FMheader( struct header_blk *hptr )
 {
+	double before;
 	int	short_out = 0;	/* set if we had to push the header command back on and defer processing */
 	int len;            /* len of parm token */
 	int j;              /* index variables */
@@ -121,24 +126,34 @@ extern void FMheader( struct header_blk *hptr )
 	int oldsize;        /* temp storage for text size value */
 	char *oldfont;      /* pointer to old font sring */
 	int	need_eject = 0;	// set to true if we need to eject for any reason
-	int	at_eop	= 0;	// not enough space on the page
 
+	FMflush();
 
-	i = (textsize + textspace) * (hptr->skip%10); 				// compute space needed before, after, for header and an additional 2 lines	
-	i += (textsize + textspace) * ((hptr->skip/10) + 2); 		// add in before space + two lines
+																// compute total space needed before, after, and reserved
+	before = ((double) (textsize + textspace)) * hptr->bskip;	// space before (lines, or fractional lines)
+	i = before;
+	i += (textsize + textspace) * (hptr->askip);				// space after
 	i += textspace +  hptr->size;           					// add in header itself
+	i += (hptr->required);										// space required to exist after (already in points)
+
 	if( (i + cury) > (boty - cn_space) )						// if required space is more than what's left force a break
 	{
-		need_eject = at_eop = 1;
-		TRACE( 2, "header:  level=%d forcing eject: skip=%d needed=%d cury=%d boty=%d cn_space=%d\n", hptr->level, hptr->skip, i, cury, boty, cn_space );
+		need_eject  = 1;
+		before = 0;												// no before space required now
+	} else {
+		if( cury <= topy ) {
+			before = 0;											// when at top, no before space needed
+		}
 	}
+	TRACE( 2, "header:  level=%d skip=%.1f/%.1f needed=%d cury=%d boty=%d cn_space=%d\n", hptr->level, hptr->bskip, hptr->askip, i, cury, boty, cn_space );
 
 	
 	if( (hptr->flags & HEJECTP) && (cur_col != firstcol || cury > topy) )	// must check for new page first as it trumps
 	{
-		short_out = push_cmd( hptr->level );		// push the header command back on the stack to execute after ejecting
-		if( cury != topy ) 					// flush didn't see us at the end of page, so it didn't eject, we must
-		{											// this check is legit as fi HEJECTP is set we eject even if flush ejected too
+		before = 0;
+		short_out = push_cmd( hptr->level );		// if needed, push the header command back on the stack to execute after ejecting
+		if( cury != topy )		 					// flush didn't see us at the end of page, so it didn't eject, we must
+		{											// this check is legit as if HEJECTP is set we eject even if flush ejected too
 			if( short_out  )						// if column notes waiting, we must dump those first
 			{
 				FMcolnotes_show( 0 );			
@@ -147,11 +162,10 @@ extern void FMheader( struct header_blk *hptr )
 			else
 				FMpflush( );	// and finally eject the page leaving short_out SET!
 		}
-	}
-	else
-	{
+	} else {
 		if( need_eject || (hptr->flags & HEJECTC) && cury != topy ) 			// either at end or column eject
 		{
+			before = 0;
 			short_out = push_cmd( hptr->level );								// push the .hn command back if there is end column stuff
 			
 			if( ! FMflush() )							// safe to flush, and if flush didn't eject, we must
@@ -173,16 +187,15 @@ extern void FMheader( struct header_blk *hptr )
 		return;
 
 
-	if( cury != topy )
-		cury += (textsize + textspace) * (hptr->skip/10);  /* skip before if not currently at top */
-
+	cury += before;					  							// skip before if needed (already points), and zero if we ejected
 	pnum[(hptr->level)-1] += 1;     		 /* increase the paragraph number */
 
-					/* preserve everything and set up header font etc */
+									/* preserve everything and set up header font etc */
 	TRACE( 3, "header: preserving: lmar=%d curfont=%s textsize=%d\n", lmar, curfont, textsize );
 	oldlmar = lmar;                  /* save left margin */
 	oldfont = curfont;               /* save current text font */
 	oldsize = textsize;              /* save old text size */
+
 	if( hptr->level < 4 );           /* unindent if level is less than 4 */
 		lmar = cur_col->lmar + hptr->hmoffset;
 	textsize = hptr->size;           /* set text size to header size for flush */
@@ -201,15 +214,6 @@ extern void FMheader( struct header_blk *hptr )
 		char*	hnum;
 
 		hnum = FMmk_header_snum( hptr->level );
-#ifdef KEEP
-		sprintf( buf, "%d.%d.%d.%d", pnum[0], pnum[1], pnum[2], pnum[3] );
-		for( i = 0, j = 0; buf[i] && j < hptr->level;  i++ )
-		{
-			if( buf[i] == '.' )
-				j++;
-		}             
-		buf[i] = 0;
-#endif
 		FMaddtok( hnum, strlen( hnum ) );
 		free( hnum );
 	}
@@ -242,7 +246,8 @@ extern void FMheader( struct header_blk *hptr )
 
 	if( hptr->level < 4 )      /* indent if not header level 4 */
 	{
-		cury += (textsize + textspace) * (hptr->skip%10); 		/* skip after */
+		//cury += (textsize + textspace) * (hptr->skip%10); 		/* skip after */
+		cury += (textsize + textspace) * hptr->askip;				// skip after
 		if( cury % 2 )
 			cury++;		/* ensure its even after a header */
 		for( optr = 0, i = 0; i < hptr->indent; i++, optr++ )	/* indent */

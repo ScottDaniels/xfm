@@ -171,6 +171,9 @@ struct col_blk
    int flags;                    /* header flags */
    int indent;                   /* number of spaces to indent the 1st line */
    int skip;                     /* space to skip before header (pts) */
+	double bskip;				// lines to skip before the header
+	double askip;				// lines to sakip after the header 
+	int required;				// points required to exist below the header (force cejet if not there)
    int level;                    /* paragraph level */
    int hmoffset;                 /* indention from hm value for level */
   };

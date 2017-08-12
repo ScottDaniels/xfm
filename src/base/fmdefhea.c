@@ -61,13 +61,20 @@ Contributions to this source repository are assumed published with the same lice
 *            If the skip value is set to 0 then no skipping is done before
 *            or after the header.
 *            .dh <level> [f=<fontname>]        supply the font for header
-*                        [p=<size.[p|i]]       size of header text
+*                        [p=<size>		       size of header text (points)
 *                        [s=<skip value>]      spaces skipped before/after
 *                        [i=<indent>]          indention of first line after
-*                        [u=on|off]            translate header to upper case
+*						 [r=<space>li			space to reserve (like .cc 2i)
 *                        [t=on|off]            put in toc
+*                        [u=on|off]            translate header to upper case
 *                        [m=<space>[p|i]]      offset from hmar location
 *                        [e=p(page)|c(olumn)|n(one) ]  eject type
+*
+*					skip value may be either a two digit integer (ba) where
+*					b is the number of lines to skip before and a the number
+*					to skip after, or may be a pair of floating point numbers
+*					(e.g. 1.5,0.5) where the first is the number of lines 
+*					to skip before, and the second is the after space. 
 *  Parms:    None.
 *  Returns:  Nothing.
 *  Date:     7 November 1992
@@ -79,11 +86,15 @@ Contributions to this source repository are assumed published with the same lice
 *            15 Dec 1994 - To all skip values up to 99.
 *			23 Oct 2007 - Corrected pars error on t=
 *				17 Jul 2016 - Changes for better prototype generation.
+*				12 Aug 2018 - Added ability to so fractional before/after skip
+*						ane to add r= parameter.
 *****************************************************************************
 */
 extern void FMdefheader(  void )
 {
 	char *buf;                /* pointer at next parm to parse */
+	char* tok;
+	char* buf_info;				// strtok buffer info
 	int level;                /* current level we are working with */
 	int len;                  /* length of the parameter read */
 	struct header_blk *hptr;  /* pointer at current block */
@@ -100,7 +111,8 @@ extern void FMdefheader(  void )
 		return;
 	}
 
-	hptr = headers[level];   /* point right at what we are changing */
+	hptr = headers[level];		/* point right at what we are changing */
+	hptr->required = 72;			// default to a minimum of an inch remaining on the page
 
 	while( (len = FMgetparm( &buf )) > 0 )   /* while parameters left */
 	{
@@ -148,9 +160,25 @@ extern void FMdefheader(  void )
 					hptr->size = 12;    /* dont let user go crazy */
 				break;
 
+			case 'r':
+			case 'R':
+				hptr->required = FMgetpts( buf+2, len-2 );
+				break;
+
 			case 's':
 			case 'S':        /* set skip value */
-				hptr->skip = atoi( &buf[2] );   /* convert to integer */
+				tok = strtok_r( buf+2, ",", &buf_info );
+				hptr->bskip = strtof( tok, NULL );
+				tok = strtok_r( NULL, ",", &buf_info );
+				if( tok ) {
+					hptr->askip = strtof( tok, NULL );
+				} else {
+					hptr->askip = hptr->bskip;
+				}
+
+				//hptr->skip = atoi( &buf[2] );   /* convert to integer */
+				hptr->skip = (int) hptr->bskip;
+
 				if( hptr->skip < 0 || hptr->skip > 99 )
 					hptr->skip = 2;     /* dont let user go crazy */
 				break;
