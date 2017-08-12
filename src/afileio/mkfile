@@ -36,7 +36,7 @@ headers = afisetup.h aficonst.h afidefs.h afistruc.h
 src = afichain aficlos1 aficlose afiopen afiopenp afiread afiseek afisetfl afisetsi afistat \
 	afiwrite afigetto afiisvar afinew afireadp afiopenp  afipusht afisetto replace
 
-$afilib(%.o):N:    %.o
+$afilib(%.o):N:    %.o $headers
 $afilib:   ${src:%=$afilib(%.o)}
 	$PSHELL '(
 	set -e
