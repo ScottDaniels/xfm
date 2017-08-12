@@ -289,8 +289,10 @@ The following illustrates text formatted in both a box constrained by the margin
 &indent
 .ll -.5i
 .bx start m w=100
-The command &cw(^.bx start m w=100) was used to generate this box with formatted text inside of it.
-The 'm' parameter constrains the box to the margins.
+The command .br 
+&cw(^.bx start m w=100) .br 
+was used to generate this box with formatted text inside of it.
+The 'm' parameter constrains the box to the margin width.
 The indention was shifted by .5 inches and the line length reduced by the same to illustrate
 how a margin box 'hugs' the current margin settings.
 .bx end
@@ -301,8 +303,10 @@ how a margin box 'hugs' the current margin settings.
 &indent
 .ll -.5i
 .bx start  w=100
-The command &cw(^.bx start  w=100) was used to generate this box with formatted text inside of it.
-The absence of the 'm' parameter constrains the box to the column.
+The command .br
+&cw(^.bx start  w=100) .br
+was used to generate this box with formatted text inside of it.
+The absence of the 'm' parameter constrains the box at the column width.
 The margin settings for this text are the same, but with out the 'm' option, the box remains
 fixed at the column boundaries.
 .bx end
@@ -336,6 +340,7 @@ Figure &_fig illustrates the source code and figure .ev [ &_fig 1 + ] shows the 
   Padding is accomplished via a series
   of indent, line length and space
   commands.
+  .br
   .in -.25i
   .ll +.5i
   .sp .3

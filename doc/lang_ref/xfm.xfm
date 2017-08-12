@@ -70,6 +70,8 @@ skip_license
 
 
 .if pfm
+	.** ieee sized gutter
+	.dv gutter_width .375i
 	.dv right_mar 1i
 	.dv col_indent 1i
 	.dv index_cols 2
@@ -84,7 +86,7 @@ skip_license
 	.fi
 	.dv text_color black
 	.dv back_color #0d0e0f  
-	.dv textsize 10
+	.dv textsize 9
 	.dv figsize 8
 	.dv textfont Times-roman
 	.dv italfont Times-Oblique
@@ -95,7 +97,10 @@ skip_license
 	.dv col1_width 7.5i
 .fi
 .im doc_start.im
+.xx 0
 .im ifroom.im
+
+&comment( &col_width )
 
 .if hfm
 	&indent
