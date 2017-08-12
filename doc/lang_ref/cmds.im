@@ -1058,20 +1058,42 @@ the next newline are taken as figure text and added to the document.
 &x automatically places the figure number in front of the figure text, and
 reduces the text size slightly.  The current font is used to render the figure
 text.
-The style of the figure number depends on wheither or not paragraph numbering has been turned on.
-When numbering is off, then figures are labled with a simple ordinal number. If paragraph numbering
-is turned on, then the figure number consists of the paragraph number of the most recent level one
-header, followed an incremental figure number (e.g. 12-2) which is reset each time a
-header level one command is encountered.
+The style of the figure number depends on one of two things:
+.sp .5i
+&indent
+.bl &lic1
+.li Whether or not paragraph numbering has been turned on
+.li Whether or not the no section in figure command has been issued
+.el
+&uindent
+.sp
+
+When paragraph numbering is off, then figures are labled with a simple ordinal number (e.g. Figure n).. 
+If paragraph numbering is turned on, then the figure number consists of the paragraph number of the most recent level one
+header number, followed an incremental figure number (e.g. 12-2).
+In this mode, the figure number is reset each time a header level one command is encountered.
+If paragraph numbering is on, and the command has been invoked with the 'nosect' parameter, then 
+the section number will be dropped and they will &bold(not) be reset when a header level one command is processed.
+.sp
+The font and font size may also be specified on the figure command using the &cw(f=) and &cw(s=) parameters respectively. 
+By default, the current text font is used and the font size is reduced by two points provided that the curent 
+font size is greater than 8 points.
+
 .sp
 The figure command can also be used to label tables.  If the &cw( t=table ) type option is
 used, then the word &ital(Table) and the table number is added.
-Examples of both:
+Examples of  the various options:
 
 .sp
 .st [ &textsize 2 - ]
 .sf &cwfont
 .nf
+ .** turn of section oriented numbers even 
+ .** if paragraph numbering is on.
+ .fg nosect
+ 
+ .fg s=10 A figure that has a hard size
+ .fg f=Helvetica Figure text with hard font
  .fg An illustration of the wysiwyg-is-bad.
  .fg t=table Counts of users and time.
 .fo
