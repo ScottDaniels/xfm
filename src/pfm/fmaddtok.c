@@ -160,8 +160,9 @@ extern void FMaddtok( char *buf, int len )
 	int toksize;         /* size of token in points */
 	char wbuf[2048];
 	int is_escaped = 0;	// prevent escape of backslant
+	char* buf_start;		// may bounce buf up past start, so need for free
 
-	buf = strdup( buf );		// dup so that it survivees flush/just call if at eject pending
+	buf_start = buf = strdup( buf );		// dup so that it survivees flush/just call if at eject pending
 	len = strlen( buf );
  	words++;             /* increase the number of words in the document */
 
@@ -228,7 +229,7 @@ extern void FMaddtok( char *buf, int len )
   	}
 
  	if( optr == 0 && len == 1 && *buf == ' ' ) {
-		free( buf );
+		free( buf_start );
 		return;
 	}
 
@@ -236,7 +237,7 @@ extern void FMaddtok( char *buf, int len )
  	{
 		while( *buf++ == ' ' );
 		if( *buf == 0 ) {
-			free( buf );
+			free( buf_start );
 			return;
 		}
  		toksize = FMtoksize( buf, len );		/* need to recalc */
@@ -270,6 +271,6 @@ extern void FMaddtok( char *buf, int len )
 		}
 
 	obuf[optr] = EOS;             /* terminate buffer incase we flush */
-	free( buf );
+	free( buf_start );
 }                 /* FMaddtok */
 
