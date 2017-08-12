@@ -72,6 +72,7 @@ Contributions to this source repository are assumed published with the same lice
 *			23 Dec 2015 - Better management of running header via top gutter.
 *			27 Dec 2015 - Fixed bug with header line (twice).
 *			17 Jul 2016 - Bring decls into the modern world.
+*			11 Aug 2017 - Fix centering so it works properly.
 ****************************************************************************
 */
 extern void FMrunout( int page, int shift )
@@ -80,7 +81,6 @@ extern void FMrunout( int page, int shift )
 	char *cmd = "show";      /* default to show command with header text info */
 	int y;                   /* spot for writing the footer/page number info */
 	int x;                   /* either far left or right depending on shift */
-	int pnx;				// x for page numbers
 	int len;                 /* length of string for output to write buffer */
 	int hfsize = 10;		// font size
 	char *moveto = "moveto"; /* moveto command necessary for show command, but not shifting right */
@@ -111,16 +111,8 @@ extern void FMrunout( int page, int shift )
 	}
 	else
 		x = firstcol->anchor;    			// not shifting, x is the left column's left margin
-
-	if( flags3 & F3_PGNUM_CENTER ) {
-		//pnx = (pagew/2)-4;					// center the page number else just use x   TODO: center on the length of string
-	//	pnx = (firstcol->lmar + ((firstcol->lmar + (cb->lmar + cb->width)/2)) - 4;     //TODO -- center the string
-		pnx = (((cb->lmar + cb->width) - firstcol->lmar) / 2 ) + firstcol->lmar;
-	} else {
-		pnx = x;
-	}
 	
-	TRACE(1, "runout: header cmd=%s pnx=%d x=%d y=%d anchor=%d width=%d rmar=%d\n", cmd, pnx, x, y, firstcol->anchor, cb->width, cb->width + cb->lmar );
+	TRACE(1, "runout: header cmd=%s  x=%d y=%d anchor=%d width=%d rmar=%d\n", cmd, x, y, firstcol->anchor, cb->width, cb->width + cb->lmar );
 	if( rhead != NULL )   /* if there is a running header defined */
 	{
 		y = topy - top_gutter - hfsize;
@@ -158,7 +150,11 @@ extern void FMrunout( int page, int shift )
 	if( flags & PAGE_NUM )    /* if we are currently numbering pages */
 	{
 		snprintf( ubuf, sizeof( ubuf ), pgnum_fmt ? pgnum_fmt : "Page %d", page );		/* format user string, or default if not set */
-		snprintf( buf, sizeof( buf ), "%d %d %s (%s) %s\n", pnx, -y, moveto, ubuf, cmd );
+		if( flags3 & F3_PGNUM_CENTER ) {
+			snprintf( buf, sizeof( buf ), "0 %d moveto\n (Times-roman) (%s) 0 10 [-1]\n 612 1 cent\n", -y, ubuf );
+		} else {
+			snprintf( buf, sizeof( buf ), "%d %d %s (%s) %s\n", x, -y, moveto, ubuf, cmd );
+		}
 
 		AFIwrite( ofile, buf );             /* send out the page number */
 	} 

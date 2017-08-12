@@ -62,13 +62,20 @@ Contributions to this source repository are assumed published with the same lice
 *             command line. This routine should later be modified to contain
 *             the logic if a figure table will ever be generated. Figure
 *             numbers are the section number followed by a sequential number.
+*
+*				If 'nosect' is given on the command, then the command is 
+*				used just to set the flags which control whether or not 
+*				section style numbering is used when paragraph numbering is
+*				turned on.
 *   Parms:    None.
 *   Returns:  Nothing.
 *   Date:     9 December 1988
 *   Author:   E. Scott Daniels
 *
 *
-*				.fg [n=number] [t=type] <text>
+*				Two styles:
+*				.fg nosect
+*				.fg [s=size] [f=font] [n=number] [t=type] <text>
 *					type is either table or figure, default is figure.
 *
 *   Modified:	30 Oct 1992 - To reduce figure text size by two from current size
@@ -78,6 +85,7 @@ Contributions to this source repository are assumed published with the same lice
 *				04 Mar 2014 - To allow for preallocation of figure numbers and 
 *					to support their use on the .fg command
 *				17 Jul 2016 - Bring decls into the modern world.
+*				11 Aug 2017 - Add size (s=), font (f=), and nosect parm support.
 *****************************************************************************
 */
 extern void FMfigure( void )
@@ -94,6 +102,12 @@ extern void FMfigure( void )
 	int	*num_src;		/* pointer to source for table or figure number */
 	char	fbuf[100];	/* format buffer */
 
+
+	tok_len = FMgetparm( &buf );				// get early so we can check for nosect command and bail before any real work
+	if( strcmp( buf, "nosect" ) == 0 ) {
+		flags3 &= ~F3_FIG_SECT_NUM;				// turn off section style even if para numbers are on
+		return;
+	}
 	
 	num_src = &fig;			/* default to using figure number */
 
@@ -105,22 +119,33 @@ extern void FMfigure( void )
 	oldsize = textsize;    /* save old size for end */
 	
 	flags2 |= F2_SETFONT;  /* force flush to select our figure font */
+	curfont = strdup( ffont == NULL ? curfont : ffont );   							// default to figure font if there, text font if not, f= overrides later
 
 	if( textsize > 8 )
-		textsize -= 2;         /* set to size for the font string */
-	curfont = ffont == NULL ? curfont : ffont;   /* set figure font if there */
- 	FMfmt_add();				/* must push the size on the stack */
+		textsize -= 2;         /* default size for the font string is slightly smaller than current */
 
-	tok_len = FMgetparm( &buf );
 	while( tok_len > 0 && ((cp = strchr( buf, '=' )) != NULL) )
 	{
 		switch( *buf )
 		{
-			case 'n':			// use this figure number
-				if( *(cp + 1) )
-					fnum = atoi( cp+1 );
+			case 'f':
+				if( *(cp+1) ) {
+					curfont = strdup( cp+1 );
+				}
 				break;
 
+			case 'n':			// use this figure number
+				if( *(cp + 1) ) {
+					fnum = atoi( cp+1 );
+				}
+				break;
+
+			case 's':			// override text size
+				if( *(cp + 1) ) {
+					textsize = atoi( cp+1 );
+				}
+				break;
+				
 			case 't':			// set type (figure or table)
 				if( *(cp+1) == 't' )
 				{
@@ -132,6 +157,8 @@ extern void FMfigure( void )
 
 		tok_len = FMgetparm( &buf );	
 	}
+
+ 	FMfmt_add();				/* must push the size on the stack */
 	
 	if( fnum < 0 )				// not set on the command line
 	{
@@ -139,10 +166,11 @@ extern void FMfigure( void )
 		(*num_src)++;
 	}
 
-	if( flags & PARA_NUM )                      /* if numbering the paragraphs, add it to the number */
+	if( (flags & PARA_NUM) && (flags3 & F3_FIG_SECT_NUM) ) {                      /* if numbering the paragraphs, add it to the number */
  		snprintf( fbuf, sizeof( fbuf ), "%s %d-%d: ", type, pnum[0], fnum );   
-	else
+	} else {
  		snprintf( fbuf, sizeof( fbuf ), "%s %d: ", type, fnum );   /* gen fig number */
+	}
 
 
 	FMaddtok( fbuf, strlen( fbuf ) );                    /* add it to the output buffer */
@@ -156,6 +184,7 @@ extern void FMfigure( void )
 
 	flags2 |= F2_SETFONT;  /* next flush will restore the font */
 
+	free( curfont );
 	textspace = oldspace;  /* restore original text space value */
 	textsize  = oldsize;   /* restore the size that was set on entry */
 	curfont = oldfont;     /* restore the font set on entry */

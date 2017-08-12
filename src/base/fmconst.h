@@ -141,6 +141,7 @@ Contributions to this source repository are assumed published with the same lice
 #define F3_PGNUM_CENTER	0x10	/* center the page number */
 #define F3_RUNOUT_LINES 0x20	/* lines if running header/footer/pagenum */
 #define F3_COLNOTE		0x40	/* column note capture in progress */
+#define F3_FIG_SECT_NUM	0x80	// use section numbers with figure numbers
 
 #define LF_INCHES     0x01     /* routine local flags - inches entered */
 #define LF_POINTS     0x02     /* points entered */

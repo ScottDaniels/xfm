@@ -189,8 +189,9 @@ extern void FMheader( struct header_blk *hptr )
 	curfont = hptr->font;            /* set font to header font for flush */
 	FMfmt_add( );
 
-	if( hptr->level == 1 && (flags & PARA_NUM) )
-		fig = 1;                          		/* restart figure numbers */
+	if( hptr->level == 1 && (flags & PARA_NUM) && (flags3 &  F3_FIG_SECT_NUM)  ) {
+		fig = 1;                          		// restart figure numbers, but only if numbering headers and turned on
+	}
 
 	for( i = hptr->level; i < MAX_HLEVELS; i++ )
 		pnum[i] = 0;                    	   /* zero out all lower p numbers */
