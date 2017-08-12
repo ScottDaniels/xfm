@@ -98,7 +98,7 @@ extern void FMpflush( void )
 	if( cn_space  )				/* if and end note was defined, need to add it too */
 	{
 		TRACE( 3, "pflush: dumping column notes first, pushing .pa command back\n"  );
- 		AFIpushtoken( fptr->file, ".pa" );  	/* page command to execute after the column notes are written */
+ 		//AFIpushtoken( fptr->file, ".pa" );  	/* page command to execute after the column notes are written */
 			
 		cn_space = 0;
 		FMcolnotes_show( 0 );			/* cause the column notes to be put in before eject */
