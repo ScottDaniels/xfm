@@ -76,7 +76,7 @@ Contributions to this source repository are assumed published with the same lice
 * .im [nf] filename
 ***************************************************************************
 */
-extern void FMimbed( void )
+extern void xFMimbed( void )
 {
 	char *fp = 0;
 	char *buf;      /* pointer into the imput buffer of the fname token */

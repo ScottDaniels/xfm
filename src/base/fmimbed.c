@@ -71,6 +71,7 @@ Contributions to this source repository are assumed published with the same lice
 *				AFIchain() feature where the imbed file was pushed onto 
 *				the stack of open files. c'est la vie! 
 *			17 Jul 2016 - Changes for better prototype generation.
+*			12 Aug 2017 - better trace message, and better error handling.
 *
 * .im [nf] filename
 ***************************************************************************
@@ -80,6 +81,8 @@ extern void FMimbed(  void )
 	char *fp = 0;
 	char *buf;      /* pointer into the imput buffer of the fname token */
 	int len;        /* length of the token */
+	char* name;
+	int	reset_fmt = 0;					// if nf given, then we reset formatting at end of file
 
 	len = FMgetparm( &buf );
 	if( strcmp( buf, "nf" ) == 0 )
@@ -87,6 +90,7 @@ extern void FMimbed(  void )
 		len = FMgetparm( &buf );       /* point to the next token in the buffer */
 		FMflush( );                    /* send last formatted line on its way */
 		flags = flags | NOFORMAT;      /* turn no format flag on */
+		reset_fmt = 1;
 	}
 
 	if( len <= 0 )
@@ -98,12 +102,23 @@ extern void FMimbed(  void )
 	FMmsg( I_IMBED, buf );
 
 	fp = strdup( buf );
+
 	AFIpushtoken( fptr->file, ".sr" );  	/* push the special runstop command to mark end of imbed file */
-	TRACE( 2, "imbed: starting with file %s\n", fp );
-	FMopen( buf );             		/* open the imbed file */
+	if( FMopen( buf ) == OK ) {
 
-	FMrun( );				/* run until we hit the end of the file */
+		AFIstat( fptr->file, AFI_NAME, (void **) &name );  	// filename for trace
+		TRACE( 2, "imbed: starting with file %s\n", name );
 
-	TRACE( 2, "imbed: finished with file %s lmar=%d\n", fp, lmar );
+		FMrun( );				/* run until we hit the end of the file */
+
+		TRACE( 2, "imbed: finished with file %s lmar=%d\n", name, lmar );
+	} else {
+		TRACE( 2, "imbed: open failed for\n", fp );
+		len = FMgetparm( &buf );							// must pop the runstop token as we didn't invoke run
+	}
+
+	if( reset_fmt ) {
+		flags &= ~NOFORMAT;				// turn  formatting back on
+	}
 	free( fp );
 }                                 /* FMimbed */
