@@ -149,7 +149,11 @@ extern void FMrunout( int page, int shift )
 
 	if( flags & PAGE_NUM )    /* if we are currently numbering pages */
 	{
-		snprintf( ubuf, sizeof( ubuf ), pgnum_fmt ? pgnum_fmt : "Page %d", page );		/* format user string, or default if not set */
+		if( flags3 & F3_ROMAN_PN ) {						// page numbering in roman numerials
+			snprintf( ubuf, sizeof( ubuf ), "%s", FMi2roman( page ) );		/* format user string, or default if not set */
+		} else {
+			snprintf( ubuf, sizeof( ubuf ), pgnum_fmt ? pgnum_fmt : "Page %d", page );		/* format user string, or default if not set */
+		}
 		if( flags3 & F3_PGNUM_CENTER ) {
 			snprintf( buf, sizeof( buf ), "0 %d moveto\n (Times-roman) (%s) 0 10 [-1]\n 612 1 cent\n", -y, ubuf );
 		} else {

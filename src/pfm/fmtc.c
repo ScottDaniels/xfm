@@ -73,6 +73,7 @@ Contributions to this source repository are assumed published with the same lice
 *              15 Dec 1992 - To convert to postscript and AFI
 *               7 Apr 1994 - To setup for TOC now that linesize/cd are points
 *			17 Jul 2016 - Bring decls into the modern world.
+*			13 Aug 2017 - remove code that turns off page numbering in toc.
 ***************************************************************************
 */
 extern void FMtc( void )
@@ -112,7 +113,8 @@ extern void FMtc( void )
                                /* setup initial psfm commands in toc file */
    AFIwrite( tocfile, ".pa\n" );
    AFIwrite( tocfile, ".cd 1 7.5i i=.75i : .st 15 .sf Times-Bold\n" );
-   AFIwrite( tocfile, ".rh : .rf : .ju on .ll 7i .pn off .tc off\n" );
+   //AFIwrite( tocfile, ".rh : .rf : .ju on .ll 7i .pn off .tc off\n" );
+   AFIwrite( tocfile, ".rh : .rf : .ju on .ll 7i .tc off\n" );
    AFIwrite( tocfile, ".bc start\nTable Of Contents\n.bc end" );
    AFIwrite( tocfile, ".sp 2\n.ta 6i 1i s=0 p=0\n" );
   }

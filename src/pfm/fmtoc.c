@@ -70,13 +70,15 @@ Contributions to this source repository are assumed published with the same lice
 *             11 Apr 1993 - To insert a newline on the last sprintf
 *				03 Jan 2016 - To adjust for new indent (non-break) behaviour.
 *			17 Jul 2016 - Bring decls into the modern world.
+*			12 Aug 2017 - Allow formatable toc page numbers
 ****************************************************************************
 */
 extern void FMtoc( int level )
 {
- char buf[MAX_READ];      /* buffer to build toc entry in */
- int i;                   /* pointer into buffer */
- int j;
+	char buf[MAX_READ];      /* buffer to build toc entry in */
+	char fbuf[128];
+	int i;                   /* pointer into buffer */
+	int j;
  
 
  if( tocfile == ERROR )    /* if no toc file open then do nothing */
@@ -102,16 +104,19 @@ extern void FMtoc( int level )
 
  sprintf( buf, ".br .in -%.2fi\n", (double) (level-1) * .5 );
  AFIwrite( tocfile, buf );
- if( flags & PAGE_NUM )       /* if numbering the pages then place number */
-  {
-   sprintf( buf, ".cl : %s %d .tr\n", level == 1 ? ".sp 1" : "", page+1 );
-   AFIwrite( tocfile, buf );            /* write the entry to the toc file */
-  }                             /* end if page numbering */
- else
- {
-   sprintf( buf, ".cl : .sp 1  .tr\n", page+1 );
-   AFIwrite( tocfile, buf );            /* write the entry to the toc file */
- }
-
+	if( flags & PAGE_NUM )       /* if numbering the pages then place number */
+	{
+		if( toc_pn_fmt != NULL ) {
+			snprintf( fbuf, sizeof( fbuf ), ".cl : %s %s .tr\n", level == 1 ? ".sp 1" : "", toc_pn_fmt );
+			sprintf( buf, fbuf, page+1 );
+		} else {
+			//sprintf( buf, ".sx 7i %d .br\n", page+1 );
+			sprintf( buf, ".cl : %s %d .tr\n", level == 1 ? ".sp 1" : "", page+1 );
+		}
+	} else {
+		sprintf( buf, ".cl : .sp 1  .tr\n", page+1 );
+		//AFIwrite( tocfile, buf );            /* write the entry to the toc file */
+	}
+	AFIwrite( tocfile, buf );            /* write the entry to the toc file */
 }                   /* FMtoc */
 
