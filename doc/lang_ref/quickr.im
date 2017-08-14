@@ -8,6 +8,10 @@
 .dv row    .tr r=5 ^: .bc start $1 .bc end .cl ^: $2 .cl ^: $3  
 
 .pa
+.pn 0 on t=B-%d f=B-%d center noline
+
+
+
 .h1 Appendix B -- Quick Reference
 The following tables provide a quick overview of the &x commands and the parameters that 
 they accept. Several conventions used in the tables are described below:
@@ -135,7 +139,24 @@ Start next cell in the table
 
 &row(et::End table command)
 
-&row(fg:<text>:Figure text with automatic numbering)
+&row(fg:nosect:Sets figure numbering to discard section when paragraph numbering is enabled)
+
+.tr
+.bc start fg .bc end 
+.cl
+.sp
+.br [s=<size>] 
+.br [f=<font>
+.br [table] 
+.br <text>
+.cl
+    Add figure text
+.br Hard set size for text (default current size-2p)
+.br Font for text
+.br Uses table label and number rather than figure
+.br Text to insert
+
+
 &row(fi::End if/else)
 
 .tr r=7
@@ -160,7 +181,7 @@ Pts from top of page where normal margins are to resume.
 &row(hn:on | off | n:Turn off or on header numbering. If n is supplied, sets number to n)
 
 &row(if:<expression>:Causes next lines of source to be 'executed' if <expression> is true)
-&row(im:<filename>:Causes <filename> to be read and process as if it were included at the location of the imbed command in the file currently being processed)
+&row(im:[nf] <filename>:Causes <filename> to be read and process as if it were included at the location of the imbed command in the file currently being processed if 'nf' given as first token, no format flag is enabled as though it appears as the first command in the file)
 &row(in:<rdist>:Sets the distance text is placed from the left column edge)
 
 &row(jm:<target>:Searches for the target token skipping all text and commands until it reaches the target)
@@ -177,7 +198,23 @@ Pts from top of page where normal margins are to resume.
 &row(oe:^[all] [nostate] {page | col} <cmd>:Causes <cmd> to be executed on the next page or column eject. If 'all' supplied then for every eject.) If nostate is given, then state is not saved/restored before and after command.
 
 &row(pa::Causes the next formatted text token to be placed at the top of the next page)
-&row(pn:on | off | n:Start/stop numbering pages; if n supplied set next page number to n+1)
+
+.tr r=8L
+.bc start pn .bc end
+.cl
+{off | on <n>} .br
+[f=fmt-str] .br
+[t=fmt-str] .br
+[center] .br
+[noline] .br
+[roman] .br
+.cl
+Set page numbering on or off. If n given starts numbering at n+1 .br
+Supply the format for the page number: e.g.-%d- or A-%d .br
+Supply the format for the page number in the table of contents .br
+Center the page number rather than placing it against the margin .br
+Do not write a line between the text area and the page number .br
+Causes page number to be generated as roman numerals
 
 &row(qu::Cause &x to stop reading input and gracefully terminate the document)
 

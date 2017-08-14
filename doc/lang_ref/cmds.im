@@ -195,12 +195,12 @@ are illustrated along with examples of defining two kinds of &ital(bold) macros.
 
 .sp
 
-.h3 Smashing things togeither
+.h3 Smashing things together
 By default, tokens placed into the output are separated by a single space, however there
 are times where the input source requires spacing, but the spacing is not desired in
 the output. 
 The smash command &c(sm) causes &x to eliminate the intervening space 'smashing' the
-tokens on either side of the command togeither. 
+tokens on either side of the command together. 
 A common use is to add a superscript to the previous word which is illustrated in the 
 &ital(temporary font changes) section below.
 
@@ -261,16 +261,16 @@ Where:
 &indent
 .bd .75i &ditext
 .di option : Is either the word &cw(start) or &cw(end) to start or end the box.
-.sp .3
+.sp .4
 .di c=colour : Allows the user to select a background colour for the box when generating
 HTML output.
-.sp .3
+.sp .4
 .di b=<points> : Allows the user to supply the border width of the box when generating HTML
 output.
-.sp .3
+.sp .4
 .di m : Base the box on the current text margins rather than the current column definition
 (default).
-.sp .3
+.sp .4
 .di w=<pctg> : Defines the percentage of the browser window that should be used to draw
 the box. Valid only when generating HTML output.
 .ed
@@ -330,7 +330,7 @@ Figure &_fig illustrates the source code and figure .ev [ &_fig 1 + ] shows the 
   .ll -1i
   .in +.5i
   .bx start m w=100
-  .sp .3
+  .sp .4
   .ll -.5i
   .in +.25i
   Another example of using a margin
@@ -343,7 +343,7 @@ Figure &_fig illustrates the source code and figure .ev [ &_fig 1 + ] shows the 
   .br
   .in -.25i
   .ll +.5i
-  .sp .3
+  .sp .4
   .bx end
   .in -.5i
   .ll +1i
@@ -411,7 +411,7 @@ command line:
 &indent
 .bd .75i  Helvetica
 .di expand : Causes simple variables (&name) to be expanded when encountered in the source.
-.sp .3
+.sp .4
 .di shift : Causes the leading tab or whitespace character (just one) to be stripped. This 
 allows capture commands to be embedded.
 .ed
@@ -524,12 +524,12 @@ Where:
 &indent
 .bd .6i &ditext
 .di n :  Is the number of columns
-.sp .3
+.sp .4
 .di indent : Is the amount of space
 that the left column is to be indented from the edge  of the page.
-.sp .3
+.sp .4
 .di gwidth : Defines the width between columns.
-.sp .3
+.sp .4
 .di width : Supplies the width of each column.
 .ed
 &uindent
@@ -711,16 +711,16 @@ Where:
 &indent
 .bd .75i &ditext
 .di atbot : indicates that the note is to be placed at the bottom of the current column.
-.sp .3
+.sp .4
 .di atclose : indicates that the note is to be placed at the end of the document.
-.sp .3
+.sp .4
 .di sym : is the symbol to use; if omitted an internal counter is used and the note
   is assigned to the text.
-.sp .3
+.sp .4
 .di font : is the name of the font that the note text will be written in.
-.sp .3
+.sp .4
 .di size : is the font size (e.g. 8p) that the note is to be written in.
-.sp .3
+.sp .4
 .di space : is the amount of space that needs to be reserved at the end for the note.
 .sp
 .ed
@@ -780,7 +780,7 @@ Where:
 &indent
 .bd .75i &ditext
 .di var-name : Is the name that the variable is assigned.
-.sp
+.sp .4
 .di tokens : Are the "value" that is assigned to the variable.
 .ed
 &uindent
@@ -909,7 +909,7 @@ command (broken onto multiple lines for readability):
 .sf &cwfont
 .nf
  .ep fname [l=n] [x=n] [noadvy]
-       [center|close|stretch|proport]
+       [center|close|proportional|stretch]
 .fo
 .sf &textfont
 .st &textsize
@@ -918,31 +918,31 @@ Where:
 &indent
 .bd .7i &ditext
 .di fname : Is the filename of the encapsulated postscript file.
-.sp .3
+.sp .4
 .di l : Is the length from the current y position to reserve for the drawing.
 The value (n) may be postfixed with either an &cw(i) or &cw(p) to indicate
 the units of measurements. If neither postfix character is used a unit of
 &bold(lines) (at the current text size) is assumed.
-.sp .3
+.sp .4
 .di x : Supplies the number of inches/points to shift the origin of the
 drawing to the right. This is sometimes necessary depending on how the
 origin as been established by the programme that created the encapsulated
 postscript file.
-.sp .3
+.sp .4
 .di center : Specifies that the drawing is to be centered between the current
 margin values.
-.sp .3
+.sp .4
 .di close : Causes the &cw(y) value to be shifted toward the top of the page
 if the length of the drawing did not require the amount of space reserved
 with the &cw(l) parameter.
-.sp .3
+.sp .4
 .di stretch : Causes the drawing to be stretched in order to fill all of the
 reserved space. &bold(CAUTION^:) &x may not maintain an &cw(x,y) aspect ratio when stretching
 a drawing.
-.sp .3
-.di proport : &x will attempt to keep the &cw(x,y) aspect ratio in proportion
+.sp .4
+.di prportional : &x will attempt to keep the &cw(x,y) aspect ratio in proportion
 to the original drawing.
-.sp .3
+.sp .4
 .di noadvy : Causes the current &cw(y) value &bold(not) to be advanced after the drawing
 has been included.  This allows the document text to be placed on top of the drawing and
 can be used to place a printed 'water mark' on the page.
@@ -1017,7 +1017,7 @@ The result is always left as the top value on the stack, and when the end of the
 (the closing square bracket) the top value is used as the parameter value and all other values are
 discarded.
 .sp
-For example, to add two and three togeither and to place the result into the document
+For example, to add two and three together and to place the result into the document
 the expression would be:
 .sp
 .sf &cwfont
@@ -1033,11 +1033,11 @@ multiplication, and division) several other operations are provided for; their o
 &indent
 .bd .5i &ditext
 .di	% : Modulo division.
-.sp
+.sp .4
 .di 	F[ract] : Take the top value on the stack and replace it with the fraction portion of the value.
-.sp
+.sp .4
 .di 	I[nt] : Take the top value on the stack and replace it with the integer portion of the value.
-.sp
+.sp .4
 .di 	S[um] : Sum all elements in the stack.
 .ed
 &uindent
@@ -1192,7 +1192,7 @@ header level 1 command.
 .h3 Define header properties
 The define header properties command &c(dh) allows the user to establish different
 properties for each of the four supported paragraph header levels. 
-The user can specify the font, font size, capitalisation, wheither the header level
+The user can specify the font, font size, capitalisation, whether the header level
 is included in the table of contents, and spacing for a header.
 The syntax of the define header properties command is shown below (broken on
 multiple lines for formatting only):
@@ -1202,7 +1202,7 @@ multiple lines for formatting only):
 .nf
 	.dh level [f=font] [p=size] [s=skip]
         [i=indentr] [t={on|off}] [m=margin]
-        [e=eject] [u={on|off}]
+        [e={on|off}] [u={on|off}] [r=space]
 
 .fo
 .sf &textfont
@@ -1211,28 +1211,36 @@ multiple lines for formatting only):
 Where:
 &indent
 .bd .6i &ditext
+.di e=on/off : When &ital(on) causes an eject to be performed prior to writing 
+	the header.  If the document being written is currently in two column mode
+	(more than one col defined) the eject is to the top of the next column.
+.sp .4
 .di level : Is the header level 1-4.
-.sp .3
+.sp .4
 .di font : Is the name of the font to be used for the header level.
 .sp
 .di size : Is the size of the header (generally supplied in points).
-.sp .3
+.sp .4
 .di skip : Is the amount of space that is to be skipped before and
-after the header. (Described in more detail below.)
-.sp .3
+	after the header. (Described in more detail below.)
+.sp .4
 .di indent : Is the number of characters that the first line of text
-is to be indented following headers of this level.
+	is to be indented following headers of this level.
+.sp .4
+.di r=space : Defines the required space that must be available in the 
+	column for the header to be written. (See section below.)
+.sp .4
 .di u=on/off : Causes translation of the header to uppercase characters
-if &cw(u=on) is supplied.
-.sp .3
+	if &cw(u=on) is supplied.
+.sp .4
 .di t=on/off : Causes the header text to be placed into the table of contents
-when set on.
-.sp .3
+	when set on.
+.sp .4
 .di margin : Is the amount of space from the start of the column that the
-header text is indented.
-.sp .3
+	header text is indented.
+.sp .4
 .di eject : Defines the type of eject that is performed before the header
-is placed into the document. This may be one of &cw( page, col, ) or &cw( none. )
+	is placed into the document. This may be one of &cw( page, col, ) or &cw( none. )
 .ed
 &uindent
 
@@ -1252,13 +1260,33 @@ Table &_table lists the attribute defaults for each header level.
 
 .sp
 .h3 Header spacing
-The &ital( skip ) value used to set the header spacing on a define header
+The &ital( skip ) value used on the define header command to set the number of lines
+skipped before and after the header is written.  
+The parameter accepts a value which is a pair of comma separated decimal numbers which
+supply the number of lines before (first value) and the number of lines following (second
+value) to be skipped.
+For example &cw(s=1.5,0.5) would skip the space equivalent to one and one half lines
+before the header, and after the header the space equivalent to one half line 
+would be added.  
+If the output format does not support fractional whitespace, then the number will be 
+rounded.
+
+.h3 Header Space Minimums
+To prevent a lone header at the bottom of a column, a &ital(required) space value 
+may be supplied for each of the headers. 
+If the required space is not available in the column, then the column is ejected
+before the header is written.  
+If not supplied on the define header command for a header level, the default value
+is one inch.
+
+.if false
 command (s=value) has the form &cw( ba, ) where &cw(b) is the number of lines
 that are skipped before the header, and &cw( a ) defines the number of lines
 skipped after the header. 
 If the value is &ital(21) then two lines are skipped before, and one after,
 where &ital(10) would cause a blank line before the header and no blank lines
 after the header.
+.fi
 
 
 .h2 Imbedding Source Files
@@ -1420,11 +1448,11 @@ Where:
 .di all : If present causes the command to be executed for every eject. If not
 	present, then the command is executed on the next eject type and then
 	forgotten.
-.sp
+.sp .4
 .di page : The command is added to the list to be executed at the top of the next page.
-.sp
+.sp .4
 .di col : Causes the eject type to be set to column rather than page.
-.sp
+.sp .4
 .di command : Are the tokens that are to be executed after the next eject.
 .ed
 &uindent
@@ -1469,9 +1497,52 @@ command will be executed prior to any text being added to the new page.
 
 .h2 Page Numbering
 &x will automatically number pages when page numbering has been enabled with the
-&ital(page number) &c(pn) command.  The &ital(page number) command accepts a single
-parameter which can be either the words &cw(off) or &cw(on,) or the page number to
-start numbering with.
+&ital(page number) &c(pn) command.  
+.if false
+The &ital(page number) command accepts a single
+keyword parameter which can be either &cw(off) or &cw(on;) when &ital(on) is given
+it may optionally be followed by the page number to begin with, less one (use on 0 to 
+begin numbering with page 1).
+.fi
+
+.cc 4
+The page number command syntax is as follows:
+.sp .5
+.st [ &textsize 2 - ]
+.sf &cwfont
+.nf
+  .pn {off| on n} [center] [noline] [roman]
+       [f=fmt] [t=fmt]
+.fo
+.sf &textfont
+.st &textsize
+
+.sp
+Where:
+&indent
+.bd .65i &ditext
+.di on : Turns page numbering on and starts numbering on the current page with n+1.
+.sp .4
+.di off : Turns page numbering off.
+.sp .4
+.di center : Causes the page number to be centered as opposed to being written against a margin
+.sp .4
+.di noline : Prevents a bottom of page line from being written between the text and the bottom matter 
+	running footer and/or page number.
+.sp .4
+.di roman : Generates the page numbers using roman numerals (lower case). Format string if supplied is ignored.
+.sp .4
+.di f=fmt : Format string for the page numbers written at the bottom of the page. This may be something like
+	--%d-- or A-%d for numbering pages in any appendices. The default is 'Page %d'.
+.sp .4
+.di t=fmt : Supplies the format for the page number used in the table of contents entries. 
+.ed
+&uindent
+.sp
+
+Only the first &ital(%d) in a format string will be replaced with the page number.  
+If it is desired to use a string with spaces as a format string, the whole parameter, including
+the &cw(f=) or &cw(t=) portions, must be enclosed in backquotes.
 
 .h2 Quitting The Compilation
 The &ital(quit) &c(qu) command is used to cause &x to stop processing all input files
@@ -1679,7 +1750,7 @@ top of the page and wanting the subsequent columns to format nicely underneath i
 The &ital(two sided) &c(ts) command causes &x to place running headers, footers, and page numbers
 at the right edge of odd numbered pages, and at the left edge of even numbered pages. The
 assumption is that when the document is printed, the running matter is easily seen as the
-reader flips the pages wheither flipping from the beginning of the document or from the back.
+reader flips the pages whether flipping from the beginning of the document or from the back.
 When formatting a document to be viewed on line, two sided page mode should not be used as it
 will not have a pleasing effect. When generating HTML documents this command is ignored.
 The command accepts no parameters.
