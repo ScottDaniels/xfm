@@ -279,6 +279,7 @@ EXTERN int ofile INIT_VALUE( 0 );                     		/* file number of output
 
 EXTERN int page INIT_VALUE( 0 );                  /* current page number */
 EXTERN char *pgnum_fmt INIT_VALUE( NULL );			/* format string for page numbering */
+EXTERN char *toc_pn_fmt INIT_VALUE( NULL );			// table of contents page number format
 
 EXTERN int cenx1 INIT_VALUE( 0 );                     /* x coord of point 1 to center text between*/
 EXTERN int cenx2 INIT_VALUE( 0 );                     /* 2nd point to center text between */

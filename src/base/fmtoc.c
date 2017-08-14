@@ -74,9 +74,10 @@ Contributions to this source repository are assumed published with the same lice
 */
 extern void FMtoc( int level )
 {
- char buf[MAX_READ];      /* buffer to build toc entry in */
- int i;                   /* pointer into buffer */
- int j;
+	char buf[MAX_READ];      /* buffer to build toc entry in */
+	char fbuf[128];
+	int i;                   /* pointer into buffer */
+	int j;
 
  if( tocfile == ERROR )    /* if no toc file open then do nothing */
   return;
@@ -102,7 +103,12 @@ extern void FMtoc( int level )
 
  if( flags & PAGE_NUM )       /* if numbering the pages then place number */
   {
-   sprintf( buf, ".sx 7i %d .br\n", page+1 );
+	if( toc_pn_fmt != NULL ) {
+		snprintf( fbuf, sizeof( fbuf ), "%.sx 7i %s", toc_pn_fmt ); 
+		sprintf( buf, fbuf, page+1 );
+	} else {
+		sprintf( buf, ".sx 7i %d .br\n", page+1 );
+	}
    AFIwrite( tocfile, buf );            /* write the entry to the toc file */
   }                             /* end if page numbering */
 }                   /* FMtoc */

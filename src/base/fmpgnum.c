@@ -58,7 +58,10 @@ Contributions to this source repository are assumed published with the same lice
 *   Mnemonic:  FMpgnum
 *   Abstract:  This routine sets the page number flag as requested by the user.
 *			.pn off
-*			.pn on [center] [noline] [fmt=`string`] [starting-pgnum]
+*			.pn on [center] [noline] [roman] [tocfmt=string] [fmt=string] [starting-pgnum]
+*
+*			Format strings are something like -%d- A-%d. To include spaces the 
+*			_whole_ parm must be back quoted:  `f=Page %d`.
 *   Parms:     None.
 *   Returns:   Nothing.
 *   Date:      3 December 1988
@@ -70,15 +73,98 @@ Contributions to this source repository are assumed published with the same lice
 *				11 Aug 2017 - reset format string on each call
 ***************************************************************************
 */
+
+/*
+	Given an integer 1 - 3999, generate the roman numeral string that corresponds to the 
+	integer. Returns the buffer with the value that the caller must free.
+*/
+extern char* FMi2roman( int x  ) {
+	int		power = 1000;	// loop backwards through powers of 10
+	char	buf[128];
+	char*	so;				// special output
+	char*	ls;				// left side character: x in xi
+	char*	rs;				// right side character: i in xi
+	int		spec;			// value which generates a special output (e.g. 9 or 900)
+	int		mp;				// midpoint of the group
+	int		y;
+	int		i;
+
+	buf[0] = 0;
+
+	if( x > 3999 ) {
+		return strdup( buf );
+	}
+
+	while( power > 0 ) {
+		mp = power * 5;
+		spec = power * 9; 
+
+		switch( power ) {
+			case 1000:
+				so = "";
+				ls = "";
+				rs = "m";
+				break;
+
+			case 100:
+				so = "cm";
+				ls = "d";
+				rs = "c";
+				break;
+
+			case 10:
+				so = "xc";
+				ls = "l";
+				rs = "x";
+				break;
+
+			case 1:
+				so = "ix";
+				ls = "v";
+				rs = "i";
+				break;
+		}
+
+		y = power * (x/power);
+		if( y > 0 ) {
+			x -= y;
+			if( y == spec ) {		// special case 
+				strcat( buf, so );
+			} else {
+				if( y >= mp ) {
+					strcat( buf, ls );		// add the midpoint (D, L, or V)
+					y = (y - mp)/power;
+				} else {
+					if( y == mp - power ) {		// special subtraction at midpoint
+						strcat( buf, rs );		// characters are reversed
+						strcat( buf, ls );
+						y = 0;
+					} else {
+						y /= power;
+					}
+				}
+
+				for( i = 0; i < y; i++ ) {
+					strcat( buf, rs );			// add 0-3 Is, Xs, Cs
+				}
+			}
+		}
+
+		power /= 10;
+	}	
+
+	return strdup( buf );
+}
+
 extern void FMpgnum(  void )
 {
  	char *buf;          /* pointer at the token */
  	int len;            /* length of parameter entered */
 	char	 *fmt = NULL;
 
-	flags = flags | PAGE_NUM;				/* default to on */
-	flags3 &= ~F3_PGNUM_CENTER;				/* default to off */
-	flags3 |= F3_RUNOUT_LINES;				/* default to lines */
+	flags = flags | PAGE_NUM;							/* default to on */
+	flags3 &= ~(F3_PGNUM_CENTER | F3_ROMAN_PN);			/* default to off */
+	flags3 |= F3_RUNOUT_LINES;							/* default to lines */
 	if( pgnum_fmt != NULL ) {
 		free( pgnum_fmt );
 		pgnum_fmt = NULL;
@@ -113,6 +199,20 @@ extern void FMpgnum(  void )
 
 			case 'n':									/* assume noline */
 					flags3 &= ~F3_RUNOUT_LINES; 
+					break;
+
+			case 'r':									// assume roman numerals
+					flags3 |= F3_ROMAN_PN;
+					break;
+
+			case 't':
+					fmt = strchr( buf, '=' );
+					if( fmt )
+					{
+						if( toc_pn_fmt )
+							free( toc_pn_fmt );
+						toc_pn_fmt = strdup( fmt + 1 );
+					}
 					break;
 
 			default:
