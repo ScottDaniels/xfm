@@ -10,6 +10,7 @@
 	.** needed only if in multi column mode
 	.pa
 .fi
+.pn 0 on t=A-%d f=A-%d center noline
 
 .h1 Appendix A - Column Layout Details
 This appendix contains more details with respect to the layout of columns and the relationship 
