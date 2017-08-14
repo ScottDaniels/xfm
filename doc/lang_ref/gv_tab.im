@@ -7,6 +7,7 @@
 .sf &textfont
 .sp
 
+.in +.28i
 .ju off
 .if &two_col_mode 1 =
 	.dv lcw 4.5i
