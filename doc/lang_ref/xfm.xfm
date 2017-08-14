@@ -97,7 +97,6 @@ skip_license
 	.dv col1_width 7.5i
 .fi
 .im doc_start.im
-.xx 0
 .im ifroom.im
 
 &comment( &col_width )
@@ -128,9 +127,9 @@ skip_license
 		.im ../license.im
 
 		&set1col
+		.pn on 0 center roman noline
 		.im xfm.toc		.** *.toc does a lead page eject
-		.gv remain
-		.pa
+		.** .pa
 	.fi
 .ei
 	.** no need to make the pass for non-pfm formatters
