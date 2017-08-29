@@ -179,20 +179,10 @@ extern void FMaddtok( char *buf, int len )
 		di_add( buf, page + 1 );
 	}
 
-	if( optr == 0 )   		    /* if starting at beginning */
-		osize = 0;			/* reset current line size */
-	else
- 		if( flags2 & F2_SMASH ) 
-		{
-			while( optr && obuf[optr-1] == ' ' )
-			{
-				optr--;
-				osize--;
-			}
-			obuf[optr] = 0;
-		}
-
-	flags2 &= ~F2_SMASH;
+	if( optr == 0 ) {   		    /* if starting at beginning */
+		osize = 0;					/* reset current line size */
+		flags2 &= ~F2_SMASH;		// and ensure this is off
+	}
 
 	remain = linelen - osize;    /* get space remaining for insertion */
 
@@ -226,7 +216,18 @@ extern void FMaddtok( char *buf, int len )
 		}
 
 		TRACE( 2, "addtok: done with just/flush buf=(%s) obuf=(%s)\n", buf, obuf );
-  	}
+  	} else {
+ 		if( flags2 & F2_SMASH ) 
+		{
+			while( optr && obuf[optr-1] == ' ' )
+			{
+				optr--;
+				osize--;
+			}
+			obuf[optr] = 0;
+		}
+	}
+	flags2 &= ~F2_SMASH;
 
  	if( optr == 0 && len == 1 && *buf == ' ' ) {
 		free( buf_start );
