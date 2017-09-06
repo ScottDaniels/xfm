@@ -159,6 +159,12 @@ extern void FMtable(  void )
 					border++;
 				break;
 
+			case 'C':				// line coloure as #rrggbb or 0xrrggbb
+				if( ptr+1 && ptr+2 ) {
+					t->line_colour = strdup( ptr+2 );
+				}
+				break;
+
 			case 'c':
 				if( strncmp( ptr, "class=", 6 ) == 0 )		/* ignore hfm class= */
 					break;
@@ -240,6 +246,7 @@ extern void FMtable(  void )
 		for( cur_col = firstcol; cur_col->next; cur_col = cur_col->next );
 
 	lmar = firstcol->lmar + t->padding;
+	TRACE( 2, "tab_start: fclmar=%d pad=%d lmar=%d\n", firstcol->lmar, t->padding, lmar )
 
 	if( t->edge_borders == 0 && ts_index > 1 )		/* if this is a table in a table w/o edge borders */
 	{
@@ -448,11 +455,13 @@ extern void FMcell( int parms )
 			(user needs to supply a first .cl command).
 
 			r= (reserve) will force a column break if the desired amount of 
+
 			space isn't remaining.
 
  Mods:		10 Apr 2007 -- fixed write of border to be in conditional.
 ---------------------------------------------------------------------------
 */
+
 extern void FMtr( int last )
  {
 	struct table_mgt_blk *t = NULL;
@@ -500,7 +509,7 @@ extern void FMtr( int last )
        case 'a':
          sprintf( align, "align=%s", ptr + 2 );
          break;
-
+	
        case 'c':
 		if( strncmp( ptr, "class=", 6 ) == 0 )			/* ignore hfm class */
 			break;
@@ -545,6 +554,10 @@ extern void FMtr( int last )
 		sprintf( obuf, "%d setlinewidth ", t->weight );
 		AFIwrite( ofile, obuf );
 		tab_vlines( t, 0 );					/* add vlines just for this row */
+	}
+
+	if( last && !t->edge_borders ) {
+		return;
 	}
 
 	if( t->border || tmp_lw >= 0 ) {							// add a top line if borders, or a temp line width was given
@@ -607,7 +620,7 @@ static void tab_vlines( struct table_mgt_blk *t, int setfree )
 		AFIwrite( ofile, obuf );
 
 		next = c->next;
-		if( (c->flags & CF_SKIP) == 0 )
+		if( (c->flags & CF_SKIP) == 0  )
 		{
 			sprintf( obuf, "%d %d moveto %d %d lineto stroke\n", c->lmar, -t->topy, c->lmar, -cury );
 			AFIwrite( ofile, obuf );
@@ -619,7 +632,7 @@ static void tab_vlines( struct table_mgt_blk *t, int setfree )
 			free( c );
 	}
 
-	if( t->border && (t->edge_borders || ts_index < 2) )		// table in table gets edges only if forced on with B option
+	if( t->edge_borders  )
 	{
 		int x;
 
@@ -722,7 +735,8 @@ extern void FMendtable( void )
 	TRACE( 1, "end_table: cury=%d rows=%d  total_depth=%d  ave_depth=%d\n", cury, t->nrows, t->tot_row_depth, t->ave_row_depth );
 
 	AFIpushtoken( fptr->file, ":" );			/* fmtr calls get parm; prevent eating things */
-	FMtr( ts_index > 1 ? 0 : 1 );				/* flush out last row (adds bottom and side borders if needed */
+	//FMtr( ts_index > 1 ? 0 : 1 );				/* flush out last row (adds bottom and side borders if needed */
+	FMtr(  1 );
 
 	if( firstcol != t->col_list ) {
 		for( cur_col = firstcol; cur_col; cur_col = next )
@@ -756,6 +770,9 @@ to be the case
 	topy = t->old_topy;
 	if( t->header )
 		free( t->header );
+	if( t->line_colour ) {
+		free( t->line_colour );
+	}
 	free( t );
 	table_stack[ts_index-1] = NULL;
 	if( ts_index > 0 )
