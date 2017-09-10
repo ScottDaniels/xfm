@@ -81,6 +81,7 @@ Contributions to this source repository are assumed published with the same lice
 *				07 Jul 2013 - Colour support changes. 
 *				18 Dec 2015 - Cleaned up commented out code.
 *				17 Jul 2016 - Bring decls into the modern world.
+*				09 Sep 2017 - Set top y correctly.
 *****************************************************************************
 */
 extern void FMpflush( void )
@@ -134,7 +135,7 @@ extern void FMpflush( void )
 	lmar = cur_col->lmar + diff;  /* set up lmar for first column */
 	hlmar = cur_col->lmar +diffh; /* set up header left margin for first col */
 
-	cury = topy + (textsize/2);                  /* reset current y to top y position */
+	cury = topy;
 
 	FMateject( 1 );		/* do page eject stuff first */
 }
