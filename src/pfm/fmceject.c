@@ -112,6 +112,7 @@ extern void PFMceject( void )
 
 	/* moved before peject in case it calls an oneject that puts in a drawing */
 	cury = topy;                   			/* make sure were at the top */
+	TRACE( 2, "ceject: topy=%d cury=%d\n", topy, cury );
 	if( cur_col && cur_col->next != NULL )    /* if this is not the last on the page */
 		cur_col = cur_col->next;       /* then select it */
 	else
@@ -130,7 +131,7 @@ extern void PFMceject( void )
 	{
 		if( (--rtopcount) == 0 )    /* need to reset */
 		{
-			TRACE( 2, "ceject: reset topy=%d to rtopy=%d\n", topy, rtopy );
+			TRACE( 2, "ceject: reset topy=%d to rtopy=%d cury=%d\n", topy, rtopy, cury );
 			topy = rtopy;
 			rtopy = 0;
 		}
@@ -139,43 +140,6 @@ extern void PFMceject( void )
 	if( flags2 & F2_BOX )    /* if a box is inprogress */
 		FMbxstart( FALSE, 0, 0, 0, 0 );     /* reset top of box to current y position */
 
-	TRACE( 2, "ceject: new-lmar=%d new-hlmar=%d\n", lmar, hlmar );
+	TRACE( 2, "ceject: new-lmar=%d new-hlmar=%d cury=%d\n", lmar, hlmar, cury );
 	FMateject( 0 );			/* do any queued on eject commands */
-
-
-
-#ifdef KEEP_OLD_WAY
-/* if user wants to embed multiple commands on an oe statement, then they need to 
-   put them in a file and oe should just have the .im command
-*/
- if( oncoleject )
- {
-	if( trace > 1 )
-		fprintf( stderr, "ceject: oe (next col) = (%s)\n", oncoleject );
-
- 	AFIpushtoken( fptr->file, oncoleject );  /* and push onto the input stack */
-	free( oncoleject );
-	oncoleject = NULL;
-
-	FMpush_state( );
-   	flags = flags & (255-NOFORMAT);      /* turn off noformat flag */
-   	flags2 &= ~F2_ASIS;                  /* turn off asis flag */
-	if( FMgettok( &tok ) )
-		FMcmd( tok );
-	FMpop_state( );
- }
- else
-	if( onallcoleject )
-	{
-		if( trace > 1 )
-			fprintf( stderr, "ceject: oe (all cols) = (%s)\n", oncoleject );
- 		AFIpushtoken( fptr->file, onallcoleject );  
-		FMpush_state( );
-   		flags = flags & (255-NOFORMAT);      /* turn off noformat flag */
-   		flags2 &= ~F2_ASIS;                  /* turn off asis flag */
-		if( FMgettok( &tok ) )
-			FMcmd( tok );
-		FMpop_state( );
-	}
-#endif
-}                  /* FMceject */
+}
