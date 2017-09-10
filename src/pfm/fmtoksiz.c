@@ -103,6 +103,9 @@ extern int FMtoksize( char* tok, int len )
 	switch( *curfont )
 	{
 		case 'T':
+				charwidth = TimesRoman;
+				break;
+				/*
  				if( strcmp( curfont, "Times-roman" ) == 0 || strcmp( curfont, "Times-Roman" ) == 0 )
 					charwidth = TimesRoman;
  				else
@@ -112,9 +115,11 @@ extern int FMtoksize( char* tok, int len )
  				if( strcmp( curfont, "Times-bold" ) == 0 || strcmp( curfont, "Times-Bold" ) == 0 )
 					charwidth = TimesBold;
  				else
- 				if( strcmp( curfont, "Times-italic" ) == 0 || strcmp( curfont, "Times-Italic" ) == 0 )
+ 				if( strcmp( curfont, "Times-italic" ) == 0 || strcmp( curfont, "Times-Italic" ) == 0 ||
+					strcmp( curfont, "Times-oblique" ) == 0 || strcmp( curfont, "Times-Oblique" ) == 0 )
 					charwidth = TimesItalic;
 				break;
+*/
 
 		case 'C':
  			if( strcmp( curfont, "Courier" ) == 0 )
@@ -128,7 +133,8 @@ extern int FMtoksize( char* tok, int len )
  				if( strcmp( curfont, "Helvetica-Bold" ) == 0 )
 					charwidth = HelveticaBold;
  				else
- 				if( strcmp( curfont, "Helvetica-Italic" ) == 0 )
+ 				if( strcmp( curfont, "Helvetica-Italic" ) == 0 || strcmp( curfont, "Helvetica-italic" ) == 0 ||
+ 				 	strcmp( curfont, "Helvetica-oblique" ) == 0 || strcmp( curfont, "Helvetica-oblique" ) == 0 )
 					charwidth = HelveticaItalic;
  				else
  				if( strcmp( curfont, "Helvetica-Oblique" ) == 0 )
