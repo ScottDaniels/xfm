@@ -95,6 +95,7 @@ extern void PFMceject( void )
 	if( cn_space  )				/* if and end note was defined, need to add it too */
 	{
 		FMcolnotes_show( 0 );			/* cause the column notes to be put in before eject */
+		TRACE( 2, "ceject: showing colnotes topy=%d cury=%d\n", topy, cury );
 		cn_space = 0;
 		return;							/* must return so that col note imbed is processed before */
 	}

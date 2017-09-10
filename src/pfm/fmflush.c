@@ -115,6 +115,7 @@ extern int FMflush( void )
  		PFMceject( );       					/* move to next column */
 		if( cury != topy )
 			cury += largest + textspace;		/* in case something was insterted at the top of col */
+		TRACE(2,  "flush: forced ceject: lmar=%d cury=%d topy=%d boty=%d cn_space=%d obuf=(%s)\n", lmar, cury, topy, boty, cn_space,  obuf );
  	}
 
 	snprintf( jbuf, sizeof( jbuf ), "%d %d moveto\n", lmar, -cury );  /* create moveto */

@@ -112,7 +112,7 @@ extern void FMrunout( int page, int shift )
 	else
 		x = firstcol->anchor;    			// not shifting, x is the left column's left margin
 	
-	TRACE(1, "runout: header cmd=%s  x=%d y=%d anchor=%d width=%d rmar=%d\n", cmd, x, y, firstcol->anchor, cb->width, cb->width + cb->lmar );
+	TRACE(1, "runout: header cmd=%s  cury=%d topy=%d x=%d y=%d anchor=%d width=%d rmar=%d\n", cmd, cury, topy, x, y, firstcol->anchor, cb->width, cb->width + cb->lmar );
 	if( rhead != NULL )   /* if there is a running header defined */
 	{
 		y = topy - top_gutter - hfsize;

@@ -197,7 +197,7 @@ extern void FMateject( int page )
 
 		unlink( fname );
 	} else {
-		TRACE( 1, "ateject: skipped -- file not open?\n" );
+		TRACE( 1, "ateject: skipped -- file not open? cury=%d\n", cury );
 	}
 }
 

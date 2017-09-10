@@ -101,6 +101,7 @@ extern void FMjustify( void )
    	if( flags & DOUBLESPACE )        /* if in double space mode ...    */
     		cury += textsize + textspace;   /* then skip down one more */
 
+	TRACE(2,  "just: lmar=%d topy=%d cury=%d boty=%d cn_space=%d obuf=(%s)\n", lmar, topy, cury, boty, cn_space,  obuf );
   	if( cury > boty )               /* are we out of bounds? */
 	{
  		PFMceject( );       			/* move to next column */

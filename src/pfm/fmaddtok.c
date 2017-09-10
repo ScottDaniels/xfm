@@ -188,13 +188,13 @@ extern void FMaddtok( char *buf, int len )
 
 	if( (toksize = FMtoksize( buf, len )) > remain+4 )   /* room for it? */
  	{                                    /* no - put out current buffer */
-		TRACE( 1, "addtok: (%s) does not fit must flush: len=%d ok1=%d add (%s) to (%s)\n", buf, len, ok1, buf, obuf );
 		if( len == 1 && ok1 )
 		{
 			ok1 = 0;
 		}
 		else
 		{
+			TRACE( 1, "addtok: (%s) does not fit must flush: len=%d ok1=%d add (%s) to (%s)\n", buf, len, ok1, buf, obuf );
 			ok1 = 1;
 			if( (flags & JUSTIFY ) && (flags3 & F3_HYPHEN) && len > 5  )	/* might try hyphen */
 			{
@@ -213,9 +213,9 @@ extern void FMaddtok( char *buf, int len )
 			}
 
 			osize = 0;          /* new buffer has no size yet */
-		}
 
-		TRACE( 2, "addtok: done with just/flush buf=(%s) obuf=(%s)\n", buf, obuf );
+			TRACE( 2, "addtok: done with just/flush buf=(%s) obuf=(%s) cury=%d topy=%d\n", buf, obuf, cury, topy );
+		}
   	} else {
  		if( flags2 & F2_SMASH ) 
 		{

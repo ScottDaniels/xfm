@@ -219,7 +219,7 @@ extern int FMfmt_pop( int *size, char **font, char **colour, int *start, int *en
 
 	if( fmt_lst )
 	{
-		TRACE( 2, "fmt_pop: %x\n", fmt_lst );
+		TRACE( 2, "fmt_pop: %x cury=%d\n", fmt_lst, cury );
 		*ydisp = fmt_lst->ydisp;
 		*size = fmt_lst->size;
 		*font = fmt_lst->font;			/* pass back strings we duped earlier */
@@ -236,7 +236,7 @@ extern int FMfmt_pop( int *size, char **font, char **colour, int *start, int *en
 	}
 	else
 	{
-		TRACE( 2, "fmt_pop: end %x\n", fmt_lst );
+		TRACE( 2, "fmt_pop: end %x cury=%d\n", fmt_lst, cury );
 		*ydisp = 0;
 		*size = textsize;
 		if( *font )

@@ -139,18 +139,20 @@ extern void FMheader( struct header_blk *hptr )
 	if( (i + cury) > (boty - cn_space) )						// if required space is more than what's left force a break
 	{
 		need_eject  = 1;
-		before = 0;												// no before space required now
+		before = -textsize;										// need to remove what flush will add
 	} else {
 		if( cury <= topy ) {
 			before = 0;											// when at top, no before space needed
+		before = -textsize;										// need to remove what flush will add
 		}
 	}
-	TRACE( 2, "header:  level=%d skip=%.1f/%.1f needed=%d cury=%d boty=%d cn_space=%d\n", hptr->level, hptr->bskip, hptr->askip, i, cury, boty, cn_space );
+	TRACE( 2, "header:  level=%d skip=%.1f/%.1f before=%.2f needed=%d cury=%d boty=%d cn_space=%d\n", hptr->level, hptr->bskip, hptr->askip, before, i, cury, boty, cn_space );
 
 	
 	if( (hptr->flags & HEJECTP) && (cur_col != firstcol || cury > topy) )	// must check for new page first as it trumps
 	{
 		before = 0;
+		before = -textsize;										// need to remove what flush will add
 		short_out = push_cmd( hptr->level );		// if needed, push the header command back on the stack to execute after ejecting
 		if( cury != topy )		 					// flush didn't see us at the end of page, so it didn't eject, we must
 		{											// this check is legit as if HEJECTP is set we eject even if flush ejected too
@@ -165,7 +167,7 @@ extern void FMheader( struct header_blk *hptr )
 	} else {
 		if( need_eject || (hptr->flags & HEJECTC) && cury != topy ) 			// either at end or column eject
 		{
-			before = 0;
+			before = -textsize;										// need to remove what flush will add
 			short_out = push_cmd( hptr->level );								// push the .hn command back if there is end column stuff
 			
 			if( ! FMflush() )							// safe to flush, and if flush didn't eject, we must
@@ -178,20 +180,20 @@ extern void FMheader( struct header_blk *hptr )
 				else
 					PFMceject( );	// and finally the eject; we leave short_out SET as we pushed our .hn command so we need to return to pick it up again
 			}
+		} else {
+			FMflush( );		// nothing special, just flush
 		}
-		else
-			FMflush( );									// nothing special, just flush
 	}
 
 	if( short_out )			// if we pushed the header command so as to allow end of col/page things, get out early
 		return;
 
 
-	cury += before;					  							// skip before if needed (already points), and zero if we ejected
+	cury += before;	 						// skip before if needed (already points), and zero if we ejected
 	pnum[(hptr->level)-1] += 1;     		 /* increase the paragraph number */
 
 									/* preserve everything and set up header font etc */
-	TRACE( 3, "header: preserving: lmar=%d curfont=%s textsize=%d\n", lmar, curfont, textsize );
+	TRACE( 2, "header: preserving: cury=%d lmar=%d curfont=%s textsize=%d\n", cury, lmar, curfont, textsize );
 	oldlmar = lmar;                  /* save left margin */
 	oldfont = curfont;               /* save current text font */
 	oldsize = textsize;              /* save old text size */

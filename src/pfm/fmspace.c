@@ -79,17 +79,11 @@ extern void FMspace( void  )
 	if( FMgetparm( &buf ) > 0 ) 		/* optional parm -- number of lines to skip */
 		lines = atof( buf );
 
-	FMflush( );          /* flush out the current line */
+	FMflush( );
 
 	if( lines > 55 )			/* enforce sanity */
 		lines = 55;           
 
-#ifdef KEEP
-	if( lines <= 0 )					/* old school... .5 or 0.5 preferred */
-		//cury += (textsize+textspace)/2;   	/* half space */
-		cury += (textsize+textspace) * lines;   	/* partial space */
-	else
-#endif
-	TRACE( 2, "space:  (%d + %d) * %.2f\n", textsize, textspace, lines );
 	cury += (textsize+textspace) * lines;   
+	TRACE( 2, "space:  (%d + %d) * %.2f topy=%d boty=%d after-cury=%d\n", textsize, textspace, lines, topy, boty, cury );
 }      
