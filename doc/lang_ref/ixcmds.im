@@ -222,7 +222,7 @@ The following section command causes a horizontal line to be drawn under the sec
 .sf &cwfont
 .st [ &textsize 2 - ]
 .nf
- .ix space .sp 1 .cc 5 %c .ln ^: .sp 0
+ .ix section .sp 1 .cc 5 %c .ln ^: .sp .5
 .fo
 .sf &textfont
 .st &textsize
