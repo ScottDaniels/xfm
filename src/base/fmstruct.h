@@ -85,6 +85,7 @@ struct table_mgt_blk {
 	int	border;
 	int	edge_borders;		// 1 if edge borders to be written even for table in table
 	int weight;				// line weight for edges and column lines
+	char*	line_colour;		// if lines are an alternate colour
 	int	border_width;
 	int	width;			/* width of table (points) */
 	int	topy;			/* y of the top of the last row for vert lines */
