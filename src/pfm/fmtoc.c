@@ -71,6 +71,7 @@ Contributions to this source repository are assumed published with the same lice
 *				03 Jan 2016 - To adjust for new indent (non-break) behaviour.
 *			17 Jul 2016 - Bring decls into the modern world.
 *			12 Aug 2017 - Allow formatable toc page numbers
+*			18 Sep 2017 - Reduce indent.
 ****************************************************************************
 */
 extern void FMtoc( int level )
@@ -94,7 +95,7 @@ extern void FMtoc( int level )
  else
   AFIwrite( tocfile, ".sf Helvetica .st 10\n" );  /* normal text */
 
- snprintf( buf, sizeof( buf ),  ".br .in +%.2fi\n", (double) (level-1) * .5 );
+ snprintf( buf, sizeof( buf ),  ".br .in +%.2fi\n", (double) (level-1) * .2 );
  AFIwrite( tocfile, buf );
 
  for( i=0, j = 0; j < optr && i < 70; j++, i++ )   /* copy into toc buffer */
