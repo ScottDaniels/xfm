@@ -108,10 +108,12 @@ extern void FMimbed(  void )
 
 		AFIstat( fptr->file, AFI_NAME, (void **) &name );  	// filename for trace
 		TRACE( 2, "imbed: starting with file %s\n", name );
+		name = strdup( name );								// must dup as it will be gone if we trace later
 
 		FMrun( );				/* run until we hit the end of the file */
 
-		TRACE( 2, "imbed: finished with file %s lmar=%d\n", name, lmar );
+		TRACE( 2, "imbed: finished with file %s lmar=%d cury=%d\n", name, lmar, cury );
+		free( name );
 	} else {
 		TRACE( 2, "imbed: open failed for\n", fp );
 		len = FMgetparm( &buf );							// must pop the runstop token as we didn't invoke run
