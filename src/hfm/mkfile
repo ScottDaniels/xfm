@@ -48,5 +48,5 @@ $hfmlib:   ${src:%=$hfmlib(%.o)}
 	ranlib $hfmlib || true
 	)'
 
-hfm:	fmmain.c fmcmd.c $obj 
+hfm:	fmmain.c fmcmd.c $obj $hfmlib
 	$CC $CFLAGS $IFLAGS -o hfm fmmain.c fmcmd.c -L . -lhfm${gflag}  $libs 
