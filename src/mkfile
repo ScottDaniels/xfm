@@ -41,3 +41,11 @@ all:
 	
 	ls -al hfm/hfm pfm/pfm tfm/tfm
 	'
+
+# simple rule to install in your bin directory
+install:QV:
+	if [[ -d $HOME/bin ]]
+	then
+		cp hfm/hfm pfm/pfm tfm/tfm $HOME/bin
+		ls -al $HOME/bin/[thp]fm
+	fi
