@@ -155,7 +155,7 @@ extern void FMditem( void )
 		if( dlstack[dlstackp].fmt ) {
 			dfmt = dlstack[dlstackp].fmt;
 		}
-		rbuf = FMi2roaman( dlstack[dlstackp].astarti + dlstack[dlstackp].aidx);
+		rbuf = FMi2roman( dlstack[dlstackp].astarti + dlstack[dlstackp].aidx);
 		sprintf( wbuf, dfmt, rbuf );
 		free( rbuf );
 		FMaddtok( wbuf, strlen( wbuf ) ); 
