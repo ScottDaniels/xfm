@@ -82,6 +82,7 @@ Contributions to this source repository are assumed published with the same lice
 *             14 Jan 2000 - Added block center capability as it is great in HFM
 *			  13 Nov 2007 - Added runstop support
 *				17 Jul 2016 - Changes for better prototype generation.
+*				13 Oct 2017 - Strip deprecated rtf formatting junk.
 **************************************************************************
 */
 extern int FMcmd( char* buf )
@@ -166,7 +167,6 @@ extern int FMcmd( char* buf )
 			case C_TABLECELL:         /* go to next table cell */
 				FMflush( );
 				while( FMgetparm( &ptr ) != 0 );    /* skip all parms on the line */
-				AFIwrite( ofile, "\\cell" );
 				break;
 
 			case C_COMMA:
@@ -312,8 +312,6 @@ extern int FMcmd( char* buf )
 
 			case C_INDENT:           /* user indention of next line */
 				FMflush( );             /* force a break then */
-				if( (rflags & RF_PAR) == 0 )  /* previous paragraph not terminated */
-					AFIwrite( ofile, "\\par" );  /* so do it */
 				FMindent( &lmar );      /* get the users info from input and assign */
 				FMpara( 0, FALSE );     /* set up the paragraph with new indention */
 				break;
@@ -343,11 +341,6 @@ extern int FMcmd( char* buf )
 
 			case C_LL:               /* reset line length */
 				FMflush( );             /* terminate previous line */
-				if( (rflags & RF_PAR) == 0 )   /* terminate previous if not already  */
-				{
-					AFIwrite( ofile, "\\par" );
-					rflags |= RF_PAR;            /* indicate this was done */
-				}
 				FMll( );                /* get and set line size parameters */
 				FMpara( 0, FALSE );     /* reset information in the file */
 				break;
@@ -512,7 +505,6 @@ extern int FMcmd( char* buf )
 
 			case C_TABLEBRK:          /* safe rtf table break */
 				FMflush( );
-				AFIwrite( ofile, "\\par" );
 				break; 
 
 			case C_TABLEROW:          /* go to next table row */
@@ -536,7 +528,6 @@ extern int FMcmd( char* buf )
 
 			case C_TWOSIDE:          /* toggle two side option flag */
 				flags2 = flags2 ^ F2_2SIDE;
-				AFIwrite( ofile, "\\facingp" );    /* turn on facing page in doc */
 				break;
 
 			case C_TOUPPER: 		/* translate to upper; n chars of next tok */

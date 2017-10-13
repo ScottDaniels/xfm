@@ -73,6 +73,7 @@ Contributions to this source repository are assumed published with the same lice
 *  Author:   E. Scott Daniels
 *  Modified:  1 July 1994 - To convert to rtf
 *				17 Jul 2016 - Changes for better prototype generation.
+*				13 Oct 2017 - Strip deprecated rtf formatting junk.
 *****************************************************************************
 */
 /*void FMbxstart( option )*/
@@ -85,11 +86,8 @@ extern void FMbxstart( int option, char *colour, int border, int width, char *al
 
  if( cury == topy )              /* if this is the first line */
   {
-   AFIwrite( ofile, "\\par" );   /* space down some */
    cury += textsize + textspace;
   }
-
-  AFIwrite( ofile, "\\box\\brdrs\\brdrw20\\brsp100" );   /* start box */
 
  if( option )                             /* if not continuing box */
   while( FMgetparm( &buf ) > OK );        /* strip remainging parms */

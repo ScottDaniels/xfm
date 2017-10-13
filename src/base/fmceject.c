@@ -73,6 +73,7 @@ Contributions to this source repository are assumed published with the same lice
 *            27 Jan 2000 - To not put hard page if in single col mode to
 *                          prevent small # words with large spaces on last ln
 *				17 Jul 2016 - Changes for better prototype generation.
+*				13 Oct 2017 - Strip deprecated rtf formatting junk.
 ****************************************************************************
 */
 extern void FMceject( int force )
@@ -94,9 +95,6 @@ extern void FMceject( int force )
  if( cur_col->next != NULL )       /* if this is not the last on the page */
   {
    cur_col = cur_col->next;                              /* then select it */
-   if( ((rflags & RF_PAR) == 0) && (lilist == NULL) )
-    AFIwrite( ofile, "\\par" );                         /* need a par mark */
-   FMsetcol( col_gutter );                /* write out col def information */
   }
  else
   {

@@ -72,6 +72,7 @@ Contributions to this source repository are assumed published with the same lice
 *   Modified: 13 Jul 1994 - To convert to rfm
 *              9 Sep 1994 - To check first parameter properly
 *				17 Jul 2016 - Changes for better prototype generation.
+*				13 Oct 2017 - Strip deprecated rtf formatting junk.
 ***************************************************************************
 */
 extern void FMcd( void  )
@@ -135,8 +136,6 @@ extern void FMcd( void  )
 
  if( firstcol->next != NULL )     /* if in multiple column mode */
   {                               /* adjust margins and set col lmar to 0 */
-   sprintf( wbuf, "\\margl%d", firstcol->lmar * 20 );
-   AFIwrite( ofile, wbuf );
    firstcol->lmar = 0;
   }
 
@@ -152,6 +151,6 @@ extern void FMcd( void  )
 
  cur_col = firstcol;               /* set up current column pointer */
 
- FMsetcol( gutter );               /* put col setup info into document */
+ //FMsetcol( gutter );               /* put col setup info into document */
  col_gutter = gutter;              /* save current gutter value for later */
 }               /* FMcd */

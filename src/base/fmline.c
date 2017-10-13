@@ -66,6 +66,7 @@ Contributions to this source repository are assumed published with the same lice
 *  Modified:  6 Jul 1994 - To convert for rfm.
 *            11 Apr 1994 - To check for box to see what margins to use.
 *				17 Jul 2016 - Changes for better prototype generation.
+*				13 Oct 2017 - Strip deprecated rtf formatting junk.
 *****************************************************************************
 */
 extern void FMline(  void )
@@ -75,12 +76,5 @@ extern void FMline(  void )
 
  FMflush( );     /* put out what ever is currently cached */
 
- AFIwrite( ofile, "\\pard" );
- sprintf( out, "\\brdrb\\brdrs\\brdrw%d\\brsp20", linesize * 20 );
- AFIwrite( ofile, out );   /* write the command to draw the line out */
-
- FMpara( 0, TRUE );    /* terminate the line and define next paragraph */
-
- /*cury += textsize + linesize; */  /* bump the current spot up some */
  rflags |= RF_PAR;
 }           /* FMline */

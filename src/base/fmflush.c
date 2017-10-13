@@ -68,15 +68,13 @@ Contributions to this source repository are assumed published with the same lice
 *              7 Dec 1994 - To prevent par mark at page top if in li list
 *             14 Dec 1994 - To prevent par mark at top if in di list
 *				17 Jul 2016 - Changes for better prototype generation.
+*				13 Oct 2017 - Strip deprecated rtf formatting junk.
 ****************************************************************************
 */
 extern int FMflush( void )
 {
  int len;           /* length of the output string */
  char fbuf[512];    /* buffer to build flush strings in */
- char *cmd;         /* show, cen, right, true command */
- int freecmd = FALSE;  /* flag indicating that cmd was allocated */
-
 
  if( optr == 0 )  /* nothing to do so return */
   {                                        /* but..... */
@@ -95,25 +93,6 @@ extern int FMflush( void )
    FMceject( 0 );          /* move on if past the end */
   }
 
- if( (flags2 & (F2_CENTER | F2_RIGHT | F2_TRUECHAR)) == 0 )  /* no flags */
-  cmd = "show";
- else
-  if( flags2 & F2_CENTER )           /* centering text? */
-   {
-    if( rflags & RF_PAR )
-     AFIwrite( ofile, "\\qc" );
-    else
-     AFIwrite( ofile, "\\par\\qc" );
-   }
-  else
-   if( flags2 & F2_RIGHT )           /* place text to the right? */
-    {
-     if( rflags & RF_PAR )
-      AFIwrite( ofile, "\\qr" );
-     else
-      AFIwrite( ofile, "\\par\\qr" );
-    }
-
  if( flags2 & F2_SETFONT )   /* need to reset font to text font? */
   {
    FMsetfont( curfont, textsize );  /* set the new font in file */
@@ -122,26 +101,8 @@ extern int FMflush( void )
 
 
  /* copy only the cached portion of the output buffer */
- /*sprintf( fbuf, "%s", obuf );*/
  AFIwrite( ofile, obuf );   /* write the text out to the file */
 
-
-/*printf( "FLUSH: @%d (%.50s)\n", cury, fbuf ); */
-
- if( flags2 & F2_CENTER || flags2 & F2_RIGHT )   /* need to stop center/ri */
-  {
-   AFIwrite( ofile, "\\par\\qj" );  /* term centered line */
-   rflags |= RF_PAR;                /* set par flag as weve just done this */
-  }
- else
-  rflags &= ~RF_PAR;            /* turn off paragraph writen */
-
- if( freecmd == TRUE )          /* need to free cmd buffer? */
-  free( cmd );
-
-
- rflags &= ~RF_SBREAK;           /* turn off the break issued flag */
  optr = 0;
-
 	return 1;		/* the return value is needed in hfm, but we share protots so we need to do too */
 }                               /* FMflush */

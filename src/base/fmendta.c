@@ -63,6 +63,7 @@ Contributions to this source repository are assumed published with the same lice
 *  Date:     18 April 1997
 *  Author:   E. Scott Daniels
 *  Mods:	17 Jul 2016 - Changes for better prototype generation.
+*				13 Oct 2017 - Strip deprecated rtf formatting junk.
 *  
 *  command syntax: .et
 *
@@ -70,8 +71,6 @@ Contributions to this source repository are assumed published with the same lice
 */
 extern void FMendtable(  void )
 {
- AFIwrite( ofile, "\\cell \\intbl \\row \\pard}" );
-
  if( ts_index )
    ts_index--; 
  if( table_stack[ts_index] )
@@ -84,7 +83,5 @@ extern void FMendtable(  void )
    else
     tableinfo = 0;
   }
-
- /* tableinfo[0] = 0; */
 
 }      /* FMendtable */

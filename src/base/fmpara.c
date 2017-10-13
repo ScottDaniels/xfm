@@ -68,6 +68,7 @@ Contributions to this source repository are assumed published with the same lice
 *
 *  Modified:	19 Jul 1994 - To allow list items in boxes
 *				17 Jul 2016 - Changes for better prototype generation.
+*				13 Oct 2017 - Strip deprecated rtf formatting junk.
 ****************************************************************************
 */
 extern void FMpara( int fi, int opt )
@@ -77,16 +78,7 @@ extern void FMpara( int fi, int opt )
 
  right = cur_col->width - ((lmar-cur_col->lmar) + linelen);
 
- if( opt )
-  AFIwrite( ofile, "\\par" );     /* terminate current paragraph */
-
- sprintf( buf, "\\pard\\qj\\li%d\\fi%d\\tx%d\\ri%d",
-           lmar * 20, fi * 20, lmar * 20, right * 20 );
-
- AFIwrite( ofile, buf );
-
  if( flags2 & F2_BOX )
 	FMbxstart( FALSE, 0, 0, 0, 0 );
 
- rflags |= RF_PAR;
 }                   /* FMpara */

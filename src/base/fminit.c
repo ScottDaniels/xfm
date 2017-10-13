@@ -73,6 +73,7 @@ Contributions to this source repository are assumed published with the same lice
 *				13 Jan 2002 - To reference vars via symbol table - removed varlist
 *				08 Nov 2006 - To allow input to default from stdin rather than having to say
 *				17 Jul 2016 - Changes for better prototype generation.
+*				13 Oct 2017 - Strip deprecated rtf formatting junk.
 ******************************************************************************
 */
 extern int FMinit( int argc, char **argv )
@@ -117,7 +118,6 @@ extern int FMinit( int argc, char **argv )
  /* set afi input environment for tokenizing input and end of buffer signal*/
  AFIsettoken( fptr->file, symtab, " `\t", '&', '^', ":" );
  AFIsetflag( fptr->file, AFI_F_EOBSIG, AFI_SET );
-
 
  ofile = AFIopen( ofname, "w" );      /* open output file */
  if( ofile < VALID )

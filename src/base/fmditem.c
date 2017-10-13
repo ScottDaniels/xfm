@@ -70,6 +70,7 @@ Contributions to this source repository are assumed published with the same lice
 *   Author:    E. Scott Daniels
 *   Modified:   1 Jul 1994 - To convert to rfm.
 *				17 Jul 2016 - Changes for better prototype generation.
+*				13 Oct 2017 - Strip deprecated rtf formatting junk.
 *
 *   Copyright (c) 1994  E. Scott Daniels. All rights reserved.
 ***************************************************************************
@@ -145,8 +146,6 @@ extern void FMditem( void )
   }
 
  FMflush( );                 /* flush out the term using the termmar */
-
- AFIwrite( ofile, "\\tab" );  /* force tab to the right margin */
 
  flags2 &= ~F2_RIGHT;        /* ensure right indicator is off */
 

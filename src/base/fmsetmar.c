@@ -64,21 +64,10 @@ Contributions to this source repository are assumed published with the same lice
 *  Author:   E. Scott Daniels
 *
 *	Mods:	17 Jul 2016 - Changes for better prototype generation.
+*				13 Oct 2017 - Strip deprecated rtf formatting junk.
 *******************************************************************************
 */
 extern void FMsetmar( void )
 {
- char wbuf[80];          /* ouput work buffer */
- int dist;               /* distance to bring margin in from edge */
 
- if( firstcol->next != NULL )
-  dist = 18;                   /* default when multi column mode */
- else
-  dist = 594 - (cur_col->lmar + cur_col->width);   /* width in points */
-
- if( dist <= 17 )
-  dist = 18;        /* set a minimum inset of .25i */
-
- sprintf( wbuf, "\\margr%d", dist * 20 );   /* convert to rtf units */
- AFIwrite( ofile, wbuf );                   /* and adjust the margin */
 }   /* FMsetmar */

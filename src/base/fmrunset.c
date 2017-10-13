@@ -69,8 +69,15 @@ Contributions to this source repository are assumed published with the same lice
 *
 *  Modified:	12 Jul 1994 - To allow page number and footer.
 *				17 Jul 2016 - Changes for better prototype generation.
+*				13 Oct 2017 - Strip deprecated rtf formatting junk.
 ******************************************************************************
 */
+extern void FMrunset( void ) {
+// this was completely an rtf funciton and can be deleted!
+}
+
+
+#ifdef KEEP
 extern void FMrunset( void )
 {
  int right;               /* value for right indent of header */
@@ -81,19 +88,9 @@ extern void FMrunset( void )
  fmtstr = "{\\%s \\pard\\plain %s\\s15\\brdrt\\brdrs\\brdrw20\\brsp20";
 
  right = 20;
-/* right = cur_col->width - ((lmar - cur_col->lmar) + linelen ); */
-/* right -= 10; */    /* extend past text spot */
-
- sprintf( obuf, "\\li0\\fi0\\ri%d\\f4\\fs20", right * 20 );
 
  if( rfoot != NULL || (flags & PAGE_NUM) )   /* something for footer area? */
   {
-   /*
-   AFIwrite( ofile,
-       "{\\footerr\\pard\\plain \\qr\\s15\\brdrt\\brdrs\\brdrw20\\brsp20" );
-   */
-   sprintf( obuf2, fmtstr, "footerr", "\\qr" );  /* set up with right just */
-   AFIwrite( ofile, obuf2 );                     /* and send it out */
 
   /* AFIwrite( ofile, "\\margl0\\margr0\\li0\\fi0\\ri0\\f4\\fs20" ); */
    AFIwrite( ofile, obuf );
@@ -156,3 +153,4 @@ extern void FMrunset( void )
    AFIwrite( ofile, "{\\headerl\\pard\\plain\\fs5}" );  /* turn off */
   }
 }                /* FMrunset */
+#endif

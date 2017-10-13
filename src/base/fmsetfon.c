@@ -66,13 +66,10 @@ Contributions to this source repository are assumed published with the same lice
 *
 *  Modified:	29 Jun 1994 - To convert to rfm
 *				17 Jul 2016 - Changes for better prototype generation.
+*				13 Oct 2017 - Strip deprecated rtf formatting junk.
 ****************************************************************************
 */
 extern void FMsetfont( char* fname, int fsize )
 {
- char buf[80];
- int len;
 
- sprintf( buf, "\\plain \\%s\\fs%d", fname, fsize * 2 );
- AFIwrite( ofile, buf );
 }     /* FMsetfont */

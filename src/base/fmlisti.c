@@ -65,6 +65,7 @@ Contributions to this source repository are assumed published with the same lice
 *  Modified: 19 Jul 1994 - To allow list items in boxes
 *             8 Dec 1995 - To use font in list item block
 *				17 Jul 2016 - Changes for better prototype generation.
+*				13 Oct 2017 - Strip deprecated rtf formatting junk.
 ******************************************************************************
 */
 extern void FMlisti(  void )
@@ -77,26 +78,11 @@ extern void FMlisti(  void )
 
  FMflush( );
 
- if( rflags & RF_PAR )               /* if a par has been issued */
-  AFIwrite( ofile, "\\pard" );       /* just terminate settings */
- else
-  {
-   AFIwrite( ofile, "\\par\\pard" );         /* terminate previous setup */
-  }
-
  if( flags2 & F2_BOX )
 	FMbxstart( FALSE, 0, 0, 0, 0 );
-
- rflags &= ~RF_PAR;                   /* reset flag */
 
  FMccol( 1 );                  /* ensure at least one line remains on page */
 
  right = cur_col->width - ((lmar-cur_col->lmar) + linelen);
 
- sprintf( buf,
-   "\\plain\\li%d\\fi-200\\qj{\\pnlvlblt\\pn%s\\pntxtb \\'%02x\\pnindent200}",
-               lmar * 20, lptr->font, lptr->ch & 0xff );
- AFIwrite( ofile, buf );
- sprintf( buf, "\\ri%d\\%s\\fs%d", right * 20, curfont, textsize * 2 );
- AFIwrite( ofile, buf );
 }             /* FMlisti */
