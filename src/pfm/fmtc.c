@@ -111,7 +111,7 @@ extern void FMtc( void )
      return;
     }
                                /* setup initial psfm commands in toc file */
-   AFIwrite( tocfile, ".pa\n" );
+   //AFIwrite( tocfile, ".pa\n" );
    AFIwrite( tocfile, ".cd 1 7.5i i=.75i : .st 15 .sf Times-Bold\n" );
    //AFIwrite( tocfile, ".rh : .rf : .ju on .ll 7i .pn off .tc off\n" );
    AFIwrite( tocfile, ".rh : .rf : .ju on .ll 7i .tc off\n" );
