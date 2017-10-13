@@ -56,9 +56,8 @@ Contributions to this source repository are assumed published with the same lice
 *****************************************************************************
 *
 *    Mnemonic: FMpflush
-*    Abstract: This routine causes the running header and footer to be placed
-*              into the file and then issues the newp command which will issue
-*              a showpage and then a translate.
+*    Abstract: This is now a dummy function for non page oriented formatters to 
+*				use when needing to 'flush' a page.
 *    Parms:    None.
 *    Returns:  Nothing
 *    Date:     1 December 1988
@@ -68,6 +67,7 @@ Contributions to this source repository are assumed published with the same lice
 *               8 Dec 1994 - To put a para mark before page if not there
 *                            and if not in a list item list.
 *				17 Jul 2016 - Changes for better prototype generation.
+*				13 Oct 2017 - Remove last rtf traces from this.
 *****************************************************************************
 */
 extern void FMpflush(  void )
@@ -82,15 +82,7 @@ extern void FMpflush(  void )
  int shift = FALSE;          /* local flag so if stmts are executed only once */
 
 
-#ifdef NO
- if( (rflags & RF_PAR) == 0 && lilist == NULL ) /* if text since last mark */
-  AFIwrite( ofile, "\\par" );
-#endif
-
  page++;                             /* increase the page number */
- AFIwrite( ofile, "\\page" );        /* cause printer to eject */
-/* FMpara( 0, FALSE ); */          /* start up next "paragraph" */
-
 
                                  /* determine if we need to shift the page */
  diff = lmar - cur_col->lmar;   /* calculate diff in col default mar& cur mar */
@@ -104,5 +96,6 @@ extern void FMpflush(  void )
    topy = rtopy;               /* reset as temp y only good to end of page */
    rtopy = 0;                  /* indicate nothing set at this point */
   }
+
  cury = topy;                  /* reset current y to top y position */
 }                              /* FMpflush */
