@@ -73,6 +73,7 @@ Contributions to this source repository are assumed published with the same lice
 *              10 Feb 2002 - To add support for skip and format options
 *				14 Sep 2002 - To support colour change for term
 *				18 Jul 2016 - Add consistent, and sometimes modern, prototypes.
+*				13 Oct 2017 - Add roman numerial support to auto number.
 *
 *   Copyright (c) 1994  E. Scott Daniels. All rights reserved.
 ***************************************************************************
@@ -86,6 +87,7 @@ extern void FMditem( void )
  char *align = " ";
  char *cfmt = "%c";	/* auto numbering default printf format strings */
  char *dfmt = "%d";
+	char* rbuf;			// roman buffer
 
  if( dlstackp < 0 )   /* if no stack pointer then no list in effect */
   {
@@ -127,6 +129,7 @@ extern void FMditem( void )
 	while( (len = FMgetparm( &buf )) > 0 );  /* skip any parms put in */
 	break;
 
+
    case DI_ANUMI:                  /* integer numbering */
 	if( dlstack[dlstackp].fmt )
 		dfmt = dlstack[dlstackp].fmt;
@@ -137,6 +140,23 @@ extern void FMditem( void )
 	while( (len = FMgetparm( &buf )) > 0 );  /* skip any parms put in */
 	AFIpushtoken( fptr->file, tbuf );
 	break;
+
+   case DI_ROMAN:						// auto numbering with roman numerals
+		
+		if( dlstack[dlstackp].fmt ) {
+			dfmt = dlstack[dlstackp].fmt;
+		} else {
+			dfmt = "%s";
+		}
+		rbuf = FMi2roman( dlstack[dlstackp].astarti + dlstack[dlstackp].aidx);
+		sprintf( tbuf, dfmt, dlstack[dlstackp].astarti + dlstack[dlstackp].aidx);
+		free( rbuf );
+		FMaddtok( tbuf, strlen( tbuf ) );
+		sprintf( tbuf, ".dv _dinum %d : ", dlstack[dlstackp].astarti + dlstack[dlstackp].aidx );
+		dlstack[dlstackp].aidx++;
+		while( (len = FMgetparm( &buf )) > 0 );  /* skip any parms put in */
+		AFIpushtoken( fptr->file, tbuf );
+		break;
 
    default:
      while( (len = FMgetparm( &buf )) > 0 )   /* add parms to output buffer */
