@@ -63,37 +63,10 @@ Contributions to this source repository are assumed published with the same lice
 *  Date:     13 July 1994
 *  Author:   E. Scott Daniels
 *  Mods:	17 Jul 2016 - Changes for better prototype generation.
+*			13 Oct 2017 - Deprecated; this supported rtf only.
 *
 ******************************************************************************
-*/
 extern void FMsetcol( int gutter )
 {
- struct col_blk *cptr;         /* pointer into column list */
- int i;
- char wbuf[50];                /* work buffer for output */
-
- if( (rflags & RF_SBREAK) == 0 )                   /* if no section break */
-  {
-   AFIwrite( ofile, "\\sect \\sectd \\sbkcol\\footery2" );  /* then do one */
-   rflags |= RF_SBREAK;                                     /* and set flg */
-  }
-
- for( i = 0, cptr = firstcol; cptr != NULL; cptr = cptr->next, i++); /* count*/
-
- sprintf( wbuf, "\\cols%d", i );   /* get number of cols */
- AFIwrite( ofile, wbuf );          /* and place in file */
-
- if( firstcol->next != NULL )  /* if more than one col */
-  {
-   for( i = 1, cptr = firstcol; cptr != NULL; cptr = cptr->next, i++ )
-    {
-     sprintf( wbuf, "\\colno%d\\colw%d", i, firstcol->width * 20 );
-     AFIwrite( ofile, wbuf );
-     if( cptr->next != NULL )    /* if more then insert gutter */
-      {
-       sprintf( wbuf, "\\colsr%d", gutter * 20 ); /* confert to rfm scale */
-       AFIwrite( ofile, wbuf );                   /* and place into the file */
-      }
-    }        /* end for */
-  }          /* end if multi cols */
-}            /* FMsetcol */
+}
+*/
