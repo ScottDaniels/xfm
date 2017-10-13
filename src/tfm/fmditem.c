@@ -78,6 +78,7 @@ TFM
 *    				because of fixed width and justification (right)
 *					issues.
 *				17 Jul 2016 - Bring prototypes into modern era.
+*				13 Oct 2017 - Allow a=1 to support use supplied format
 *
 *   Copyright (c) 1994  E. Scott Daniels. All rights reserved.
 ***************************************************************************
@@ -88,10 +89,13 @@ extern void FMditem(  void )
  char fmt[10];
  int len;             /* len of parameter entered */
  char tbuf[256];      /* buffer to build temp string in */
+ char ibuf[256];      // intermediate buffer
  char term[512];
  char *align = " ";
  int i;
- int tlen = 0;         /* length of the entire term */
+ int tlen = 0;       		/* length of the entire term */
+	char* dfmt = "%d";		// format string for auto integr
+	char* rbuf;				// roman numberal string
 
  if( dlstackp < 0 )   /* if no stack pointer then no list in effect */
   {
@@ -136,13 +140,46 @@ extern void FMditem(  void )
      while( (len = FMgetparm( &buf )) > 0 );  /* skip any parms put in */
      break;
 
-   case DI_ANUMI:                  /* automatic integer numbering */
-     if( flags2 & F2_RIGHT )      /* align term to the right? */
-      sprintf( fmt, "%%%dd ", (dlstack[dlstackp].indent/7)-1 );
-     else
-      sprintf( fmt, "%%-%dd ", (dlstack[dlstackp].indent/7) - 1 );
+   case DI_ROMAN:                  /* automatic integer numbering */
+		if( dlstack[dlstackp].fmt ) {
+			dfmt = dlstack[dlstackp].fmt;
+		} else {
+			dfmt = "%s";
+		}
 
-     sprintf( tbuf, fmt, dlstack[dlstackp].astarti + dlstack[dlstackp].aidx);
+		rbuf = FMi2roman( dlstack[dlstackp].astarti + dlstack[dlstackp].aidx );	// convert to roman
+		snprintf( ibuf, sizeof( ibuf ), dfmt, rbuf );		// put in using their format
+		free( rbuf );
+
+		if( flags2 & F2_RIGHT )      /* align term to the right? */
+			sprintf( fmt, "%%%ds ", (dlstack[dlstackp].indent/7)-1 );
+		else
+			sprintf( fmt, "%%-%ds ", (dlstack[dlstackp].indent/7) - 1 );
+	
+		snprintf( tbuf, sizeof( tbuf ), fmt, ibuf );
+		di_term = strdup( tbuf );
+	
+		sprintf( tbuf, ".dv _dinum %d : ",
+		dlstack[dlstackp].astarti + dlstack[dlstackp].aidx );
+	
+		dlstack[dlstackp].aidx++;
+		while( (len = FMgetparm( &buf )) > 0 );  /* skip any parms put in */
+	
+		AFIpushtoken( fptr->file, tbuf );   /* must be last */
+		break;
+
+   case DI_ANUMI:                  /* automatic integer numbering */
+		if( dlstack[dlstackp].fmt ) {
+			dfmt = dlstack[dlstackp].fmt;
+		}
+		snprintf( ibuf, sizeof( ibuf ), dfmt, dlstack[dlstackp].astarti + dlstack[dlstackp].aidx );	// the term using predefined fmt
+
+     if( flags2 & F2_RIGHT )      /* align term to the right? */
+      sprintf( fmt, "%%%ds ", (dlstack[dlstackp].indent/7)-1 );
+     else
+      sprintf( fmt, "%%-%ds ", (dlstack[dlstackp].indent/7) - 1 );
+
+     snprintf( tbuf, sizeof( tbuf ), fmt, ibuf );
      di_term = strdup( tbuf );
 
      sprintf( tbuf, ".dv _dinum %d : ",

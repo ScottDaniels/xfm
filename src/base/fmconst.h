@@ -60,6 +60,7 @@ Contributions to this source repository are assumed published with the same lice
 
 #define DI_ANUMI      1         /* integer di auto numbering */
 #define DI_ANUMA      2         /* alpha di auto numbering */
+#define DI_ROMAN      3         // roman numerial numbering in def list
 
 #define IO_BUF_LEN		2048		// size of the input output bufferes allocated
 #define MAX_READ      IO_BUF_LEN    /* size of read, max size of column */

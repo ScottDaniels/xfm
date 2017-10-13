@@ -70,10 +70,12 @@ Contributions to this source repository are assumed published with the same lice
 *              6 Apr 1994 - To call getpts to get point value of term size
 *             10 Feb 2002 - To add auto skip option
 *				17 Jul 2016 - Changes for better prototype generation.
+*				13 Oct 2017 - Add ability to auto number in roman numerals
 *
-*    .bd <termsize[p|i]> [right] [font name] [s=n]
+*    .bd <termsize[p|i]> [right] [font name] [s=n] [a=c|n | r=n]
 *         right - indicates that terms are to be right justified in the field
 *         font  - name of the font to show terms in
+*			r=n - generate roman numerals starting at n.
 *	  s=n - skip a line before each di.
 *   Copyright (c) 1989  E. Scott Daniels. All rights reserved.
 ***************************************************************************
@@ -131,8 +133,18 @@ extern void FMbd( void  )
 						}
 						else
 						{
-							dlstack[dlstackp].anum = DI_ANUMA;	/* integer numbering */
+							dlstack[dlstackp].anum = DI_ANUMA;	/* letter numbering */
 							dlstack[dlstackp].aidx = *(buf+2);	/* where to start */
+						}
+						break;
+
+					case 'r':	
+						dlstack[dlstackp].anum = DI_ROMAN;	/* roman numbering */
+						if( isdigit( *(buf+2) ) )
+						{
+							dlstack[dlstackp].aidx = atoi( buf+2 );	/* where to start */
+						} else {
+							dlstack[dlstackp].aidx = 1;
 						}
 						break;
 

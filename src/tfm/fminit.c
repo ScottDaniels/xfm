@@ -184,8 +184,12 @@ extern int FMinit( int argc, char **argv )
 		if( headers[i] == NULL )
 			return( ERROR );
 
+		/*
 		headers[i]->font = (char *) malloc( (strlen( DEF_HEADFONT )) + 1 );
-		strcpy( headers[i]->font, DEF_HEADFONT );  /* move in default string */
+		strcpy( headers[i]->font, DEF_HEADFONT );  
+		*/
+		memset( headers[i], 0, sizeof( struct header_blk ) );
+		headers[i]->font = strdup( DEF_HEADFONT );
 		
 		headers[i]->flags = HTOC;              /* initially only TOC flag set */
 		headers[i]->indent = 0;                /* set default indention */

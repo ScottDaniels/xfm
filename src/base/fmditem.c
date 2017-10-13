@@ -82,6 +82,7 @@ extern void FMditem( void )
  int lflags;          /* local flags */
  int len;             /* len of parameter entered */
  char wbuf[25];       /* output buffer for x value when right justifying */
+	char* rbuf;		// roman numeral buffer
 
  if( dlstackp < 0 )   /* if no stack pointer then no list in effect */
   {
@@ -120,6 +121,15 @@ extern void FMditem( void )
      while( (len = FMgetparm( &buf )) > 0 );         /* skip any parms put in */
      AFIpushtoken( fptr->file, wbuf );               /* define variable */
      break;
+
+   case DI_ROMAN:                  /* roman numeral integer numbering */
+		rbuf = FMi2roman( dlstack[dlstackp].astarti + dlstack[dlstackp].aidx );
+		sprintf( wbuf, "%s", rbuf );
+		free( rbuf );
+		FMaddtok( wbuf, strlen( wbuf ) ); 
+		dlstack[dlstackp].aidx++;
+		while( (len = FMgetparm( &buf )) > 0 );  /* skip any parms put in */
+		break;
 
    case DI_ANUMI:                  /* integer numbering */
      sprintf( wbuf, "%d", dlstack[dlstackp].astarti + dlstack[dlstackp].aidx);

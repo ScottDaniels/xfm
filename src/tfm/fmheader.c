@@ -90,6 +90,7 @@ extern void FMheader( struct header_blk* hptr )
 
  FMflush( );          /* flush the current line */
 
+	memset( buf, 0, sizeof( buf ) );
  for( skip = hptr->skip / 10; skip > 0; skip-- )		/* shift off skip after skip */
 	AFIwrite( ofile, "\n" );
 

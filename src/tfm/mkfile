@@ -25,13 +25,14 @@ tfmlib = libtfm$gflag.a
 
 libraries:N: $tfmlib
 
-libs = -L../hfm -lhfm${gflag:-} -L../base -lxfm${gflag:-} -L../afileio -lafi${gflag:-} 
+#libs = -L../hfm -lhfm${gflag:-} -L../base -lxfm${gflag:-} -L../afileio -lafi${gflag:-} 
+libs =  -L../base -lxfm${gflag:-} -L../afileio -lafi${gflag:-} 
 
 # source for the tfm lib. 
 # fmnofmt.o, fmcmd.o are NOT put into the limbrary as it isn't referenced by anything
 # here and must be pulled in on the cc command which builds fmmain.c to force its inclusion
 # before the base library.
-src = fmaddtok fmbd fmbeglst fmbxend fmbxst fmcell \
+src = fmaddtok  fmbeglst fmbxend fmbxst fmcell \
 	fmditem fmendlis fmflush fmheader fmignore fminit \
 	fmjustif fmline fmlisti fmpara fmtable fmtr fmspace fmcenter fmcolnotes
 
