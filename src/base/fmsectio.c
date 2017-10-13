@@ -71,6 +71,7 @@ Contributions to this source repository are assumed published with the same lice
 *
 * Mod:		13 Jul 2011 -- Added code to skip parameters 
 *				17 Jul 2016 - Changes for better prototype generation.
+*				13 Oct 2017 - Deprecate the function, but support flush if called.
 ****************************************************************************
 */
 extern void FMsection(  void )
@@ -79,9 +80,5 @@ extern void FMsection(  void )
 
 	FMflush( );             /* flush out last line before the new section */
 
-	while( FMgetparm( &ptr ) != 0 )
-	{
-		if( strcmp( ptr, "start" ) == 0 )				/* ignore end or others and all other parms */
-			AFIwrite( ofile, "\\sect \\sectd \\sbknone" ); /* terminate previous section */
-	}
+	while( FMgetparm( &ptr ) != 0 );
 }                        /* FMsection */
