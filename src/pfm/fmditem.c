@@ -83,6 +83,7 @@ Contributions to this source repository are assumed published with the same lice
 *	       10 Feb 2002- To support auto skip option
 *			10 Apr 2007 - Fixed bug in assignment of curfont;
 *			17 Jul 2016 - Bring decls into the modern world.
+*			13 Oct 2017 - Add support auto number with roman numerals.
 *
 *   Copyright (c) 1989  E. Scott Daniels. All rights reserved.
 ***************************************************************************
@@ -97,6 +98,7 @@ extern void FMditem( void )
  char *cfmt = "%c";	/* format strings - defaults if user did not supply */
  char *dfmt = "%d"; 
  char wbuf[25];       /* output buffer for x value when right justifying */
+	char*	rbuf;		// roman numeral conversion
 
  if( dlstackp < 0 )   /* if no stack pointer then no list in effect */
   {
@@ -148,6 +150,18 @@ extern void FMditem( void )
      dlstack[dlstackp].aidx++;
      while( (len = FMgetparm( &buf )) > 0 );  /* skip any parms put in */
      break;
+
+   case DI_ROMAN:                  /* integer numbering */
+		if( dlstack[dlstackp].fmt ) {
+			dfmt = dlstack[dlstackp].fmt;
+		}
+		rbuf = FMi2roaman( dlstack[dlstackp].astarti + dlstack[dlstackp].aidx);
+		sprintf( wbuf, dfmt, rbuf );
+		free( rbuf );
+		FMaddtok( wbuf, strlen( wbuf ) ); 
+		dlstack[dlstackp].aidx++;
+		while( (len = FMgetparm( &buf )) > 0 );			  /* skip any parms put in */
+		break;
 
    default:
 	while( (len = FMgetparm( &buf )) > 0 )   /* add parms to output buffer */
