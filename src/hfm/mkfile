@@ -33,7 +33,7 @@ libs = -L../base -lxfm${gflag:-} -L../afileio -lafi${gflag:-}
 src = fmaddtok fmbd fmbeglst fmbox fmbxend fmbxst fmcd fmceject fmcell \
 	fmcenter fmcss fmditem fmelse fmendlis \
 	fmflush fmheader fmindent fminit fmjustif fmline fmlisti fmll  \
-	fmnofmt fmpara fmpflush fmright fmrunset fmsectio fmsetcol fmsetfon \
+	fmnofmt fmpara fmpflush fmright fmrunset fmsectio fmsetfon \
 	fmsetmar fmsetx fmsety fmspace fmtable fmtc fmtoc fmtoksiz fmtr fmestack
 
 obj = ${src:%=%.o}
