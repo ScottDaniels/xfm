@@ -67,9 +67,14 @@ Contributions to this source repository are assumed published with the same lice
 *
 *  Mods:	04 Jan 2016 - Force a break at the end of the text.
 *
-* .cn start {atclose | atbot} [s=symbol] font fontsize space
-* .cn show
+* .cn start {atclose | atbot} [s={<symbol> | none}] font fontsize space
 * .cn end
+* .cn show
+*
+*	Examples:
+*		.cn start atbot s=none Times-roman 8p 1i	.** no number/symbol added
+*		.cn start atbot s=* Times-roman 8p 1i
+*		.cn start atbot  Times-roman 8p 1i
 ****************************************************************************
 */
 
@@ -93,6 +98,7 @@ static void cnstart( )
 	char	symbol = 0;
 	int		i;
 	int		*target_id;
+	int		has_symbol = 1;			// if s=none given, then this is turned off and the column note text is unadorned
 
 	while( (len = FMgetparm( &buf )) > 0 )
 	{
@@ -136,8 +142,12 @@ static void cnstart( )
 				//fprintf( target, ".sp .4\n" );
 		}
 		else
-		if( strncmp( buf, "s=", 2 ) == 0 )
-			symbol = *(buf+2);
+		if( strncmp( buf, "s=", 2 ) == 0 )			// if s=none given, then we don't add a symbol to the note
+			if( strcmp( buf, "s=none" ) == 0 ) {
+				has_symbol = 0;
+			} else {
+				symbol = *(buf+2);
+			}
 		else
 			break;			/* assume positional parameters */	
 	}
@@ -176,14 +186,18 @@ static void cnstart( )
 	}
 
 	/* check symbol and use that */
-	if( target_id == &eid )				/* end notes have [%d] rather than super script format */
+	if( target_id == &eid )														/* end notes have [%d] rather than super script format */
 		fprintf( target, ".tf superscript 2/3 ^[%d]\n", (*target_id)++ );		/* writes in default font */
 	else
 	{
-		if( symbol != 0 )
-			fprintf( target, ".ll -.2i .in +.15i .tf superscript ZapfDingbats 2/3 %c\n", symbol );		/* writes in default font */
-		else
-			fprintf( target, ".in +.15i .ll -.2i .tf superscript 2/3 %d\n", bid++ );		/* writes in default font */
+		if( has_symbol ) {
+			if( symbol != 0 )
+				fprintf( target, ".ll -.2i .in +.15i .tf superscript ZapfDingbats 2/3 %c\n", symbol );		/* writes in default font */
+			else
+				fprintf( target, ".in +.15i .ll -.2i .tf superscript 2/3 %d\n", bid++ );		/* writes in default font */
+		} else {
+			fprintf( target, ".ll -.2i .in +.15i\n" );											// just indent
+		}
 	}
 
 
