@@ -112,7 +112,9 @@ extern void FMdefheader(  void )
 	}
 
 	hptr = headers[level];		/* point right at what we are changing */
-	hptr->required = 72;			// default to a minimum of an inch remaining on the page
+	if( hptr->required <= 0 ) {
+		hptr->required = 36;		// default to a minimum of 1/2 inch remaining on the page
+	}
 
 	while( (len = FMgetparm( &buf )) > 0 )   /* while parameters left */
 	{
