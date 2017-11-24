@@ -133,7 +133,7 @@ extern void FMjustify( void )
 			}
 			jbuf[j] = 0;
 
-			TRACE( 2, "justif: lmar=%d topy=%d cury=%d ydisp=%d jbuf=(%s)\n", lmar, topy, cury, ydisp, jbuf );
+			TRACE( 2, "just: fmtblk: lmar=%d topy=%d cury=%d ydisp=%d jbuf=(%s)\n", lmar, topy, cury, ydisp, jbuf );
 			if( i )
 			{
 				sprintf( jjbuf, "(%s) (%s) %d %d [ %s ] ", font, jbuf, ydisp, size, colour ? colour : "-1" );    /* no trail space  */
