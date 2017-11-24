@@ -88,7 +88,9 @@ Contributions to this source repository are assumed published with the same lice
 *					.gv command.
 *			17 Jul 2016 - Bring decls into the modern world.
 *			12 Aug 2017 - Enable fracion before/after spacing and required
-					space after.
+*					space after.
+*			23 Nov 2017 - Fix bug with alignment of header in y direction at
+*					column top.
 **************************************************************************
 */
 /*
@@ -139,12 +141,11 @@ extern void FMheader( struct header_blk *hptr )
 	if( (i + cury) > (boty - cn_space) )						// if required space is more than what's left force a break
 	{
 		need_eject  = 1;
-		before = -textsize;										// need to remove what flush will add
+		before = 0;											// when at top, no before space needed
 		TRACE( 2, "header: forcing eject: i+cury=%d  boty-cn_space=%d\n", i + cury, boty - cn_space );
 	} else {
 		if( cury <= topy ) {
 			before = 0;											// when at top, no before space needed
-		before = -textsize;										// need to remove what flush will add
 		}
 	}
 	TRACE( 2, "header:  level=%d skip=%.1f/%.1f before=%.2f ejecting=%d require=%d needed=%d cury=%d boty=%d cn_space=%d\n", hptr->level, hptr->bskip, hptr->askip, before, need_eject, hptr->required, i, cury, boty, cn_space );
@@ -152,7 +153,6 @@ extern void FMheader( struct header_blk *hptr )
 	
 	if( (hptr->flags & HEJECTP) && (cur_col != firstcol || cury > topy) )	// must check for new page first as it trumps
 	{
-		before = -textsize;							// need to remove what flush will add
 		short_out = push_cmd( hptr->level );		// if needed, push the header command back on the stack to execute after ejecting
 		if( cury != topy )		 					// flush didn't see us at the end of page, so it didn't eject, we must
 		{											// this check is legit as if HEJECTP is set we eject even if flush ejected too
@@ -167,7 +167,6 @@ extern void FMheader( struct header_blk *hptr )
 	} else {
 		if( need_eject || (hptr->flags & HEJECTC) && cury != topy ) 			// either at end or column eject
 		{
-			before = -textsize;										// need to remove what flush will add
 			short_out = push_cmd( hptr->level );					// push the .hn command back if there is end column stuff
 			
 			if( ! FMflush() )							// safe to flush, and if flush didn't eject, we must
@@ -189,6 +188,7 @@ extern void FMheader( struct header_blk *hptr )
 		return;
 
 
+	TRACE( 2, "header: didn't short out: cury=%d lmar=%d curfont=%s textsize=%d before=%.0f\n", cury, lmar, curfont, textsize, before );
 	cury += before;	 						// skip before if needed (already points), and zero if we ejected
 	pnum[(hptr->level)-1] += 1;     		 /* increase the paragraph number */
 
