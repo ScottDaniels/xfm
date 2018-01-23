@@ -83,6 +83,26 @@ extern void FMfmt_dump( void )
 		fprintf( stderr, "\tfmt: %s %d %s\n", f->font, f->size, f->colour ? f->colour : "no-colour" );
 }
 
+
+/*
+	Allow a colour value to be pushed into the head block if there isn't one set. 
+	This may be needed if colour values are not preserved over page boundaries.
+*/
+extern void FMfmt_force_colour( char* colour )
+{
+	struct format_blk *f;
+	
+	if( fmt_lst == NULL ) {
+		return;
+	}
+
+	for( f = fmt_lst; f->next; f = f->next );		// find the last (list is reverse)
+
+	if( f->colour == NULL ) {
+		f->colour = strdup( colour );
+	}
+}
+
 /*
 	push the current list and start a new one
 */

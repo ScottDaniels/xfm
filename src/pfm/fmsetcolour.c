@@ -64,6 +64,7 @@ Contributions to this source repository are assumed published with the same lice
 *			07 Jul 2013 - converted to setting up for FMfmt(), and added push
 *				pop functions.
 *			17 Jul 2016 - Bring decls into the modern world.
+*			23 Jan 2018 - Add set last colour function.
 * --------------------------------------------------------------------------
 */
 
@@ -82,11 +83,16 @@ extern void FMpopcolour( )
 {
 	char	*colour;
 
-	if( cs_idx <= 0 )
+	if( cs_idx <= 0 ) {
+		TRACE( 2, "pop colour: bad index: %d", cs_idx );
 		return;
+	}
 
-	if( (colour = colour_stack[cs_idx--]) == NULL )		/* shouldn't happen */
+	cs_idx--;
+	if( (colour = colour_stack[cs_idx]) == NULL ) {									/* shouldn't happen */
+		TRACE( 2, "pop colour: no colour at index: %d", cs_idx );
 		return;
+	}
 
 	if( lastcolour )
 		free( lastcolour );
@@ -150,6 +156,37 @@ extern void FMsetcolour( char *t )
 	textcolour = NULL;
 }
 
+
+/*
+	Set last colour.  Needed because postscript doesn't preserve setrgb across show
+	page commands. Thiss function just takes the last defined colour, if there, 
+	and pushes it into the current format block as though .co was entered in the 
+	source.
+*/
+extern void FMset_last_colour( )
+{
+	double r;
+	double g;
+	double b;
+	unsigned int c;
+	char buf[1024];
+
+	if( lastcolour == NULL ) {
+		TRACE( 2,  "set_last_colour had no last colour\n" );
+		return;
+	}
+
+	sscanf( lastcolour, "%x", &c );
+
+	b = c & 0xff;
+	g = (c >> 8) & 0xff;
+	r = (c >> 16) & 0xff;
+
+	sprintf( buf,  "%0.2f %0.2f %0.2f ", (double) r/255, (double) g/255, (double) b/255 );
+	TRACE( 2,  "set_last_colour: colour=[#]%s == %s (%02x %02x %02x) 0x%06x\n",  lastcolour ? lastcolour : "NULL", buf, (unsigned int)r,(unsigned int)g,(unsigned int)b,c );
+
+	FMfmt_force_colour( buf );
+}
 /*
 	save the last colour used; if new colour is given then we set the new colour
 */
@@ -158,14 +195,17 @@ extern void FMpushcolour(  char *new_colour )
 	
 	if( cs_idx >= MAX_COLOUR_STACK )
 	{
-		fprintf( stderr, "colour stack overflow\n" );
+		fprintf( stderr, "push colour: colour stack overflow\n" );
 		return;
 	}
 
-	if( !lastcolour )
+	if( !lastcolour ) {
+		TRACE( 2, "push colour: last colour was nil, saving black\n" );
 		lastcolour = strdup( "#000000" );
+	}
+
 	colour_stack[cs_idx++] = lastcolour;
-	TRACE( 2, "colour pushed: %s", lastcolour );
+	TRACE( 2, "push colour: [%d] %s %s\n", cs_idx-1, lastcolour, colour_stack[cs_idx-1] );
 	lastcolour = NULL;
 
 	if( new_colour )

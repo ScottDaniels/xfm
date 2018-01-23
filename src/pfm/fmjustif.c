@@ -107,6 +107,8 @@ extern void FMjustify( void )
  		PFMceject( );       			/* move to next column */
 		if( cury != topy )			/* possible that something was injected, we must advance cury again */
 			cury += largest + textspace;
+
+		FMset_last_colour( );					// ensure colour change passes page boundary
 	}
 
 	sprintf( jbuf, "%d %d moveto\n", lmar, -cury );  	/* create moveto */

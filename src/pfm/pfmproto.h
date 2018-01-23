@@ -61,6 +61,7 @@ extern void FMrun( void );
 extern void FMrunout( int page, int shift );
 extern void FMsection ( void );
 extern void FMpopcolour( );
+extern void FMset_last_colour( );
 extern void FMsetcolour( char *t );
 extern void FMpushcolour(  char *new_colour );
 extern void FMsetfont( char* fname, int fsize );
