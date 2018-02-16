@@ -139,12 +139,18 @@ extern void FMtable( void )
        sprintf( align, "align: %.13s;", ptr + 2 );	
        break;
 
+	case 'B':			// ignore pfm edge border option
+		break;
+
     case 'b':   
        if( *(ptr+1) == '=' )
         border = atoi( ptr + 2 );
        else
         border++;
        break;
+
+	case 'C':			// ignore pfm line colour option
+		break;
 
     case 'c':
        t->bgcolour = strdup( ptr + 2 );
