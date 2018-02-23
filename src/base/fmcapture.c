@@ -71,6 +71,7 @@ Contributions to this source repository are assumed published with the same lice
 *  Author:   	E. Scott Daniels
 *  Modified: 	03 Jul 2016 - Added extend and shift options.
 *				17 Jul 2016 - Changes for better prototype generation.
+*				23 Feb 2018 - Support expanding &{var} in addition to &var
 *
 *  Command syntax:  .ca [expand] [shift] {start|extend} filename
 *					.ca end
@@ -111,6 +112,7 @@ extern void FMcapture( void )
 	int		exp_used = 0;				// used in expanded buffer
 	const char	*mode = "w";			// capture file open mode; default to truncate/write
 	int		i = 0;
+	int		skip;						// skip opening { if expanding &{foo}
 	int		flags = 0;					// various flags for processing (F_ const)
 
 	while( FMgetparm( &buf ) > 0 ) {
@@ -169,7 +171,7 @@ extern void FMcapture( void )
 		} 
 
 		if( f ) {
-			TRACE( 2, "capture: adding: %s\n", inbuf );
+			TRACE( 2, "capture: adding: %s expand=%d\n", inbuf, !!(flags & F_EXPAND) );
 			if( (flags & F_SHIFT) && isspace( *inbuf ) ) {
 				cp = inbuf+1;
 			} else {
@@ -181,18 +183,27 @@ extern void FMcapture( void )
 
 				while( (vp = strchr( cp, '&' ))  != NULL ) {
 					*vp = 0;
-					fprintf( f, "%s", cp );		// out everything before &
+					fprintf( f, "%s", cp );								// send out everything before &
 					cp = vp+1;
-					for( vp += 2; *vp && !isspace( *vp ); vp++ );		// find terminating character
+					if( *cp == '{' ) {										// suss name upto the closing }
+						for( vp = cp+1; *vp && *vp != '}'; vp++ );		// suss name up to first whitespace
+					} else {
+						for( vp = cp+1; *vp && !isspace( *vp ); vp++ );		// suss name up to first whitespace
+					}
 					if( *vp != 0 ) {									// terminate var name and advance vp if not end of buffer.
 						*vp = 0;
 						vp++;
 					}
-					if( (buf = sym_get( symtab, cp, 0 )) ) {			// find expansion of variable name
-						fprintf( f, "%s ", buf );						// and put it out
-						TRACE( 2, "capture: expanded: %s\n", buf );
+					skip = *cp == '{' ? 1 : 0;
+					if( (buf = sym_get( symtab, cp+skip, 0 )) ) {		// find expansion of variable name
+						TRACE( 2, "capture: expanded: %s --> %s\n", cp, buf );
+						fprintf( f, "%s%s", buf, skip ? "" : " " );		// and put it out with trailing space if not &{foo}
 					} else {
-						fprintf( f, "&%s ", cp );			// didn't expand, just leave it
+						if( *cp == '{' ) {
+							fprintf( f, "&%s}", cp );			// didn't expand, just leave it and ensur still wrapped in {}
+						} else {
+							fprintf( f, "&%s ", cp );			// didn't expand, just leave it
+						}
 					}
 					cp = vp;
 				}
