@@ -167,6 +167,10 @@ extern int FMcmd( char* buf )
 			flags2 |= F2_SETFONT;
 			break;
 
+		case C_COLNOTES:	
+			FMcolnotes( ); 
+			break;
+
 		case C_CCOL:             /* conditional column eject */
 			FMccol( 0 );            /* 0 parameter says to get from input */
 			break;
