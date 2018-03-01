@@ -185,6 +185,8 @@ static void cnstart( )
 		len = FMgetparm( &buf ); 
 	}
 
+	TRACE( 1, "colnotes: now reserving %dp at end of col for note(s)\n", cn_space );
+
 	/* check symbol and use that */
 	if( target_id == &eid )														/* end notes have [%d] rather than super script format */
 		fprintf( target, ".tf superscript 2/3 ^[%d]\n", (*target_id)++ );		/* writes in default font */
@@ -259,14 +261,16 @@ extern int FMcolnotes_show( int end )
 		end_cmd = ".qu";				// needed to force end processing after our embed (might bring us back to do efile if bfile exists
 	}
 	
+	TRACE( 1, "colnotes: showing at: %s cury=%d boty=%d cn_space=%d page=%d target=%p\n", end ? "end of doc" : "bottom of col", cury, boty, cn_space, page, target );
 	if( target == NULL )
 		return 0;
 
-	TRACE( 2, "colnotes: showing at: %s cury=%d boty=%d page=%d\n", end ? "end of doc" : "bottom of col", cury, boty, page );
 	if( cn_space > 0 )
 		if( boty - cn_space > cury )
 			cury = boty - cn_space;
-	TRACE( 2, "colnotes: cury set to=%d\n", cury );
+	TRACE( 1, "colnotes: after adjustment cury=%d\n", cury );
+
+	cn_space = 0;
 
 
 	fprintf( target, ".br\n.po\n" );					// add the ending commands to the file (force flush and pop)
