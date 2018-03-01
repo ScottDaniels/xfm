@@ -177,6 +177,7 @@ extern void FMcss( void )
 			if( FMgetparm( &buf ) )
 				style_file = strdup( buf );
 			TRACE( 1, "css: style file set: %s\n", style_file );
+			flags3 |= F3_NEED_STYLE;
 			return;
 		}
 
