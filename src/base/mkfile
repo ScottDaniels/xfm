@@ -38,7 +38,7 @@ src = fmaddtok fmasis fmbd fmbeglst fmbox fmbxend fmbxst fmcapture fmccol fmcd f
 	fmdv fmelse fmendlis fmendta fmep fmevalex fmfigure fmflush fmformat fmgetpar fmgetpts \
 	fmgettok fmgetval fmheader fmhn fmif fmignore fmimbed fmindent fmindex fminit fmjump \
 	fmjustif fmline fmlisti fmll fmmsg fmnofmt fmopen fmpara fmpflush fmpgnum fmread fmrfoot \
-	fmrhead fmright fmrow fmrun fmrunout fmrunset fmsectio fmsetcol fmsetcolour fmsetfon fmsetjus \
+	fmrhead fmright fmrow fmrun fmrunout fmrunset fmsectio fmsetcolour fmsetfon fmsetjus \
 	fmsetmar fmsetstr fmsetx fmsety fmshowvars fmskip fmspace fmtable fmtc fmtmpy fmtoc fmtoksiz fmtopmar fmvartok \
 	date docindex symtab utformat
 
