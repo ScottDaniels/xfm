@@ -88,7 +88,9 @@ extern void FMtable(  void )
    while( (len = FMgetparm( &buf) ) != 0  )
     switch( *buf )
      {
-      case 'a':          /* hfm options we simply must ignore */
+      case 'a':          /* pfm/hfm options we simply must ignore */
+		case 'B':	
+		case 'C':	
       case 'c':
       case 'n':
       case 'v':
