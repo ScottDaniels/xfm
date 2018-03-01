@@ -74,11 +74,14 @@ Contributions to this source repository are assumed published with the same lice
 *  Date:     28 July 1992
 *  Author:   E. Scott Daniels
 *
-*  Modified: 20 Jul 1994 - To allow not processing
-*            27 Jul 1994 - To allow nested ifs and elses
-*            28 Jul 1994 - To allow ors and ands
-*            19 Mar 2016 - Correct problem with stack index.
-*				17 Jul 2016 - Changes for better prototype generation.
+*  Modified: 
+*			20 Jul 1994 - To allow not processing
+*           27 Jul 1994 - To allow nested ifs and elses
+*           28 Jul 1994 - To allow ors and ands
+*           19 Mar 2016 - Correct problem with stack index.
+*			17 Jul 2016 - Changes for better prototype generation.
+*			01 Mar 2018 - Treat values as doubles
+*			
 *****************************************************************************
 */
 
@@ -92,7 +95,7 @@ Contributions to this source repository are assumed published with the same lice
 struct val_blk
 {
 	int type;
-	long nval;          /* numeric value */
+	double nval;          /* numeric value */
 	char cval[1024];    /* character value */
 } ;
 
@@ -198,7 +201,7 @@ extern void FMif(  void )
 						if( isdigit( *vp ) )
 						{
 							TRACE( 2, "fmif: variable expanded to number: %s\n", vp );
-							value[vidx].nval = atol( vp );
+							value[vidx].nval = strtod( vp, NULL );
 							status[sidx] = not ? ! value[vidx].nval : value[vidx].nval;
 							value[vidx].type = VTY_NUM;
 							vidx++;
@@ -342,7 +345,7 @@ extern void FMif(  void )
 					if( isdigit( tok[0] ) )
 					{
 						tok[len] = 0;
-						value[vidx].nval = atol( tok );
+						value[vidx].nval = strtod( tok, NULL );
 						status[sidx] = not ? ! value[vidx].nval : value[vidx].nval;
 						vidx++;
 					}
