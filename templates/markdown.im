@@ -34,15 +34,15 @@
 .** Date:		26 October 2016
 .** -------------------------------------------------------------------------------
 
-.cd 1 6.8i
+.cd 1 6.8i i=0i m=0i
 .ll 6.5i
 .in .5i
 .sf Helvetica
 .st 10
 
 .dh 1 m=.5i  e=no s=21 i=0 p=16 f=Helvetica-bold
-.dh 2  m=.5i s=21 i=0      p=14 f=Helvetica-bold 
-.dh 3  m=.5i s=10 i=0      p=12 f=Helvetica-bold
+.dh 2 m=.5i s=21 i=0      p=14 f=Helvetica-bold 
+.dh 3 m=.5i s=10 i=0      p=12 f=Helvetica-bold
 
 .ju on
 .hn off
@@ -119,9 +119,10 @@
 	.** if the env var is set, redefine macros to generate the limited markdown things
 	.gv e MARKDOWN markdown
 	.if markdown
+		.** break is a trailing two space (bloody folks who believe whitespace is a decent marker should be shot)
 		.dv break `  ` .br
 		.ju off
-		.dv image .ep ^[ .sm $2] ($3)
+		.dv image ^[ .sm $2] ($3)
 
 		.** no concept of a definition list in markdown; no start/end and just make the text bold to emulate
 		.dv def_list  .sp 1
