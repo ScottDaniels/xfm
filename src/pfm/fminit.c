@@ -178,7 +178,7 @@ this is dropped because imbed now puts a run/stop command into the stream to pop
 		return ERROR;
 	}
 
-	version = "pfm V2.8/17243"; 		/* returned by .gv v command */
+	version = "pfm V2.9/18301"; 		/* returned by .gv v command */
 	snprintf( buf, sizeof( buf ), "+PFM text formatter (%s) started", version );
 	FMmsg( -1, buf );
 
@@ -258,6 +258,7 @@ this is dropped because imbed now puts a run/stop command into the stream to pop
 	if( cur_col == NULL )
 		return ERROR;
 
+	memset( cur_col, 0, sizeof( *cur_col ) );
 	cur_col->lmar = DEF_LMAR;
 	cur_col->width = 550 - DEF_LMAR; /* set single column width */
 	cur_col->next = NULL;          /* by default we are in single column mode */
