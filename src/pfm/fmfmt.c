@@ -133,7 +133,24 @@ extern int FMfmt_restore( void )
 	int end;
 	int	ydisp;
 
-	while( FMfmt_pop( &size, &font, &colour, &start, &end, &ydisp ) > 0 );		/* pop current things */
+	while( FMfmt_pop( &size, &font, &colour, &start, &end, &ydisp ) > 0 ) {		/* pop current things */
+		if( font ) {
+			free( font );
+			font = NULL;
+		}
+		if( colour ) {
+			free( colour );
+			colour = NULL;
+		}
+	}
+
+	if( font ) {				// these could come back with defaults if no format block; must free
+		free( font );
+	}
+	if( colour ) {
+		free( colour );
+	}
+
 	if( fmt_idx > 0 ) {
 		fmt_lst = fmt_stack[--fmt_idx];						/* point at old list */
 	} else {
@@ -185,8 +202,12 @@ static void add(  int ydisp )
 		new->size = textsize;
 		new->ydisp = ydisp;
 		new->sidx = optr ? optr-1: 0;
-		if( textcolour )
+		if( textcolour ) {
+			if( new->colour ) {
+				free( new->colour );
+			}
 			new->colour = strdup( textcolour );
+		}
 	}
 	else
 	{
@@ -199,8 +220,12 @@ static void add(  int ydisp )
 			if( curfont )
 				new->font = strdup( curfont );
 			new->size = textsize;
-			if( textcolour )
+			if( textcolour ) {
+				if( new->colour ) {
+					free( new->colour );
+				}
 				new->colour = strdup( textcolour );
+			}
 	
 			FMfmt_end( );
 	
