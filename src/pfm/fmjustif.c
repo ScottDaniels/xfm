@@ -160,10 +160,14 @@ extern void FMjustify( void )
 			things++;
 		}
 
-		if( font )
+		if( font ) {
 			free( font );
-		if( colour )
+			font = NULL;
+		}
+		if( colour ) {
 			free( colour );
+			colour = NULL;
+		}
 	}
 
 	if( font )					/* these end up being default values even if nothing on fmt stack, so we must free */

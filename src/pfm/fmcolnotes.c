@@ -224,7 +224,11 @@ static void cnstart( )
 */
 static void cnend( )
 {
-	fprintf( target, ".po\n" );
+	if( target != NULL ) {
+		fprintf( target, ".po\n" );
+	}
+
+	target = NULL;
 }
 
 /*
@@ -239,6 +243,7 @@ extern int FMcolnotes_show( int end )
 {
 	char	buf[1024];
 	FILE	*target = NULL;
+	int		dref_bfile = 0;
 	char	*fname = NULL;
 	int		status = 0;
 	char	*end_cmd = "";
@@ -246,6 +251,7 @@ extern int FMcolnotes_show( int end )
 	if( bfile != NULL )		// target is always the b file if it's there
 	{
 		target = bfile;
+		dref_bfile = 1;
 		bfile = NULL;
 		fname = bfname;
 	}
@@ -281,6 +287,13 @@ extern int FMcolnotes_show( int end )
 	fprintf( target, ".cn unlink %s\n%s\n", fname, end_cmd );
 
 	fclose( target );
+	if( dref_bfile ) {
+		bfile = NULL;		// cant use a closed file
+	} else {
+		efile = NULL;
+	}
+	target = NULL;
+
 	snprintf( buf, sizeof( buf ), "\n.im %s", fname );				/* must have a guarding newline as lead (prevent accidents with .sp without optional parm etc.) */
  	status = AFIpushtoken( fptr->file, buf );  						/* push to imbed the file */
 	TRACE( 2, "colnotes: pushing: stat=%d (%s)\n", status, buf );
