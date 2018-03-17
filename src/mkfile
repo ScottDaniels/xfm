@@ -26,7 +26,7 @@ gflag=
 NUKE = $NUKE 
 
 all:
-	$PSHELL '
+	$PSHELL -c '
 	set -e
 	for d in $dirs
 	do
