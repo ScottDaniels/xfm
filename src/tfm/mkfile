@@ -41,7 +41,7 @@ csrc = ${src:%=%.c}
 
 $tfmlib(%.o):N:    %.o
 $tfmlib:   ${src:%=$tfmlib(%.o)}
-	$PSHELL '(
+	$PSHELL -c '(
 	set -e
 	names="${newprereq//$tfmlib\(}"					# pluck off lib.*( from each in newprereq
 	ar r $tfmlib ${names//\)/} && rm ${names//\)/}	# archive and remove after ditching trailing ) from each name

@@ -38,7 +38,7 @@ src = afichain aficlos1 aficlose afiopen afiopenp afiread afiseek afisetfl afise
 
 $afilib(%.o):N:    %.o $headers
 $afilib:   ${src:%=$afilib(%.o)}
-	$PSHELL '(
+	$PSHELL -c '(
 	set -e
 	names="${newprereq//$afilib\(}"					# pluck off lib.*( from each in newprereq
 	ar r $afilib ${names//\)/} && rm ${names//\)/}	# archive and remove after ditching trailing ) from each name

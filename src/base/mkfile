@@ -45,7 +45,7 @@ src = fmaddtok fmasis fmbd fmbeglst fmbox fmbxend fmbxst fmcapture fmccol fmcd f
 
 $baselib(%.o):N:    %.o
 $baselib:   ${src:%=$baselib(%.o)}
-	$PSHELL '(
+	$PSHELL -c '(
 	set -e
 	names="${newprereq//$baselib\(}"					# pluck off lib.*( from each in newprereq
 	ar r $baselib ${names//\)/} && rm ${names//\)/}	# archive and remove after ditching trailing ) from each name
@@ -54,7 +54,7 @@ $baselib:   ${src:%=$baselib(%.o)}
 
 $xfmlib(%.o):N:    %.o
 $xfmlib:   ${src:%=$xfmlib(%.o)}
-	$PSHELL '(
+	$PSHELL -c '(
 	set -e
 	names="${newprereq//$xfmlib\(}"					# pluck off lib.*( from each in newprereq
 	ar r $xfmlib ${names//\)/} && rm ${names//\)/}	# archive and remove after ditching trailing ) from each name

@@ -42,7 +42,7 @@ obj = ${src:%=%.o}
 
 $hfmlib(%.o):N:    %.o
 $hfmlib:   ${src:%=$hfmlib(%.o)}
-	$PSHELL '(
+	$PSHELL -c '(
 	set -e
 	names="${newprereq//$hfmlib\(}"					# pluck off lib.*( from each in newprereq
 	ar r $hfmlib ${names//\)/} && rm ${names//\)/}	# archive and remove after ditching trailing ) from each name

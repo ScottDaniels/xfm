@@ -51,7 +51,7 @@ fminit.o:: init_ps.c
 
 $pfmlib(%.o):N:    %.o
 $pfmlib:    ${src:%=$pfmlib(%.o)} 
-	$PSHELL '(
+	$PSHELL -c '(
 	set -e
 	names="${newprereq//$pfmlib\(}"					# pluck off lib.*( from each in newprereq
 	ar r $pfmlib ${names//\)/} && rm ${names//\)/}	# archive and remove after ditching trailing ) from each name
