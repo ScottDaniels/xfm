@@ -1,0 +1,11 @@
+This directory contains several 'startup' imbed files or templates
+which attempt to provide some 'boiler plate' definitions. Some, like 
+doc_start, or hfmstart, are more elaborate and failry complete setups
+while there are smaller files like markdown which have a specific 
+purpose and can be combined with others. 
+
+This directory also contains a master mkfile which can be imported
+into mkfiles in order to provide standard/basic rules for doc
+generation (e.g. to generate a .pdf, do this with the same named
+.xfm source).
+
