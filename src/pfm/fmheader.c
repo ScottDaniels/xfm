@@ -163,6 +163,7 @@ extern void FMheader( struct header_blk *hptr )
 			}
 			else
 				FMpflush( );	// and finally eject the page leaving short_out SET!
+		before = -textsize;
 		}
 	} else {
 		if( need_eject || (hptr->flags & HEJECTC) && cury != topy ) 			// either at end or column eject
@@ -178,6 +179,7 @@ extern void FMheader( struct header_blk *hptr )
 				}
 				else
 					PFMceject( );	// and finally the eject; we leave short_out SET as we pushed our .hn command so we need to return to pick it up again
+		before = -textsize;
 			}
 		} else {
 			FMflush( );		// nothing special, just flush
