@@ -87,7 +87,7 @@ int AFIgettoken( AFIHANDLE file, char *buf )
 	{
 		if( fptr->tmb == NULL )
 		{
-			fprintf( stderr, "afigettoken: input file (%s) not set for tokenising" );
+			fprintf( stderr, "afigettoken: input file (%s) not set for tokenising", fptr->name );
 			exit( 1 );
 		}
 
