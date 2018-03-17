@@ -74,14 +74,13 @@ Contributions to this source repository are assumed published with the same lice
 *  Date:     28 July 1992
 *  Author:   E. Scott Daniels
 *
-*  Modified: 
-*			20 Jul 1994 - To allow not processing
-*           27 Jul 1994 - To allow nested ifs and elses
-*           28 Jul 1994 - To allow ors and ands
-*           19 Mar 2016 - Correct problem with stack index.
+*  Modified: 20 Jul 1994 - To allow not processing
+*            27 Jul 1994 - To allow nested ifs and elses
+*            28 Jul 1994 - To allow ors and ands
+*            19 Mar 2016 - Correct problem with stack index.
 *			17 Jul 2016 - Changes for better prototype generation.
 *			01 Mar 2018 - Treat values as doubles
-*			
+*			17 Mar 2018 - Fix printf warnings
 *****************************************************************************
 */
 
@@ -221,7 +220,7 @@ extern void FMif(  void )
 				}
 				else
 				{
-					TRACE( 1, "fmif: AND\n", tok );
+					TRACE( 1, "fmif: AND\n" );
 					if( sidx >= 2 )
 					{
 						status[sidx-2] = status[sidx-1] & status[sidx-2];
@@ -305,7 +304,7 @@ extern void FMif(  void )
 						if( value[0].type == VTY_NUM && value[1].type == VTY_NUM )
 						{
 							status[sidx] = ! (value[0].nval - value[1].nval);
-							TRACE( 2,  "num (%d) (%d) == %d (not=%d)\n", value[0].nval, value[1].nval, status[sidx], not );
+							TRACE( 2,  "num (%ld) (%ld) == %ld (not=%ld)\n", (long) value[0].nval, (long) value[1].nval, (long) status[sidx], (long) not );
 						}
 						else
 						{

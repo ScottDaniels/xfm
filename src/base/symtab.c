@@ -35,6 +35,7 @@ Abstract: Basic symbol table routines.
 Date:     11 Feb 2000
 Author:   E. Scott Daniels
 Mods:		17 Jul 2016 - Changes for better prototype generation.
+			17 Mar 2018 - Fix printf format warnings
 -------------------------------------------------------------------------
 */
 
@@ -185,9 +186,9 @@ extern void sym_dump( Sym_tab *table )
 		for( eptr = sym_tab[i]; eptr; eptr = eptr->next )  
 		{
 			if( eptr->val && eptr->flags & FL_FREE )
-				fprintf( stderr, "%s %s\n", eptr->name, eptr->val );
+				fprintf( stderr, "%s %s\n", eptr->name, (char *) eptr->val );
 			else
-				fprintf( stderr, "%s -> #%x\n", eptr->name, eptr->val );
+				fprintf( stderr, "%s -> #%p\n", eptr->name, eptr->val );
 		}
 	}
 }
@@ -312,11 +313,9 @@ extern void sym_stats( Sym_tab *table, int level )
 				ch_count++;
 				if( level > 3 )
 				if( eptr->val && eptr->flags & FL_FREE )
-					fprintf( stderr, "sym: (%d) %s str=(%s)  ref=%d mod=%d\n", 
-						i, eptr->name, eptr->val, eptr->rcount, eptr->mcount );
+					fprintf( stderr, "sym: (%d) %s str=(%s)  ref=%lu mod=%lu\n", i, eptr->name, (char *) eptr->val, eptr->rcount, eptr->mcount );
 				else
-					fprintf( stderr, "sym: (%d) %s ptr=%x  ref=%d mod=%d\n", 
-						i, eptr->name, eptr->val, eptr->rcount, eptr->mcount );
+					fprintf( stderr, "sym: (%d) %s ptr=%p  ref=%lu mod=%lu\n", i, eptr->name, eptr->val, eptr->rcount, eptr->mcount );
 			}
 		}
 		else
@@ -331,7 +330,7 @@ extern void sym_stats( Sym_tab *table, int level )
 			twoper++;
 
 		if( level > 2 )
-			fprintf( stderr, "sym: (%d) chained=%d\n", i, ch_count );
+			fprintf( stderr, "sym: (%d) chained=%ld\n", i, ch_count );
 	}
 
 	if( level > 1 )
@@ -342,8 +341,8 @@ extern void sym_stats( Sym_tab *table, int level )
 		fprintf( stderr, "\n" );
 	}
 
-	fprintf( stderr, "sym:%d(size)  %d(inhab) %d(occupied) %d(dead) %ld(maxch) %d(>2per)\n", 
-	table->size, table->inhabitants, table->size - empty, table->deaths, max_chain, twoper );
+	fprintf( stderr, "sym:size=%ld inhab= %ld occupied=%ld dead=%ld maxch=%ld >2per=%d\n", 
+		table->size, table->inhabitants, table->size - empty, table->deaths, max_chain, twoper );
 }
 
 extern void sym_foreach_class( Sym_tab *st, unsigned int class, void (* user_fun)(), void *user_data )

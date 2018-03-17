@@ -85,6 +85,7 @@ Contributions to this source repository are assumed published with the same lice
 *			22 Nov 2006 - corrected escape of [
 *			20 Oct 2007 - corrected handling of backquotes
 *			17 Jul 2016 - Changes for better prototype generation.
+*			17 Mar 2018 - Fix printf warnings
 ****************************************************************************
 */
 extern int FMgetparm( char **buf )
@@ -110,8 +111,7 @@ extern int FMgetparm( char **buf )
 		switch( *inbuf )     
 		{
 			case CONTINUE_SYM:                 /* continuation mark? */
-				if( trace > 1)
-					fprintf( stderr, "getparm: continue symbol\n", len );
+				TRACE( 1, "getparm: continue symbol\n" );
 				while( AFIgettoken( fptr->file, inbuf ) != 0 );  /* skip to e of buf */
 				len = AFIgettoken( fptr->file, inbuf );       /* then get next token */
 				break;

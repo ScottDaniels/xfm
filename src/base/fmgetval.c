@@ -103,7 +103,8 @@ Contributions to this source repository are assumed published with the same lice
 *			04 Mar 2014 - Added Fi[gure] and Ta[ble] types to set vars and incr the value
 *			28 Dec 2015 - Correct variable name (_lremain not right).
 *						  Correct computation of right mar for .gv rmar.
-*				17 Jul 2016 - Changes for better prototype generation.
+*			17 Jul 2016 - Changes for better prototype generation.
+*			17 Mar 2018 - Fix printf warnings
 **************************************************************************************************
 */
 /*
@@ -346,7 +347,7 @@ extern void FMgetval( void )
 
      case 'w':
 			strcpy( vname, "_words" );
-			snprintf( value, sizeof( value ), "%d", words );
+			snprintf( value, sizeof( value ), "%ld", words );
 			break;
 
      case 'v':

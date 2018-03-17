@@ -70,6 +70,7 @@ Contributions to this source repository are assumed published with the same lice
 *             11 Apr 1993 - To insert a newline on the last sprintf
 *              6 Sep 1994 - Conversion for RFM
 *				17 Jul 2016 - Changes for better prototype generation.
+*				17 Mar 2018 - Fix printf format warnings
 ****************************************************************************
 */
 extern void FMtoc( int level )
@@ -104,7 +105,7 @@ extern void FMtoc( int level )
  if( flags & PAGE_NUM )       /* if numbering the pages then place number */
   {
 	if( toc_pn_fmt != NULL ) {
-		snprintf( fbuf, sizeof( fbuf ), "%.sx 7i %s", toc_pn_fmt ); 
+		snprintf( fbuf, sizeof( fbuf ), ".sx 7i %s", toc_pn_fmt ); 
 		sprintf( buf, fbuf, page+1 );
 	} else {
 		sprintf( buf, ".sx 7i %d .br\n", page+1 );

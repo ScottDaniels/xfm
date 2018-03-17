@@ -56,7 +56,7 @@ extern void fmdump( char *ptr )
 {
  int i;
 
- printf( "%04x: ", ptr );
+ printf( "%p: ", ptr );
  for( i = 0; i < 16; i++ )
   printf( "%02x ", (unsigned char) *ptr++ );
  printf( "\n" );

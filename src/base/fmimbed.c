@@ -72,6 +72,7 @@ Contributions to this source repository are assumed published with the same lice
 *				the stack of open files. c'est la vie! 
 *			17 Jul 2016 - Changes for better prototype generation.
 *			12 Aug 2017 - better trace message, and better error handling.
+*			17 Mar 2018 - Fix printf warnings
 *
 * .im [nf] filename
 ***************************************************************************
@@ -115,7 +116,7 @@ extern void FMimbed(  void )
 		TRACE( 2, "imbed: finished with file %s lmar=%d cury=%d\n", name, lmar, cury );
 		free( name );
 	} else {
-		TRACE( 2, "imbed: open failed for\n", fp );
+		TRACE( 2, "imbed: open failed for: %s\n", fp );
 		len = FMgetparm( &buf );							// must pop the runstop token as we didn't invoke run
 	}
 

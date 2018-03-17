@@ -54,6 +54,7 @@
 *	Mod:		10 Mar 2011 - Corrected bug with multiple word references 
 *				03 Jan 2016 - Corrected memset bug in di_group.
 *				17 Jul 2016 - Changes for better prototype generation.
+*				17 Mar 2018 - Fix printf format warnings
 * --------------------------------------------------------------------------------------------------------
 */
 
@@ -125,7 +126,7 @@ static void dump_rp( Ref_info *rp )
 {
 	int i;
 
-	fprintf( stderr, "ref-info: '%s' (%x) next=%x flags=%x words=%d ridx=%d\n", rp->entry, rp, rp->next, rp->flags, rp->nwords, rp->ridx );
+	fprintf( stderr, "ref-info: '%s' (%p) next=%p flags=%x words=%d ridx=%d\n", rp->entry, rp, rp->next, rp->flags, rp->nwords, rp->ridx );
 	for( i = 0; i < rp->nwords; i++ )
 		fprintf( stderr, "\tword: %s\n", rp->wlist[i] );
 		
