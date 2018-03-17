@@ -6,7 +6,7 @@ MKSHELL = `which ksh 2>/dev/null || which bash`
 
 CC = `echo ${MK_GCC:-gcc}`
 IFLAGS = -I. $IFLAGS
-CFLAGS = -g
+CFLAGS = -g -Wformat
 LFLAGS = 
 
 NUKE = *.o *.a
