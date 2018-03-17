@@ -86,6 +86,7 @@ Contributions to this source repository are assumed published with the same lice
 *				03 Jan 2016 - Removed errant flush before FMll() and indent calls.
 *				17 Jul 2016 - Bring decls into the modern world.
 *				29 Jan 2017 - Print all vars on a .sv command rather than just one, on same line
+*				17 Mar 2018 - Correct compiler printf warnings
 *******************************************************************************************************
 */
 extern int FMcmd( char *buf )
@@ -402,7 +403,7 @@ extern int FMcmd( char *buf )
 					*wbuf = 0;
 
 					if( !isalpha( *ptr ) ) {
-						fprintf( stderr, "(%s @ %d) invalid font name: %s\n", fptr->name,  AFIstat( fptr->file, AFI_OPS, NULL ), ptr );
+						fprintf( stderr, "(%s @ %ld) invalid font name: %s\n", fptr->name,  AFIstat( fptr->file, AFI_OPS, NULL ), ptr );
 					} else {
 						for( tok = ptr; *tok && (isalpha( *tok ) || *tok == '-'); tok++ );
 						if(  *tok != 0 )								/* found non-alpha, assume closing . or ) or somesuch */
@@ -479,7 +480,7 @@ extern int FMcmd( char *buf )
 				else
 				{
 					trace = 0;
-					fprintf( stderr, " trace off: ", trace );
+					fprintf( stderr, " trace off: " );
 				}
 
 				fprintf( stderr, " cury=%d textsize=%d textspace=%d font=%s boty=%d topy=%d col_lmar=%d linelen=%d col_wid=%d\n", cury, textsize, textspace, curfont, boty, topy, cur_col->lmar, linelen, cur_col->width );

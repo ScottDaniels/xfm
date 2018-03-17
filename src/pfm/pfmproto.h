@@ -33,6 +33,7 @@ extern void FMfigure( void );
 extern void FMfloat_mar( void );
 extern int FMflush( void );
 extern void FMfmt_dump( void );
+extern void FMfmt_force_colour( char* colour );
 extern int FMfmt_save( void );
 extern int FMfmt_restore( void );
 extern int FMfmt_largest( void )				/* find the largest font in the list */;

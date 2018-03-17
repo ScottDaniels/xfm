@@ -72,6 +72,7 @@ Contributions to this source repository are assumed published with the same lice
 *			17 Jul 2016 - Bring decls into the modern world.
 *			12 Aug 2017 - Allow formatable toc page numbers
 *			18 Sep 2017 - Reduce indent.
+*			17 Mar 2018 - Correct compiler printf warnings
 ****************************************************************************
 */
 extern void FMtoc( int level )
@@ -115,7 +116,7 @@ extern void FMtoc( int level )
 			sprintf( buf, ".cl : %s %d .tr\n", level == 1 ? ".sp 1" : "", page+1 );
 		}
 	} else {
-		sprintf( buf, ".cl : .sp 1  .tr\n", page+1 );
+		sprintf( buf, ".cl : .sp 1  .tr\n" );
 		//AFIwrite( tocfile, buf );            /* write the entry to the toc file */
 	}
 	AFIwrite( tocfile, buf );            /* write the entry to the toc file */

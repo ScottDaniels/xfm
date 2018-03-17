@@ -66,6 +66,7 @@ Contributions to this source repository are assumed published with the same lice
 *  Author:   E. Scott Daniels
 *
 *  Mods:	04 Jan 2016 - Force a break at the end of the text.
+*			17 Mar 2018 - Correct compiler printf warnings
 *
 * .cn start {atclose | atbot} [s={<symbol> | none}] font fontsize space
 * .cn end
@@ -214,7 +215,7 @@ static void cnstart( )
 		fprintf( target, "%s ", buf );
 	}
 
-	fprintf( target, "\n.br .in -.15i .ll +.2i", buf );
+	fprintf( target, "\n.br .in -.15i .ll +.2i" );
 
 	TRACE( 2, "colnotes: end notes cn_space=%d\n", cn_space );
 }

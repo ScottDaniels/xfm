@@ -63,6 +63,7 @@ Contributions to this source repository are assumed published with the same lice
 *				06 Nov 2007 - Pops leftover blocks when restoring state.
 *				07 Jul 2013 - cleanup 
 *				22 Mar 2016 - Prevent out of range issue on restore.
+*				17 Mar 2018 - Correct compiler printf warnings
 *				17 Jul 2016 - Bring decls into the modern world.
 * ---------------------------------------------------------------------
 */
@@ -264,7 +265,7 @@ extern int FMfmt_pop( int *size, char **font, char **colour, int *start, int *en
 
 	if( fmt_lst )
 	{
-		TRACE( 2, "fmt_pop: %x cury=%d\n", fmt_lst, cury );
+		TRACE( 2, "fmt_pop: fmt_lst=%p cury=%d\n", fmt_lst, cury );
 		*ydisp = fmt_lst->ydisp;
 		*size = fmt_lst->size;
 		*font = fmt_lst->font;			/* pass back strings we duped earlier */
@@ -281,7 +282,7 @@ extern int FMfmt_pop( int *size, char **font, char **colour, int *start, int *en
 	}
 	else
 	{
-		TRACE( 2, "fmt_pop: end %x cury=%d\n", fmt_lst, cury );
+		TRACE( 2, "fmt_pop: end ptr=%p cury=%d\n", fmt_lst, cury );
 		*ydisp = 0;
 		*size = textsize;
 		if( *font )

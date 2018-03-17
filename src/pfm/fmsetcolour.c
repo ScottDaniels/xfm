@@ -65,6 +65,7 @@ Contributions to this source repository are assumed published with the same lice
 *				pop functions.
 *			17 Jul 2016 - Bring decls into the modern world.
 *			23 Jan 2018 - Add set last colour function.
+*				17 Mar 2018 - Correct compiler printf warnings
 * --------------------------------------------------------------------------
 */
 
