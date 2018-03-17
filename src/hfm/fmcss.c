@@ -86,6 +86,7 @@ Contributions to this source repository are assumed published with the same lice
 *		05 Jul 2009 - Added :class to name token 
 *		26 Jul 2015 - Allow multiple fields for something like border-right 1px,solid,grey
 *		18 Jul 2016 - Add consistent, and sometimes modern, prototypes.
+*		17 Mar 2018 - Fix compiler warnings on printf statements
 * --------------------------------------------------------------------------------
 * .cs file filename		set file name from which css style commands are loaded (must be before
 *				the first command that causes a flush. 
@@ -203,14 +204,14 @@ extern void FMcss( void )
 		if( toupper( *buf ) == 'T' )	/* create a def for table */
 		{
 			type = CSS_TABLE;
-			sprintf( obuf, "style=\"", buf );
+			sprintf( obuf, "style=\"" );
 		}
 		else
 		{
 			if( strncmp( buf, "class", 5 ) == 0 )
 			{
 				type = CSS_CLASS;
-				sprintf( obuf, "style=\"", buf );
+				sprintf( obuf, "style=\"" );
 			}
 		}
 
@@ -343,7 +344,7 @@ extern void FMcss( void )
 			fprintf( stderr, "WARNING: use of .cs table is deprecated\n" );
 			free( table_css );
 			table_css = strdup( obuf );
-				TRACE( 2, "fmcss: setting table_css = (%x) %s\n", table_css, table_css );
+				TRACE( 2, "fmcss: setting table_css = (%p) %s\n", table_css, table_css );
 			break;
 
 		case CSS_CLASS:
