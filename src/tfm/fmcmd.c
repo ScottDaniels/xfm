@@ -85,6 +85,7 @@ Contributions to this source repository are assumed published with the same lice
 *			23 Dec 2015 - Ignored pfm top gutter command; formatting fixes.
 *			01 Jan 2015 - Ignore pfm floating margin command
 *			17 Jul 2016 - Bring prototypes into modern era.
+*			17 Mar 2018 - Fix compiler warnings on printfs
 **************************************************************************
 */
 extern int FMcmd( char* buf )
@@ -563,7 +564,7 @@ extern int FMcmd( char* buf )
 				else
 				{
 					trace = 0;
-					fprintf( stderr, " trace off: ", trace );
+					fprintf( stderr, " trace off: " );
 				}
 
 				fprintf( stderr, " cury=%d textsize=%d textspace=%d font=%s boty=%d topy=%d col_lmar=%d col_wid=%d\n", cury, textsize, textspace, curfont, boty, topy, cur_col->lmar, cur_col->width );

@@ -65,6 +65,7 @@ Contributions to this source repository are assumed published with the same lice
 *  Author:   E. Scott Daniels
 *	Mods:	17 Jul 2016 - Bring prototypes into modern era.
 *			23 Jan 2017 - Correct bug when atbot used.
+*			17 Mar 2018 - Correct compiler warnings on printfs
 *
 * .cn start {atclose | atbot} [s=symbol] font fontsize space
 * .cn {show|showend}
@@ -199,7 +200,7 @@ static void cnstart( )
 		fprintf( target, "%s ", buf );
 	}
 
-	fprintf( target, "\n.in -.15i .ll +.2i\n", buf );
+	fprintf( target, "\n.in -.15i .ll +.2i\n" );
 
 	TRACE( 2, "colnotes: end notes cn_space=%d\n", cn_space );
 }
