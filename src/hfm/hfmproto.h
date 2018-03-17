@@ -5,6 +5,7 @@ extern void FMbox( void );
 extern void FMbxend( void );
 extern void FMbxstart( int option, char *colour, int border, int width, char *align );
 extern void FMcd( void );
+extern void FMcolnotes( void );
 extern void FMceject( int i );
 extern void FMcell( int parms );
 extern void FMcenter( void );

@@ -601,7 +601,7 @@ extern int FMcmd( char* buf )
 				else
 				{
 					trace = 0;
-					fprintf( stderr, " trace off: ", trace );
+					fprintf( stderr, " trace off: " );
 				}
 
 				fprintf( stderr, " cury=%d textsize=%d textspace=%d font=%s boty=%d topy=%d col_lmar=%d col_wid=%d\n", cury, textsize, textspace, curfont, boty, topy, cur_col->lmar, cur_col->width );

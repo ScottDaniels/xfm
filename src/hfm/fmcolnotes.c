@@ -199,7 +199,7 @@ static void cnstart( )
 		fprintf( target, "%s ", buf );
 	}
 
-	fprintf( target, "\n.in -.15i .ll +.2i\n", buf );
+	fprintf( target, "\n.in -.15i .ll +.2i\n" );
 
 	TRACE( 2, "colnotes: end notes cn_space=%d\n", cn_space );
 }
@@ -234,7 +234,6 @@ extern int FMcolnotes_show( int end )
 		target = efile;
 		efile = NULL;
 		fname = efname;
-		//end_cmd = ".qu";		/* needed for end notes to force the end of processing */
 	}
 	else
 	{
