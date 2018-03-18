@@ -14,9 +14,9 @@
 
 .** set up headers. no eject for h1, flush on the column margin, and no paragraph indention
 .hn off
-.dh 1 e=no m=0i i=0 f=Times-bold
-.dh 2 m=0i i=0
-.dh 3 s=10 i=0
+.dh 1 e=no m=0i i=0 f=Times-bold s=2,1
+.dh 2 m=0i i=0 s=1.5,.5
+.dh 3 s=10 i=0 s=1,0
 
 .** for an example, put document in no format mode using a constant width font which is two points smaller
 .** than the normal text size.  To end the example, reverse font and font size and restore formatting (first).

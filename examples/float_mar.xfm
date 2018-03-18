@@ -8,7 +8,7 @@
 .st 10p
 .in .5i
 .hn off
-.dh 2 m=.5i i=0
+.dh 2 m=.5i i=0 s=1,.5
 
 .** image macro; normally a part of hfmstart.im or other template imbed file
 .dv img ^<img src="$1"^> 

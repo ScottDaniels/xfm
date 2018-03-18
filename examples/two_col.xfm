@@ -10,9 +10,9 @@
 
 .** set up headers. no eject for h1, flush on the column margin, and no paragraph indention
 .hn off
-.dh 1 e=no m=0i i=0
-.dh 2 m=0i i=0
-.dh 3 s=10
+.dh 1 e=no m=0i i=0 s=2,.5
+.dh 2 m=0i i=0 s=1,.5
+.dh 3 s=10 s=1,0
 
 .if pfm
 	.dv super .sm .tf superscript 2/3 1 :
