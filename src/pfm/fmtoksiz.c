@@ -106,7 +106,7 @@ extern int FMtoksize( char* tok, int len )
 				charwidth = TimesRoman;
 				break;
 				/*
- 				if( strcmp( curfont, "Times-roman" ) == 0 || strcmp( curfont, "Times-Roman" ) == 0 )
+ 				if( strcmp( curfont, "Times-Roman" ) == 0 || strcmp( curfont, "Times-Roman" ) == 0 )
 					charwidth = TimesRoman;
  				else
  				if( strcmp( curfont, "Times" ) == 0 )

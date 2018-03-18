@@ -73,9 +73,9 @@ Contributions to this source repository are assumed published with the same lice
 * .cn show
 *
 *	Examples:
-*		.cn start atbot s=none Times-roman 8p 1i	.** no number/symbol added
-*		.cn start atbot s=* Times-roman 8p 1i
-*		.cn start atbot  Times-roman 8p 1i
+*		.cn start atbot s=none Times-Roman 8p 1i	.** no number/symbol added
+*		.cn start atbot s=* Times-Roman 8p 1i
+*		.cn start atbot  Times-Roman 8p 1i
 ****************************************************************************
 */
 

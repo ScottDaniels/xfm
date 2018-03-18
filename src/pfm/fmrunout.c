@@ -155,7 +155,7 @@ extern void FMrunout( int page, int shift )
 			snprintf( ubuf, sizeof( ubuf ), pgnum_fmt ? pgnum_fmt : "Page %d", page );		/* format user string, or default if not set */
 		}
 		if( flags3 & F3_PGNUM_CENTER ) {
-			snprintf( buf, sizeof( buf ), "0 %d moveto\n (Times-roman) (%s) 0 10 [-1]\n 612 1 cent\n", -y, ubuf );
+			snprintf( buf, sizeof( buf ), "0 %d moveto\n (Times-Roman) (%s) 0 10 [-1]\n 612 1 cent\n", -y, ubuf );
 		} else {
 			snprintf( buf, sizeof( buf ), "%d %d %s (%s) %s\n", x, -y, moveto, ubuf, cmd );
 		}
