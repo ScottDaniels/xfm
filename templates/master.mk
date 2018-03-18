@@ -5,25 +5,26 @@
 
 
 MKSHEL = ksh
+TDIR="${TDIR:-.}
 
 # use xfig translator to convert figures
 %.eps :: %.fig
-	fig2dev -L eps $prereq $target
+	fig2dev -L eps $prereq $TDIR/$target
 
 %.jpg :: %.fig
-	fig2dev -L jpg $prereq $target
+	fig2dev -L jpg $prereq $TDIR/$target
 
 %.png :: %.fig
-	fig2dev -L png $prereq $target
+	fig2dev -L png $prereq $TDIR/$target
 
 %.txt:: %xfm
-    tfm ${prereq%% *} $target
+    tfm ${prereq%% *} $TDIR/$target
 
 %.html:: %.xfm
-    hfm ${prereq%% *} $target
+    hfm ${prereq%% *} $TDIR/$target
 
 %.ps:: %.xfm
-    pfm ${prereq%% *} $target
+    pfm ${prereq%% *} $TDIR/$target
 
 # markdown -- generate text using the markdown setup file, then chop the first column
 # because tfm always indents at least 1 space, and that buggers markdown completely.
@@ -32,7 +33,7 @@ MKSHEL = ksh
 # compatable source.
 #
 %.md:: %.xfm
-	MARKDOWN=1 tfm $prereq | awk ' { gsub( "^ ", "" );  print; }' >$target
+	MARKDOWN=1 tfm $prereq | awk ' { gsub( "^ ", "" );  print; }' >$TDIR/$target
 
 # use ghostscript to convert pdf 
 %.pdf:: %.ps

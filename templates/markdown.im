@@ -89,7 +89,7 @@
 
 	.dv super .sm .tf superscript 2/3 $1  ^:
 	.dv note .dv ss_num ^[ ^&ss_num 1 + ] ^: .sm .tf superscript 2/3 ^&ss_num  ^:
-	.dv start_note .cn start atbot Times-roman 8p $1
+	.dv start_note .cn start atbot Times-Roman 8p $1
 	.dv end_note .cn end
 
 	.dv lic1 l
@@ -105,7 +105,7 @@
 	.dv super .sm ^[ .sm ^&{ss_num}]
 	.dv note .dv ss_num ^[ ^&ss_num 1 + ] ^: .sm ^[ .sm ^&{ss_num}]
 
-	.dv start_note .cn start atend Times-roman 8p .5i
+	.dv start_note .cn start atend Times-Roman 8p .5i
 	.dv end_note .cn end
 	.dv bold $1
 	.dv cw $1
