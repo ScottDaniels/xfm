@@ -91,7 +91,7 @@ extern int FMinit( int argc, char **argv )
 	char *ifname = "stdin";
 	char *ofname = "stdout";
 
-	version = strdup( "hfm V3.0/17250" );
+	version = strdup( "hfm V3.1 " __DATE__  );
 
 	flags3 |= F3_NEED_STYLE; 
 
@@ -99,7 +99,8 @@ extern int FMinit( int argc, char **argv )
 	{
 		if( strcmp( argv[1], "-?" ) == 0 )
 		{
-			FMmsg( ERROR, "Usage: tfm [input-file> [output-file [inital-command]]]" );
+			FMmsg( ERROR, version );
+			FMmsg( ERROR, "Usage: tfm [input-file [output-file [inital-command]]]" );
 			return ERROR;
 		}
 

@@ -92,6 +92,7 @@ Contributions to this source repository are assumed published with the same lice
 *				22 Mar 2011 - Correctly set boty when geometry (-g) is given.
 *				07 Jul 2013 - Changed initialisation of text colour to use setcolour. 
 *				17 Jul 2016 - Bring decls into the modern world.
+*				18 Mar 2018 - Add build date to version string
 *****************************************************************************
 */
 extern int FMinit( int argc, char **argv )
@@ -103,6 +104,8 @@ extern int FMinit( int argc, char **argv )
 	char	*ofname = "stdout";
 	int 	geomh = 0;		/* geometry from -g hxw */
 	int 	geomw = 0;
+
+	version = "pfm V2.10 " __DATE__; 		/* returned by .gv v command */
 
 	argc--;
 	argv++;
@@ -129,7 +132,8 @@ extern int FMinit( int argc, char **argv )
 				break;
 
 			case '?':
-				FMmsg( ERROR, "Usage: tfm [input-file [output-file [inital command tokens]]]" );
+				FMmsg( ERROR, version );
+				FMmsg( ERROR, "Usage: pfm [input-file [output-file [inital command tokens]]]" );
 				exit( 1 );
 
 			default:	
@@ -178,7 +182,6 @@ this is dropped because imbed now puts a run/stop command into the stream to pop
 		return ERROR;
 	}
 
-	version = "pfm V2.9/18301"; 		/* returned by .gv v command */
 	snprintf( buf, sizeof( buf ), "+PFM text formatter (%s) started", version );
 	FMmsg( -1, buf );
 

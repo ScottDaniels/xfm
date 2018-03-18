@@ -90,12 +90,13 @@ extern int FMinit( int argc, char **argv )
 	char *ofname = "stdout";  /* default to standard output */
 	char *ifname = "stdin";
 
-	version = strdup( "tfm V2.2/0a266" );
+	version = strdup( "tfm V2.3 " __DATE__ );
 
 	if( argc >= 2 )
 	{
 		if( strcmp( argv[1], "-?" ) == 0 )
 		{
+			FMmsg( ERROR, version );
 			FMmsg( ERROR, "Usage: tfm [input-file [output-file [inital command tokens]]]" );
 			return ERROR;
 		}
