@@ -3,7 +3,7 @@
 .cd 1 6i  i=1.25i
 .ju on
 .in 0i			.** no extra indentation
-.sf Times-roman
+.sf Times-Roman
 .st 10p
 
 .dv sym_not ^^^^\330
@@ -37,7 +37,7 @@
 .fi
 
 .dv text_size 12p
-.dv text_font Times-roman
+.dv text_font Times-Roman
 
 .** convenience variables which define font types for bold, ital, etc so one change at the 
 .** top of the doc applies to all.

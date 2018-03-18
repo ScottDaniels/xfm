@@ -62,7 +62,7 @@ an example of source code into a document.
       list[i].print( display )
     }
   .fo on
-  .sf Times-roman
+  .sf Times-Roman
   .fg Code to print a list of things.
 .fo
 .sf &textfont

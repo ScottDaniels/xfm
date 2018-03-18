@@ -5,7 +5,7 @@
 .ll 6i
 .ju on
 .in .5i
-.sf Times-roman
+.sf Times-Roman
 .st 10p
 
 .pn on 0 f=-%d- center
@@ -34,7 +34,7 @@
 .dv stress .tf Times-bold ^&textsize $1
 .dv stress .tf Courier ^&cwsize $1
 .dv cwfont Courier
-.dv textfont Times-roman
+.dv textfont Times-Roman
 .dv textsize 10p
 .dv cwsize 80
 .dv indent .ll -.5i .in +.5i

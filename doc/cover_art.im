@@ -44,7 +44,7 @@ skip_license
 .** the following is xfm source which is shown as the background
 .nf
 
-.im &{imbed}/startup.im
+ .im &{imbed}/startup.im
 
  .** get current date/time into _date
  .gv Date

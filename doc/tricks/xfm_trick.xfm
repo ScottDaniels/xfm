@@ -33,7 +33,6 @@
 	.fi
 
 	.dv index_cols 2
-	.dv two_col_mode 0
 	.dv textsize 10
 	.dv figsize 8
 	.dv textfont Times-Roman
@@ -84,6 +83,7 @@
 		.pa
 		.im ../license.im
 		.in +.5i
+		.pa
 		.im xfm_trick.toc		.** *.toc does a lead page eject
 		.pa
 	.fi

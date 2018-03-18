@@ -5,7 +5,7 @@
 .cd 2 3i g=.25i i=1.25i
 .ju on
 .in 0i			.** no extra indentation -- the columns are small enough!
-.sf Times-roman
+.sf Times-Roman
 .st 10p
 
 .** set up headers. no eject for h1, flush on the column margin, and no paragraph indention
@@ -59,7 +59,7 @@ a 'no-no' or they'd have stopped doing it long ago.
 .cc 2i
 .h3 Reverse Polish
 .** column note, automatic number
-.cn start atbot Times-roman 8p .5i
+.cn start atbot Times-Roman 8p .5i
 The app is WPRN by Emmit Gray.
 .cn end
 

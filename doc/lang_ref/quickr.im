@@ -46,7 +46,7 @@ to change the distance relative to the current setting.
 .sp
 
 .if false
-.cn start atbot Times-roman 8p 1i
+.cn start atbot Times-Roman 8p 1i
 This is a test of the cn after a table
 .cn end
 .fi 

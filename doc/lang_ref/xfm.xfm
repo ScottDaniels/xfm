@@ -88,8 +88,8 @@ skip_license
 	.dv back_color #0d0e0f  
 	.dv textsize 9
 	.dv figsize 8
-	.dv textfont Times-roman
-	.dv italfont Times-Oblique
+	.dv textfont Times-Roman
+	.dv italfont Times-Italic
 	.dv boldfont Times-Bold
 	.dv termsize .75i
 	.dv text_indent 0i
