@@ -1,0 +1,10 @@
+This directory contains the basic setup to build a docker image that can be used
+to run {X}fm.  The build process clones the {X}fm repo from github, as well as 
+needed support tools (mk and fig2dev), builds {X}fm binaries, then creates the final
+docker image.   
+
+Please refer to the xfm.ksh script for an example of how to run {X}fm tools from
+the container.   The Makefile and master.mk are sample files that can be used in 
+a document directory with the containerised {X}fm.   The container also includes
+the gnu make utility if you prefer that over mk.  No make examples are given.
+

@@ -1,0 +1,6 @@
+
+# simple mkfile to test xfm container
+< ./master.mk
+
+
+all:V: test.ps test.md test.pdf
