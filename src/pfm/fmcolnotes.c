@@ -67,8 +67,14 @@ Contributions to this source repository are assumed published with the same lice
 *
 *  Mods:	04 Jan 2016 - Force a break at the end of the text.
 *			17 Mar 2018 - Correct compiler printf warnings
+*			05 Jul 2018 - Add ability to set indent/line len and to turn block 
+*				centering off as well.
 *
-* .cn start {atclose | atbot} [s={<symbol> | none}] font fontsize space
+* .cn start {atclose | atbot} [option(s)] font fontsize space
+*		options may be any of:
+*			s={<symbol> | none}
+*			l=<linelen-value>{p|i}
+*			i=<indent-value>{p|i}
 * .cn end
 * .cn show
 *
@@ -100,8 +106,11 @@ static void cnstart( )
 	int		i;
 	int		*target_id;
 	int		has_symbol = 1;			// if s=none given, then this is turned off and the column note text is unadorned
+	int		indent = -1;			// i=value given
+	int		llen = -1;				// l=value given
+	int		need_init = 0;			// true if we need an initialisation string into target
 
-	while( (len = FMgetparm( &buf )) > 0 )
+	while( (len = FMgetparm( &buf )) > 0 )  // while at* keyword or ?=value 
 	{
 		if( strcmp( buf, "atclose" ) == 0 )
 		{
@@ -116,47 +125,76 @@ static void cnstart( )
 					fprintf( stderr, "unable to open tmp file: %s\n", efname );
 					exit( 1 );
 				}
-				fprintf( target, ".pu\n.ju off\n.sp .5\n.lw 0\n.hl\n" );
-			}
-			else
-				fprintf( target, ".sp .5\n" );
-		}
-		else
-		if( strcmp( buf, "atbot" ) == 0 )
-		{
-			target_id = &bid;
-			if( !(target = bfile) )			/* yes this is an assignment! */
-			{
-				snprintf( bfname, sizeof( bfname ), "%d.bcnfile", getpid() );
-				TRACE( 2, "colnotes: opening bfile: %s\n", bfname );
-				target = bfile = fopen( bfname, "w" );
-				if( target == NULL )
-				{
-					fprintf( stderr, "unable to open tmp file: %s\n", bfname );
-					exit( 1 );
-				}
-				//fprintf( target, ".pu\n.ju off\n.sp .5\n.lw 0\n.hl\n.sp .5\n" );
-				fprintf( target, ".pu\n.ju off\n.sp .3\n.lw 0\n.hl\n" );
-			}
-			else
-				fprintf( target, ".sp\n" );
-				//fprintf( target, ".sp .4\n" );
-		}
-		else
-		if( strncmp( buf, "s=", 2 ) == 0 )			// if s=none given, then we don't add a symbol to the note
-			if( strcmp( buf, "s=none" ) == 0 ) {
-				has_symbol = 0;
+				need_init = 1;
+				//fprintf( target, ".pu\n.ju off\n.sp .5\n.lw 0\n.hl\n" );
 			} else {
-				symbol = *(buf+2);
+				//fprintf( target, ".sp .5\n" );
 			}
-		else
-			break;			/* assume positional parameters */	
+		} else {
+			if( strcmp( buf, "atbot" ) == 0 ) {
+				target_id = &bid;
+				if( !(target = bfile) )			/* yes this is an assignment! */
+				{
+					snprintf( bfname, sizeof( bfname ), "%d.bcnfile", getpid() );
+					TRACE( 2, "colnotes: opening bfile: %s\n", bfname );
+					target = bfile = fopen( bfname, "w" );
+					if( target == NULL )
+					{
+						fprintf( stderr, "unable to open tmp file: %s\n", bfname );
+						exit( 1 );
+					}
+					//fprintf( target, ".pu\n.ju off\n.sp .5\n.lw 0\n.hl\n.sp .5\n" );
+					//fprintf( target, ".pu\n.bc end\n.ju off\n.sp .3\n.lw 0\n.hl\n" );
+					need_init = 1;
+				} else {
+					//fprintf( target, ".sp\n" );
+					//fprintf( target, ".sp .4\n" );
+				}
+			} else {
+				if( *buf && buf[1] == '=' ) {				// ?=parm is given
+					switch( *buf ) {	
+						case 's':							// symbol given rather than using one we'd generate
+							if( strcmp( buf, "s=none" ) == 0 ) {
+								has_symbol = 0;
+							} else {
+								symbol = *(buf+2);
+							}
+							break;
+
+						case 'i':							// indent given
+							indent = FMgetpts( buf+2, 0 );
+							break;
+
+						case 'l':							// line len given
+							llen = FMgetpts( buf+2, 0 );
+							break;
+					}
+				} else {
+					break;					// assume positional parms remain if not at* or ?=
+				}
+			}
+		}
 	}
 
 	if( target == NULL )
 	{
 		fprintf( stderr, "bad column notes (.cn) command parameters: expected: .cn start {atbot|atend} <font> <size> <space>\n" );
 		exit( 1 );
+	}
+
+	if( need_init ) {				// we opened the file, so must write a complete initialisation command string
+		fprintf( target, ".pu\n.bc end\n.ju off\n.sp .3\n.lw 0\n" ); 		// every time
+
+		if( llen > 0 ) {													// if options given
+			fprintf( target, ".ll %dp\n", llen );
+		}
+		if( indent > 0 ) {
+			fprintf( target, ".in %dp\n", indent );
+		}
+
+		fprintf( target, ".hl\n" );						// finally draw the line
+	} else {
+		fprintf( target, ".sp .5\n" );		// existing file, just space a bit
 	}
 
 	i = 0;
@@ -215,7 +253,7 @@ static void cnstart( )
 		fprintf( target, "%s ", buf );
 	}
 
-	fprintf( target, "\n.br .in -.15i .ll +.2i" );
+	fprintf( target, "\n.br .in -.15i .ll +.2i\n" );
 
 	TRACE( 2, "colnotes: end notes cn_space=%d\n", cn_space );
 }
