@@ -15,14 +15,14 @@ MKSHEL = ksh
 %.png :: %.fig
 	fig2dev -L png $prereq $target
 
-%.txt:: %xfm
-    tfm ${prereq%% *} $target
+%.txt:: %.xfm
+	tfm ${prereq%% *} $target
 
 %.html:: %.xfm
-    hfm ${prereq%% *} $target
+	hfm ${prereq%% *} $target
 
 %.ps:: %.xfm
-    pfm ${prereq%% *} $target
+	pfm ${prereq%% *} $target
 
 # markdown -- generate text using the markdown setup file, then chop the first column
 # because tfm always indents at least 1 space, and that buggers markdown completely.
@@ -35,5 +35,5 @@ MKSHEL = ksh
 
 # use ghostscript to convert pdf 
 %.pdf:: %.ps
-    gs $FONTS -dBATCH  -dNOPROMPT -dNOPAUSE -sDEVICE=pdfwrite -sOutputFile=${prereq%%.ps*}.pdf ${prereq%% *}
+	gs $FONTS -dBATCH  -dNOPROMPT -dNOPAUSE -sDEVICE=pdfwrite -sOutputFile=${prereq%%.ps*}.pdf ${prereq%% *}
 
