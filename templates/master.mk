@@ -5,7 +5,7 @@
 
 
 MKSHEL = ksh
-TDIR="${TDIR:-.}
+TDIR="${TDIR:-.}"
 
 # use xfig translator to convert figures
 %.eps :: %.fig
