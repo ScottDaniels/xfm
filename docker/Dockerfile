@@ -69,20 +69,27 @@ from scratch
 # cherry pick only the things we need in final container to keep it tiny
 copy --from=build /bin/chmod /bin/mkdir /bin/sh /bin/awk /bin/ls /bin/
 copy --from=build /etc/passwd /etc/group /etc/
-copy --from=build /usr/bin/ksh /usr/bin/gs /usr/bin/make /usr/bin/
+copy --from=build /usr/bin/fig2dev /usr/bin/ksh /usr/bin/gs /usr/bin/make /usr/bin/
 copy --from=build /playpen /playpen
 copy --from=build /lib64 /lib64
 copy --from=build /usr/lib64 /usr/lib64
-copy --from=build /usr/share/ghostscript /usr/share/netpbm /usr/share/fontconfig /usr/share/fonts /usr/share/info /usr/share/ksh /usr/share/aclocal /usr/
+copy --from=build /usr/share/ghostscript /usr/share/ghostscript/
+copy --from=build /usr/share/netpbm /usr/share/netpbm/
+copy --from=build /usr/share/fontconfig /usr/share/fontconfig/
+copy --from=build /usr/share/fonts /usr/share/fonts/
+copy --from=build /usr/share/info /usr/share/info/
+copy --from=build /usr/share/ksh /usr/share/ksh/
+copy --from=build /usr/share/aclocal /usr/share/aclocal/
+copy --from=build /etc/fonts /etc/fonts/
+
 run mkdir /tmp &&  chmod 777 /tmp
 
 # this installs everything (read very large container). use only for debugging
 #run zypper update -y && zypper install -y ksh make transfig ghostscript which && zypper clean
 
-# our path, where we stashed the .im files and where ghostscript should be searching
+# our path, and set xfm_lib var to the spot where we stashed the .im files and where ghostscript should be searching
 env PATH=/playpen/bin:$PATH
 env XFM_LIB=/playpen/lib
-env GS_LIB=/usr/9.15/Resource/Init
 
 # known place allowing users to give -v $PWD:/data  such that we start in their working directory
 workdir /data

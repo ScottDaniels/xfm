@@ -29,9 +29,8 @@ do
 	shift
 done
 
-iam=$( whoami )
-ug=$( grep $iam /etc/passwd|awk -F : '{ print $3 ":" $4 }' )
+ug="$( id -u ):$( id -g )"			# user and group so that output matches current user
 
 # run the container which expects to find a mkfile in the directory mounted as data (this dir)
-docker run --user $ug -v $PWD:/data --rm xfm $force
+docker run --user $ug -v $PWD:/data -it --rm xfm $force
 
