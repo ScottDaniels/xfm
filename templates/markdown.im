@@ -99,7 +99,7 @@
 	.dv ital .tf Helvetica-Oblique  ^&fontsize $1  ^:
 	.dv cw .tf Courier 8p  $1 ^:
 
-	..* image has the form:  &imate(postscript cmd:link:url)
+	.** image has the form:  &imate(postscript cmd:link:url)
 	.dv image .ep $1
 .ei
 	.dv super .sm ^[ .sm ^&{ss_num}]
