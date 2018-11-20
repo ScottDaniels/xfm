@@ -2,7 +2,7 @@
 .** Mnemonic:	markdown.im
 .** Abstract:	Setup template which allows for single column format that can be 
 .** 			rendered in postscript, text, and as markdown.
-.**				Macros for the folowing must be used  inplace of the native {X}fm
+.**				Macros for the folowing must be used  in place of the native {X}fm
 .**				commands in order to generate markdown:
 .**					&def_list(space font) instead of .bd
 .**					&di(text) insted of .di
@@ -34,15 +34,15 @@
 .** Date:		26 October 2016
 .** -------------------------------------------------------------------------------
 
-.cd 1 6.8i i=0i m=0i
+.cd 1 6.8i
 .ll 6.5i
 .in .5i
 .sf Helvetica
 .st 10
 
 .dh 1 m=.5i  e=no s=21 i=0 p=16 f=Helvetica-bold
-.dh 2 m=.5i s=21 i=0      p=14 f=Helvetica-bold 
-.dh 3 m=.5i s=10 i=0      p=12 f=Helvetica-bold
+.dh 2  m=.5i s=21 i=0      p=14 f=Helvetica-bold 
+.dh 3  m=.5i s=10 i=0      p=12 f=Helvetica-bold
 
 .ju on
 .hn off
@@ -66,15 +66,15 @@
 .dv def_list .bd $1 
 .dv end_dlist .ed
 
-.dv ex_start .ll -.25i .in +.25i .sf Courier .st ^&extextsize .fo off
+.dv ex_start .sp .5 .ll -.25i .in +.25i .sf Courier .st ^&extextsize .fo off
 .** ex_end macro calls _must_ be placed in col 0 to cause an exit from no-format mode.
-.dv ex_end .fo on .sf ^&textfont .st ^&textsize .in -.25i .ll +.25i .sp .1
+.dv ex_end .fo on .sf ^&textfont .st ^&textsize .in -.25i .ll +.25i .sp 1
 	
 .ll 5.75i
 
 .dv h1 .h1 $1	
-.dv h2 .h2 $1
-.dv h3 .h3 $1
+.dv h2 .sp .1 .h2 $1
+.dv h3 .sp .1 .h3 $1
 .dv di .di $1 ^: 
 
 .dv line .ln
@@ -95,14 +95,19 @@
 	.dv lic1 l
 	.dv lic2 m
 
+	.dv beg_list .sp .5 ^&indent .bl &lic1
+	.dv item .li
+	.dv li .li
+	.dv end_list .el .sp 1 ^&uindent
+
 	.dv bold .tf Helvetica-bold  ^&fontsize $1  ^:
 	.dv ital .tf Helvetica-Oblique  ^&fontsize $1  ^:
 	.dv cw .tf Courier 8p  $1 ^:
 
-	.** image has the form:  &imate(postscript cmd:link:url)
+	.** image has the form:  &image(postscript cmd:link:url)
 	.dv image .ep $1
 .ei
-	.dv super .sm ^[ .sm ^&{ss_num}]
+	.dv super .sm ^[ .sm $1 .sm ]
 	.dv note .dv ss_num ^[ ^&ss_num 1 + ] ^: .sm ^[ .sm ^&{ss_num}]
 
 	.dv start_note .cn start atend Times-Roman 8p .5i
@@ -119,17 +124,20 @@
 	.** if the env var is set, redefine macros to generate the limited markdown things
 	.gv e MARKDOWN markdown
 	.if markdown
-		.** break is a trailing two space (bloody folks who believe whitespace is a decent marker should be shot)
-		.dv break `  ` .br
+		.dv break .sm ^`  ^` .br
 		.ju off
-		.dv image ^[ .sm $2] ($3)
+		.dv image  ! .sm ^[ .sm $3]($3)
 
 		.** no concept of a definition list in markdown; no start/end and just make the text bold to emulate
 		.dv def_list  .sp 1
 		.dv end_dlist .sp 1
-		.dv di **$1:** 
+		.dv di ^&break  **$1:** 
+		.dv beg_list .bl *
+		.dv item .li
+		.dv li .li
+		.dv end_list .el
 
-		.dv line ***
+		.dv ^&break line ---
 		.** leading indention is significant to markdown, so turn it off
 		.in 0
 		.dv indent 
