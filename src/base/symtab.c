@@ -97,8 +97,9 @@ static int same( unsigned int c1, unsigned int c2, char *s1, char* s2 )
 	if( c1 != c2 )
 		return 0;		/* different class - not the same */
 
-	if( *s1 == *s2 && strcmp( s1, s2 ) == 0 )
+	if( *s1 == *s2 && strcmp( s1, s2 ) == 0 ) {
 		return 1;
+	}
 	return 0;
 }
 
@@ -236,7 +237,7 @@ extern void sym_del( Sym_tab *table, unsigned char *name, unsigned int class )
 
 	hv = sym_hash( name, table->size );
 
-	for(eptr=sym_tab[hv]; eptr && eptr->class != class &&  ! same(class, eptr->class, eptr->name, name); eptr=eptr->next );
+	for(eptr=sym_tab[hv]; eptr  &&  ! same(class, eptr->class, eptr->name, name); eptr=eptr->next );
 
 	del_ele( table, hv, eptr );    /* ignors null ptr, so safe to always call */
 }
