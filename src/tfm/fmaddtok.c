@@ -102,32 +102,9 @@ extern void FMaddtok( char* buf, int len )
  xlate_u = 0;                         /* in case user asked for more than token size */
 
  for( i = 0; i < len; i++, optr++ )     /* copy token to output buffer */
-  {                                     /* escaping special html characters */
+  {                                     /* escaping special characters if needed*/
    switch( buf[i] )
     {
-#ifdef NEVER_ME
-     case '>':
-      obuf[optr] = EOS;                 /* terminate for strcat */
-      strcat( obuf, "&gt;" );           /* copy in the character */
-      optr += 3;                        /* incr past the html escape string */
-      osize += 3;                       /* incr number of chars in output */
-      break;
-
-     case '<':
-      obuf[optr] = EOS;                 /* terminate for strcat */
-      strcat( obuf, "&lt;" );           /* copy in the character */
-      optr += 3;                        /* incr past the html escape string */
-      osize += 3;                       /* incr number of chars in output */
-      break;
-
-     case '&':
-      obuf[optr] = EOS;                 /* terminate for strcat */
-      strcat( obuf, "&amp;" );          /* copy in the character */
-      optr += 4;                        /* incr past the html escape string */
-      osize += 4;                       /* incr number of chars in output */
-      break;
-#endif
-
      case '^':                  /* allow user to escape ><& characters */
       i++;                  /* point at next character and drop into insert */
 
