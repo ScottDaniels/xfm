@@ -124,6 +124,7 @@
 	.** if the env var is set, redefine macros to generate the limited markdown things
 	.gv e MARKDOWN markdown
 	.if markdown
+		.cd 1 6.5i i=0 m=0
 		.dv break .sm ^`  ^` .br
 		.ju off
 		.dv image  ! .sm ^[ .sm $3]($3)
@@ -131,13 +132,13 @@
 		.** no concept of a definition list in markdown; no start/end and just make the text bold to emulate
 		.dv def_list  .sp 1
 		.dv end_dlist .sp 1
-		.dv di ^&break  **$1:** 
+		.dv di ^&break  **$1:**
 		.dv beg_list .bl *
 		.dv item .li
 		.dv li .li
 		.dv end_list .el
 
-		.dv ^&break line ---
+		.dv line ^&break ---
 		.** leading indention is significant to markdown, so turn it off
 		.in 0
 		.dv indent 
