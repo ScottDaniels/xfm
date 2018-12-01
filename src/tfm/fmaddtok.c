@@ -85,8 +85,8 @@ extern void FMaddtok( char* buf, int len )
 
 	if( flags2 & F2_SMASH && optr > 1 ) {
 		optr--;
-		flags2 &= ~F2_SMASH;
 	}
+	flags2 &= ~F2_SMASH;		// always turn it off
 	
  words++;             /* increase the number of words in the document */
 
