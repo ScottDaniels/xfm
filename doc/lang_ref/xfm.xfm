@@ -125,11 +125,12 @@ skip_license
 		.** --- include the license
 		.pa
 		.im ../license.im
+		.pa
 
 		&set1col
 		.pn on 0 center roman noline
 		.im xfm.toc		.** *.toc does a lead page eject
-		.** .pa
+		.pa
 	.fi
 .ei
 	.** no need to make the pass for non-pfm formatters
