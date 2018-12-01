@@ -62,6 +62,9 @@ An example definition list follows.
 &di(Dolphin) Usually regarded as a friendly ocean dwellng mamal.
 .sp .3
 &di(Orca) Another large ocean dwelling mamal which is also known as the killer whale.
+.sp .3
+&di(Dog Fish) Not a real fish that we know about, but this tests the ability to have two words in the
+	definition.
 &end_dlist
 &uindent
 .sp
