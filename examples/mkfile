@@ -77,6 +77,8 @@ all:V: $ALL
 float_mar.ps::  float_mar.xfm test_2x3.eps
 	pfm float_mar.xfm float_mar.ps
 
+mix_col.ps::	mix_col.xfm two_col.xfm 
+
 two_pass.ps::	two_pass.xfm
 	XFM_PASS=1 pfm two_pass.xfm /dev/null
 	XFM_PASS=2 pfm two_pass.xfm two_pass.ps

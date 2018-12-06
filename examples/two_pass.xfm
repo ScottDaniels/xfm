@@ -12,9 +12,9 @@
 
 .** set up headers. no eject for h1, margin set to match the indent value (above, .25i)
 .** and no paragraph text indent (i=0).   Font and point sizes for each level set as desired.
-.dh 1 e=no m=.25i i=0i s=2,1 	p=12 f=Helvetical-bold
-.dh 2      m=.25i i=0i s=1,.5	p=12 f=Helvetical-bold
-.dh 3      m=.25i i=0i s=1,0	p=10 f=Helvetical-bold
+.dh 1 e=no m=.25i i=0i s=2,1 	p=12 f=Helvetica-bold
+.dh 2      m=.25i i=0i s=1,.5	p=12 f=Helvetica-bold
+.dh 3      m=.25i i=0i s=1,0	p=10 f=Helvetica-bold
 .hn on
 
 .if pfm

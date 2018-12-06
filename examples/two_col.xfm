@@ -10,9 +10,9 @@
 
 .** set up headers. no eject for h1, flush on the column margin, and no paragraph indention
 .hn off
-.dh 1 e=no m=0i i=0 s=2,.5
-.dh 2 m=0i i=0 s=1,.5
-.dh 3 s=10 s=1,0
+.dh 1 e=no m=0i i=0 s=2,.5	p=12 f=Helvetica-Bold
+.dh 2 m=0i i=0 s=1,.5		p=12 f=Helvetica-bold
+.dh 3 m=0i i=0  s=1,0		p=10 f=Helvetica-bold
 
 .if pfm
 	.dv super .sm .tf superscript 2/3 1 :
@@ -20,7 +20,9 @@
 	.dv super .sm ^^^[$1]
 .fi
 
-.h1 Sample 2 Column
+.** ---------------------------------------------------------------------------
+
+.h1 Sample Two Column
 This is an example of a two column document.  The colums are three inches each and are 
 separated with a quarter inch gutter.  The left column is indented one and a quater (1.25) 
 inches from the page edge.

@@ -5,7 +5,7 @@
 .** small difference between the two col setup in that example and this
 .** which is commented below.
 
-.** one column 4" wide
+.** one column 5" wide for abstract
 .cd 1 5i i=1.75i 
 .ju on
 .in 0
