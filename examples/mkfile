@@ -43,7 +43,7 @@ NUKE = *.html *.txt *.ps *.pdf $CLEAN
 
 MD_OUT = markdown.md
 TXT_OUT = float_mar.txt two_col.txt mix_col.txt markdown.txt
-PS_OUT = float_mar.ps two_col.ps mix_col.ps font.ps markdown.ps
+PS_OUT = float_mar.ps two_col.ps mix_col.ps font.ps markdown.ps two_pass.ps
 HTML_OUT = html_style.html 
 EPS_SRC = test_2x3.eps 
 
