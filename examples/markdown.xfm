@@ -8,7 +8,7 @@
 
 &h1(Markdown Imbed -- Sample Document)
 This document can be processed by both the &ital(pfm) and &ital(tfm) formatters.  If the environment
-variable &cw(MARKdOWN) is set, and the formatter is &ital(tfm,) the output should be sutible to be 
+variable &cw(MARKDOWN) is set, and the formatter is &ital(tfm,) the output should be suitable to be 
 presented by a markdown interpreter. 
 The markdown imbed file allows a document to normally be formatted with &ital(pfm,) but when necessary
 a markdown formatted file can be generated from the same source. 
@@ -18,7 +18,7 @@ The markdown imbed file provides a set of macros which in some cases, translate 
 tags (e.g. ^&h1 which renders the # markdown tag ahead of the header text).
 In other cases the macros, such as &ital(start_note) which places a column note at the end of the 
 document when generating markdown output.
-Markdown is a very limited text rendering "language" with definition lists the most noticible 
+Markdown is a very limited text rendering "language" with definition lists the most noticeable 
 missing element, so some macros like &ital(beg_dlist) do little if anything at all when generating
 markdown output. 
 
@@ -26,7 +26,7 @@ markdown output.
 The remainder of this document will illustrate the use of the macros in the markdown imbed file &note .sm .  
 &start_note( .5i )
 This is a column note that, when the document is formatted using &ital(pfm,)  will appear at the end of 
-the current column. When formatting is performed with the marktdown template and the &ital(tfm) formatter
+the current column. When formatting is performed with the markdown template and the &ital(tfm) formatter
 this note is placed at the end of the document.
 &end_note
 
@@ -49,7 +49,7 @@ A sample bullet list is below.
 
 &h2(Definition Lists)
 Definition lists are a staple of any well written document, but are not supported in the least by markdown.
-To cope, the markdown macro set does nothing for begin and end defintion list commands, and 
+To cope, the markdown macro set does nothing for begin and end definition list commands, and 
 when a definition item command is encountered, it causes the term to be placed at the start of a new line
 and rendered in bold font. 
 While this is similar to a definition list, there is no indention of the definition text which accompanies the term.
@@ -62,7 +62,7 @@ An example definition list follows.
 &def_list( 1i Helvetica-Bold )
 &di(Shark) A fish that nobody wants to swim with.
 .sp .3
-&di(Dolphin) Usually regarded as a friendly ocean dwellng mamal.
+&di(Dolphin) Usually regarded as a friendly ocean dwelling mamal.
 .sp .3
 &di(Orca) Another large ocean dwelling mamal which is also known as the killer whale.
 .sp .3
@@ -98,27 +98,27 @@ the &ital(tfm) formatter is used to generate markdown output.
 The &ital(pfm) macros assume that the &ital(textfont) and &ital(textsize) variables have been defined.
 
 &h2(Images)
-There is no universal way to incporporate an image into a document. 
+There is no universal way to incorporate an image into a document. 
 In the Postscript world, an image can be converted to an encapsulated postscript file (.eps) and imbedded directly into the 
 document.  
 For an HTML file, the image must reside on a host which is reachable via a URL making the maintenance of HTML documents 
 a bit more tricky. 
 For ASCII text, well there is no such thing.
 From an &x perspective, it's also a bit tricky to incorporate an image smoothly in the code.  
-Woth the &ital(markdown) setup file, there is an &cw(image) macro which can help.  
+With the &ital(markdown) setup file, there is an &cw(image) macro which can help.  
 The macro accepts three parameters:
 .sp .5
 &indent
 .** .bd .25i a=1
 .bl &lic1
 	.li  The parameters which would be given on an encapsulated postscript &x command (^.ep).
-	.li  The &ital(alternate text) which would be displayed in the ASCII document or if the broswer rendering the 
-		markdown output is unable to follow and embedd the image directly.
+	.li  The &ital(alternate text) which would be displayed in the ASCII document or if the browser rendering the 
+		markdown output is unable to follow and embed the image directly.
 	.li  The URL where the image resides such that it can be displayed by the browser or clicked on as a link.
 .el
 &uindent
 .sp .5
-The macro doesn't eliminate the need to mantain a copy of the encapsulated postscript file during document generation, 
+The macro doesn't eliminate the need to maintain a copy of the encapsulated postscript file during document generation, 
 nor does it make the distribution of the markdown easier as the image files need to be placed on some host with an http/https 
 server, but it does eliminate the need for any if-then-else logic in the document.
 The following is an example of how the image macro is used.
@@ -128,7 +128,7 @@ The following is an example of how the image macro is used.
   &image( x=.5i some_image.eps close proportional:
          Grass Growing:http^://server.image.com:/grass.jpg )
 &ex_end
-.fg Sample image mancro usasg (broken onto multiple lines to prevent a long line in the output).
+.fg Sample image macro usasg (broken onto multiple lines to prevent a long line in the output).
 .sp
 It should be noted that the colon in the URL &bold(must) be escaped otherwise the remainder of the URL is 
 evaluated as the fourth parameter to the macro.
@@ -142,14 +142,14 @@ and in order to format a table in markdown, the whole &ital( source readability 
 not be broken with any newlines. 
 .sp
 
-Tfm has never supported tables as it's just not pratical, but if you are willing to jump through some hoops
+Tfm has never supported tables as it's just not practical, but if you are willing to jump through some hoops
 rendering tables (as long as there isn't anything fancy in a cell) into the markdown output can be done.
 To start the ^ta(), ^&et, ^&tr(), and ^&cl() macros replace the raw {X}fm commands. 
-Using these macros causes the output markdown to be left with speical formatting markers which need to be 
+Using these macros causes the output markdown to be left with special formatting markers which need to be 
 post-processed away.
 Mostly the post processing involves concatenating lines which were split during formatting such that each table 
 row is unbroken by a newline character. 
-In addition, markdown requires a silly "|--|--|" style string after the firat row; aprarently this is what sets off
+In addition, markdown requires a silly "|--|--|" style string after the first row; apparently this is what sets off
 the table formatting, and not the leading &ital(pipe) in the first cell.
 The script &cw(txt2md) supplied with {X}fm can be used as illustrated below:
 
@@ -157,8 +157,8 @@ The script &cw(txt2md) supplied with {X}fm can be used as illustrated below:
    MARKDOWN=1  tfm doc.xfm stdout | txt2md >doc.md
 &ex_end
 
-The following is a simple table with one colum that has longer lines that will likely wrap in the 
-generated output and thus require concatination during &ital(fixup.)
+The following is a simple table with one column that has longer lines that will likely wrap in the 
+generated output and thus require concatenation during &ital(fixup.)
 
 .sp
 &ta( b=1 1.2i 3i )
@@ -166,7 +166,7 @@ generated output and thus require concatination during &ital(fixup.)
 &tr
 Shark &cl A fish that nobody wants to swim with.
 &tr
-Dolphin &cl Usually regarded as a friendly ocean dwellng mamal.
+Dolphin &cl Usually regarded as a friendly ocean dwelling mamal.
 .sp .3
 &tr
 Orca &cl Another large ocean dwelling mamal which is also known as the killer whale.
@@ -185,7 +185,7 @@ The following is the {X}fm source for the table shown above:
    Shark &cl A fish that nobody wants to swim with.
    &tr
    Dolphin &cl Usually regarded as a friendly ocean 
-   dwellng mamal.
+   dwelling mamal.
    
    &tr
    Orca & cl Another large ocean dwelling mamal which 
