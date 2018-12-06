@@ -1,0 +1,54 @@
+# :vi ts=4 sw=4 noet:
+
+#	Mnemonic:	txt2md
+#	Abstract:	Small script to "fix up" tfm output when the preferred
+#				output is markdown. Two things must be done:
+#					1) leading spaces must be removed from each line
+#					2) table rows must be concatenated and the special
+#					   table marker (e.g. |--|--|--|) must be generated.
+#
+#				General usage:
+#					MARKDOQN=1 tfm doc.xfm stdout | txt2md >doc.md
+#
+#	Date:		5 December 2018
+#	Author:		E. Scott Daniels
+# ------------------------------------------------------------------------
+
+awk '
+	/^ / { gsub( "^ ", "" ); }
+
+	/^\.ta/ {
+		printf( "\n" );
+		in_table = 1;
+		next;
+	}
+
+	/^\.tr/ {
+		printf( "%s\n", buffer );
+		if( !output_crap++ )  {
+			n = split( buffer, a, "|" );		# generate |-- for each cell
+			printf( "|" )
+			for( i = 1; i < n-1; i++ ) {
+				printf( "-|", buffer );
+			}
+			printf( "\n" );
+		}
+
+		buffer = "";
+		next;
+	}
+
+	/^\.et/ {
+		printf( "%s\n", buffer );
+		in_table = 0;
+		buffer = "";
+		next;
+	}
+
+	in_table {
+		buffer = buffer $0;		# cat the lines together
+		next;
+	}
+
+	{ print $0 }
+'

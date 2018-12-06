@@ -41,32 +41,34 @@ MK_SHELL = ksh
 CLEAN = *.ca *.bcnfile *.ecnfile *.html *.toc *.sp *.eps
 NUKE = *.html *.txt *.ps *.pdf $CLEAN 
 
+MD_OUT = markdown.md
 TXT_OUT = float_mar.txt two_col.txt mix_col.txt markdown.txt
 PS_OUT = float_mar.ps two_col.ps mix_col.ps font.ps markdown.ps
 HTML_OUT = html_style.html 
 EPS_SRC = test_2x3.eps 
 
-ALL = $EPS_SRC $HTML_OUT $PS_OUT $TXT_OUT
+ALL = $EPS_SRC $HTML_OUT $PS_OUT $TXT_OUT $MD_OUT
 
 # this requires xfig tools
 %.eps : %.fig
 	fig2dev -L eps ${prereq} ${target}
 
-%.ps:: %.xfm
-	pfm -v $prereq $target
+%.ps:: %.xfm ../templates/markdown.im
+	pfm -v ${prereq%% *} $target
 
-%.txt:: %.xfm
-	tfm $prereq $target
+%.txt:: %.xfm ../templates/markdown.im
+	tfm ${prereq%% *} $target
 	rm -f *.ecnfile
 	rm -f *.bcnfile
 
-%.html:: %.xfm
-	hfm $prereq $target
+%.html:: %.xfm ../templates/markdown.im
+	hfm ${prereq%% *} $target
 	rm -f *.ecnfile
 	rm -f *.bcnfile
 
-%.md:: %.xfm
-	MARKDOWN=1 tfm $prereq stdout | sed 's/^ //' >$target
+%.md:: %.xfm ../templates/markdown.im
+	##MARKDOWN=1 tfm ${prereq%% *} stdout | sed 's/^ //' >$target
+	MARKDOWN=1 tfm ${prereq%% *} stdout | ../src/scripts/txt2md >$target
 	rm -f *.ecnfile
 	rm -f *.bcnfile
 
@@ -78,9 +80,6 @@ float_mar.ps::  float_mar.xfm test_2x3.eps
 two_pass.ps::	two_pass.xfm
 	XFM_PASS=1 pfm two_pass.xfm /dev/null
 	XFM_PASS=2 pfm two_pass.xfm two_pass.ps
-
-markdown.md::	markdown.xfm
-	MARKDOWN=1 tfm markdown.xfm markdown.md
 
 nuke::
 	rm -f $NUKE

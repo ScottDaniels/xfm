@@ -10,6 +10,19 @@
 .**					&start_note instead of .cn start
 .**					.bl can be used, but with &li1 and &li2 symbols (.e.g .bl &li1)
 .**
+.**				Markdown extensions support, in a very limited way, tables. So there
+.**				are now some table related macros:
+.**					&ta( pfm table options )		instead of .ta optins
+.**					&et						instead of .et
+.**					&cl( pfm cell options )		instead of .cl options
+.**					&tr( pfm row options )			instead of .tr options
+.**					&table_head( text )				convenience to center and bold text
+.**					&empty_cell						required for markdown empty cell
+.**
+.**				The use of table macros require that a new txt2md script be used to 
+.**				cat all of the records back together, and to add the speical |---|---|
+.**				style line that is reqiured by markdown.  
+.**
 .**				Enumerated lists (1, 2, 3) can be generated normally as markdown
 .**				should key off of the number, however generating an alpha enumerated
 .**				list probably won't work from a markdown point of view. 
@@ -34,8 +47,8 @@
 .** Date:		26 October 2016
 .** -------------------------------------------------------------------------------
 
-.cd 1 6.8i
-.ll 6.5i
+.cd 1 6.8i i=.5i
+.ll 6.25i
 .in .5i
 .sf Helvetica
 .st 10
@@ -58,24 +71,25 @@
 .dv ss_num 1
 
 .**  these macros are common for prfm/tfm, markdown will override some
-.dv indent .ll -.75i .in +.5i
-.dv uindent .in -.5i .ll +.75i
-.dv smindent .ll -1i .in +.25i
-.dv smuindent .in -.25i .ll +1i
+.dv indent .ll -.5i .in +.25i
+.dv uindent .in -.25i .ll +.5i
+.dv smindent .ll -.2i .in +.1i
+.dv smuindent .in -.1i .ll +.2i
 
 .dv def_list .bd $1 
 .dv end_dlist .ed
+.dv bd .bd $1
+.dv ed .ed
 
 .dv ex_start .sp .5 .ll -.25i .in +.25i .sf Courier .st ^&extextsize .fo off
 .** ex_end macro calls _must_ be placed in col 0 to cause an exit from no-format mode.
-.dv ex_end .fo on .sf ^&textfont .st ^&textsize .in -.25i .ll +.25i .sp 1
+.dv ex_end .fo on .sf ^&textfont .st ^&textsize .in -.25i .ll +.25i .sp .1
 	
-.ll 5.75i
-
-.dv h1 .h1 $1	
+.dv h1 .sp .1 .h1 $1	
 .dv h2 .sp .1 .h2 $1
 .dv h3 .sp .1 .h3 $1
 .dv di .di $1 ^: 
+
 
 .dv line .ln
 .dv break .br
@@ -83,34 +97,43 @@
 .if pfm
 	.pn on 0 center f=-%d- noline
 
+ 	.dv beg_list .sp .5 ^&indent .bl &lic1
+ 	.dv bl .sp .5 ^&indent .bl $1
+ 	.dv item .li
+ 	.dv li .li
+ 	.dv end_list .el .sp 1 ^&uindent
+ 	.dv el .el .sp 1 ^&uindent
+
+	.dv ta .ta $1
+	.dv et .et
+	.dv cl .cl $1 ^:
+	.dv tr .tr $1 ^:
+	.dv table_head .xx 2 .bc start ^&bold($1) .bc end .xx 0
+	.dv empty_cell .br
+
 	.** insert $2 if there is more than $1 inches remaining on the page; else insert at top of new page
 	.** a .gv remain command must be executed before each use of this macro
 	.dv ifroom .if ^&_iremain $1 > ^:  .im $2  .ei .oe page .im $2 .fi
 
 	.dv super .sm .tf superscript 2/3 $1  ^:
 	.dv note .dv ss_num ^[ ^&ss_num 1 + ] ^: .sm .tf superscript 2/3 ^&ss_num  ^:
-	.dv start_note .cn start atbot Times-Roman 8p $1
+	.dv start_note .cn start atbot Times-roman 8p $1
 	.dv end_note .cn end
 
 	.dv lic1 l
 	.dv lic2 m
 
-	.dv beg_list .sp .5 ^&indent .bl &lic1
-	.dv item .li
-	.dv li .li
-	.dv end_list .el .sp 1 ^&uindent
-
 	.dv bold .tf Helvetica-bold  ^&fontsize $1  ^:
 	.dv ital .tf Helvetica-Oblique  ^&fontsize $1  ^:
 	.dv cw .tf Courier 8p  $1 ^:
 
-	.** image has the form:  &image(postscript cmd:link:url)
+	.** image has the form:  &imate(postscript cmd:link:url)
 	.dv image .ep $1
 .ei
-	.dv super .sm ^[ .sm $1 .sm ]
+	.dv super .sm ^[ .sm ^&{ss_num}]
 	.dv note .dv ss_num ^[ ^&ss_num 1 + ] ^: .sm ^[ .sm ^&{ss_num}]
 
-	.dv start_note .cn start atend Times-Roman 8p .5i
+	.dv start_note .cn start atend Times-roman 8p .5i
 	.dv end_note .cn end
 	.dv bold $1
 	.dv cw $1
@@ -119,39 +142,51 @@
 	.dv lic2 +
 
 	.dv ifroom .im $2
-	.dv image .br ^[image] $3 .br
+ 	.dv image  ! .sm ^[ .sm $3]($3)
 
 	.** if the env var is set, redefine macros to generate the limited markdown things
 	.gv e MARKDOWN markdown
 	.if markdown
-		.cd 1 6.5i i=0 m=0
-		.dv break .sm ^`  ^` .br
+		.cd 1 6.8i i=0
+		.dv ta .br  ^.ta .br |
+		.dv et .br ^.et .br
+		.dv cl |
+		.dv tr | .br ^.tr .br |
+		.dv table_head $1
+		.dv empty_cell &nbsp;
+
+ 		.dv break .sm ^`  ^` .br
+ 		.dv br .sm ^`  ^` .br
 		.ju off
-		.dv image  ! .sm ^[ .sm $3]($3)
+		.dv image .ep ^[ .sm $2] ($3)
 
 		.** no concept of a definition list in markdown; no start/end and just make the text bold to emulate
 		.dv def_list  .sp 1
+		.dv bd  .sp 1
 		.dv end_dlist .sp 1
-		.dv di ^&break  **$1:**
-		.dv beg_list .bl *
-		.dv item .li
-		.dv li .li
-		.dv end_list .el
+		.dv ed .sp 1
+ 		.dv di ^&break  **$1:**
 
-		.dv line ^&break ---
+ 		.dv beg_list .bl *
+ 		.dv item .li
+ 		.dv li .li
+ 		.dv end_list .el
+
+ 		.dv line .sp 1  ------
+
 		.** leading indention is significant to markdown, so turn it off
 		.in 0
 		.dv indent 
 		.dv uindent .sp 2
 		.dv smindent
 		.dv smuindent .sp 2
-		.dv bold **$1**
+		.dv bold ** .sm $1 .sm **
 		.dv ital _ .sm $1 .sm _
 		.dv h1 .sp 2 # $1 .br
-		.dv h2 .sp 2 ## $1 .br
-		.dv h3 .sp 2 ### $1 .br
+		.dv h2 .sp 1 ## $1 .br
+		.dv h3 .sp 1 ### $1 .br
 
-		.dv ex_start .ll -4 .in .5i .sp 2 .fo off 
+		.dv ex_start .sp .5 .ll -4 .in .5i .sp 2 .fo off 
 		.dv ex_end .fo on .in 0i .ll +4 .sp 2
 	.fi
 .fi

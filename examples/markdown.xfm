@@ -2,6 +2,8 @@
 .** example document illustrating the markdown imbed (template) file
 
 .im  ../templates/markdown.im
+.xx 2
+.xx 0
 .dv x {X}fm
 
 &h1(Markdown Imbed -- Sample Document)
@@ -54,6 +56,7 @@ While this is similar to a definition list, there is no indention of the definit
 The ^&beg_list macro takes the parameters which normally would be given on the ^.bd &x command.
 An example definition list follows.
 
+.sv di
 .sp .5
 &indent
 &def_list( 1i Helvetica-Bold )
@@ -129,6 +132,79 @@ The following is an example of how the image macro is used.
 .sp
 It should be noted that the colon in the URL &bold(must) be escaped otherwise the remainder of the URL is 
 evaluated as the fourth parameter to the macro.
+.sp
+
+&h1(Tables)
+The problem with markdown, well one of the problems, is that there are no advanced features like
+tables.  
+&ital( Some ) extensions attempt to allow tables, but they are both limited (can't have blank lines or lists in a cell), 
+and in order to format a table in markdown, the whole &ital( source readability ) "benefit" is lost (the entire table row must 
+not be broken with any newlines. 
+.sp
+
+Tfm has never supported tables as it's just not pratical, but if you are willing to jump through some hoops
+rendering tables (as long as there isn't anything fancy in a cell) into the markdown output can be done.
+To start the ^ta(), ^&et, ^&tr(), and ^&cl() macros replace the raw {X}fm commands. 
+Using these macros causes the output markdown to be left with speical formatting markers which need to be 
+post-processed away.
+Mostly the post processing involves concatenating lines which were split during formatting such that each table 
+row is unbroken by a newline character. 
+In addition, markdown requires a silly "|--|--|" style string after the firat row; aprarently this is what sets off
+the table formatting, and not the leading &ital(pipe) in the first cell.
+The script &cw(txt2md) supplied with {X}fm can be used as illustrated below:
+
+&ex_start
+   MARKDOWN=1  tfm doc.xfm stdout | txt2md >doc.md
+&ex_end
+
+The following is a simple table with one colum that has longer lines that will likely wrap in the 
+generated output and thus require concatination during &ital(fixup.)
+
+.sp
+&ta( b=1 1.2i 3i )
+&table_head(Fish) &cl &table_head(Description)
+&tr
+Shark &cl A fish that nobody wants to swim with.
+&tr
+Dolphin &cl Usually regarded as a friendly ocean dwellng mamal.
+.sp .3
+&tr
+Orca &cl Another large ocean dwelling mamal which is also known as the killer whale.
+&tr
+Dog Fish &cl Not a real fish that we know about, but this tests the ability to have two words in the definition.
+&et
+.sp
+
+The following is the {X}fm source for the table shown above:
+
+&ex_start
+   &ta( b=1 1.2i 3i )
+   &table_head(Fish) &cl &table_head(Description)
+   
+   &tr
+   Shark &cl A fish that nobody wants to swim with.
+   &tr
+   Dolphin &cl Usually regarded as a friendly ocean 
+   dwellng mamal.
+   
+   &tr
+   Orca & cl Another large ocean dwelling mamal which 
+   is also known as the killer whale.
+   
+   &tr
+   Dog Fish &cl Not a real fish that we know about, but 
+   this tests the ability to have two words in the 
+   definition.
+   &et
+   .sp
+&ex_end 
+.sp
+
+The special ^&table_head() macro is defined to bold and center the text
+for a cell header when &ital(pfm) is used, but when markdown is being
+generated the macro does nothing special as markdown ignores any formatting
+of words in the first table row (or so it seems).
+
 
 .** at the end, we must force the end notes to be generated
 &line
