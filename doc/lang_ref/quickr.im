@@ -60,7 +60,7 @@ This is a test of the cn after a table
 .dv ll [ &_rmar &_lmar - ]
 .dv comment_len [ &ll 2 72 * - ]
 
-.ta B b=1 .5i 1.5i &{comment_len}p
+.ta b=1 .5i 1.5i &{comment_len}p
 
 .th .bc start CMD .bc end .cl ^: .bc start PARAMETER(S) .bc end .cl ^: .bc start COMMENTS .bc end 
 &row(**:<text>:Comment; all tokens to the next newline are ignored)

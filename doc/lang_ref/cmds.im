@@ -463,7 +463,9 @@ Figure &_fig contains sample code which demonstrates the capture command.
 .fo
 .sf &textfont
 .st &textsize
+.xx 2
 .sp .1
+.xx 0
 &martha_line
 .fg Illustration of the capture command.
 .sp
@@ -1087,6 +1089,10 @@ font size is greater than 8 points.
 .sp
 The figure command can also be used to label tables.  If the &cw( t=table ) type option is
 used, then the word &ital(Table) and the table number is added.
+
+.sp
+Other options allow the font and text size to be set, and to automatically define a variable
+which is assigned the figure number. 
 Examples of  the various options:
 
 .sp
@@ -1097,9 +1103,17 @@ Examples of  the various options:
  .** if paragraph numbering is on.
  .fg nosect
  
- .fg s=10 A figure that has a hard size
- .fg f=Helvetica Figure text with hard font
+ .** use 10 point font rather than current font size
+ .fg s=10 Some interesting figure text.
+
+ .** set the font type for the text
+ .fg f=Helvetica Some interesting text.
+
+ .** set var 'ref_var' with the fig number
+ .fg v=ref_var Some interesting text.
  .fg An illustration of the wysiwyg-is-bad.
+
+ .** use table label rather than figure
  .fg t=table Counts of users and time.
 .fo
 .sf &textfont
