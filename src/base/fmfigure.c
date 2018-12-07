@@ -67,7 +67,7 @@ Contributions to this source repository are assumed published with the same lice
 *   Author:   E. Scott Daniels
 *
 *
-*				.fg [n=number] [t=type] <text>
+*				.fg [vname=var-name] [n=number] [t=type] <text>
 *					type is either table or figure, default is figure.
 *
 *   Modified:	30 Oct 1992 - To reduce figure text size by two from current size
@@ -77,6 +77,7 @@ Contributions to this source repository are assumed published with the same lice
 *					to support their use on the .fg command
 *				17 Jul 2016 - Changes for better prototype generation.
 *				26 Jan 2017 - Fix bug introduced by allowing n= on command.
+*				06 Dec 2018 - Add ability to set a variable with the fig number
 *****************************************************************************
 */
 extern void FMfigure(  void )
@@ -91,7 +92,8 @@ extern void FMfigure(  void )
 	char	*cp;
 	char	*type = "Figure";
 	int	*num_src;		/* pointer to source for table or figure number */
-
+	char	vbuf[100];			// spot to build var name in
+	char*	vname = NULL;		// pointer at vname from command tokens
 	
 	num_src = &fig;			/* default to using figure number */
 
@@ -123,6 +125,12 @@ extern void FMfigure(  void )
 					num_src = &table_number;		// refrence the correct table number if needed
 				}
 				break;
+
+			case 'v':
+				if( *(cp +1) ) {
+					vname = strdup( cp+1 );
+				}
+				break;
 		}
 
 		tok_len = FMgetparm( &buf );	
@@ -134,11 +142,17 @@ extern void FMfigure(  void )
 		(*num_src)++;
 	}
 
-	if( flags & PARA_NUM )                      /* if numbering the paragraphs, add it to the number */
+	if( flags & PARA_NUM ) {                      /* if numbering the paragraphs, add it to the number */
  		sprintf( obuf, "%s %d-%d: ", type, pnum[0], fnum );   
-	else
+		if( vname ) {
+ 			snprintf( vbuf, sizeof( vbuf ),  ".dv %s %d-%d :", vname, pnum[0], fnum );   
+		}
+	} else {
  		sprintf( obuf, "%s %d: ", type, fnum );   /* gen fig number */
-
+		if( vname ) {
+ 			snprintf( vbuf, sizeof( vbuf ),  ".dv %s %d :", vname, fnum );   
+		}
+	}
 
 	optr = strlen( obuf );    /* set pointer to be past the label */
 
@@ -152,6 +166,11 @@ extern void FMfigure(  void )
 	FMflush( );                             /* send user line on the way */
 
 	flags2 |= F2_SETFONT;  /* next flush will restore the font */
+
+	if( vname ) {
+		AFIpushtoken( fptr->file, buf );		// cause the desired variable to be set
+		free( vname );
+	}
 
 	textspace = oldspace;  /* restore original text space value */
 	textsize  = oldsize;   /* restore the size that was set on entry */
