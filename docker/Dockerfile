@@ -54,6 +54,7 @@ run cd /build/xfm/src; \
 	cp pfm/pfm hfm/hfm tfm/tfm /playpen/bin/; \
 	cp /build/xfm/templates/*.im /playpen/lib; \
 	cp /build/xfm/templates/*.mk /playpen/lib; \
+	cp /build/xfm/src/scripts/txt2md /playpen/bin/; \
 	ls -al /playpen/bin /playpen/lib
 
 workdir /playpen
