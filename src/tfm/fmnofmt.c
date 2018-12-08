@@ -76,13 +76,14 @@ Contributions to this source repository are assumed published with the same lice
 *				17 Jul 2016 - Bring prototypes into modern era.
 *				26 Oct 2016 - Add indention support to be consistent with *fm formatters.
 *								Fix buffer overrun potential.
+*				08 Dec 2018 - Fix indention bug.
 *******************************************************************************
 */
 extern void FMnofmt( void )
 {
  char *buf;             /* work buffer */
  int status;            /* status of the read */
- int i;                 /* loop index */
+ int i = 0;                 /* loop index */
 	int iv;				// indention value
 	int	max_op;			// maximum out pointer
 
@@ -92,11 +93,7 @@ extern void FMnofmt( void )
 
  while( status >= 0  &&  inbuf[0] != CMDSYM && *inbuf != vardelim ) 
   {
-	for( i = 0; i < iv; i++ ) {		// no formatted stuff is still indented
-		obuf[i] = ' ';
-	}
-
-	optr = i;
+	optr = 0;						// flush will indent properly
    for( i=0; i < MAX_READ-1 && inbuf[i] != EOS; i++, optr++ )
     {
      switch( inbuf[i] )
@@ -105,7 +102,6 @@ extern void FMnofmt( void )
 
        default:                 /* not a special character - just copy in */
         obuf[optr] = inbuf[i];
-        //obuf[optr+1] = EOS;     /* terminate incase of strcat on next loop */
         break;
       }
     }                          /* end while stuff in input buffer to copy */
