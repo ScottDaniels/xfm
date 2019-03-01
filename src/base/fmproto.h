@@ -82,6 +82,7 @@ extern char* FMget_header_num( ) ;
 extern char* FMget_header_txt( ) ;
 extern char* FMmk_header_snum( int level ) ;
 extern void FMmk_header_stxt( char* txt ) ;
+extern void FMheader( struct header_blk *hptr );
 extern void FMhn(  void );
 extern char* FMi2roman( int x  );
 extern void FMif(  void );

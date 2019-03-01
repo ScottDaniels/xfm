@@ -69,7 +69,7 @@ Contributions to this source repository are assumed published with the same lice
 *				17 Jul 2016 - Bring decls into the modern world.
 ***************************************************************************
 */
-foo = bar;
+#ifdef DEPRECATED
 extern void FMll( void )
 {
  char *buf;          /* pointer at the token */
@@ -92,3 +92,4 @@ extern void FMll( void )
     }
   }
 }               /* FMll */
+#endif

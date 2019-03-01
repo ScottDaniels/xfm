@@ -53,8 +53,8 @@ Contributions to this source repository are assumed published with the same lice
 #include "fmproto.h"
 #include "pfmproto.h"
 
-UTdspace( ) { return( 0 ); }
-KPmget( ) { return( 0 ); }
-KPget( ) { return( 0 ); }
-KBstatus( ) { return( 0 ); }
+extern int UTdspace( ) { return( 0 ); }
+extern int KPmget( ) { return( 0 ); }
+extern int KPget( ) { return( 0 ); }
+extern int KBstatus( ) { return( 0 ); }
 

@@ -226,7 +226,7 @@ this is dropped because imbed now puts a run/stop command into the stream to pop
 	/* the remainder of the native ps that we dump on initialisation is in init.ps which is 
 		parsed and compressed by a mk rule and put into init_ps.c
 	*/
-#include "init_ps.c"		/* easier to manage postscript functions we need */
+#include "init_ps.h"		/* easier to manage postscript functions we need */
 
 	/* now initialize from a C point of view */
 

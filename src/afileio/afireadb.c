@@ -52,7 +52,8 @@
 *
 ****************************************************************
 */
-AFIreadb( file, rec, n )
+#include "afisetup.h"
+int AFIreadb( file, rec, n )
  int file ;
  char *rec;
  int n;
@@ -62,12 +63,12 @@ AFIreadb( file, rec, n )
 
  fptr = afi_files[file];        /* get the pointer to the file block */
  if( fptr == NULL)
-  return( ERROR );
+  return( -1 );
 
- lastlen = fread( &rec[i], 1, n, fptr->file );   /* read bytes */
+ lastlen = fread( rec, 1, n, fptr->file );   /* read bytes */
 
  if( lastlen == 0 )   /* then were at the end of the file */
-  return( ERROR );
+  return( -1 );
 
  return( n );         /* return number of characters actually read */
 }                                       /* AFIread */

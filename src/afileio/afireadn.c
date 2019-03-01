@@ -60,7 +60,8 @@
 *    Modified:   29 Jan 1990 - To return partial line if eof detected.
 ****************************************************************
 */
-AFIreadn( file, rec, max )
+#include "afisetup.h"        /* include all needed header files */
+int AFIreadn( file, rec, max )
  int file ;
  char *rec;
  int max;
@@ -71,7 +72,7 @@ AFIreadn( file, rec, max )
 
  fptr = afi_files[file];        /* get the pointer to the file block */
  if( fptr == NULL)
-  return( ERROR );
+  return( -1 );
 
  for( i = 0; i < max &&
              (lastlen = fread( &rec[i], 1, 1, fptr->file )) > 0 &&
@@ -79,7 +80,7 @@ AFIreadn( file, rec, max )
 
 
  if( i == 0 && lastlen == 0 )   /* then were at the end of the file */
-  return( ERROR );
+  return( -1 );
 
  if( rec[i] == 0x0a )   /* if line terminated by new line */
   {
