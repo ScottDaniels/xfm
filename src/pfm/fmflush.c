@@ -93,7 +93,7 @@ extern int FMflush( void )
 	int		ydisp = 0;			/* super/subscript y displacement */
 	int		last_cury;			/* cury before inc -- incase we need to ceject */
  	char 	jbuf[1024];    		/* initial work buffer */
- 	char 	jjbuf[1024];		/* work buffer */
+ 	char 	jjbuf[2048];		/* work buffer */
 	int		ejected = 0;		// set to true for return if we ejected the page
 
 	if( optr == 0 )
