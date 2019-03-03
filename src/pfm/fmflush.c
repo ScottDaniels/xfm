@@ -76,6 +76,8 @@ Contributions to this source repository are assumed published with the same lice
 *			18 Dec 2015 - now returns true if it ejected the page.
 *			01 Jan 2016 - Added support for floating margins.
 *			17 Jul 2016 - Bring decls into the modern world.
+#			03 Mar 2019 - Fix bug that prevented proper end of float mar if there
+#*						  are column notes.
 *****************************************************************************
 */
 extern int FMflush( void )
@@ -92,8 +94,8 @@ extern int FMflush( void )
 	int		first = 1;			/* true if working with first block from the list */
 	int		ydisp = 0;			/* super/subscript y displacement */
 	int		last_cury;			/* cury before inc -- incase we need to ceject */
- 	char 	jbuf[1024];    		/* initial work buffer */
- 	char 	jjbuf[2048];		/* work buffer */
+ 	char 	jbuf[2048];    		/* initial work buffer */
+ 	char 	jjbuf[4096];		// work buffer  (must be bigger than jbuf to prevent compiler warnings :(
 	int		ejected = 0;		// set to true for return if we ejected the page
 
 	if( optr == 0 )
@@ -137,7 +139,7 @@ extern int FMflush( void )
 			}
 			jbuf[j] = 0;
 	
-			snprintf( jjbuf, sizeof( jbuf ), "(%s) (%s) %d %d [ %s ] ", font, jbuf, ydisp, size, colour ? colour : "-1" );   
+			snprintf( jjbuf, sizeof( jjbuf ), "(%s) (%s) %d %d [ %s ] ", font, jbuf, ydisp, size, colour ? colour : "-1" );   
 			TRACE( 2, "flush: jbuf=(%s) start=%d end=%d size=%d font=%s colour=%s (%s)\n", jbuf, start, end, size, font, colour ? colour : "undefined", textcolour ? textcolour : "unset" );
    			AFIwrite( ofile, jjbuf );               				/* output the information */
 			things++;
@@ -189,7 +191,7 @@ extern int FMflush( void )
 	FMfmt_add( );		/* add the current font back to the list */
 
 	if( cur_col->flags & CF_TMP_MAR ) {
-		if( cury > cur_col->revert_y ) {
+		if( cn_space + cury > cur_col->revert_y ) {
 			lmar = cur_col->olmar;
 			linelen = cur_col->olinelen;
 			cur_col->flags &= ~CF_TMP_MAR;
