@@ -1,7 +1,7 @@
 
 # All source and documentation in the xfm tree are published with the following open source license:
 # Contributions to this source repository are assumed published with the same license.
-# 
+#
 # =================================================================================================
 #    (c) Copyright 1995-2015 By E. Scott Daniels. All rights reserved.
 #
@@ -31,7 +31,7 @@
 # =================================================================================================
 
 # Mnemonic:	mkfile
-# Abstract: Input file to plan-9 mk (superior to make). 
+# Abstract: Input file to plan-9 mk (superior to make).
 #
 #			We'll use the templates directory from the source, not what the user might have
 #			installed, to build our doc here.
@@ -39,13 +39,14 @@
 MK_SHELL = ksh
 
 CLEAN = *.ca *.bcnfile *.ecnfile *.html *.toc *.sp *.eps
-NUKE = *.html *.txt *.ps *.pdf $CLEAN 
+NUKE = *.html *.txt *.ps *.pdf $CLEAN
 
 MD_OUT = markdown.md
 TXT_OUT = float_mar.txt two_col.txt mix_col.txt markdown.txt
 PS_OUT = float_mar.ps two_col.ps mix_col.ps font.ps markdown.ps two_pass.ps
-HTML_OUT = html_style.html 
-EPS_SRC = test_2x3.eps 
+HTML_OUT =
+#html_style.html
+EPS_SRC = test_2x3.eps
 
 ALL = $EPS_SRC $HTML_OUT $PS_OUT $TXT_OUT $MD_OUT
 
@@ -77,7 +78,7 @@ all:V: $ALL
 float_mar.ps::  float_mar.xfm test_2x3.eps
 	pfm float_mar.xfm float_mar.ps
 
-mix_col.ps::	mix_col.xfm two_col.xfm 
+mix_col.ps::	mix_col.xfm two_col.xfm
 
 two_pass.ps::	two_pass.xfm
 	XFM_PASS=1 pfm two_pass.xfm /dev/null
