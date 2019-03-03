@@ -84,7 +84,7 @@ extern void FMrun( void )
 
 		if( (len = FMgettok( &buf )) > 0 )
 		{
-			TRACE( 2,  "run: (%s) lmar=%d\n", buf, lmar );
+			TRACE( 2,  "run: (%s) lmar=%d obuf=(%s)\n", buf, lmar, obuf );
 
 			if( len == 3 && *buf == CMDSYM && *(buf+3) == 0 )
 			{
