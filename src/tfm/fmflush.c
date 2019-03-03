@@ -127,7 +127,7 @@ extern int FMflush( void )
 	else
 		sprintf( fmt, "%%%ds%%s", iv );
 
-	TRACE( 2, "flush: flags=%02x fmt = (%s) buf=(%s)\n", flags, fmt, obuf );
+	TRACE( 2, "flush: flags=%02x lmar=%d fmt=(%s) obuf=(%s) iv=%d\n", flags, lmar, fmt, obuf, iv );
 	flags2 &= ~F2_DIBUFFER;
 
 	if( optr == 0 ) 		 /* nothing to do so return */
