@@ -78,9 +78,9 @@ Contributions to this source repository are assumed published with the same lice
 */
 extern void FMjustify( void )
 {
- 	char jbuf[1024];    /* initial work buffer */
- 	char jjbuf[1024];    /* work buffer */
-	int 	i;		/* loop index */
+ 	char jbuf[2048];    /* initial work buffer */
+ 	char jjbuf[4096];    	// must be larger than jbuf
+	int 	i;			/* loop index */
 	int	j;
 	int	size = 0;		/* info about a format segment */
 	char	*font = NULL;
