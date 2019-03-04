@@ -42,12 +42,12 @@ csrc = ${src:%=%.c}
 
 obj = ${src:%=%.o}
 
-init_ps.c:: init.ps
+init_ps.h:: init.ps
 	sed -r 's/[\t]/ /g; s/ [ ]+ / /g; s/[ \t]*%.*//; /^$/d' init.ps| awk '
 	function p() { print "AFIwrite( ofile, \"" s "\\n\" );"; } 
-	{ s = s " " $0; if(length(s) >= 128) { p(); s="";} }END{ p() }' >init_ps.c
+	{ s = s " " $0; if(length(s) >= 128) { p(); s="";} }END{ p() }' >init_ps.h
 
-fminit.o:: init_ps.c
+fminit.o:: init_ps.h
 
 $pfmlib(%.o):N:    %.o
 $pfmlib:    ${src:%=$pfmlib(%.o)} 
