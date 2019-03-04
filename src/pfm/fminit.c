@@ -106,6 +106,7 @@ extern int FMinit( int argc, char **argv )
 	int 	geomw = 0;
 
 	version = "pfm V2.10 " __DATE__; 		/* returned by .gv v command */
+	version = strdup( "pfm v2.10 "  __DATE__ " " QUOTE_DEF(COMMIT) );
 
 	argc--;
 	argv++;

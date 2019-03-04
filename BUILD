@@ -30,3 +30,20 @@ There aren't many requirements to build {X}fm:
 		documentation.
 	3) ksh is strongly recommended, but bash should be OK, though
 		ksh _is_ referenced direcly in the mkfile.
+
+
+CMake
+A recent addition to the build options is CMake support. Mk is still
+convenient, and supported, but CMake offers easy packaging and
+the ability to include {X}fm as a tool when building doc for other
+CMake packages.  
+
+To build with CMake:
+	mkdir build
+	cd build
+	cmake ..
+	make package
+
+At the end of that, a .deb should be in the build directory. If a
+direct install into /usr/local/* is desired, run 'make install'
+as root. 

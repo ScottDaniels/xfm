@@ -78,7 +78,6 @@ Contributions to this source repository are assumed published with the same lice
 *				17 Jul 2016 - Bring prototypes into modern era.
 ******************************************************************************
 */
-
 extern int FMinit( int argc, char **argv )
 {
 	int i;               /* loop index */
@@ -90,7 +89,7 @@ extern int FMinit( int argc, char **argv )
 	char *ofname = "stdout";  /* default to standard output */
 	char *ifname = "stdin";
 
-	version = strdup( "tfm V2.3 " __DATE__ );
+	version = strdup( "tfm V2.3 "  __DATE__ " " QUOTE_DEF(COMMIT) );
 
 	if( argc >= 2 )
 	{

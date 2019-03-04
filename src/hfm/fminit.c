@@ -91,7 +91,7 @@ extern int FMinit( int argc, char **argv )
 	char *ifname = "stdin";
 	char *ofname = "stdout";
 
-	version = strdup( "hfm V3.1 " __DATE__  );
+	version = strdup( "hfm V3.1 "  __DATE__ " " QUOTE_DEF(COMMIT) );
 
 	flags3 |= F3_NEED_STYLE; 
 

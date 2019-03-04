@@ -47,6 +47,11 @@ Contributions to this source repository are assumed published with the same lice
 *			  09 Oct 2012 - Increased head/foooter size to 1024 characters
 **************************************************************************
 */
+
+#define QUOTE(a) #a					// allow a constant to be quoted
+#define QUOTE_DEF(a) QUOTE(a)
+
+
 /* used TRACE( 1, "format string", parm, parm, parm ); */
 #define TRACE(_a,...) {if( trace >= (_a)) fprintf( stderr, __VA_ARGS__ );}
 
