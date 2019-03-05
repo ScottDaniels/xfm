@@ -236,7 +236,7 @@ extern void FMheader( struct header_blk *hptr )
 	FMmk_header_stxt( stxt );
 
 				/* the call to FMtoc must be made while the header is in obuf */
-	if( hptr->flags & HTOC )       /* put this in table of contents? */
+	if( hptr->flags & HTOC )          /* put this in table of contents? */
 		FMtoc( hptr->level );         /* put entry in the toc file */
 
 	if( hptr->level < 4 )
