@@ -16,9 +16,9 @@
   .in .5i
 
 
- .dh 1 m=0 p=16 f=Helvetica-Bold s=22 e=page i=0 t=on
- .dh 2 m=0 p=14 f=Helvetica-Bold s=21        i=0 t=on
- .dh 3 m=0 p=12 f=Helvetica-Bold s=20        i=0 t=off
+ .dh 1 m=0 p=14 f=Helvetica-Bold s=2,1 e=page i=0 t=on
+ .dh 2 m=0 p=12 f=Helvetica-Bold s=1,.5        i=0 t=on
+ .dh 3 m=0 p=10 f=Helvetica-Bold s=1,0        i=0 t=off
  .dh 4 m=.75i p=10 f=f74\b       s=0         i=3 t=off
 
  .dv lic1 l f=Dingbats
