@@ -150,7 +150,6 @@ skip_license
 	&indent
 .fi
 
-
 .** -------------------------------------------------------------------------------------
 .bc start
 &bold(ABSTRACT) .br
@@ -201,7 +200,6 @@ The &ital(XFM Language Reference) describes the &x language and how to use it to
 .hn 1
 .st &textsize
 .sf &textfont
-
 
 .h1 Overview
 .tt 
