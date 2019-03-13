@@ -40,7 +40,7 @@
 #			installed, to build our doc here.
 
 
-ALL = xfm_trick.ps
+ALL = xfm_trick.ps xfm_trick.pdf
 NUKE = $NUKE *.ca *.ps *.pdf *.bcnfile *.html *.toc
 <../master.mk
 
@@ -57,3 +57,5 @@ xfm_trick.ps:: xfm_trick.xfm ../logo.eps ${trick_src:%=%.im} ${trick_figs:%=%.ep
 	export XFM_PATH=.:../../templates
 	XDOC_PASS1=1 XDOC_TWOCOL=0 pfm xfm_trick.xfm xfm_trick.ps
 	XDOC_TWOCOL=0 pfm xfm_trick.xfm xfm_trick.ps
+
+xfm_trick.pdf :: xfm_trick.ps
