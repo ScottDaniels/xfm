@@ -81,6 +81,7 @@ Contributions to this source repository are assumed published with the same lice
 *				statements that appear inside of them.
 *			23 Mar 2011 - correccted problem not closing file.
 *			17 Jul 2016 - Bring decls into the modern world.
+*			12 Mar 2019 - Add y offset
 *
 * .ep filename [l=n] [x=n] [center|close|stretch|proportional] [noadvy]
 *     l=10i  -length to reserve is 10 inches
@@ -145,6 +146,12 @@ extern void FMep(  void )
 			case 'X':
 				xoffset = FMgetpts( &buf[2], plen-2 );   /* get value */
 				break;
+
+			case 'Y':                                /* y offset entered */
+			case 'y':
+				yoffset = FMgetpts( &buf[2], plen-2 );   /* get value */
+				break;
+
 
 			case 'n':            /* no advance of cury at end */
 			case 'N':
