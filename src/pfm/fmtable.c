@@ -547,6 +547,11 @@ extern void FMtr( int last )
       }
     }
 
+	if( do_cell )
+		linelen = cur_col->width - t->padding;
+	else
+		for( cur_col = firstcol; cur_col->next; cur_col = cur_col->next );
+
 	cury = t->maxy + t->padding;
 
 	if( t->border ) 						// add vert lines for the row if borders are on
