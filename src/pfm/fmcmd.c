@@ -282,6 +282,14 @@ extern int FMcmd( char *buf )
 
 		case C_JUSTIFY:         FMsetjust( ); break;
 
+		case C_LINEGAP:			// set text space which is additional space between lines
+				if( FMgetparm( &buf ) > 0 )   /* get the parameter */
+				{
+					textspace = atoi( buf );
+					if( textspace < 0 || textspace > 10 )
+						textspace = 2; 						// reset; enforce sanity
+				}
+				break;
 		
 		case C_LINESIZE:        /* set line size for line command */
 				if( FMgetparm( &buf ) > 0 )   /* get the parameter */
