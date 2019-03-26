@@ -104,6 +104,7 @@ Contributions to this source repository are assumed published with the same lice
 #define C_JUMP        0x4A4D   /* .jm jump to token */
 #define C_JUSTIFY     0x4A55   /* .ju justify mode toggle command */
 #define C_LOWERCASE   0x4C43   /* .lc lower case to end of parm list */
+#define C_LINEGAP		0x4c47 // .lg line gap -- additional space between lines
 #define C_LISTITEM    0x4C49   /* .li list item */
 #define C_LL          0x4C4C   /* .ll line length command */
 #define C_LINE        0x4c4E   /* .ln draw line */
@@ -112,7 +113,7 @@ Contributions to this source repository are assumed published with the same lice
 #define C_NOFORMAT    0x4E46   /* .nf no formatting */
 #define C_NOSTYLE    	0x4E53   /* .ns no style data -- must be FIRST (hfm) */
 #define C_NEWLINE     0x4e4c   /* .nl force new line in output file */
-#define C_ONPAGEEJECT 0x4f45   /* .oe [all] <commands> to run on next page eject
+#define C_ONPAGEEJECT 0x4f45   /* .oe [all] <commands> to run on next page eject */
 /* .op reserved for open output file */
 #define C_OUTLINE     0x4F55   /* .ou outline characters (true charpath) */
 #define C_PAGE        0x5041   /* .pa page eject command */
