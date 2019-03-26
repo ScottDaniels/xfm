@@ -419,7 +419,7 @@ extern void di_add( char *name, int pg )
 	}
 
 
-	if( (mp = (Word_map *) sym_get( table, (unsigned char *) aname ? aname : name, MAP_CLASS )) != NULL )	/* get ref to all things that use this word */
+	if( (mp = (Word_map *) sym_get( table, (char *) (aname ? aname : name), MAP_CLASS )) != NULL )	/* get ref to all things that use this word */
 	{
 		wkey++;					/* simple word check counter */
 		for( i = 0; i < mp->idx; i++ )
