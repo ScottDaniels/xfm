@@ -221,10 +221,15 @@ extern int FMevalex( char* rbuf )
 
   }       /* end while */
 
+	if( sp == 0 ) {
+		stack[sp] = 0;
+		sp++;
+	}
                         /* if we fall out of the while then return top value */
  	if( rbuf != NULL ) {  		// if caller passed a buffer
 		TRACE( 1, "expr: exit result: %.3f\n", stack[sp-1] );
 		sprintf( rbuf, "%d", (int) stack[sp-1] );  /* convert to character */
 	}
 
+	return( (int) stack[sp-1] );                /* return top of stack */
 }

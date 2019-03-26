@@ -312,11 +312,12 @@ extern void sym_stats( Sym_tab *table, int level )
 			for( eptr = sym_tab[i]; eptr; eptr = eptr->next )  
 			{
 				ch_count++;
-				if( level > 3 )
-				if( eptr->val && eptr->flags & FL_FREE ) {
-					fprintf( stderr, "sym: (%d) %s str=(%s)  ref=%lu mod=%lu\n", i, eptr->name, (char *) eptr->val, eptr->rcount, eptr->mcount );
-				} else {
-					fprintf( stderr, "sym: (%d) %s ptr=%p  ref=%lu mod=%lu\n", i, eptr->name, eptr->val, eptr->rcount, eptr->mcount );
+				if( level > 3 ) {
+					if( eptr->val && eptr->flags & FL_FREE ) {
+						fprintf( stderr, "sym: (%d) %s str=(%s)  ref=%lu mod=%lu\n", i, eptr->name, (char *) eptr->val, eptr->rcount, eptr->mcount );
+					} else {
+						fprintf( stderr, "sym: (%d) %s ptr=%p  ref=%lu mod=%lu\n", i, eptr->name, eptr->val, eptr->rcount, eptr->mcount );
+					}
 				}
 			}
 		}
