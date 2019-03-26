@@ -195,7 +195,7 @@ extern void FMcapture( void )
 						vp++;
 					}
 					skip = *cp == '{' ? 1 : 0;
-					if( (buf = sym_get( symtab, cp+skip, 0 )) ) {		// find expansion of variable name
+					if( (buf = sym_get( symtab, (unsigned char *) cp+skip, 0 )) ) {		// find expansion of variable name
 						TRACE( 2, "capture: expanded: %s --> %s\n", cp, buf );
 						fprintf( f, "%s%s", buf, skip ? "" : " " );		// and put it out with trailing space if not &{foo}
 					} else {

@@ -123,12 +123,14 @@ extern void FMdefheader(  void )
 			case 'e':        /* set eject type p==page, c==column, anything else */
 			case 'E':        /* turns off all ejects */
 				hptr->flags &= ~(HEJECTP + HEJECTC);  /* initially turn them both off */
-				if( len > 2 )
-					if( toupper( buf[2] ) == 'P' )    /* user wants page eject */
-						hptr->flags |= HEJECTP;   /* turn on the page eject flag */
-					else
+				if( len > 2 ) {
+					if( toupper( buf[2] ) == 'P' ) {    /* user wants page eject */
+						hptr->flags |= HEJECTP;			/* turn on the page eject flag */
+					} else {
 						if( toupper( buf[2] ) == 'C' )   /* user wants column eject */
 							hptr->flags |= HEJECTC;         /* so turn it on */
+					}
+				}
 				break;
 
 			case 'f':        /* set font for this level */

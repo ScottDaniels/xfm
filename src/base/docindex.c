@@ -158,7 +158,7 @@ static char *wmap2ref( char *word, Ref_info *rp )
 {
 	Word_map	*mp;
 
-	if( (mp = sym_get( table, word, MAP_CLASS)) == NULL )
+	if( (mp = sym_get( table, (unsigned char *) word, MAP_CLASS)) == NULL )
 	{
 		mp = (Word_map *) malloc( sizeof( Word_map ) );
 		if( ! mp )
@@ -177,7 +177,7 @@ static char *wmap2ref( char *word, Ref_info *rp )
 			exit( 1 );
 		}
 		memset( mp->rlist, 0, sizeof( Ref_info *) * mp->nalloc );
-		sym_map(  table, mp->word, MAP_CLASS, mp );				/* add to hash */
+		sym_map(  table, (unsigned char *) mp->word, MAP_CLASS, mp );				/* add to hash */
 	}
 
 	if( mp->idx >= mp->nalloc )			/* if we need more pointers */
@@ -252,7 +252,7 @@ static int print_group( FILE *f, Ref_info *gp, char *ufmt, char *gfmtb, char *gf
 
 	for( i = 0; i < gp->ridx; i++ )
 	{
-		if( ((rp = sym_get( table, gp->glist[i], ENTRY_CLASS )) != NULL) && rp->ridx )		/* pont at next term in the group */
+		if( ((rp = sym_get( table, (unsigned char *) gp->glist[i], ENTRY_CLASS )) != NULL) && rp->ridx )		/* pont at next term in the group */
 		{
 			if( !printed && gfmtb )			/* print group only when one sub member has something */
 			{
@@ -287,7 +287,7 @@ static Ref_info *enroll( char *entry, int insert, int class )
 	if( ! table )
 		di_init( );
 	else
-		if( (rp = sym_get( table, entry, ENTRY_CLASS )) != NULL )		/* already registered; ignore */
+		if( (rp = sym_get( table, (unsigned char *) entry, ENTRY_CLASS )) != NULL )		/* already registered; ignore */
 			return rp;
 
 	rp = (Ref_info *) malloc( sizeof( Ref_info ) );
@@ -316,7 +316,7 @@ static Ref_info *enroll( char *entry, int insert, int class )
 		}
 	}
 
-	sym_map(  table, entry, class, rp );		/* add to hash -- simply to enable easy check for second attempt to add */
+	sym_map(  table, (unsigned char *) entry, class, rp );		/* add to hash -- simply to enable easy check for second attempt to add */
 
 	/* add a reference for each word */
 	tok = strtok_r( rp->entry, " \t", &strtok_p );
@@ -356,10 +356,10 @@ extern void di_synonym( char *exist, char *new )
 	if( ! table )
 		di_init();
 
-	if( sym_get( table, new, SYN_CLASS ) || sym_get( table, new, ENTRY_CLASS) ) 		/* already there */
+	if( sym_get( table, (unsigned char *) new, SYN_CLASS ) || sym_get( table, (unsigned char *) new, ENTRY_CLASS) ) 		/* already there */
 		return;								/* no dups */
 
-	if( (orp = sym_get( table, exist, ENTRY_CLASS )) == NULL )		/* if not there, get it there now */
+	if( (orp = sym_get( table, (unsigned char *) exist, ENTRY_CLASS )) == NULL )		/* if not there, get it there now */
 		orp = enroll( exist, 1, ENTRY_CLASS );
 
 	srp = enroll( new, 0, SYN_CLASS );	/* add the syn, but DONT put it into the list */
@@ -376,7 +376,7 @@ extern void di_group( char *name, char *word )
 	if( ! table )
 		di_init( );
 
-	if( (rp = sym_get( table, name, ENTRY_CLASS )) == NULL )		/* already registered; ignore */
+	if( (rp = sym_get( table, (unsigned char *) name, ENTRY_CLASS )) == NULL )		/* already registered; ignore */
 	{
 		rp = (Ref_info *) malloc( sizeof( Ref_info ) );
 		if( !rp )
@@ -392,7 +392,7 @@ extern void di_group( char *name, char *word )
 		rp->glist = (char **) malloc( sizeof( char * ) * 256 );
 		memset( rp->glist, 0, sizeof( char * ) * 256 );
 
-		sym_map( table, name, ENTRY_CLASS, rp );
+		sym_map( table, (unsigned char *) name, ENTRY_CLASS, rp );
 		insert_rp( rp );
 	}
 
@@ -419,7 +419,7 @@ extern void di_add( char *name, int pg )
 	}
 
 
-	if( (mp = (Word_map *) sym_get( table, aname ? aname : name, MAP_CLASS )) != NULL )	/* get ref to all things that use this word */
+	if( (mp = (Word_map *) sym_get( table, (unsigned char *) aname ? aname : name, MAP_CLASS )) != NULL )	/* get ref to all things that use this word */
 	{
 		wkey++;					/* simple word check counter */
 		for( i = 0; i < mp->idx; i++ )

@@ -378,7 +378,7 @@ extern int FMcmd( char *buf )
 					{
 						fprintf( stderr, "(%s @ %ld)", fptr->name, AFIstat( fptr->file, AFI_OPS, NULL) );
 						do {
-							if( (ptr = sym_get( symtab, buf, 0 )) ) {
+							if( (ptr = sym_get( symtab, (unsigned char *) buf, 0 )) ) {
 								//fprintf( stderr, "(%s @ %ld) %s = (%s)\n", fptr->name, AFIstat( fptr->file, AFI_OPS, NULL), buf, ptr );
 								fprintf( stderr, " %s = (%s)",  buf, ptr );
 							} else {

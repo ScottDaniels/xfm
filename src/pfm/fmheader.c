@@ -166,7 +166,7 @@ extern void FMheader( struct header_blk *hptr )
 		before = -textsize;
 		}
 	} else {
-		if( need_eject || (hptr->flags & HEJECTC) && cury != topy ) 			// either at end or column eject
+		if( need_eject || ((hptr->flags & HEJECTC) && cury != topy) ) 			// either at end or column eject
 		{
 			short_out = push_cmd( hptr->level );					// push the .hn command back if there is end column stuff
 			
@@ -200,7 +200,7 @@ extern void FMheader( struct header_blk *hptr )
 	oldfont = curfont;               /* save current text font */
 	oldsize = textsize;              /* save old text size */
 
-	if( hptr->level < 4 );           /* unindent if level is less than 4 */
+	if( hptr->level < 4 )            /* unindent if level is less than 4 */
 		lmar = cur_col->lmar + hptr->hmoffset;
 	textsize = hptr->size;           /* set text size to header size for flush */
 	curfont = hptr->font;            /* set font to header font for flush */

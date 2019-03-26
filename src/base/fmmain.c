@@ -99,7 +99,7 @@ extern int main( int argc, char** argv )
 	}
 
 	FMflush( );             /* flush the current line to page buffer */
-	FMpflush( );            /* flush the page out of the printer with headers
+	FMpflush( );            /* flush the page out of the printer with headers */
 	AFIclose( ofile );      /* close the output file */
 	sprintf( obuf, "%ld\n", words );
 

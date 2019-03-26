@@ -83,7 +83,7 @@ extern void FMcenter( void )
 
 	flags2 |= F2_CENTER;   /* make flush center rather than show */
 
-	while( i = FMgetparm( &buf ))    /* until all parameters gone */
+	while( (i = FMgetparm( &buf )) )    /* until all parameters gone */
 		FMaddtok( buf, i );          /* add it to the output buffer */
 
  	FMflush( );                             /* send user line on the way */

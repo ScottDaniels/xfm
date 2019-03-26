@@ -195,7 +195,7 @@ extern void FMif(  void )
 					char *vp = NULL;
 
 					TRACE( 1, "fmif: expanding variable %s\n", tok );
-					if( (vp = sym_get( symtab, tok+1, 0 )) != NULL )
+					if( (vp = sym_get( symtab, (unsigned char *) tok+1, 0 )) != NULL )
 					{
 						if( isdigit( *vp ) )
 						{
@@ -350,7 +350,7 @@ extern void FMif(  void )
 					}
 					else
 					{
-						if( sym_get( symtab, tok, 0 ) == NULL )   /* defined? */
+						if( sym_get( symtab, (unsigned char *) tok, 0 ) == NULL )   /* defined? */
 							status[sidx] = not ? 1 : 0;                  /* save only status */
 						else
 							status[sidx] = not ? 0 : 1;

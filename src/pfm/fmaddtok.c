@@ -99,7 +99,7 @@ extern void FMchop( char *buf, int len, int remain )
 	if( (word = hyph_get( buf )) != NULL )
 	{
 		TRACE(1, "chop: hyph_get returned (%s)\n", word );
-		if( h = strchr( word, '-' ) )
+		if( (h = strchr( word, '-' )) )
 		{
 			i = (h - word)+1;
 			strncpy( t1, word, i );

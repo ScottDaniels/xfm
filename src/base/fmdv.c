@@ -93,12 +93,12 @@ extern void FMset_var( char *vname, char *buf )
 	if( ! vname || ! *vname || !buf  )
 		return;
 
-	ovalue = sym_get( symtab, vname, 0 );		/* must free last */
+	ovalue = sym_get( symtab, (unsigned char *) vname, 0 );		/* must free last */
 	if( ovalue )
 		free( ovalue );
 
 	value = strdup( buf );
-	sym_map( symtab, vname, 0, value );		/* add to symbol table */
+	sym_map( symtab, (unsigned char *) vname, 0, value );		/* add to symbol table */
 
 	TRACE(2, "set_var: name=%s val=(%s)\n", vname, buf );
 }
@@ -121,9 +121,9 @@ extern void FMdv( void )
 		return;                     /* no name entered then get out */
 
 	strncpy( name, buf, 127 );
-	name[128] = 0;				/* ensure its marked */
+	name[127] = 0;				/* ensure its marked */
 
-	ovalue = sym_get( symtab, name, 0 );		/* must free last incase referenced in the .dv string */
+	ovalue = sym_get( symtab, (unsigned char *) name, 0 );		/* must free last incase referenced in the .dv string */
 
 	varbuf = NULL;        /* not going to execute it so remove pointer */
 
@@ -163,7 +163,7 @@ extern void FMdv( void )
 		fprintf( stderr, "dv created var: %s = (%s)\n", name, str ); 
 
 	value = strdup( str );
-	sym_map( symtab, name, 0, value );		/* add to symbol table */
+	sym_map( symtab, (unsigned char *) name, 0, value );		/* add to symbol table */
 	if( ovalue )
 		free( ovalue );
 }                         /* FMdv */

@@ -78,11 +78,13 @@ extern void FMccol( int skip )
 
  FMflush( );         /* put out what may be there */
 
- if( skip == 0 )          /* calling routine did not pass parameter to use */
-  if( FMgetparm( & buf ) > 0 )       /* then assume user command and get it */
-   skip = atoi( buf );               /* convert to integer */
-  else
-   skip = 2;                         /* otherwise default to 2 lines */
+	if( skip == 0 ) { 				         /* calling routine did not pass parameter to use */
+		if( FMgetparm( & buf ) > 0 ) {       /* then assume user command and get it */
+			skip = atoi( buf );               /* convert to integer */
+		} else {
+			skip = 2;                         /* otherwise default to 2 lines */
+		}
+	}
 
 	 if( ((skip * (textsize + textspace)) + cury) >= boty ) {
 		//fprintf( stderr, "ccol: cury=%d skip=%d bot=%d space=%d\n", cury, skip, boty, textsize+textspace);

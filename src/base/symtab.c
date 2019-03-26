@@ -51,7 +51,7 @@ Mods:		17 Jul 2016 - Changes for better prototype generation.
 static int sym_hash( unsigned char *n, long size )
 {
 	unsigned char *p;
-	unsigned long t = 0;
+	long t = 0;
 	unsigned long tt = 0;
 	unsigned long x = 79;
 
@@ -114,10 +114,10 @@ static int putin( Sym_tab *table, char *name, unsigned int class, void *val, int
 
 	sym_tab = table->symlist;
 
-	hv = sym_hash( name, table->size );
+	hv = sym_hash( (unsigned char *) name, table->size );
 
 
-	for(eptr=sym_tab[hv]; eptr && ! same( class, eptr->class, eptr->name, name); eptr=eptr->next );
+	for(eptr=sym_tab[hv]; eptr && ! same( class, eptr->class, (char *) eptr->name, name); eptr=eptr->next );
 
 	if( ! eptr )    /* new symbol for the table */
 	{
@@ -136,7 +136,7 @@ static int putin( Sym_tab *table, char *name, unsigned int class, void *val, int
 		eptr->class = class;
 		eptr->mcount = eptr->rcount = 0;	/* init counters */
 		eptr->val = NULL;                	/* add to head of the list */
-		eptr->name = strdup( name );
+		eptr->name = (unsigned char *) strdup( name );
 		eptr->next = sym_tab[hv];
 		sym_tab[hv] = eptr;
 		if( eptr->next )
@@ -237,7 +237,7 @@ extern void sym_del( Sym_tab *table, unsigned char *name, unsigned int class )
 
 	hv = sym_hash( name, table->size );
 
-	for(eptr=sym_tab[hv]; eptr  &&  ! same(class, eptr->class, eptr->name, name); eptr=eptr->next );
+	for(eptr=sym_tab[hv]; eptr  &&  ! same(class, eptr->class, (char *) eptr->name, (char *) name); eptr=eptr->next );
 
 	del_ele( table, hv, eptr );    /* ignors null ptr, so safe to always call */
 }
@@ -253,7 +253,7 @@ extern void *sym_get( Sym_tab *table, unsigned char *name, unsigned int class )
 
 	hv = sym_hash( name, table->size );
 
-	for(eptr=sym_tab[hv]; eptr && ! same( eptr->class, class, eptr->name, name); eptr=eptr->next );
+	for(eptr=sym_tab[hv]; eptr && ! same( eptr->class, class, (char *) eptr->name, (char *) name); eptr=eptr->next );
 
 	if( eptr )
 	{
@@ -279,7 +279,7 @@ call, or delete the entry!
 /* returns 1 if new, 0 if existed */
 extern int sym_put( Sym_tab *table, unsigned char *name, unsigned int class, void *val )
 {
-	return putin( table, name, class, val, FL_COPY );
+	return putin( table, (char *) name, class, val, FL_COPY );
 }
 
 /* add/replace an element, map directly to user data, dont copy */
@@ -287,7 +287,7 @@ extern int sym_put( Sym_tab *table, unsigned char *name, unsigned int class, voi
 /* returns 1 if new, 0 if existed */
 int sym_map( Sym_tab *table, unsigned char *name, unsigned int class, void *val )
 {
-	return putin( table, name, class, val, FL_NOCOPY );
+	return putin( table, (char *) name, class, val, FL_NOCOPY );
 }
 
 /* dump some statistics to stderr dev. Higher level is the more info dumpped */
@@ -313,10 +313,11 @@ extern void sym_stats( Sym_tab *table, int level )
 			{
 				ch_count++;
 				if( level > 3 )
-				if( eptr->val && eptr->flags & FL_FREE )
+				if( eptr->val && eptr->flags & FL_FREE ) {
 					fprintf( stderr, "sym: (%d) %s str=(%s)  ref=%lu mod=%lu\n", i, eptr->name, (char *) eptr->val, eptr->rcount, eptr->mcount );
-				else
+				} else {
 					fprintf( stderr, "sym: (%d) %s ptr=%p  ref=%lu mod=%lu\n", i, eptr->name, eptr->val, eptr->rcount, eptr->mcount );
+				}
 			}
 		}
 		else

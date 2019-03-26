@@ -141,7 +141,7 @@ char *vreplace( Sym_tab *st, int namespace, char *sbuf, char vsym, char esym, ch
 					while( pidx < 4095 && *sbuf && need )		/* while we need ) and have room */
 					{
 						sprintf( pname, "%d", p );
-						sym_map( st, pname, 43086, plist+pidx );
+						sym_map( st, (unsigned char *) pname, 43086, plist+pidx );
 
 						while( pidx < 4095 && *sbuf && need && *sbuf != psym )
 						{
@@ -168,7 +168,7 @@ char *vreplace( Sym_tab *st, int namespace, char *sbuf, char vsym, char esym, ch
 				}
 			}
 
-			if( vbuf = sym_get( st, name, namespace ) )
+			if( (vbuf = sym_get( st, (unsigned char *) name, namespace )) )
 			{
 				if( iflags & F_PARMS )
 					vbuf = vreplace( st, 43086, vbuf, '$', esym, psym, VRF_NORECURSE | VRF_NEWBUF );

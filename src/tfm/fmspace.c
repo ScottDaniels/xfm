@@ -88,7 +88,7 @@ extern void FMspace( void )
 	*obuf = 0;
 	optr = 0;
 
-	for( len; len > 0; len-- )          /* skip lines */
+	for( ; len > 0; len-- )          /* skip lines */
 	{
 		strcat( obuf, " " );
 		optr += 1;

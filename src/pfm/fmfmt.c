@@ -120,6 +120,8 @@ extern int FMfmt_save( void )
 	}
 
 	FMfmt_add( );		/* initiate a new list */
+
+	return 0;
 }
 
 /*
@@ -158,6 +160,8 @@ extern int FMfmt_restore( void )
 		FMfmt_add();
 	}
 	TRACE( 2, "fmt_restore: idx=%d list=%p\n", fmt_idx, fmt_lst );
+
+	return 0;
 }
 
 extern int FMfmt_largest( void )				/* find the largest font in the list */

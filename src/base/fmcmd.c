@@ -444,7 +444,7 @@ extern int FMcmd( char* buf )
 						FMshowvars( );			/* show all definitions */
 					else
 					{
-						if( (buf = sym_get( symtab, buf, 0 )) )
+						if( (buf = sym_get( symtab, (unsigned char *) buf, 0 )) )
 							FMmsg( -1, buf ); 
 						else
 							FMmsg( -1, "undefined variable" );
@@ -471,7 +471,7 @@ extern int FMcmd( char* buf )
 
 			case C_SETFONT:           /* set font for text (font name only parm) */
 				FMflush( );
-				if( (len = FMgetparm( &ptr )) != 0 );     /* if a parameter was entered */
+				if( (len = FMgetparm( &ptr )) != 0 )     /* if a parameter was entered */
 				{
 					if( curfont )
 						free( curfont );          /* release the current font string */
@@ -509,8 +509,9 @@ extern int FMcmd( char* buf )
 
 			case C_TABLEROW:          /* go to next table row */
 				FMflush( );
-				while( FMgetparm( &ptr ) != 0 );    /* skip all parms on the line */
+				while( FMgetparm( &ptr ) != 0 ) { /* skip all parms on the line */
 					FMrow( MIDDLE );
+				}
 				break;
 
 			case C_TMPTOP:            /* set topy to cury for rest of page */

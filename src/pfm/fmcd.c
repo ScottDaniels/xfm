@@ -112,7 +112,7 @@ extern void FMcd(  void )
 
 	firstcol = NULL;       /* initially nothing */
 
-	for( i; i > 0; i-- )   /* create new col management blocks */
+	for( ; i > 0; i-- )   /* create new col management blocks */
 	{
 	 	ptr = (struct col_blk *) malloc( sizeof( struct col_blk ) );
 		if( ptr == NULL ) {

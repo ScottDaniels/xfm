@@ -198,7 +198,7 @@ extern int FMevalex( char* rbuf )
      case ']':
 		if( rbuf != NULL )                      /* if caller passed a buffer */
 			sprintf( rbuf, fmt, stack[sp-1] );  /* convert to character */
-		for( idx = rbuf + strlen( rbuf ) -1; *idx == '0'; idx-- );  
+		for( idx = rbuf + strlen( rbuf ) -1; *idx == '0'; idx-- )
 		{
 			if( ! usr_fmt )
 			{

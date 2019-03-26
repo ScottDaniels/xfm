@@ -165,7 +165,7 @@ extern void FMgetval( void )
 
 				if( FMgetparm( &buf ) > 0 )
 				{
-					if( ep = getenv( ename ) )
+					if( (ep = getenv( ename )) )
 					{
 						snprintf( vname, sizeof( vname ), "%s", buf );
 						snprintf( value, sizeof( value ), "%s",  ep );

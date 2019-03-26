@@ -97,39 +97,37 @@ int AFIread( file, rec )
   }
 
 
- if( i == 0 && lastlen == 0 )       /* then were at the end of the file */
-  if( fptr->chain == NULL )         /* if no more */
-   {
-    fptr->flags |= F_EOF;
-    return( AFI_ERROR );             /* then return error indication */
-   }
-  else
-   {
-	int state = fptr->flags & AFI_F_EOFSIG;		/* hold user request for hard notify on each chained file */
-
-    	AFIclose1( file );   			
-	if( state )					/* user needs to know on each one */
-		return -1;
-	else
-	{
- 		fptr = afi_files[file];		/* get the new pointer to the file block */
-    		if( fptr->tmb )			/* if tokenising, return -1 as there may be unparsed tokens from the previous file  */
-			return -1;
-		else
-    			return( AFIread( file, rec ) );  /* and try to read again */
+	if( i == 0 && lastlen == 0 ) {       /* then were at the end of the file */
+		if( fptr->chain == NULL ) {       /* if no more */
+			fptr->flags |= F_EOF;
+			return( AFI_ERROR );             /* then return error indication */
+		} else {
+			int state = fptr->flags & AFI_F_EOFSIG;		/* hold user request for hard notify on each chained file */
+		
+			AFIclose1( file );   			
+			if( state ) {					/* user needs to know on each one */ 
+				return -1;
+			} else {
+				fptr = afi_files[file];		/* get the new pointer to the file block */
+				if( fptr->tmb )			/* if tokenising, return -1 as there may be unparsed tokens from the previous file  */
+					return -1;
+				else
+					return( AFIread( file, rec ) );  /* and try to read again */
+			}
+		}
 	}
-   }
 
  if( (fptr->flags & F_BINARY) == 0 )   /* if not binary */
   {
    if( rec[i] == 0x0a )                /* if line terminated by new line */
     {
-     if( i > 0 && rec[i-1] == 0x0d )  /* 0x0d 0x0a combination in the record */
+     if( i > 0 && rec[i-1] == 0x0d ) {  /* 0x0d 0x0a combination in the record */
       i--;                            /* back up to write over CR as well */
+	 }
      rec[i] = EOS;                    /* return to user with end of string */
-    }
-   else
-    rec[i++] = EOS;       /* if not terminated with new line add eos at end */
+    } else {
+    	rec[i++] = EOS;       /* if not terminated with new line add eos at end */
+	}
   }
 
  return( i );                       /* return number of characters in string */
