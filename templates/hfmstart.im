@@ -275,15 +275,6 @@
 	.fi
  .fi
 
- .** for loop and multiple space definitions
- .** &for(varname:start_value:expression:command(s))
- .** &for(i:0:< 10: 1 +: .sp ) .** space 10 lines
- .** &mspace(number)
- .** --------------------------------------------------------------------
- .dv for .dv $1 $2 ^: .do $1 $3 $5 .dv $1 ^^[ ^^&$1 $4 ]
-.** .dv mspace ^&for(ms:0:< $1 :1 + :^<center^> .br ^</center^>)
-
-
  .** set default text sizes and example sizes for earier defined macros
  .dv textsize 8
  .dv exsize 12
