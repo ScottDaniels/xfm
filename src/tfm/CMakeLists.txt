@@ -12,3 +12,7 @@ add_executable( tfm ${tfm_files} )
 include_directories( ../base )
 target_link_libraries( tfm xfm;afi )
 
+install( 
+	TARGETS tfm
+	DESTINATION ${install_bin}
+)

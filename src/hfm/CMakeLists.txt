@@ -14,3 +14,7 @@ include_directories( ../base )
 add_dependencies( hfm xfm )
 target_link_libraries( hfm xfm;afi )
 
+install( 
+	TARGETS hfm
+	DESTINATION ${install_bin}
+)

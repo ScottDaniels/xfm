@@ -54,14 +54,6 @@ target_compile_definitions( tfm PUBLIC COMMIT=${commit_id} )
 target_compile_definitions( pfm PUBLIC COMMIT=${commit_id} ) 
 target_compile_definitions( hfm PUBLIC COMMIT=${commit_id} ) 
 
-install( FILES
-    ${CMAKE_CURRENT_BINARY_DIR}/src/tfm/tfm 
-    ${CMAKE_CURRENT_BINARY_DIR}/src/pfm/pfm
-    ${CMAKE_CURRENT_BINARY_DIR}/src/hfm/hfm
-
-    DESTINATION ${install_bin}
-)
-
 # find the template files and set them up for install
 file( GLOB templates ${CMAKE_CURRENT_SOURCE_DIR}/templates/*.im )
 install( FILES

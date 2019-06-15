@@ -64,3 +64,8 @@ add_executable( pfm ${pfm_src} )
 include_directories( ../base )
 add_dependencies( pfm xfm; build_ps_init )
 target_link_libraries( pfm xfm;afi )
+
+install( 
+	TARGETS pfm
+	DESTINATION ${install_bin}
+)
