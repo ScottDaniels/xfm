@@ -37,6 +37,7 @@ set ( pfm_src fmaddtok.c
 	fmoneject.c 
 	fmpflush.c 
 	fmrfoot.c 
+	fmmain.c
 	fmright.c 
 	fmrun.c 
 	fmrunout.c 
