@@ -75,8 +75,7 @@ IF( EXISTS "${CMAKE_ROOT}/Modules/CPack.cmake" )
         set( CPACK_PACKAGE_VERSION_MAJOR "${major_version}" )
         set( CPACK_PACKAGE_VERSION_MINOR "${minor_version}" )
         set( CPACK_PACKAGE_VERSION_PATCH "${patch_level}" )
-        set( CPACK_PACKAGE_FILE_NAME "${CMAKE_PROJECT_NAME}_${major_version}.${minor_version}.${CPACK_PACKAGE_VERSION_PATCH}${spoiled_str}" )
-        set( CPACK_SOURCE_PACKAGE_FILE_NAME "vric${CMAKE_PROJECT_NAME}_${major_version}.${minor_version}.${CPACK_PACKAGE_VERSION_PATCH}" )
+        set( CPACK_PACKAGE_FILE_NAME "${CMAKE_PROJECT_NAME}-${major_version}.${minor_version}.${patch_level}${spoiled_str}-${CMAKE_SYSTEM_PROCESSOR}" )
 
         #we have no dependcies
         #set( CPACK_DEBIAN_PACKAGE_DEPENDS "nothing ( >= 1.1.1 ), nobody ( >= 1.1.1 )" )
