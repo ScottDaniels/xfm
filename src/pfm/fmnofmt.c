@@ -104,7 +104,10 @@ extern void FMnofmt( void )
 			}
 		}
 	
-		obuf[optr++] = ' ';    /* flush assumes addtok adds a trail blank and truncates */
+		if( optr == 0 ) {		// if nil line, we need to give flush a blank
+			obuf[optr++] = ' ';
+		}
+		obuf[optr++] = ' ';    /* flush assumes addtok adds a trail blank; flush will truncate */
 		obuf[optr] = EOS;      /* terminate buffer for flush */
 		
 		FMflush( );            /* send the line on its way */
