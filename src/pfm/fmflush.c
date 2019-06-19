@@ -110,6 +110,8 @@ extern int FMflush( void )
    	if( flags & DOUBLESPACE )				/* if in double space mode ...    */
     	cury += textsize + textspace;   /* then skip down one more */
 
+	TRACE(2,  "flush: lmar=%d llen=%d cury=%d topy=%d boty=%d cn_space=%d obuf=(%s)\n", lmar, linelen, cury, topy, boty, cn_space,  obuf );
+
   	if( cury > boty )               	/* are we out of bounds? */
 	{
 		cury = last_cury;
@@ -117,15 +119,13 @@ extern int FMflush( void )
  		PFMceject( );       					/* move to next column */
 		if( cury != topy )
 			cury += largest + textspace;		/* in case something was insterted at the top of col */
-		TRACE(2,  "flush: forced ceject: lmar=%d cury=%d topy=%d boty=%d cn_space=%d obuf=(%s)\n", lmar, cury, topy, boty, cn_space,  obuf );
+		TRACE(2,  "flush: forced ceject\n" );
 
 		FMset_last_colour( );					// ensure colour change passes page boundary
  	}
 
 	snprintf( jbuf, sizeof( jbuf ), "%d %d moveto\n", lmar, -cury );  /* create moveto */
 	AFIwrite( ofile, jbuf );      /* write the move to command or x,y for cen */
-
-	TRACE(2,  "flush: lmar=%d cury=%d topy=%d boty=%d cn_space=%d obuf=(%s)\n", lmar, cury, topy, boty, cn_space,  obuf );
 
  	while( FMfmt_pop( &size, &font, &colour, &start, &end, &ydisp ) )  /* run each formatting block put on the list */
  	{

@@ -84,6 +84,8 @@ extern void FMnofmt( void )
 
 	status = FMread( inbuf );        /* get the next buffer */
 
+	flags3 &= ~F3_CNPEND;			// ensure this is reset before going on
+
 	while( status >= 0  &&  inbuf[0] != CMDSYM && *inbuf != vardelim ) 
 	{
 		for( i = 0; i < MAX_READ-1 && inbuf[i] != EOS; i++ )
@@ -111,6 +113,14 @@ extern void FMnofmt( void )
 		obuf[optr] = EOS;      /* terminate buffer for flush */
 		
 		FMflush( );            /* send the line on its way */
+		TRACE( 1, "nofmt continues after flush flags3=%04x\n", flags3 );
+
+		if( flags3 & F3_CNPEND ) {
+   			flags = flags & (255-NOFORMAT);      			// must put back into formatting mode here
+			TRACE( 1, "yield becasue cnpend flag was set\n" );
+			iptr = optr = 0;              					/* return pointing at beginning */
+			return;
+		}
 
 		status = FMread( inbuf );   /* get the next line and loop back */
 	}           /* end while */

@@ -183,7 +183,8 @@ static void cnstart( )
 	}
 
 	if( need_init ) {				// we opened the file, so must write a complete initialisation command string
-		fprintf( target, ".pu\n.bc end\n.ju off\n.sp .3\n.lw 0\n" ); 		// every time
+		//fprintf( target, ".pu\n.bc end\n.ju off\n.sp .3\n.lw 0\n" ); 		// every time
+		fprintf( target, ".fo\n.pu\n.bc end\n.ju off\n.sp .3\n.lw 0\n" ); 		// every time
 
 		if( llen > 0 ) {													// if options given
 			fprintf( target, ".ll %dp\n", llen );
@@ -306,7 +307,9 @@ extern int FMcolnotes_show( int end )
 		end_cmd = ".qu";				// needed to force end processing after our embed (might bring us back to do efile if bfile exists
 	}
 	
-	TRACE( 1, "colnotes: showing at: %s cury=%d boty=%d cn_space=%d page=%d target=%p\n", end ? "end of doc" : "bottom of col", cury, boty, cn_space, page, target );
+	TRACE( 1, "colnotes: showing at: %s cury=%d boty=%d cn_space=%d page=%d target=%p fl=%04x\n", 
+		end ? "end of doc" : "bottom of col", cury, boty, cn_space, page, target, flags );
+
 	if( target == NULL )
 		return 0;
 
@@ -319,11 +322,18 @@ extern int FMcolnotes_show( int end )
 
 
 	fprintf( target, ".br\n.po\n" );					// add the ending commands to the file (force flush and pop)
+
 	if( ! end )
 		fprintf( target, ".cb\n" )	;					// new col only if not at end; causes extra page eject if at end
 	if( flags & JUSTIFY )
 		fprintf( target, ".ju on\n" );					// justify back on if needed
 	fprintf( target, ".cn unlink %s\n%s\n", fname, end_cmd );
+
+	if( flags & NOFORMAT ) {							// if in no format mode, we must add one last to put it back
+		fprintf( target, ".nf\n" );
+		flags3 |= F3_CNPEND;							// signal to nofmt funcion that it needs to yield
+		TRACE( 1, "colnotes: show: setting nf f3=%04x xx=%x\n", flags3, F3_CNPEND );
+	}
 
 	fclose( target );
 	if( dref_bfile ) {

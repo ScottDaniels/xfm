@@ -70,6 +70,7 @@ Contributions to this source repository are assumed published with the same lice
 * Author: 	E. Scott Daniels
 *			10 Apr 2007 - Memory leak cleanup 
 *			17 Jul 2016 - Bring decls into the modern world.
+*			18 Jun 2019 - Add brackets to prevent accidental bugs.
 *
 * -------------------------------------------------------------
 */
@@ -81,38 +82,38 @@ extern void FMrun( void )
 	int	i = 0;
 	char	b[2048];
 
-	TRACE( 1,  "run: starts\n" );
-	while( len >= 0 ) 
-	{
-		if( flags & NOFORMAT )
-		{
+	TRACE( 1, "run: starts\n" );
+	while( len >= 0 ) {
+		if( flags & NOFORMAT ) {
 			FMnofmt( );
-		}
-		else
-			if( flags2 & F2_ASIS )
+		} else {
+			if( flags2 & F2_ASIS ) {
 				FMasis( );
-
-		if( (len = FMgettok( &buf )) > 0 )
-		{
-			TRACE( 2,  "run: (%s) lmar=%d cury=%d\n", buf, lmar, cury );
-
-			if( len == 3 && *buf == CMDSYM && *(buf+3) == 0 )
-			{
-				switch( FMcmd( buf ) )			
-				{
-					case 0: 	FMaddtok( buf, len ); 			/* not a command -- add to output */
-							break;
-
-					case 1: 	break;					/* normal command handled -- continue */
-
-					default: 	TRACE( 2, "run: pop run stack\n" );
-							return;
-							break;
-				}
 			}
-			else
+		}
+
+		if( (len = FMgettok( &buf )) > 0 ) {
+			TRACE( 2, "run: (%s) lmar=%d cury=%d\n", buf, lmar, cury );
+
+			if( len == 3 && *buf == CMDSYM && *(buf+3) == 0 ) {
+				switch( FMcmd( buf ) ) {
+					case 0:
+						FMaddtok( buf, len ); 			/* not a command -- add to output */
+						break;
+
+					case 1: 	
+						break;					/* normal command handled -- continue */
+
+					default: 	
+						TRACE( 2, "run: pop run stack\n" );
+						return;
+						break;
+				}
+			} else {
 				FMaddtok( buf, len );
+			}
 		}
 	}
+
 	TRACE( 1, "run: stops  len=%d\n", len );
 }
