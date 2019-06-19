@@ -39,7 +39,7 @@
 .dv text_size 12p
 .dv text_font Times-Roman
 
-.** convenience variables which define font types for bold, ital, etc so one change at the 
+.** convenience variables which define font types for bold, ital, etc so one change at the
 .** top of the doc applies to all.
 .dv ital_font Times-Oblique
 .dv cw_font Courier
@@ -54,11 +54,11 @@
 
 This short document illustrates how to manage font changes both for short phrases, such as
 rendering a &bold( bold word, ) or &ital( italic phrase, ) or something in a &cw( constant width, )
-and for more specific needs such as the use of superscripts and subscripts. 
+and for more specific needs such as the use of superscripts and subscripts.
 
 
 .h2 Sample font changes in line
-The {X}fm code to render the font changes in the previous paragraph  was set up using a group of font variable definitions, 
+The {X}fm code to render the font changes in the previous paragraph  was set up using a group of font variable definitions,
 a set of macros which reference the variables and finally the use of them in the text itself.
 The following are the variable definitions which establish three different fonts using generic names:
 
@@ -68,8 +68,8 @@ The following are the variable definitions which establish three different fonts
   .dv bold_font Times-Bold
 &ex_end
 
-The generic font variables can then be used in macros which cause the font to be temporarily changed in 
-the middle of a sentence. 
+The generic font variables can then be used in macros which cause the font to be temporarily changed in
+the middle of a sentence.
 
 &ex_start
   .dv ital .tf ^^&ital_font ^^&text_size $1 ^^:
@@ -77,29 +77,29 @@ the middle of a sentence.
   .dv bold .tf ^^&bold_font ^^&text_size $1 ^^:
 &ex_end
 
-Notice the use of the escape character (^^^^) which prevents the evaluation of a variable when the macro is defined, and 
-to prevent the final colon from being taken as an end to the define variable command and to be interpreted as the command end 
+Notice the use of the escape character (^^^^) which prevents the evaluation of a variable when the macro is defined, and
+to prevent the final colon from being taken as an end to the define variable command and to be interpreted as the command end
 marker for the temporary font command when the macro is executed.
-Using escaped variable names in a macro definition allows the macro to be dynamic inasmuch as the value of the 
-variable (e.g. text_font) is used at the time the macro is executed, and not the value at the time the macro is 
-defined. 
+Using escaped variable names in a macro definition allows the macro to be dynamic inasmuch as the value of the
+variable (e.g. text_font) is used at the time the macro is executed, and not the value at the time the macro is
+defined.
 .sp
 
-The benefits of coding font names and changes in this manner allows the document to be quickly changed should a different 
-font or font size be preferred, one change vs a change of every occurrence as would be needed in 
-a WYSIWYG editor. 
+The benefits of coding font names and changes in this manner allows the document to be quickly changed should a different
+font or font size be preferred, one change vs a change of every occurrence as would be needed in
+a WYSIWYG editor.
 
 .sp
-Finally, the use of the macros to bold, italicise ar render a phrase in a constant width as 
+Finally, the use of the macros to bold, italicise ar render a phrase in a constant width as
 illustrated earlier:
 
 &ex_start
-  rendering a &bold( bold word, ) or &ital( italic phrase, ) 
+  rendering a &bold( bold word, ) or &ital( italic phrase, )
   or something in a &cw( constant width. )
 &ex_end
 
-Notice that the punctuation is enclosed with the temporary font change.  It doesn't have to 
-be, and sometimes it shouldn't be, but rendering the punctuation &ital( outside ) of the 
+Notice that the punctuation is enclosed with the temporary font change.  It doesn't have to
+be, and sometimes it shouldn't be, but rendering the punctuation &ital( outside ) of the
 temporary font change, while abutting it to the previous word requires the use of the &ital( smash )
 command:
 
@@ -107,14 +107,14 @@ command:
   or something in a &cw( constant width ) .sm .
 &ex_end
 
-The final full stop (.) is &ital( smashed ) up against the previous token ( .sm &ital( width ) .sm ), 
-while rendering it in the regular text font, and not in constant width font. 
+The final full stop (.) is &ital( smashed ) up against the previous token ( .sm &ital( width ) .sm ),
+while rendering it in the regular text font, and not in constant width font.
 
 .h2 Symbols
 Using the symbol or zapfdingbats fonts is somewhat painless, but it can require the use of some clever escape sequences
-in order to cause {X}fm to insert an octal character representation into the final output. 
-For instance, the not symbol ( .sm &sym( &sym_not ) .sm ) is represnted with an octal value of \330 in the Symbol font. 
-The backslant character is generally considered to be a special character and thus is escaped when {X}fm places it into 
+in order to cause {X}fm to insert an octal character representation into the final output.
+For instance, the not symbol ( .sm &sym( &sym_not ) .sm ) is represnted with an octal value of \330 in the Symbol font.
+The backslant character is generally considered to be a special character and thus is escaped when {X}fm places it into
 the formatted document, so in order to render it unescaped it must be escaped in the {X}fm source.
 The easiest way to do this is to define a variable and a &ital( sym ) macro:
 .sp .5
@@ -124,35 +124,35 @@ The easiest way to do this is to define a variable and a &ital( sym ) macro:
 .nf
   .dv sym_not ^^^^^^^^\330
   .dv sym .tf Symbol ^^&textsize $1 ^^:
-.fo 
+.fo
 .sf &text_font
 .st &text_size
 .sp
 
 .h3 Escapes
-Escaping characters in {X}fm can be one of the more tricky bits when they are needed, and can be even more frustrating when 
+Escaping characters in {X}fm can be one of the more tricky bits when they are needed, and can be even more frustrating when
 they must be used as a part of a macro (defined variable).
-In the above example four escapes are needed in order to treat them as two pairs during the definition process. 
+In the above example four escapes are needed in order to treat them as two pairs during the definition process.
 The result of the sym_not &cw( ^.dv ) command is &cw( ^^^^^^^^^\330 ) .sm .
-The pair is necessary as the carrot needs to surive the {X}fm parser as the source is interpreted which causes the 
-carrot and subsequent backslant to be placed in the output buffer.   The output rendering component then sees the 
+The pair is necessary as the carrot needs to surive the {X}fm parser as the source is interpreted which causes the
+carrot and subsequent backslant to be placed in the output buffer.   The output rendering component then sees the
 backslant as being escaped and allows it to be wrtten into the final postscript output without the usual
 postscript escape character.
-Using an escaped sequence as a parameter to a defined variable (macro) can require even more to be needed; the 
+Using an escaped sequence as a parameter to a defined variable (macro) can require even more to be needed; the
 easiest way to work through it is to add one at a time until the output is as desired.
 
 
 .h2 Subscripts and Superscripts
-A more specific font change which {X}fm supports is the ability to add superscripts or subscripts to text in the 
-document. 
-For instance, the chemical representation of  a water molecule, H &sub(2) .sm O,  or the formula for energy E=MC &super(2) 
-can easily be placed into the document. 
+A more specific font change which {X}fm supports is the ability to add superscripts or subscripts to text in the
+document.
+For instance, the chemical representation of  a water molecule, H &sub(2) .sm O,  or the formula for energy E=MC &super(2)
+can easily be placed into the document.
 
 .sp
-The &ital( temporary font ) command (.tf) is also used for superscript and subscript changes. 
-The command recognises two special font names (superscript and subscript) which trigger a vertical positional shift of the 
-text; up (toward the top of the page for super script) and down (towards the bottom of the page) for subscript. 
-The following is the most basic definition, but probably isn't quite what is desired (and wasn't used to generate the example in the 
+The &ital( temporary font ) command (.tf) is also used for superscript and subscript changes.
+The command recognises two special font names (superscript and subscript) which trigger a vertical positional shift of the
+text; up (toward the top of the page for super script) and down (towards the bottom of the page) for subscript.
+The following is the most basic definition, but probably isn't quite what is desired (and wasn't used to generate the example in the
 previous section):
 
 .dv lg_super .sm .tf superscript ^&text_size $1 ^:
@@ -164,10 +164,10 @@ previous section):
 
 The way these macros are written, the font size used for the super script text is the same as the current font which would
 produce H .sm &lg_sub(2) .sm O  which may not be as pleasing as H &sub(2) .sm O.
-The temporary font command allows the font size parameter to be supplied as a scale factor by using the syntax &cw(n/m) instead of 
-an integer value.  
-The second example presented uses the following macros which scale the superscript and subscript text to two-thirds of the current 
-text size. 
+The temporary font command allows the font size parameter to be supplied as a scale factor by using the syntax &cw(n/m) instead of
+an integer value. 
+The second example presented uses the following macros which scale the superscript and subscript text to two-thirds of the current
+text size.
 
 &ex_start
   .dv super .sm .tf superscript 2/3 $1 ^^:
@@ -175,7 +175,7 @@ text size.
 &ex_end
 
 The macros illustrated here use the &ital( smash ) command (.sm) to smash the superscript or subscript text up agains the previous
-token in the output.  
+token in the output. 
 In the case of the water molecule, the actual {X}fm code, using the macros given, needs a second smash command like the following:
 
 &ex_start
@@ -184,38 +184,38 @@ In the case of the water molecule, the actual {X}fm code, using the macros given
 
 .sp
 .** redefine lg_* macros for this section
-.dv disp [ -&text_size 4 / ] 
+.dv disp [ -&text_size 4 / ]
 .dv lg_sub .sm .tf d=&disp &text_font 3/4 $1 ^:
 .dv lg_sub_ital .sm .tf d=&disp &ital_font 3/4 $1 ^:
 .dv lg_super .sm .tf superscript 3/4 $1 ^:
 
-Superscripts and subscripts do not need to be limited to a single character. The text which is output with the temporary font can 
+Superscripts and subscripts do not need to be limited to a single character. The text which is output with the temporary font can
 be any length, provided it appears before the end of the temporary font command (either before the single colon, or next new line).
-For example:  
-P &sub(N-1) .sm ( .sm &ital(x) .sm )  or 
+For example: 
+P &sub(N-1) .sm ( .sm &ital(x) .sm )  or
 .sf &ital_font
-P &lg_sub_ital(N-1) .sm ( .sm &ital(x) .sm )  = 
+P &lg_sub_ital(N-1) .sm ( .sm &ital(x) .sm )  =
 a &lg_sub(j) .sm x &lg_super(j+1) .sm .
 .sf &text_font
 
 .h3 Super/subscript Displacement Control
-The &ital( superscript ) and &ital( subscript ) font names recognised on the temporary font command cause a default value of 
+The &ital( superscript ) and &ital( subscript ) font names recognised on the temporary font command cause a default value of
 one half and one quarter of the current text size, respectively,  to be used as a vertical displacement.
-This default value makes the command easy to use, but may not be what is desired, so the user is free to add a displacement 
-value with a font name to have more control over adding a superscript or subscript to the document. 
-(This is also the only way to change the font for the super/subscript if that is needed.)  
+This default value makes the command easy to use, but may not be what is desired, so the user is free to add a displacement
+value with a font name to have more control over adding a superscript or subscript to the document.
+(This is also the only way to change the font for the super/subscript if that is needed.) 
 As an example, the following table shows the {X}fm code which produced the associated superscript and subscript values.
 
 .sp
-.ta start 4i 1.5i b=1 B
+.ta start 4i 1.5i b=1
 .ce DOCUMENT SOURCE : .cl : .ce OUTPUT :
 
-.tr
+.tr l=2
 &ex_start
   .dv disp [ &text_size 4 / ]
   E = MC .sm .tf d=&disp &text_font 3/4 2
 &ex_end
-.cl 
+.cl
   .dv disp [ &text_size 4 / ]
   E = MC .sm .tf d=&disp &text_font 3/4 2
 
@@ -226,7 +226,7 @@ As an example, the following table shows the {X}fm code which produced the assoc
   .** default for subscript so same as
   H .sm .tf subscript 3/4 2 : .sm O
 &ex_end
-.cl 
+.cl
   .dv disp [ -&text_size 4 / ]
   H .sm .tf d=&disp &text_font 3/4 2  : .sm O
 
@@ -235,7 +235,7 @@ As an example, the following table shows the {X}fm code which produced the assoc
   .dv disp [ &text_size 3 * 4 / ]
   E = MC .sm .tf d=&disp &text_font 3/4 2
 &ex_end
-.cl 
+.cl
   .dv disp [ &text_size 3 * 4 / ]
   E = MC .sm .tf d=&disp &text_font 3/4 2
 
@@ -244,7 +244,7 @@ As an example, the following table shows the {X}fm code which produced the assoc
   .dv disp [ -&text_size  3 * 4 / ]
   H .sm .tf d=&disp &text_font 3/4 2 : .sm O
 &ex_end
-.cl 
+.cl
   .dv disp [ -&text_size  3 * 4 / ]
   H .sm .tf d=&disp &text_font 3/4 2  : .sm O
 
@@ -253,7 +253,7 @@ As an example, the following table shows the {X}fm code which produced the assoc
   .dv disp [ &text_size 2 * 3 / ]
   E = MC .sm .tf d=&disp &text_font 3/4 2
 &ex_end
-.cl 
+.cl
   .dv disp [ &text_size 2 * 3 / ]
   E = MC .sm .tf d=&disp &text_font 3/4 2
 
@@ -262,7 +262,7 @@ As an example, the following table shows the {X}fm code which produced the assoc
   .dv disp [ -&text_size  2 * 3 / ]
   H .sm .tf d=&disp &text_font 3/4 2 : .sm O
 &ex_end
-.cl 
+.cl
   .dv disp [ -&text_size  2 * 3 / ]
   H .sm .tf d=&disp &text_font 3/4 2  : .sm O
 
@@ -273,7 +273,7 @@ As an example, the following table shows the {X}fm code which produced the assoc
   .** default for superscript so same as
   E = MC .sm .tf superscript 3/4 2
 &ex_end
-.cl 
+.cl
   .dv disp [ &text_size 1 * 2 / ]
   E = MC .sm .tf d=&disp &text_font 3/4 2
 
@@ -282,7 +282,7 @@ As an example, the following table shows the {X}fm code which produced the assoc
   .dv disp [ -&text_size  1 * 2 / ]
   H .sm .tf d=&disp &text_font 3/4 2 : .sm O
 &ex_end
-.cl 
+.cl
   .dv disp [ -&text_size  1 * 2 / ]
   H .sm .tf d=&disp &text_font 3/4 2  : .sm O
 .et
