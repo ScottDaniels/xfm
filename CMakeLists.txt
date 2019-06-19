@@ -39,6 +39,10 @@ list( GET mmp_version 0 major_version )
 list( GET mmp_version 1 minor_version )
 list( GET mmp_version 2 patch_level )
 
+# debian names like underbars for some odd reason
+set( deb_pkg_name "${CMAKE_PROJECT_NAME}_${major_version}.${minor_version}.${patch_level}${spoiled_str}_${CMAKE_SYSTEM_PROCESSOR}.deb" )
+set( rpm_pkg_name "${CMAKE_PROJECT_NAME}-${major_version}.${minor_version}.${patch_level}${spoiled_str}-${CMAKE_SYSTEM_PROCESSOR}.rpm" )
+
 message( "+++ building ${major_version}.${minor_version}.${patch_level}${spoiled_str}" )
 
 set( CMAKE_CXX_FLAGS "-g -Wall" )
@@ -75,6 +79,9 @@ IF( EXISTS "${CMAKE_ROOT}/Modules/CPack.cmake" )
         set( CPACK_PACKAGE_VERSION_MAJOR "${major_version}" )
         set( CPACK_PACKAGE_VERSION_MINOR "${minor_version}" )
         set( CPACK_PACKAGE_VERSION_PATCH "${patch_level}" )
+
+		set( CPACK_DEBIAN_FILE_NAME ${deb_pkg_name} )
+		set( CPACK_RPM_FILE_NAME ${rpm_pkg_name} )
         set( CPACK_PACKAGE_FILE_NAME "${CMAKE_PROJECT_NAME}-${major_version}.${minor_version}.${patch_level}${spoiled_str}-${CMAKE_SYSTEM_PROCESSOR}" )
 
         #we have no dependcies
