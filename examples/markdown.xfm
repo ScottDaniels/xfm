@@ -2,8 +2,6 @@
 .** example document illustrating the markdown imbed (template) file
 
 .im  ../templates/markdown.im
-.xx 2
-.xx 0
 .dv x {X}fm
 
 &h1(Markdown Imbed -- Sample Document)
@@ -161,9 +159,13 @@ The following is a simple table with one column that has longer lines that will 
 generated output and thus require concatenation during &ital(fixup.)
 
 .sp
-&ta( b=1 1.2i 3i )
+.** border is off initially; we set after header row; explicit line weight of 0
+&ta( w=0 b=0 1.2i 3i center )
 &table_head(Fish) &cl &table_head(Description)
-&tr
+
+.** enable borders (b=1)with a temp line horizontal weight of 1 for the two lines (l=2 w=1)
+&tr( w=1 b=1 l=2 )
+
 Shark &cl A fish that nobody wants to swim with.
 &tr
 Dolphin &cl Usually regarded as a friendly ocean dwelling mamal.
@@ -178,10 +180,14 @@ Dog Fish &cl Not a real fish that we know about, but this tests the ability to h
 The following is the {X}fm source for the table shown above:
 
 &ex_start
-   &ta( b=1 1.2i 3i )
+   .** borders are off initially, center table if possible
+   &ta( b=0 1.2i 3i center )
    &table_head(Fish) &cl &table_head(Description)
    
-   &tr
+   .** turn on borders after this row, painting two horizontal lines
+   .** with a temp weight of 1; after this row weight returns to
+   .** what was specified in the ta call.
+   &tr( l=2 b=1 w=1 )
    Shark &cl A fish that nobody wants to swim with.
    &tr
    Dolphin &cl Usually regarded as a friendly ocean 
@@ -206,6 +212,6 @@ generated the macro does nothing special as markdown ignores any formatting
 of words in the first table row (or so it seems).
 
 
-.** at the end, we must force the end notes to be generated
+.** at the end,  in markdown, we must force the end notes to be generated
 &line
 .cn showend

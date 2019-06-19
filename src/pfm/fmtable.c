@@ -106,6 +106,8 @@ extern void FMtable(  void )
 	int border = 0;          /* border size */
 	char wstr[50];           /* spot to build width stirng in */
 	int w = 100;
+	int center = 0;			// if center given on the command, set
+	int total_width = 0;	// if centering, we need this
 
 	space[0] = 0;
 	align[0] = 0;
@@ -159,19 +161,25 @@ extern void FMtable(  void )
 					border++;
 				break;
 
-			case 'C':				// line coloure as #rrggbb or 0xrrggbb
+			case 'C':				// line colour as #rrggbb or 0xrrggbb
 				if( ptr+1 && ptr+2 ) {
 					t->line_colour = strdup( ptr+2 );
 				}
 				break;
 
 			case 'c':
-				if( strncmp( ptr, "class=", 6 ) == 0 )		/* ignore hfm class= */
-					break;
-/*
-				t->bgcolour = strdup( ptr + 2 );
-				sprintf( colour, "bgcolor=%.13s", t->bgcolour );
-*/
+				if( strcmp( ptr, "center" ) == 0 ) {
+					center = 1;										// we'll adjust each column start so table is centered
+				} else {
+					if( strncmp( ptr, "class=", 6 ) == 0 ) {		// ignore hfm table class
+						break;
+					} 
+				}
+				// ignore hfm c=colour-string
+				/*
+					t->bgcolour = strdup( ptr + 2 );
+					sprintf( colour, "bgcolor=%.13s", t->bgcolour );
+				*/
 				break;
 
 			case 'l':				// line weight
@@ -211,22 +219,18 @@ extern void FMtable(  void )
 				break;
 
 			default:          /* assume column width definition */
-				if( curcell < MAX_CELLS )
-				{
+				if( curcell < MAX_CELLS ) {
 					col = (struct col_blk *) malloc( sizeof( struct col_blk ) );
 					memset( col, 0, sizeof( *col ) );
 					col->next = NULL;
 					col->width = FMgetpts( ptr, len ) - 4;
-					/*t->border_width += col->width + (2 * t->padding );*/
+					total_width += col->width + t->padding;
 					t->border_width += col->width + ( t->padding ) + 2;
-					if( cur_col )
-					{
+					if( cur_col ) {
 						col->lmar = cur_col->lmar + cur_col->width + t->padding;
 						cur_col->next = col;
 						cur_col = col;
-					}
-					else
-					{
+					} else {
 						col->lmar = lmar + t->padding;
 						cur_col = firstcol = col;
 					}
@@ -234,6 +238,14 @@ extern void FMtable(  void )
 				}
 				break;
 		}
+
+	if( center ) {
+		t->shift = ((linelen - total_width)) / 2;				// amount we need to shift
+		t->lmar += t->shift;									// used for horiz lines
+		for( cur_col = firstcol; cur_col != NULL; cur_col = cur_col->next ) {
+			cur_col->lmar += t->shift;
+		}
+	}
 
 	firstcol->anchor =  t->col_list->anchor;		/* cary the anchor over for running head/feet */
 
@@ -256,7 +268,7 @@ extern void FMtable(  void )
 	else
 	{
 		topy = cury + t->padding;			/* columns bounce back to here now */
-		if( border )						/* dont do outside for table in a table */
+		if( t->edge_borders )						/* dont do outside for table in a table */
 		{
 			sprintf( obuf, "%d setlinewidth ", t->weight );
 			AFIwrite( ofile, obuf );
@@ -477,6 +489,7 @@ extern void FMtr( int last )
 	int required = 0;		// points required for the next row; col eject if not enough
 	int	tmp_lw = -1;		// temp line weight (l=)
 	int lcount = 1;			// number of horizontal separating lines
+	int border = -1;		// update border starting after we paint next top border
 
 	colour[0] = 0;
 	align[0] = 0;
@@ -509,6 +522,12 @@ extern void FMtr( int last )
        case 'a':
          sprintf( align, "align=%s", ptr + 2 );
          break;
+
+		case 'b':									// allow b=0 on table, but turning it on at any  row with b=1
+			if( *(ptr+1) == '=' ) {
+				border = atoi( ptr+2 );
+			}
+			break;
 	
        case 'c':
 		if( strncmp( ptr, "class=", 6 ) == 0 )			/* ignore hfm class */
@@ -561,6 +580,13 @@ extern void FMtr( int last )
 		tab_vlines( t, 0 );					/* add vlines just for this row */
 	}
 
+	if( border >= 0 ) {						// reset after we paint verts for previous row
+		t->border = border;
+		if( tmp_lw < 0 ) {					// force change if user didn't set explicitly
+			tmp_lw = t->weight;
+		}
+	}
+
 	if( last && !t->edge_borders ) {
 		return;
 	}
@@ -568,14 +594,13 @@ extern void FMtr( int last )
 	if( t->border || tmp_lw >= 0 ) {							// add a top line if borders, or a temp line width was given
 		int line_y = cury;
 
-		TRACE( 2, "table/tr-border: cury=%d lcount=%d tlw=%d\n", cury, lcount, tmp_lw );
+		TRACE( 2, "table/tr-border: cury=%d lcount=%d border=%d tlw=%d\n", cury, lcount, border, tmp_lw );
 		if( lcount && tmp_lw >= 0 ) {							// dont need if no line generated
 			sprintf( obuf, "%d setlinewidth ", tmp_lw );		// need a second adjustment
 			AFIwrite( ofile, obuf );
 		}
 
 		while( lcount > 0 ) {
-			//sprintf( obuf, "%d %d moveto %d %d rlineto stroke\n", t->lmar+t->padding, -cury, t->border_width-t->padding, 0 ); // top border
 			sprintf( obuf, "%d %d moveto %d %d rlineto stroke\n", t->lmar+t->padding, -line_y, t->border_width-t->padding, 0 ); // top border
 			AFIwrite( ofile, obuf );								// bottom line for the previous row
 
@@ -719,7 +744,6 @@ extern void FMrestart_table( void ) {
 
 	if( t->border )					// add top border to start the table in next col/page
 	{
-		//sprintf( obuf, "%d %d moveto %d %d rlineto stroke\n", t->lmar+t->padding, -(cury - t->padding), t->border_width-t->padding, 0 );
 		sprintf( obuf, "%d %d moveto %d %d rlineto stroke\n", t->lmar+t->padding, -(cury ), t->border_width-t->padding, 0 );
 		AFIwrite( ofile, obuf );
 	}
@@ -755,7 +779,7 @@ extern void FMendtable( void )
 	TRACE( 2, "tab_end: reset first col from %p to %p\n", firstcol, t->col_list );
 	TRACE( 2, "tab_end: reset cur_col from %p to %p\n", cur_col, t->cur_col );
 	cur_col = t->cur_col;
-	lmar = t->lmar;
+	lmar = t->lmar - t->shift;			// adjust for shift if table was centered
 	hlmar = t->hlmar;
 	linelen = t->old_linelen;
 	firstcol = t->col_list;

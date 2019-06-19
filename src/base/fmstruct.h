@@ -82,6 +82,7 @@ struct table_mgt_blk {
 	int	old_linelen;
 	int 	lmar;			/* original values of these things */
 	int 	hlmar;
+	int		shift;			// amount table was shifted from the true left margin
 	int	border;
 	int	edge_borders;		// 1 if edge borders to be written even for table in table
 	int weight;				// line weight for edges and column lines
