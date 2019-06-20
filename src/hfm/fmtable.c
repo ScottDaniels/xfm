@@ -88,6 +88,7 @@ Contributions to this source repository are assumed published with the same lice
 *			10 Apr 2007 - fixed buffer overrun.
 *			21 Jul 2010 - html 4.0 changes
 *			18 Jul 2016 - Add consistent, and sometimes modern, prototypes.
+*			19 Jun 2019 - Handle new center option.
 * --------------------------------------------------------------------------
 */
 extern void FMtable( void )
@@ -127,6 +128,7 @@ extern void FMtable( void )
  
  t->fgcolour = t->bgcolour = NULL;
  t->oldfg = textcolour;
+ t->shift = 0;					// for hfm shift indicates that we centered
  
  for( w = 0; w < MAX_CELLS + 1; w++ )
   tableinfo[w] = 0;
@@ -153,10 +155,14 @@ extern void FMtable( void )
 		break;
 
     case 'c':
-       t->bgcolour = strdup( ptr + 2 );
-       //sprintf( colour, "bgcolor=%.13s", t->bgcolour );
-       sprintf( colour, "background-color: %.13s;", t->bgcolour );
-       break;
+		if( strcmp( ptr, "center" ) == 0 ) {
+			t->shift = 1;
+		} else {
+			t->bgcolour = strdup( ptr + 2 );
+			//sprintf( colour, "bgcolor=%.13s", t->bgcolour );
+			sprintf( colour, "background-color: %.13s;", t->bgcolour );
+		}
+		break;
 
     case 'n':
        do_cell = 0;    /* dont auto do a cell */
@@ -201,9 +207,11 @@ extern void FMtable( void )
  	tableinfo[0] = curcell;      /* save number of cells  */
  	curcell = 0;
 
- //sprintf( obuf, "<TABLE border=%d %s %s %s %s %s %s %s > ", border, wstr, colour, pad, align, valign, space, table_css ? table_css : "" );
- //sprintf( obuf, "<TABLE border=%d style=\"%s color: %s font-size: %dpx font-family: %s\" > ", border, table_css ? table_css : "", textcolour, text_size, curfont );
 
+	if( t->shift ) {
+ 		sprintf( obuf, "<center>\n" );
+ 		AFIwrite( ofile, obuf );
+	}
  	sprintf( obuf, "<TABLE border=%d style=\"%s %s %s %s color: %s font-size: %dpx font-family: %s\" >", border, wstr, align, colour, valign, textcolour, textsize, curfont );
  	AFIwrite( ofile, obuf );
 
@@ -273,32 +281,46 @@ extern void FMendtable( void )
 	FMflush( );
 	FMele_stack( ES_POP, ET_TABLE );		/* end everything */
 
-	if( ts_index )
+
+	if( ts_index ) {
 		ts_index--; 
+	} else {
+		return;
+	}
+
 	if( table_stack[ts_index] )
 	{
-		if( table_stack[ts_index]->oldfg )
+ 		if( table_stack[ts_index]->shift ) {
+ 			sprintf( obuf, "</center>\n" );
+ 			AFIwrite( ofile, obuf );
+		}
+
+		if( table_stack[ts_index]->oldfg ) {
 			textcolour = table_stack[ts_index]->oldfg;
+		}
 
-		if( table_stack[ts_index]->fgcolour )
+		if( table_stack[ts_index]->fgcolour ) {
 			free( table_stack[ts_index]->fgcolour );
+		}
 
-		if( table_stack[ts_index]->bgcolour )
+		if( table_stack[ts_index]->bgcolour ) {
 			free( table_stack[ts_index]->bgcolour );
+		}
 
-		if( table_stack[ts_index]->header )
+		if( table_stack[ts_index]->header ) {
 			free( table_stack[ts_index]->header );
+		}
 
 		free( table_stack[ts_index]->cells );
 		free( table_stack[ts_index] );
 		table_stack[ts_index] = 0;
+
 		if( ts_index )
 		{
 			tableinfo =  table_stack[ts_index - 1]->cells;
 			curcell = table_stack[ts_index - 1]->curcell;
-		}
-		else
+		} else {
 			tableinfo = 0;
+		}
 	}
-//	AFIwrite( ofile, "</td></tr></table>" );    /*end everything */
 }
