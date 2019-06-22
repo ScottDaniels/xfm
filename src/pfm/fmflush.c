@@ -98,8 +98,12 @@ extern int FMflush( void )
  	char 	jjbuf[4096];		// work buffer  (must be bigger than jbuf to prevent compiler warnings :(
 	int		ejected = 0;		// set to true for return if we ejected the page
 
-	if( optr == 0 )
+	TRACE(3,  "flush starts: lmar=%d llen=%d cury=%d topy=%d boty=%d cn_space=%d obuf=(%s)\n", 
+		lmar, linelen, cury, topy, boty, cn_space,  obuf );
+
+	if( optr == 0 ) {
 		return ejected;
+	}
 
  	FMfmt_end( );					/* mark the last format block as ending here */
 
@@ -122,8 +126,11 @@ extern int FMflush( void )
 		TRACE(2,  "flush: forced ceject\n" );
 
 		FMset_last_colour( );					// ensure colour change passes page boundary
+
+		TRACE(3,  "flush ejected: lmar=%d llen=%d cury=%d topy=%d boty=%d cn_space=%d obuf=(%s)\n", lmar, linelen, cury, topy, boty, cn_space,  obuf );
  	}
 
+	TRACE( 2, "flush: move to: cury=%d\n", cury );
 	snprintf( jbuf, sizeof( jbuf ), "%d %d moveto\n", lmar, -cury );  /* create moveto */
 	AFIwrite( ofile, jbuf );      /* write the move to command or x,y for cen */
 
@@ -140,7 +147,7 @@ extern int FMflush( void )
 			jbuf[j] = 0;
 	
 			snprintf( jjbuf, sizeof( jjbuf ), "(%s) (%s) %d %d [ %s ] ", font, jbuf, ydisp, size, colour ? colour : "-1" );   
-			TRACE( 2, "flush: jbuf=(%s) start=%d end=%d size=%d font=%s colour=%s (%s)\n", jbuf, start, end, size, font, colour ? colour : "undefined", textcolour ? textcolour : "unset" );
+			TRACE( 3, "flush: jbuf=(%s) cury=%d start=%d end=%d size=%d font=%s colour=%s (%s)\n", jbuf, cury, start, end, size, font, colour ? colour : "undefined", textcolour ? textcolour : "unset" );
    			AFIwrite( ofile, jjbuf );               				/* output the information */
 			things++;
 		}
@@ -192,6 +199,7 @@ extern int FMflush( void )
 
 	if( cur_col->flags & CF_TMP_MAR ) {
 		if( cn_space + cury > cur_col->revert_y ) {
+			TRACE( 3, "flush: reverting: cury=%d cn_sp=%d revert=%d\n", cury, cn_space, cur_col->revert_y );
 			lmar = cur_col->olmar;
 			linelen = cur_col->olinelen;
 			cur_col->flags &= ~CF_TMP_MAR;
@@ -200,6 +208,7 @@ extern int FMflush( void )
 
 	if( cn_space && cn_space + cury >= boty )
 	{
+		TRACE( 3, "flush: show col notes: cury=%d cn_sp=%d\n", cury, cn_space );
 		cn_space = 0;
 		FMcolnotes_show( 0 );			/* cause the column notes to be put in before eject */
 	}

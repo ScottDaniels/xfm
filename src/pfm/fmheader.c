@@ -129,7 +129,7 @@ extern void FMheader( struct header_blk *hptr )
 	char *oldfont;      /* pointer to old font sring */
 	int	need_eject = 0;	// set to true if we need to eject for any reason
 
-	FMflush();
+	//FMflush();
 
 																// compute total space needed before, after, and reserved
 	before = ((double) (textsize + textspace)) * hptr->bskip;	// space before (lines, or fractional lines)
@@ -141,15 +141,17 @@ extern void FMheader( struct header_blk *hptr )
 	if( (i + cury) > (boty - cn_space) )						// if required space is more than what's left force a break
 	{
 		need_eject  = 1;
-		before = 0;											// when at top, no before space needed
-		TRACE( 2, "header: forcing eject: i+cury=%d  boty-cn_space=%d\n", i + cury, boty - cn_space );
+		if( optr == 0 ) {
+			before = 0;											// when at top, no before space needed if noting peding flush
+		}
+		TRACE( 2, "header: forcing eject: cury=%d(adjusted)  boty-cn_space=%d before=%d\n", i + cury, boty - cn_space, before );
 	} else {
-		if( cury <= topy ) {
-			before = 0;											// when at top, no before space needed
+		if( (cury <= topy) && optr == 0 ) {					// at top and nothing to flush
+			before = 0;										// then space before is nixed
 		}
 	}
-	TRACE( 2, "header:  level=%d skip=%.1f/%.1f before=%.2f ejecting=%d require=%d needed=%d cury=%d boty=%d cn_space=%d\n", hptr->level, hptr->bskip, hptr->askip, before, need_eject, hptr->required, i, cury, boty, cn_space );
 
+	TRACE( 2, "header:  level=%d skip=%.1f/%.1f before=%.2f ejecting=%d require=%d needed=%d cury=%d boty=%d cn_space=%d\n", hptr->level, hptr->bskip, hptr->askip, before, need_eject, hptr->required, i, cury, boty, cn_space );
 	
 	if( (hptr->flags & HEJECTP) && (cur_col != firstcol || cury > topy) )	// must check for new page first as it trumps
 	{
@@ -160,10 +162,11 @@ extern void FMheader( struct header_blk *hptr )
 			{
 				FMcolnotes_show( 0 );			
 				cn_space = 0;
-			}
-			else
+			} else {
 				FMpflush( );	// and finally eject the page leaving short_out SET!
-		before = -textsize;
+			}
+
+			before = -textsize;
 		}
 	} else {
 		if( need_eject || ((hptr->flags & HEJECTC) && cury != topy) ) 			// either at end or column eject
@@ -176,10 +179,11 @@ extern void FMheader( struct header_blk *hptr )
 				{
 					FMcolnotes_show( 0 );			
 					cn_space = 0;
-				}
-				else
+				} else {
 					PFMceject( );	// and finally the eject; we leave short_out SET as we pushed our .hn command so we need to return to pick it up again
-		before = -textsize;
+				}
+
+				before = -textsize;
 			}
 		} else {
 			FMflush( );		// nothing special, just flush
@@ -190,7 +194,7 @@ extern void FMheader( struct header_blk *hptr )
 		return;
 
 
-	TRACE( 2, "header: didn't short out: cury=%d lmar=%d curfont=%s textsize=%d before=%.0f\n", cury, lmar, curfont, textsize, before );
+	TRACE( 2, "header: didn't short out: topy=%d cury=%d lmar=%d curfont=%s textsize=%d before=%.0f\n", topy, cury, lmar, curfont, textsize, before );
 	cury += before;	 						// skip before if needed (already points), and zero if we ejected
 	pnum[(hptr->level)-1] += 1;     		 /* increase the paragraph number */
 

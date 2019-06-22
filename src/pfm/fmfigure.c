@@ -75,8 +75,12 @@ Contributions to this source repository are assumed published with the same lice
 *
 *				Two styles:
 *				.fg nosect
-*				.fg [s=size] [f=font] [v=var_name] [num=number] [t=type] <text>
+*				.fg [s=size] [f=font] [v=var_name] [num=number] [t=type] [x=<string>] <text>
 *					type is either table or figure, default is figure.
+*					x=<string> allows "flags" such as x=center to be set. Supported
+*					flags are:
+*						x=center  == center the figure string
+*						x=reset	  == reset counters to 1
 *
 *   Modified:	30 Oct 1992 - To reduce figure text size by two from current size
 *				26 May 1993 - To reduce space between figure text lines.
@@ -86,6 +90,7 @@ Contributions to this source repository are assumed published with the same lice
 *					to support their use on the .fg command
 *				17 Jul 2016 - Bring decls into the modern world.
 *				11 Aug 2017 - Add size (s=), font (f=), and nosect parm support.
+*				20 Jun 2019	- Add x= support
 *****************************************************************************
 */
 extern void FMfigure( void )
@@ -103,6 +108,8 @@ extern void FMfigure( void )
 	char	fbuf[100];			/* format buffer */
 	char	vbuf[100];			// build .dv command in if vname given
 	char*	vname = NULL;		// var name to put fig number into
+	int		center = 0;			// if x=center given we will flip center on
+	int 	nop = 0;			// set if x=noop is given to just set things and not add text
 
 
 	tok_len = FMgetparm( &buf );				// get early so we can check for nosect command and bail before any real work
@@ -121,7 +128,7 @@ extern void FMfigure( void )
 	oldsize = textsize;    /* save old size for end */
 
 	flags2 |= F2_SETFONT;  /* force flush to select our figure font */
-	curfont = strdup( ffont == NULL ? curfont : ffont );   							// default to figure font if there, text font if not, f= overrides later
+	curfont = strdup( ffont == NULL ? curfont : ffont );   	// default to figure font if there, text font if not, f= overrides later
 
 	if( textsize > 8 )
 		textsize -= 2;         /* default size for the font string is slightly smaller than current */
@@ -132,7 +139,8 @@ extern void FMfigure( void )
 		{
 			case 'f':
 				if( *(cp+1) ) {
-					curfont = strdup( cp+1 );
+					free( curfont );				// free what we created before
+					curfont = strdup( cp+1 );		// dup user font so we always free something at end
 				}
 				break;
 
@@ -140,6 +148,13 @@ extern void FMfigure( void )
 				if( *(cp + 1) ) {
 					fnum = atoi( cp+1 );
 				}
+				break;
+
+			case 'p':					// p[refix]=<string>
+				if( fig_prefix ) {
+					free( fig_prefix );
+				}
+				fig_prefix = strdup( cp+1 );
 				break;
 
 			case 's':			// override text size
@@ -161,6 +176,20 @@ extern void FMfigure( void )
 					vname = strdup( cp+1 );
 				}
 				break;
+
+			case 'x':
+				if( strcmp( cp+1, "center" ) == 0 ) {
+					center = 1;
+				} else {
+					if( strcmp( cp+1, "reset" ) == 0 ) {
+						table_number = 1;
+						fig = 1;
+					} else {
+						if( strcmp( cp+1, "noop" ) == 0 ) {
+							nop = 1;
+						}
+					}
+				}
 		}
 
 		tok_len = FMgetparm( &buf );
@@ -180,7 +209,11 @@ extern void FMfigure( void )
 			snprintf( vbuf, sizeof( vbuf ), ".dv %s %d-%d :", vname, pnum[0], fnum );
 		}
 	} else {
-		snprintf( fbuf, sizeof( fbuf ), "%s %d: ", type, fnum );   /* gen fig number */
+		if( fig_prefix ) {
+			snprintf( fbuf, sizeof( fbuf ), "%s %s%d: ", type, fig_prefix, fnum );   /* gen fig number */
+		} else {
+			snprintf( fbuf, sizeof( fbuf ), "%s %d: ", type, fnum );   /* gen fig number */
+		}
 		if( vname ) {
 			snprintf( vbuf, sizeof( vbuf ), ".dv %s %d :", vname, fnum );
 		}
@@ -194,7 +227,19 @@ extern void FMfigure( void )
 		tok_len = FMgetparm( &buf );
 	}
 
+	if( center ) {
+   		if( flags2 & F2_CENTER ) {
+			center = 0;						// user has flag set, do nothing
+		} else {
+			flags2 |= F2_CENTER;
+		}
+	}
+
 	FMflush( );                             /* send user line on the way */
+
+	if( center ) {
+   		flags2 &= ~F2_CENTER;				// if we set it, we flip it off now
+	}
 
 	flags2 |= F2_SETFONT;  /* next flush will restore the font */
 

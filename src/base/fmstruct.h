@@ -217,6 +217,7 @@ EXTERN int xlate_l INIT_VALUE( 0 );             /* # chars in next tok to xlate 
 
 EXTERN long words INIT_VALUE( 0l );               /* number of words in the document */
 EXTERN int fig INIT_VALUE( 1 );                   /* figure number - always @ next one */
+EXTERN char *fig_prefix INIT_VALUE( NULL );			// prefix string added to each figure number
 EXTERN int table_number INIT_VALUE( 1 );          /* table  number - always @ next one */
 EXTERN int lmar INIT_VALUE( DEF_LMAR );           /* text left margin (absolute - points) */
 EXTERN int hlmar INIT_VALUE( DEF_LMAR );          /* header left margin (absolute - points) */
