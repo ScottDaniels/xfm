@@ -147,13 +147,21 @@ Start next cell in the table
 .sp
 .br [s=<size>] 
 .br [f=<font>
-.br [table] 
+.br [p=<prefix>
+.br [t=table] 
+.br [x=center]
+.br [x=noop]
+.br [x=reset]
 .br <text>
 .cl
     Add figure text
 .br Hard set size for text (default current size-2p)
 .br Font for text
+.br Sets a prefix string to place before each figure number
 .br Uses table label and number rather than figure
+.br Centers the text string
+.br Does not expect text (allow prefix, reset alone)
+.br Resets the figure and table number to 1
 .br Text to insert
 
 
@@ -235,14 +243,16 @@ Causes page number to be generated as roman numerals
 c1 c2...cn .br
 [B] .br
 [b=n] .br
+[center] .br
 [n] .br
 [w=pct] .br
 [c=#hhhhhh] .br
 [p=<points>]
 .cl
 Start table c1, c2... are column width definitions (e.g. 1i 3i) .br
-Place left edge boarders (omit for table in table) .br
-Place borders on the table if n == 1.br
+Enable edge boarders .br
+Place borders on the table when n is 1; borders off if n is 0 .br
+Center table on page .br
 Do not automatically generate first tr command .br
 Width as a percentage of screen size (hfm only) .br
 Colour for background of cell/row .br
@@ -257,8 +267,10 @@ Padding of text from cell boundaries .br
 .cl
 .sp 1
 [n] .br 
+[b=n] .br
 [c=bgcolour] .br 
 [a=alignval] .br 
+[l=n] .br
 [m=n] .br
 [r=<dist>] .br
 [v=valignvalue]
@@ -266,8 +278,10 @@ Padding of text from cell boundaries .br
 .cl
 Start next row in the table.
 .br Don't automatically start column
+.br Turn borders on if n is 1
 .br Set background colour (HTML only)
 .br Set alignment type (HTML only)
+.br set number of lines drawn before next row (pfm only)
 .br Cause n horizontal lines to be written following the row (pfm only)
 .br Require vertical space break page if not available.
 .br Vertical alignment option (HTML only)

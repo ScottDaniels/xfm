@@ -1,8 +1,8 @@
 .** if there is room, at least $1 lines in the current column, pull in the file $2 now, else pull in at next eject
 .** we can use eval to ensure that the iremain/lremain  variables are evaluated after the .gv command
 
-.** deprecated
-.dv ifroom .if pfm ^:    .gv remain .ev ^`.if  ^^^&_lines $1 > ^`  ^:  .im $2  .ei  .oe col .im $2  .fi  .ei  .im $2  .fi 
+.** deprecated assumes lines
+.dv ifroom .if pfm ^:    .gv remain .ev ^`.if  ^^^&_lines $1 > ^`   .im $2  .ei  .oe col .im $2  .fi  .ei  .im $2  .fi 
 
 .dv ifroom_l .if pfm ^:  .gv remain .ev ^`.if  ^^^&_lremain $1 > ^` .im $2  .ei  .oe col .im $2  .fi  .ei  .im $2  .fi
 .dv ifroom_i .if pfm ^:  .gv remain .ev ^`.if  ^^^&_iremain $1 > ^` .im $2  .ei  .oe col .im $2  .fi  .ei  .im $2  .fi

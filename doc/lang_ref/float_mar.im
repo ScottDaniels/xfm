@@ -8,8 +8,10 @@ automatically reverted to the current setting.
 .ca start fm_example.ca
 	.pu
 	&set1col
-	.ep xfm_fm_ex1.eps x=.5i l=3i close proportional
+	.ep xfm_fm_ex1.eps x=.85i l=3i close proportional
+	.bc start
 	.fg Examples of floating margin commands to float text round an image on either the left or right of the document.
+	.bc end
 	.sp 2
 	&set2col
 	.po

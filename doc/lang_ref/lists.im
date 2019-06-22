@@ -79,7 +79,7 @@ items:
 .sf &textfont
 .st &textsize
 .** .bx end
-.fg Bullet list code example.
+.fg x=center Bullet list code example.
 .sp 2
 .ca end
 .** -----------------------------------------------------------------------
@@ -183,7 +183,8 @@ rendered in Helevetica-Bold font.
 
 .** -------------------- capture example that will be read in twice; once as source example and once to format to show output
 .ca start di_src_examp.ca
-.ju off
+
+ .ju off
  .bd .65i Helvetica-Bold
  .di bomber : Generally used to 
      describe a hand hold 
@@ -201,7 +202,8 @@ rendered in Helevetica-Bold font.
      to pull their body towards the 
      rock.
  .ed
-.ju on
+ .ju on
+
 .ca end
 
 .** -----------------------------------------------------------------------------------
@@ -213,12 +215,12 @@ rendered in Helevetica-Bold font.
 &bold(Source^:)
 .if hfm
 	.st [ &textsize 4 - ]
+.ei
+	.st [ &textsize 2 - ]
 .fi
 .sf Courier
 .nf
-
 .im di_src_examp.ca
-
 .fo
 .sf &textfont
 
@@ -250,7 +252,7 @@ rendered in Helevetica-Bold font.
 .ll +.3i
 .sp
 .bx end
-.fg Definition list source and output.
+.fg x=center Definition list source and output.
 .sp 2
 .ca end
 .** -----------------------------------------------------------------------------------------
@@ -333,7 +335,7 @@ letters (e.g. a, b, c...).
 .ll +.3i
 .sp
 .bx end
-.fg Automatically numbered definition list.
+.fg x=center Automatically numbered definition list.
 .sp 2
 
 .** end initial if remain 

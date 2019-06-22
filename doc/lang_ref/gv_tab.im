@@ -7,7 +7,7 @@
 .sf &textfont
 .sp
 
-.in +.28i
+.** .in +.28i
 .ju off
 .if &two_col_mode 1 =
 	.dv lcw 4.5i
@@ -15,11 +15,11 @@
 	.dv lcw 3.8i
 .fi
 
-.ta B b=1 p=5p .75i .75i &lcw
-.bc start Value  Name .bc end
-.cl : .bc start &bold(Variable  Created) .bc end
-.cl : .bc start &bold(Description) .bc end
-.tr
+.ta  center b=0 p=5p .75i .75i &lcw
+.bc start &bold( Value ) .br &bold( Name ) .bc end
+.cl : .bc start &bold(Variable) .br &bold( Created) .bc end
+.cl : .bc start .sp 1 &bold(Description) .bc end
+.tr l=2 b=1
 .bc start Date .bc end
 .cl : .bc start _date .bc end
 .cl : Sets the variable with the date using the format: &cw(12 Jan 2002)
@@ -93,7 +93,7 @@ current column number (0 is the first column) is placed into &cw(_coln.)
 .et
 
 .st &textsize
-.fg t=table  Get value command parameters and resulting variable definitions.
+.fg x=center t=table  Get value command parameters and resulting variable definitions.
 .sp 2
 
 .tt 

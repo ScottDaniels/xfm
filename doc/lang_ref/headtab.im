@@ -1,17 +1,18 @@
 .pu
 .st [ &textsize 2 - ]
 .sf &textfont
+.dv col1_width 7.0i
 &set1col
 .sp
 .ju off
-.in .5i
+.** .in .5i
 .ll &{c1_linesize}i
 
 .dv row .bc start $1 .cl ^: $2  .cl ^:  $3 .cl ^: $4  .cl ^: $5 .cl ^: $6 .cl ^:  $7 .cl ^:  $8  .cl ^:  $9  .cl ^:  $10 .bc end .tr
 .dv lastrow .bc start $1 .cl ^: $2  .cl ^:  $3 .cl ^: $4  .cl ^: $5 .cl ^: $6 .cl ^:  $7 .cl ^:  $8  .cl ^:  $9  .cl ^:  $10 .bc end 
 
 .sf Helvetica
-.ta B b=1 p=5p .5i .75i .5i .5i .5i .5i .5i .5i .5i .6i
+.ta  b=0 p=5p .5i .75i .5i .5i .5i .5i .5i .5i .5i .6i center
 .br
 .bc start
 .cl : .br
@@ -36,7 +37,8 @@
 .cl :  .bc start EJECT .bc end
 .br 
 .bc end
-.tr
+.sy -.25i
+.tr l=2 b=2
 .sf &textfont
 &row(1:Helvetica:18p:2:1:0:yes:yes:0:col)
 &row(2:Helvetica:14p:2:1:0:no:yes:0:none)
@@ -46,7 +48,9 @@
 
 .st &textsize
 .sp 0
+.bc start
 .fg t=table Default properties for each header level.
+.bc end
 .sp
 
 .sp 2

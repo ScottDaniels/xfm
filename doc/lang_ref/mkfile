@@ -58,6 +58,7 @@ xfm.ps: xfm.xfm $xfm_src ../logo.eps ${xfm_eps:%=%.eps}
 	export XFM_IMBED=../../templates
 	export XFM_PATH=.:../../templates
 	XDOC_PASS1=1 pfm xfm.xfm /dev/null 2>&1
+	echo "==== second pass ==="
 	pfm  xfm.xfm xfm.ps
 
 # build the doc fomatted as a single column

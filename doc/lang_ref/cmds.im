@@ -29,7 +29,7 @@ from the source directly &ital( as is. )
 The following are the three commands used to enable and disable formatting.
 
 .h3 Starting/Stopping Formatting
-The format command &(fo) can be used to turn formatting off or on.  
+The format command &c(fo) can be used to turn formatting off or on.  
 The command accepts an optional parameter of either &cw( off ) or &cw( on )
 which sets the obvious mode.  
 If the parameter is omitted, &cw( on ) is assumed.
@@ -67,7 +67,9 @@ an example of source code into a document.
 .fo
 .sf &textfont
 .st &textsize
+.bc start
 .fg Using no format to insert a source code example into a document.
+.bc end
 .sp
 
 The code segment first sets the font to a constant width font (courier) and
@@ -187,11 +189,13 @@ are illustrated along with examples of defining two kinds of &ital(bold) macros.
 .** .bx end
 .sf &textfont
 .st &textsize
+.bc start
 .fg The textsize and font commands.
+.bc end
 .sp 1
 .ca end
 .** ------------------------------------------------------------------------------
-&ifroom(22:font_examp.ca)
+&ifroom_l(22:font_examp.ca)
 
 .sp
 
@@ -312,7 +316,9 @@ fixed at the column boundaries.
 .bx end
 .ll +.5i
 &uindent
+.bc start
 .fg Output from two different box commands.
+.bc end
 .sp
 
 If the text margin is set after a box has been started with the margin option, then the effect
@@ -322,7 +328,8 @@ box  as illustrated above.
 Once the box is started the margin and line length are further adjusted to add the padding.
 The space command is used to add vertical padding.
 .gv figure
-Figure &_fig illustrates the source code and figure .ev [ &_fig 1 + ] shows the resulting output.
+.dv ex3_fig &_fig
+Figure &ex3_fig illustrates the source code and figure .ev [ ?%.0f  &ex3_fig 1 +  ] shows the resulting output.
 .sp .5
 
 .cc 10
@@ -339,7 +346,7 @@ Figure &_fig illustrates the source code and figure .ev [ &_fig 1 + ] shows the 
   that is placed inside of the box.
   Padding is accomplished via a series
   of indent, line length and space
-  commands.
+  cmds.
   .br
   .in -.25i
   .ll +.5i
@@ -349,19 +356,32 @@ Figure &_fig illustrates the source code and figure .ev [ &_fig 1 + ] shows the 
   .ll +1i
 .ca end
 
-.st [ &textsize 2 - ]
-.sf Courier
-.nf
-.im box_ex3.ca
-.fo
-.sf &textfont
-.st &textsize
-.fg Margin oriented box with padding
-.sp
+.** capture commands to show the code, not execute it
+.ca shift start box_ex3_ex.ca
+	.st [ &textsize 2 - ]
+	.sf Courier
+	&indent
+	.nf
+	.im box_ex3.ca
+	.fo
+	.ln
+	&uindent
+	.sf &textfont
+	.st &textsize
+	.fg x=center Margin oriented box with padding
+	.sp
+.ca end
 
-.cc 10
-.im box_ex3.ca
-.fg Output of code from figure &_fig.
+.gv remain
+.if  &_iremain 6 > 
+	.** enough room snag them both
+	.im box_ex3_ex.ca
+	.im box_ex3.ca
+	.fg x=center Output of code from figure &ex3_fig.
+	.sp
+.ei
+	.oe column .im box_ex3_ex.ca .im box_ex3.ca .fg x=center Output of code from figure &ex3_fig. ^: .sp 1
+.fi
 
 .cc 5
 .h2 Setting The Bottom Of Page
@@ -463,11 +483,11 @@ Figure &_fig contains sample code which demonstrates the capture command.
 .fo
 .sf &textfont
 .st &textsize
-.xx 2
 .sp .1
-.xx 0
 &martha_line
+.bc start
 .fg Illustration of the capture command.
+.bc end
 .sp
 .ca end
 .gv remain
@@ -501,7 +521,7 @@ line length are controlled using separate commands.
 .if false
 .** include the pic at the top of the next column
 .if pfm
-	&ifroom(15:cd.im)
+	&ifroom_l(15:cd.im)
 .ei
 	.im cd.im
 .fi
@@ -626,11 +646,11 @@ wide) can be established.
 .fo
 .sf &textfont
 .st &textsize
-.fg Column width and text indention example.
+.fg x=center Column width and text indention example.
 .sp
 .ca end
 .** ------------------------------------------------------------------
-&ifroom(12:colwid_examp.ca)
+&ifroom_l(12:colwid_examp.ca)
 
 .sp
 Two common macros that are defined in &x source are the &cw(indent)
@@ -664,11 +684,13 @@ used to define these macros.
 .sf &textfont
 .st &textsize
 .** .bx end
+.bc start
 .fg Macros for setting the line length and text indention.
+.bc end
 .sp 2
 .ca end
 .** -----------------------------------------------------------------
-&ifroom(15:macros_examp.ca)
+&ifroom_l(15:macros_examp.ca)
 
 
 Note that the order that the indention and line length are changed is important
@@ -802,11 +824,15 @@ device.  This command is useful when debugging complicated macros.
 .cc 6
 The following is a list of several &ital(define variable) commands that are useful:
 &indent
+.sf &cwfont
+.st [ &textsize 2 - ]
 .sp 1
 .li &cw(^.dv indent ^.br ^.ll -.5i ^.in +.5i)
 .br .li &cw(^.dv textsize 10p)
 .br .li &cw(^.dv textfont Helvetica)
 .br .li &cw(^.dv boldfont Helvetica-Bold)
+.sf &textfont
+.st &textsize
 &uindent
 .sp
 &x creates a variable which indicates the formatter that is currently processing the document
@@ -883,11 +909,13 @@ greater than variable &ital(b), or variable &ital(d) is less than &ital(e).
 &uindent
 .st &textfont
 .bx end
+.bc start
 .fg Using the if-else commands.
+.bc end
 .sp 2
 .ca end
 .** --------------------------------------------------------
-&ifroom(16:ifelse_examp.ca)
+&ifroom_l(16:ifelse_examp.ca)
 
 
 .sp
@@ -918,7 +946,7 @@ command (broken onto multiple lines for readability):
 .sp
 Where:
 &indent
-.bd .7i &ditext
+.bd .6i &ditext
 .di fname : Is the filename of the encapsulated postscript file.
 .sp .4
 .di l : Is the length from the current y position to reserve for the drawing.
@@ -942,7 +970,7 @@ with the &cw(l) parameter.
 reserved space. &bold(CAUTION^:) &x may not maintain an &cw(x,y) aspect ratio when stretching
 a drawing.
 .sp .4
-.di prportional : &x will attempt to keep the &cw(x,y) aspect ratio in proportion
+.di proportional : &x will attempt to keep the &cw(x,y) aspect ratio in proportion
 to the original drawing.
 .sp .4
 .di noadvy : Causes the current &cw(y) value &bold(not) to be advanced after the drawing
@@ -996,12 +1024,14 @@ if statement.
 .fo
 .sf &textfont
 .st &textsize
+.bc start
 .fg Sample use of conditional statements.
+.bc end
 .fi
 .sp 2
 .ca end
 .** ----------------------------------------------------------------
-&ifroom(25:cond_example.ca)
+&ifroom_l(25:cond_example.ca)
 
 
 .sp
@@ -1034,13 +1064,15 @@ multiplication, and division) several other operations are provided for; their o
 .sp
 &indent
 .bd .5i &ditext
-.di	% : Modulo division.
+.di		% : Modulo division.
 .sp .4
 .di 	F[ract] : Take the top value on the stack and replace it with the fraction portion of the value.
 .sp .4
 .di 	I[nt] : Take the top value on the stack and replace it with the integer portion of the value.
 .sp .4
 .di 	S[um] : Sum all elements in the stack.
+.sp .4
+.di 	?str : Supply a C style format string to render the result in (e.g. ?%.0f yields n rather than n.m).
 .ed
 &uindent
 .sp
@@ -1346,7 +1378,7 @@ at that point when generating HTML output:
 .sp 2
 .ca end
 .** ----------------------------------------------------------------
-&ifroom(8:imbed_examp.ca)
+&ifroom_l(8:imbed_examp.ca)
 
 Use like this is typical when formatting a multi-column document and
 needing to insert a table which spans all of the columns and thus must
@@ -1385,17 +1417,19 @@ the capture command to avoid the need to manage a separate file to include.
 
 .ca end
 .** ----------------------------------------------------------------
-&ifroom(14:imbed_examp2.ca)
+&ifroom_l(14:imbed_examp2.ca)
 
 
 
 .h3 Imbed File Search Path
 If the environment variable &cw(XFM_PATH) is defined &x will search for files listed
 on the imbed command in the directories listed on the path.  If the path variable is
+.xx 3
 not defined, the file name is assumed to be in the current directory, or the necessary
 part of the path of the file must be supplied.
 
 .h2 Jump To Token
+.xx 0
 The &ital(jump) &c(jm) command causes &x to stop processing the source until
 the token specified as the command parameter is found.  This provides an
 easy method of excluding large amounts of the document from the final output,
@@ -1501,7 +1535,7 @@ necessary as HTML documents have no concept of page or columns).
 .sp 2
 .ca end
 .** -----------------------------------------------------------------------
-&ifroom(10:oe_examp.ca)
+&ifroom_l(10:oe_examp.ca)
 
 .h2 Ejecting The Current Page
 When generating PostScript documents, the &ital(page eject) &c(pa) command can
@@ -1711,7 +1745,7 @@ created is the same as the input file with the extension replaced with &cw(.toc.
 .sp 2
 .ca end
 .** ----------------------------------------------------------------------------
-&ifroom(15:toc_examp.ca)
+&ifroom_l(15:toc_examp.ca)
 
 
 To include the table of contents as a part of the formatted document &x must be invoked twice across
@@ -1746,7 +1780,7 @@ The following lines of shell code illustrate one method of how this can be done.
 .sp 2
 .ca end
 .** ---------------------------------------------------------------------------
-&ifroom(15:twopass_examp.ca)
+&ifroom_l(15:twopass_examp.ca)
 
 .h2 Setting The Top Margin
 The amount of white space between the top of the page and the first line of text can be controlled

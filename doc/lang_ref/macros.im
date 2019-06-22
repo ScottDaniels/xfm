@@ -88,7 +88,7 @@ Once defined, the &ital(row) macro might then be used in the following manner:
 .sf &textfont
 .st &textsize
 .** .bx end
-.fg Using the row macro.
+.fg x=center Using the row macro.
 .sp 2
 .ca end
 .** -------------------------------------------------------------------------

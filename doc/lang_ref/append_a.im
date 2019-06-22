@@ -29,8 +29,8 @@ Colums are shown with grey shading, and text lines are shown inside of the colum
 a blueish tint. 
 .sp .5
 
-.ep xfm_col_styles.eps l=3i x=.15i proportional close
-.fg Column styles.
+.ep xfm_col_styles.eps l=3i x=.15i proportional close center
+.fg p=A- x=reset x=center Column styles.
 
 .sp
 &x will generate an error if an attempt is made to set the line length past the 
@@ -88,7 +88,7 @@ Both are visualised in figure &_fig.
 
 .ca start top.ca
 	.ep xfm_page_top.eps x=.5i l=3i close prportional
-	.fg Top of page commands and relative offisets.
+	.fg x=center Top of page commands and relative offisets.
 	.sp
 .ca end
 .gv remain

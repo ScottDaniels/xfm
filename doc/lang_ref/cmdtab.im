@@ -14,7 +14,7 @@
 .ei
 	.dv lcw 3.4i
 .fi
-.ta B b=1 p=5p 2i &lcw
+.ta  b=0 p=5p 1.5i &lcw center
 .bc start
 &bold(COMMAND)
 .bc end
@@ -22,10 +22,10 @@
 .bc start
 &bold(COMMENT)
 .bc end
-.tr
-^.fo
+.tr b=1 l=2
+^.et
 .cl
-The format command does not accept any parameters.
+The end table command does not accept any parameters.
 .tr
 ^.sp .br
 ^.sp 2
@@ -47,7 +47,9 @@ pair (w=n) and positional parameters which are &cw(2i, 2i) and &cw(3i)
 .et
 
 .st &textsize
+.bc start
 .fg t=table Illustration of various XFM commands and parameter formats.
+.bc end
 .sp 2
 
 .if false

@@ -25,6 +25,7 @@ The following is the syntax for the &ital(table) command:
 .nf
  .ta [n] [[B] b=n] [a=align] [s=points]
      [p=points] [t=colour] [w=pctg]
+     [center]
      width_1 width_2... width_n 
 .fo
 .sf &textfont
@@ -38,30 +39,45 @@ Where:
 When the &ital(n) keyword is used, the user must include a &ital(cell) command 
 before the next text is encountered.
 .sp .5
-.di B : Force left borders. Off by default to make nesting tables more pleasing with
-borders.
+.di B : Force left and right borders. Off by default as current fashon is to generate
+tables without edge borders, and allows for table nesting without double lines.
 .sp  .5
-.di b=n : Indicates the line width of the table border. &cw(b=0) causes no borders 
-to be drawn for the table.
+
+.di b=n : Indicates the line width of the table border. Borders are the lines drawn
+	between cells, rows, and at the left and right edges if the &cw( B ) option is
+	also given.
+	&cw(b=0) causes no borders to be drawn for the table; borders can be turned
+	on beginning with any row by using the appropriate option on the table row (^.tr)
+	command.
 .sp .5
+
 .di a=align : Supplies one of the alignment constants (right, left, center) and 
 causes the table to be aligned in this manner when generating HTML output.
 .sp .5
+
 .di p=points : Defines the number of points that are to be used to indent text
 from each 'cell wall.'
 .sp .5
+
 .di s=points : Defines the spacing between cells and rows that a browser is expected 
 leave. 
 .sp .5
+
 .di t=colour : Specifies a text colour that is to be used for text in the table
 (HFM only).
 .sp .5
+
 .di w=pctg : Supplies to &x a percentage (pct)  that will be used to set the 
 width of an HTML table in terms of percent of the browser width. 
 .sp .5
+
 .di width_n : Are the cell width definitions (points or inches). When generating 
 PostScript documents &x controls the width of each table sell directly, 
 but only suggests the width of a cell when generating and HTML document. 
+.sp .5
+
+.di center : Causes the whole table to be centered between in the current column (pfm)
+or as rendered with a &cw(<center>) tag in HTML.
 .ed
 &uindent
 
@@ -113,7 +129,7 @@ The syntax of the &ital(table row) command is:
 .sf &cwfont
 .st [ &textsize 2 - ]
 .nf
- .tr [n] [a=align] [c=colour] 
+ .tr [n] [a=align] [b=n] [c=colour] 
     [l=lines] [r=required] [v=valign]
     [w=lwidth]
 .fo
@@ -130,6 +146,9 @@ started. This allows the user to immediately follow the &ital(table row) command
 .sp .3
 .di a=align : Specifies one of the alignment keywords (right, center, left) which are placed 
 into the HTML document and cause the text in each of the cells to align in this manner.
+.sp .3
+.di b=n : Enables borders to be turned on starting with the next row (both between cells and
+between rows when n is 1. This may not be applicable when generating HTML.
 .sp .3
 .di c=colour : Allows the user to define a background colour for all cells in the row. 
 This colour is overridden if the user specifies a colour on a cell command. 
