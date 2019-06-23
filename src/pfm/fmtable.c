@@ -70,6 +70,7 @@ Contributions to this source repository are assumed published with the same lice
 *		22 Dec 2015 - Corrected bug with top border if page eject.
 *		24 Dec 2015 - Added r= option for table row command.
 *		17 Jul 2016 - Bring decls into the modern world.
+*		22 Jun 2019 - Ability to capture border settings for header.
 * 
 *  The n option allows user to turn off (no execute) the automatic
 *  creation of the first cell. This allows them to call .tr and .cl 
@@ -91,6 +92,33 @@ Contributions to this source repository are assumed published with the same lice
 static void tab_vlines( struct table_mgt_blk *t, int setfree );
 
 //void FMpause_table( void );
+
+
+/*
+	Capture the command and retrun it as a string, The init string
+	is used to initialise the command buffer.
+*/
+static char* capture_cmd( char* init ) {
+	char data[4096];
+	int	len;
+	int	totlen = 0;
+	char*	buf;
+
+	*data = 0;
+	strcat( data, init );
+	totlen = strlen( data );
+
+	while( (len = FMgetparm( &buf )) != 0 ) {
+		if( len + totlen + 1 < sizeof( data ) ) {
+			strcat( data, buf );
+			strcat( data, " " );
+		}
+
+		totlen += len + 1;
+	}
+
+	return strdup( data );
+}
 
 extern void FMtable(  void )
 {
@@ -325,9 +353,15 @@ extern void FMth( void )
 		totlen += len + 1;
 	}
 
-	if( t->header )
+	if( t->header ) {					// release previous header and tr info if there
 		free( t->header );
+		if( t->header_tr ) {
+			free( t->header_tr );
+			t->header_tr = NULL;
+		}
+	}
 	t->header = strdup( data );
+	t->header_border = t->border;			// capture border setting to emulate when adding next header
 
 	TRACE( 2, "tab_header: header in place: %s\n", t->header );
 	AFIpushtoken( fptr->file, t->header );			/* fmtr calls get parm; prevent eating things */
@@ -456,7 +490,9 @@ extern void FMcell( int parms )
  Mnemonic: fmtr
  Abstract: start a new row in the current table
  Date: 		26 Oct 2001 - converted from hfml stuff
- syntax:   .tr [n] [c=bgcolour] [a=alignval] [r=reserve] [v=valignvalue] [w=weight] [l=linecount]
+ syntax:   .tr [n] [b=n] [c=bgcolour] [a=alignval] [r=reserve] [v=valignvalue] [w=weight] [l=linecount]
+
+			b=n allow borders to be turned on mid table if n == 1.
 
 			w= allows the line weight (drawn between the current row and the 
 			   new) to be differnt than the default.
@@ -490,6 +526,7 @@ extern void FMtr( int last )
 	int	tmp_lw = -1;		// temp line weight (l=)
 	int lcount = 1;			// number of horizontal separating lines
 	int border = -1;		// update border starting after we paint next top border
+	char*	cmd_str;		// the command string if we must capture it
 
 	colour[0] = 0;
 	align[0] = 0;
@@ -498,6 +535,13 @@ extern void FMtr( int last )
 	if( ts_index <= 0 || (t = table_stack[ts_index-1]) == NULL ) {
 		char *b;
 		while( (len = FMgetparm( &b )) != 0 );			// no table, ditch parms and scoot
+		return;
+	}
+
+	if( t->header != NULL && t->header_tr == NULL ) {		// first tr after header, must capture
+		cmd_str = capture_cmd( ".tr " );		
+		t->header_tr = cmd_str;
+ 		AFIpushtoken( fptr->file, cmd_str );					// push the command string and we'll be recalled
 		return;
 	}
 
@@ -726,7 +770,10 @@ extern void FMrestart_table( void ) {
 
 	if( t->header )										// new header on resume
 	{
-		AFIpushtoken( fptr->file, ".tr :" );			/* must drop a table row after the header command(s) */
+		//AFIpushtoken( fptr->file, ".tr :" );			/* must drop a table row after the header command(s) */
+		t->border = t->header_border;					// simulate border state from start of table
+														// push in reverse order...
+		AFIpushtoken( fptr->file, t->header_tr );		// push the tr command that followed the header
 		AFIpushtoken( fptr->file, t->header );			/* fmtr calls get parm; prevent eating things */
 	}
 

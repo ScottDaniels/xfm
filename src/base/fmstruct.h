@@ -96,6 +96,8 @@ struct table_mgt_blk {
 	int	ave_row_depth;		/* the average depth of a row for predicting when we need to eject */
 	int	tot_row_depth;		/* total depth of all rows */
 	char	*header; 		/* user can define the header string to put after a page eject */
+	int		header_border;	// border setting for header
+	char*	header_tr;		// tr command used immediatly after a header
 
 				/* stuff needed by all other formatters */
    	int	curcell;      		/* current cell being worked when stacked on HFM only */
