@@ -229,15 +229,12 @@ extern void FMep(  void )
 
 		if( urx != llx && ury != lly )  /* valid bounding box info found */
 		{
-			if( urx-llx > width )                       /* need to reduce wid to fit*/
+			if( urx-llx > width ) {							/* need to reduce wid to fit*/ 
 				xscale = (float) width / (float) (urx-llx);  /* calc scale to make fit */
-			else
-				if( flags & LF_CENTER )      /* there is room, should we center? */
-					xoffset = (width/2) - ((urx-llx)/2);  /* calc xoffset */
-				else
-					if( flags & LF_STRETCH )   /* stretch to fill out? */
-						xscale = (float) width / (float) (urx-llx); /* stretch scale */
-
+			} else {
+				if( flags & LF_STRETCH )   /* stretch to fill out? */
+					xscale = (float) width / (float) (urx-llx); /* stretch scale */
+			}
 
 			if( ury-lly > length )     /* does drawing need y scale reduced to fit? */
 				yscale = (float) length / (float) (ury-lly);  /* yes - calc to make fit*/
@@ -254,15 +251,18 @@ extern void FMep(  void )
 
 			if( flags & LF_PROPORT )   /* must we keep drawing proportional? */
 			{
-				if( yscale < xscale )     /* yes - we must select smallest */
+				if( yscale < xscale ) {     /* yes - we must select smallest */
 					xscale = yscale;
-				else
-				{
+				}else {
 					if( yscale == 1 && (flags & LF_CLOSE) )  /* closing and room? */
 						length = (length * xscale) + 10;        /* adjust length for scale */
 					yscale = xscale;
 				}
 				TRACE( 2, "fmep: proportional options applied, scales now: xscale=%.2f yscale=%.2f  \n",   xscale, yscale );
+			}
+
+			if( flags & LF_CENTER ) {		// senter horizontally, but only after xscale is final
+				xoffset = ((width - ((urx-llx) * xscale))/2);  /* calc xoffset */
 			}
 
 			/* postscript code to setup for ep file */
