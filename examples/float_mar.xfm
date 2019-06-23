@@ -7,6 +7,7 @@
 .sf Helvetica
 .st 10p
 .in .5i
+.ll 6i
 .hn off
 .dh 2 m=.5i i=0 s=1,.5
 
@@ -67,7 +68,7 @@ paragraph and force the text to the left of it until we are past it.
 	.ll -4i
 	.in +4i
 	.ep test_2x3.eps x=4.5i l=3i  proportional close
-	.fg This is the image we inserted.
+	.fg x=center This is the image we inserted.
 	.in -4i
 	.ll +4i
 	.** note that no length is given; when y= is used; length is assumed to be the current position
@@ -130,7 +131,7 @@ example of putting the image on the right again.
 	.gv remain
 	.if &_iremain 3.2 <
 		.** we must give nostate parm to prevent a push/pop of the state during eject processing
-		.oe column nostate .im right_image.ca
+		.oe column nostate .im right_image.ca  .sp .1
 	
 	.ei
 		.im right_image.ca
@@ -145,13 +146,17 @@ example of putting the image on the right again.
 
 And here is more text that should nicely appear 'wrapped round' the the image. If there wasn't
 enough room for the image on the current page, then this text might appear in full width
-and the image pushed to the next page. What ever text doesn't fit on the current page will then 
+and the image pushed to the next page. 
+What ever text doesn't fit on the current page will then 
 be wrapped.  It's difficult to predect what will be placed on the current page, so this paragraph
 will just ramble a bit more to prove the point.
+.xx 0
 .sp
 
-I've used {X}fm extensively while working on my masters at Georgia Tech.  I've used it to produce
-written assignmens, programme write-ups, and to format the written response to take home exams. 
+I used {X}fm extensively while earning my masters at Georgia Tech.  
+All of my submitted written assignments, more than 60, were written with {X}fm. 
+I also used it to generate responses to take home exams, and to produce the necessary
+PDF slides for group presentations.
 I also maintain several HTML pages using {X}fm. 
 While there isn't a need to generate thoese documents in any other format (PDF or text), using a 
 formatting language, rather than marking up the text with difficult to read HTML tags, makes 
@@ -176,16 +181,19 @@ statement.
 	.gv y
 	.dv tab_top &{_cury}p
 	.sp 1
-	.ta 1i .8i 1.2i b=1 B
+	.** to center the figure text the line length must be set
+	.ll 3.2i 
+	.ta center 1i .8i 1.0i b=0 
 	.ce COL 1
 	.cl : .ce COL 2
 	.cl : .ce COL 3
-	.tr : Foo .cl : Bar .cl : FooBar 1
+	.tr l=2 b=1 : Foo .cl : Bar .cl : FooBar 1
 	.tr : Foo .cl : Bar .cl : FooBar 2
 	.tr : Foo .cl : Bar .cl : FooBar 3
 	.tr : Foo .cl : Bar .cl : FooBar 4
 	.et
-	.fg t=table Silly table with silly contents
+	.fg x=center t=table Silly table with silly contents
+	.ll 6i
 	.if pfm
 		.fm i=+3.4i y=&tab_top
 	.fi
