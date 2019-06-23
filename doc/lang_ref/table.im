@@ -182,11 +182,17 @@ three column table below (split onto multiple lines for illustration).
 .st [ &textsize 2 - ]
 .sf &cwfont
 .nf
-  .th &bold(GEAR) .cl : &bold(REQ/OPT) 
-      .cl : &bold(COMMENT)
+  .th &bold(GEAR) .cl ^: &bold(REQ/OPT) 
+      .cl ^: &bold(COMMENT)
 .fo
 .sf &textfont
 .st &textsize
+.sp 
+It should be noted that the new cell &c(cl) command must have an escaped colon separating it from
+the next token.  
+This is because the table header command is similar to a define variable &c(dv) command and the
+parameters to the command are being captured; the colon is meant to be captured and not intended
+to end the table header command.
 
 .h3 Ending a table
 The &ital(end table) &c(et) command accepts no parameters, and simply causes the table to 

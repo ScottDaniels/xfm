@@ -14,29 +14,21 @@
 .sf Helvetica
 .ta  b=0 p=5p .5i .75i .5i .5i .5i .5i .5i .5i .5i .6i center
 .br
+.sf &boldfont
 .bc start
-.cl : .br
-.cl : .br
-.cl s=2 :  LINES SKIPED
-.cl : .br
-.cl : .br
-.cl : .br
-.cl : .br
-.bc end
-.tr l=0
-.bc start
-       LEVEL
-.cl :  FONT
-.cl :  SIZE
-.cl :  BEFORE
-.cl :  AFTER
-.cl :  INDENT
-.cl :  UPPER
-.cl :  TOC
-.cl :  MARGIN
-.cl :  .bc start EJECT .bc end
+       .sp 1 LEVEL
+.cl :  .sp 1 FONT
+.cl :  .sp 1 SIZE
+.cl :  SKIP .br BEFORE
+.cl :  SKIP .br AFTER
+.cl :  .sp 1 INDENT
+.cl :  .sp 1 UPPER
+.cl :  .sp 1 TOC
+.cl :  .sp 1 MARGIN
+.cl :  .sp 1 EJECT 
 .br 
 .bc end
+.sf &textfont
 .sy -.25i
 .tr l=2 b=2
 .sf &textfont

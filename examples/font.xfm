@@ -208,7 +208,7 @@ As an example, the following table shows the {X}fm code which produced the assoc
 
 .sp
 .ta start 4i 1.5i b=1
-.ce DOCUMENT SOURCE : .cl : .ce OUTPUT :
+.th .ce DOCUMENT SOURCE ^: .cl ^: .ce OUTPUT ^:
 
 .tr l=2
 &ex_start

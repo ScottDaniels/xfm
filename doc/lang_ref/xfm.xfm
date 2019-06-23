@@ -407,9 +407,12 @@ reduce the amount of document maintenance time when managing a library of relate
 .im ixcmds.im
 .cp 100			.** force a col eject on the off chance there is a figure pending
 
+.ix pause		.** don't capture references in the appendices
 .im append_a.im
 .im quickr.im
 .if index_here
+	.cc 10i
+	.tc off
 	&index_here
 .fi
 .sp 3

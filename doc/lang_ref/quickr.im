@@ -6,6 +6,7 @@
 .fi 
 
 .dv row    .tr r=5 ^: .bc start $1 .bc end .cl ^: $2 .cl ^: $3  
+.dv row1    .tr b=1 l=2 r=5 ^: .bc start $1 .bc end .cl ^: $2 .cl ^: $3  
 
 .pa
 .pn 0 on t=B-%d f=B-%d center noline
@@ -60,10 +61,10 @@ This is a test of the cn after a table
 .dv ll [ &_rmar &_lmar - ]
 .dv comment_len [ &ll 2 72 * - ]
 
-.ta b=1 .5i 1.5i &{comment_len}p
+.ta b=0 .5i 1.5i &{comment_len}p
 
 .th .bc start CMD .bc end .cl ^: .bc start PARAMETER(S) .bc end .cl ^: .bc start COMMENTS .bc end 
-&row(**:<text>:Comment; all tokens to the next newline are ignored)
+&row1(**:<text>:Comment; all tokens to the next newline are ignored)
 &row(ab::Abort processing; no end of document housekeeping performed.)
 &row(ai::All input until the next ^.fo command is written to the output file as is (see &cmd(nf) .sm ) )
 &row(br::Cause the next formatted text token to be placed at the beginning of a new line)
