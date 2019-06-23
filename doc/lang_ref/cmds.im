@@ -1424,12 +1424,10 @@ the capture command to avoid the need to manage a separate file to include.
 .h3 Imbed File Search Path
 If the environment variable &cw(XFM_PATH) is defined &x will search for files listed
 on the imbed command in the directories listed on the path.  If the path variable is
-.xx 3
 not defined, the file name is assumed to be in the current directory, or the necessary
 part of the path of the file must be supplied.
 
 .h2 Jump To Token
-.xx 0
 The &ital(jump) &c(jm) command causes &x to stop processing the source until
 the token specified as the command parameter is found.  This provides an
 easy method of excluding large amounts of the document from the final output,
