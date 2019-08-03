@@ -115,6 +115,8 @@ extern void fmindex(  void )
 	char	*buf;
 	int 	len;
 	char	wbuf[2048];
+	char*	strtok_p = NULL;		// reference for strtok calls
+	char*	tok;
 
 	if( (len = FMgetparm( &buf) ) != 0  )
 	{
@@ -129,8 +131,13 @@ extern void fmindex(  void )
 						//strcat( wbuf, " " );
 						//strcat( wbuf, buf );
 
-						TRACE( 2, "index: forcing: (%s)\n", buf );
-						di_add( buf, page + 1 );
+						TRACE( 2, "index: forcing: (%s) on page %d\n", buf, page+1 );
+						tok = strtok_r( buf, " \t", &strtok_p );
+						while( tok ) {
+							TRACE( 3, "index: forcing token: (%s)\n", tok );
+							di_add( tok, page+1 );			// must add each word as di_* tracks word series and won't recognise the whole thing
+							tok = strtok_r( NULL, " \t", &strtok_p );
+						}
 					}
 				}
 				break;
