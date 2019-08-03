@@ -364,3 +364,25 @@ extern void sym_foreach_class( Sym_tab *st, unsigned int class, void (* user_fun
 					user_fun( st, se, se->name, se->val, user_data );
 			}
 }
+
+/*
+	Clear (remove) all entries of the sym tab which match the class.
+*/
+extern void sym_clear_class( Sym_tab* st, unsigned int class ) {
+	Sym_ele **list;
+	Sym_ele *se;
+	Sym_ele *next;		/* allows user to delete the node(s) we return */
+	int 	i;
+
+	if( st && (list = st->symlist) != NULL ) {
+		for( i = 0; i < st->size; i++ ) {
+			for( se = list[i]; se; se = next ) {
+				next = se->next;
+
+				if( class == se->class ) {
+					del_ele( st, i, se );
+				}
+			}
+		}
+	}
+}

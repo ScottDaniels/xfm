@@ -53,3 +53,5 @@ export:V:	$afilib
 	cp libafi.a $HOME/lib/
 	cp afidefs.h $HOME/include/afi.h
 
+replace:: replace.c
+	gcc -DSELF_TEST=1 $IFLAGS $prereq -o $target

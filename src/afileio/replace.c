@@ -44,7 +44,8 @@
 *		"now is the time for aardvarks to come to the aid of their fellow aardvarks"
 *  Parms:	st - pointer to symbol table
 *		namespace - symboltable name space key (a special key 43086) is used for things that
-*			are put into the table by this routine (parameter expansion)
+*			are put into the table by this routine (parameter expansion). This can be 
+			changed via the replace_set_pvt() function.
 *		sbuf - source buffer 
 *		vsym - variable indicator % $ etc
 *		esym - escape symbol so that \% will cause a % to go into the expanded buf
@@ -60,7 +61,8 @@
 *		10 Apr 2007 - Memory leak repair
 *		21 Aug 2011 - Fixed bug that was causing lead portion of buffer to be overwritten when 
 *			a variable didn't expand during recursion. 
-* ---------------------------------------------------------------------------------------
+*			03 Aug 2019 - Fixed bug that was returning garbage if unset parm was referenced.
+* -----------------------------------------------------------------------------------------------
 */
 
 #include	<unistd.h>
@@ -74,8 +76,17 @@
 #include	"aficonst.h"
 
 static	char vreplace_buffer[4096];
+static	unsigned pvt_class = 43086;			// class in caller's symtab  that we use for parms
 
 #define F_PARMS	0x01			/* internal flag - expand parms first */
+
+/*
+	Allow user to set the namespace in the symtab that we are allowed to use.
+	If caller doesn't invoke, then the default 43086 is used.
+*/
+extern void replace_set_pvt( unsigned int value ) {
+	pvt_class = value;
+}
 
 char *vreplace( Sym_tab *st, int namespace, char *sbuf, char vsym, char esym, char psym, int flags )
 {
@@ -101,7 +112,6 @@ char *vreplace( Sym_tab *st, int namespace, char *sbuf, char vsym, char esym, ch
 		fprintf( stderr, "vreplace: panic: too deep\n" );
 		abort( );
 	}
-
 
 	if( flags & VRF_NEWBUF )
 		obuf = (char *) malloc( 4096 * sizeof( char ) );
@@ -141,7 +151,7 @@ char *vreplace( Sym_tab *st, int namespace, char *sbuf, char vsym, char esym, ch
 					while( pidx < 4095 && *sbuf && need )		/* while we need ) and have room */
 					{
 						sprintf( pname, "%d", p );
-						sym_map( st, (unsigned char *) pname, 43086, plist+pidx );
+						sym_map( st, (unsigned char *) pname, pvt_class, plist+pidx );
 
 						while( pidx < 4095 && *sbuf && need && *sbuf != psym )
 						{
@@ -171,7 +181,7 @@ char *vreplace( Sym_tab *st, int namespace, char *sbuf, char vsym, char esym, ch
 			if( (vbuf = sym_get( st, (unsigned char *) name, namespace )) )
 			{
 				if( iflags & F_PARMS )
-					vbuf = vreplace( st, 43086, vbuf, '$', esym, psym, VRF_NORECURSE | VRF_NEWBUF );
+					vbuf = vreplace( st, pvt_class, vbuf, '$', esym, psym, VRF_LEAVE_EMPTY | VRF_NORECURSE | VRF_NEWBUF );
 
 				if( ! (flags & VRF_NORECURSE) )		/* recursion is allowed (user did not set no flag) */
 				{
@@ -192,10 +202,14 @@ char *vreplace( Sym_tab *st, int namespace, char *sbuf, char vsym, char esym, ch
 			}
 			else
 			{
-				*optr++ = '&';						/* 2011/08/21 fix */
-				*optr = 0;
-				strcat( obuf, name );
-				optr = obuf + strlen( obuf );
+				if( flags & VRF_LEAVE_EMPTY ) {			// if no value, return an empty buffer
+					*optr = 0;
+				} else {
+					*optr++ = vsym;						/* 2011/08/21 fix */
+					*optr = 0;
+					strcat( obuf, name );
+					optr = obuf + strlen( obuf );
+				}
 			}
 		}
 		else
@@ -209,6 +223,8 @@ char *vreplace( Sym_tab *st, int namespace, char *sbuf, char vsym, char esym, ch
 			*optr++ = *sbuf++;	/* nothing special, just add the character */
 	}
 
+	sym_clear_class( st, pvt_class );		// delete all parms we stuffed in to prevent garbage next time
+
 	*optr = 0;
 	depth--;
 	return obuf;
@@ -216,36 +232,40 @@ char *vreplace( Sym_tab *st, int namespace, char *sbuf, char vsym, char esym, ch
 
 #ifdef SELF_TEST
 
+#include "../base/symtab.h"
+#include "../base/symtab.c"
+
 int main( int argc, char **argv )
 {
 	Sym_tab *st;
 	char *e;
-	char	pval[10];
-	char	nval[10];
 	int i;
 
-	st = syminit( 17 );
+	st = sym_alloc( 17 );
 	sym_map( st, "fred", 0, "fred was here and he does not like %barney!" );
 	sym_map( st, "wilma", 0, "wilma is cool %fred" );
 	sym_map( st, "barney", 0, "barney is a dork" );
 	sym_map( st, "betty", 0, "betty is married to a dork" );
 	sym_map( st, "bambam", 0, "bambam is loud and has betty for a mom and a dork for a dad" );
 	sym_map( st, "dino", 0, "p4=$4 p3=$3 p1=$1 p2=$2 p4=$4" );
-	sym_map( st, "p", 0, pval );
-	sym_map( st, "n", 0, nval );
 
+	if( argc < 2 ) {
+		fprintf( stderr, "self test for vreplace requires one or more input strings to expand\n" );
+		fprintf( stderr, "e.g. replace %fred \"%fred %barney\" \"%dino(abc:123:ef:345)\"\n" );
+		fprintf( stderr, "these variables are defined: fred, wilma barney betty bambam and dino\n" );
+		fprintf( stderr, "the variable 'fred' has an imbedded reference to barney to test recursion\n" );
+		fprintf( stderr, "the variable 'wilma' has an imbedded reference to fred  to test double recursion\n" );
+		fprintf( stderr, "dino accepts up to 4 parameters and prints them out\n" );
+		fprintf( stderr, "the variable deref symbol is %% (su use %%fred to expand fred)\n" );
+		fprintf( stderr, "the var sep is :, so use %%dino( abc:def:ghi:jkl ) to expand dino\n" );
+		fprintf( stderr, "\n" );
+		exit( 1 );
+	}
 	
-	fprintf( stderr, "argv[1] = (%s) \n", argv[1] );
-	e = vreplace( st, 0, argv[1], '%', '\\', ':', 0 );
-	printf( "(%s) --> (%s)\n", argv[1], e );
-
-exit( 0 );
-	for( i = 0; i < 20; i++ )
-	{
-		sprintf( pval, "%04d", i );
-		sprintf( nval, "%04d", 20-i );
-		e = vreplace( st, 0, "junk-%p-stuff-%n", '%', '\\',  ':', 0 );
-		printf( "(%s)\n", e );
+	for( i = 1; i < argc; i++ ) {
+		//fprintf( stderr, "expanding = (%s) \n", argv[i] );
+		e = vreplace( st, 0, argv[i], '%', '\\', ':', 0 );
+		printf( "(%s) --> (%s)\n", argv[i], e );
 	}
 }
 #endif

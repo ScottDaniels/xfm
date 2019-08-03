@@ -32,6 +32,7 @@
 #define VRF_CONSTBUF	0			/* dummy flag - return string in static buffer */
 #define VRF_NEWBUF		0x01		/* create a new buffer */
 #define VRF_NORECURSE	0x02		/* no recursive expansion */
+#define VRF_LEAVE_EMPTY	0x04		// a variable with no value expands to blank rather than &name
 
 #define F_PARMS	0x01			/* internal flag - expand parms first */
 

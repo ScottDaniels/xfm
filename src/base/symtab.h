@@ -87,6 +87,7 @@ typedef struct Sym_tab {
 } Sym_tab;
 
 extern void sym_clear( Sym_tab *s );
+extern void sym_clear_class( Sym_tab* st, unsigned int class );
 extern void sym_dump( Sym_tab *s );
 extern Sym_tab *sym_alloc( int size );
 extern void sym_del( Sym_tab *s, unsigned char *name, unsigned int class );
