@@ -144,7 +144,7 @@ extern void FMheader( struct header_blk *hptr )
 		if( optr == 0 ) {
 			before = 0;											// when at top, no before space needed if noting peding flush
 		}
-		TRACE( 2, "header: forcing eject: cury=%d(adjusted)  boty-cn_space=%d before=%d\n", i + cury, boty - cn_space, before );
+		TRACE( 2, "header: forcing eject: cury=%d(adjusted)  boty-cn_space=%d before=%.2f\n", i + cury, boty - cn_space, before );
 	} else {
 		if( (cury <= topy) && optr == 0 ) {					// at top and nothing to flush
 			before = 0;										// then space before is nixed
