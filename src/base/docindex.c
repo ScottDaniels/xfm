@@ -430,7 +430,7 @@ extern void di_add( char *name, int pg )
 
 			rp->wkey = wkey + 1;			/* next expected word key */
 
-			if( strcmp( name, rp->wlist[rp->tidx] ) == 0 )		/* word match */
+			if( strcmp( aname ? aname : name, rp->wlist[rp->tidx] ) == 0 )		/* word match */
 			{
 				if( ++rp->tidx == rp->nwords )			/* this matched the last word in the string */
 				{
