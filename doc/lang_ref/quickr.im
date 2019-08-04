@@ -67,6 +67,7 @@ This is a test of the cn after a table
 &row1(**:<text>:Comment; all tokens to the next newline are ignored)
 &row(ab::Abort processing; no end of document housekeeping performed.)
 &row(ai::All input until the next ^.fo command is written to the output file as is (see &cmd(nf) .sm ) )
+&row(bc: {start|end}:Block center. All lines between the start and end command is centered )
 &row(br::Cause the next formatted text token to be placed at the beginning of a new line)
 
 &row(ca:[expand] [shift] {start|extend <file> .br end:Capture all lines until the end command and place into the file. Extend appends the source to the file. Shift shifts the left most space character before adding the source to the file.)
@@ -89,6 +90,25 @@ Start next cell in the table
 .br Set alignment type (HTML only)
 .br Set the number of 'real' columns to span
 .br Vertical alignment option (HTML only)
+
+.tr r=7L
+.bc start cn .bc end 
+.cl
+start {atbot|atend}
+.br [s=<symbol>]
+.br <font> 
+.br <points> 
+.br <dist>
+.cl 
+Column note start  placed at bottom of current column or document end .br
+Optional symbol to use (e.g. *) .br
+Font name for footnote text .br
+Font size (e.g. 8p) of footnote text .br
+Amount of space to reserve for the footnote
+
+&row(cn:show:Shows the current set of 'atbot' notes)
+&row(cn:showend:Shows the current set of 'atend' notes)
+&row(cn:end:Ends capture of column note text)
 
 &row(cp:<n>:Conditional page eject. Start new page if n columns are not left on current page)
 
@@ -122,7 +142,7 @@ Start next cell in the table
 &row(ei::Begins else clause in an if-else conditional)
 &row(ed::Ends a definition list)
 
-.tr
+.tr r= 5
 .bc start ep .bc end 
 .cl
 .sp
@@ -142,7 +162,7 @@ Start next cell in the table
 
 &row(fg:nosect:Sets figure numbering to discard section when paragraph numbering is enabled)
 
-.tr
+.tr r=9
 .bc start fg .bc end 
 .cl
 .sp
@@ -192,6 +212,35 @@ Pts from top of page where normal margins are to resume.
 &row(if:<expression>:Causes next lines of source to be 'executed' if <expression> is true)
 &row(im:[nf] <filename>:Causes <filename> to be read and process as if it were included at the location of the imbed command in the file currently being processed if 'nf' given as first token, no format flag is enabled as though it appears as the first command in the file)
 &row(in:<rdist>:Sets the distance text is placed from the left column edge)
+
+.tr r=12
+.bc start ix .bc end
+.cl
+.sp 1
+{force term | 
+.br group <name> <token>... |
+.br groupb <format string> |
+.br groupe <format string> |
+.br insert | 
+.br pause | 
+.br resume | 
+.br snare term | 
+.br section <format string> |
+.br synomym <term> <synonym> }
+.cl
+index  setup and management .br
+force <term> into the index as if it appeared on the current page .br
+defines a group listed under <name>. <tokens> must be defined with snare .br
+group begin format string; used at start of group entry (%s is group name)  .br
+group end format string used at end of group .br
+insert the index at the current document location .br
+stop capturing tokens from the doc for the index .br
+resume capturing tokens for the index. .br
+define a <term> for inclusion in the index .br
+format string used at alpha (section) breaks .br
+add a synonym for a term already defined on a snare command
+
+
 
 &row(jm:<target>:Searches for the target token skipping all text and commands until it reaches the target)
 
