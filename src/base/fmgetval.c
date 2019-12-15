@@ -380,8 +380,10 @@ extern void FMgetval( void )
 	{
 		TRACE( 2, "getval: setting: %s=%s\n", vname, value );
 		FMset_var( vname, value );
+	} else {
+		if( *vname != 0 ) {
+			fprintf( stderr, "getval: value was emppty; nothing set for %s\n", vname );
+		}
 	}
-	else
-		fprintf( stderr, "getval: value was emppty; nothing set for %s\n", vname );
   }                                       /* end if parameter entered */
 }          /* fmgetval */

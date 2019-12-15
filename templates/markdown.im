@@ -1,7 +1,7 @@
 .** 
 .** Mnemonic:	markdown.im
 .** Abstract:	Setup template which allows for single column format that can be 
-.** 			rendered in postscript, text, and as markdown.
+.** 			rendered in postscript, text, and as markdown; the default is markdown.
 .**				Macros for the folowing must be used  in place of the native {X}fm
 .**				commands in order to generate markdown:
 .**					&def_list(space font) instead of .bd
@@ -39,9 +39,10 @@
 .**					line
 .**					
 .**	
-.**				Postscript is gnerated normally.  Markdown is generatd using the 
-.**				tfm formatter defining MARKDOWN in the evironment:
-.**					MARKDOWN=1 tfm file.xfm file.md
+.**				Postscript is gnerated by default when the formatter is pfm. To generate
+.**				plain text (tfm used for both text and markdown output) define MARKDOWN
+.**				in the environment or on the command line:  
+.**					MARKDOWN=0 tfm file.xfm file.md
 .**
 .** Author:		E. Scott Danils
 .** Date:		26 October 2016
@@ -75,6 +76,9 @@
 .dv uindent .in -.25i .ll +.5i
 .dv smindent .ll -.2i .in +.1i
 .dv smuindent .in -.1i .ll +.2i
+
+.dv space .sp 1
+.dv half_space .sp .5
 
 .dv def_list .bd $1 
 .dv end_dlist .ed
@@ -146,7 +150,8 @@
 
 	.** if the env var is set, redefine macros to generate the limited markdown things
 	.gv e MARKDOWN markdown
-	.if markdown
+	.if &markdown 1 =
+		.ju off
 		.cd 1 6.8i i=0
 		.dv ta .br  ^.ta .br |
 		.dv et .br ^.et .br

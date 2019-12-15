@@ -70,7 +70,7 @@ IF( EXISTS "${CMAKE_ROOT}/Modules/CPack.cmake" )
 
         set( CPACK_set_DESTDIR "on" )
         set( CPACK_PACKAGING_INSTALL_PREFIX "${install_root}" )
-        set( CPACK_GENERATOR "DEB" )
+        set( CPACK_GENERATOR "DEB;RPM" )
 
         set( CPACK_PACKAGE_DESCRIPTION "A document formatter which generates postscript, ASCII and HTML with extensions to generate troff, rts and markdown." )
         set( CPACK_PACKAGE_DESCRIPTION_SUMMARY "{X}fm Text Formatting Utilities" )
